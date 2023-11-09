@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "useDefineForClassFields": true,
+    "lib": ["ES6", "DOM", "DOM.Iterable"],
+    "module": "ES2020",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "Node",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    "esModuleInterop": true,
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "src",
+    "paths": {
+      "@__mocks__/*": ["__mocks__/*"],
+      "@__test__/*": ["__test__/*"],
+      "@apis/*": ["apis/*"],
+      "@components/*": ["components/*"],
+      "@constants/*": ["constants/*"],
+      "@pages/*": ["pages/*"],
+      "@config/*": ["config/*"],
+      "@hooks/*": ["hooks/*"],
+      "@utils/*": ["utils/*"],
+      "@types/*": ["@types/*"]
+    },
+    "types": ["@testing-library/jest-dom"]
+  },
+  "include": ["src"]
+}
