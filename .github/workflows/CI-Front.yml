@@ -1,0 +1,28 @@
+name: Frontend CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  build-and-test:
+    if: contains(github.event.pull_request.labels.*.name, '🖥️Frontend🖥️')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js for Frontend
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install Frontend dependencies
+        run: cd frontend && yarn install
+
+      - name: Run Frontend tests
+        run: cd frontend && yarn test
+
+      - name: Build Frontend
+        run: cd frontend && yarn build

@@ -1,0 +1,36 @@
+name: ALL CI Pipeline
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js for Frontend & Backend
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install Frontend dependencies
+        run: cd frontend && yarn install
+
+      - name: Run Frontend tests
+        run: cd frontend && yarn test
+
+      - name: Build frontend
+        run: cd frontend && yarn build
+
+      - name: Install Backend dependencies
+        run: cd backend && yarn install
+
+      - name: Run Backend tests
+        run: cd backend && yarn test
+
+      - name: Build Backend
+        run: cd backend && yarn build
