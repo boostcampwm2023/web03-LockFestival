@@ -1,0 +1,28 @@
+name: Backend CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  build-and-test:
+    if: contains(github.event.pull_request.labels.*.name, '🌐Backend🌐')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js for Backend
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install Backend dependencies
+        run: cd backend && yarn install
+
+      - name: Run Backend tests
+        run: cd backend && yarn test
+
+      - name: Build Backend
+        run: cd backend && yarn build
