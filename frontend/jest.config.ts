@@ -1,11 +1,14 @@
 export default {
   testEnvironment: 'jsdom',
+  testEnvironmentOptions: {
+    customExportConditions: [''],
+  },
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
   testMatch: ['**/__tests__/**/*.+(ts|tsx|js)', '**/?(*.)+(spec|test).+(ts|tsx|js)'],
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
-  setupFilesAfterEnv: ['<rootDir>/setupTest.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   moduleNameMapper: {
     '^.+\\.svg$': 'jest-svg-transformer',
     '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
@@ -20,4 +23,5 @@ export default {
     '^@utils/(.*)$': '<rootDir>/src/utils/$1',
     '^@types/(.*)$': '<rootDir>/src/@types/$1',
   },
+  setupFiles: ['./jest.polyfills.js'],
 };
