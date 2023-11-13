@@ -5,6 +5,7 @@
     "lib": ["ES6", "DOM", "DOM.Iterable"],
     "module": "ES2020",
     "skipLibCheck": true,
+    "jsxImportSource": "@emotion/react",
 
     /* Bundler mode */
     "moduleResolution": "Node",
