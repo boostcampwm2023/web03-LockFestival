@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import initMockAPI from '@__mocks__/index.ts';
-import GlobalStyle from 'GlobalStyles.tsx';
+import GlobalStyle from './styles/GlobalStyles.tsx';
 
 async function deferRender() {
   if (!import.meta.env.DEV) {

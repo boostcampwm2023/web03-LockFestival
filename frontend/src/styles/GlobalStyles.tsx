@@ -130,6 +130,26 @@ const globalStyle = css`
   * {
     box-sizing: border-box;
   }
+
+  @font-face {
+    font-family: 'DNFBitBitv2';
+    src: url('./fonts/DNFBitBitv2.ttf');
+  }
+
+  @font-face {
+    font-family: 'DNFBitBitv2';
+    src: url('./fonts/DNFBitBitv2.ttf');
+  }
+
+  @font-face {
+    font-family: 'BMJUA';
+    src: url('./fonts/BMJUA.ttf');
+  }
+
+  @font-face {
+    font-family: 'GmarketSansTTFMedium';
+    src: url('./fonts/GmarketSansTTFMedium.ttf');
+  }
 `;
 
 const GlobalStyle = () => {
