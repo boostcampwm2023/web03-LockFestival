@@ -5,6 +5,7 @@
     "lib": ["ES6", "DOM", "DOM.Iterable"],
     "module": "ES2020",
     "skipLibCheck": true,
+    "jsxImportSource": "@emotion/react",
 
     /* Bundler mode */
     "moduleResolution": "Node",
@@ -33,7 +34,7 @@
       "@utils/*": ["utils/*"],
       "@types/*": ["@types/*"]
     },
-    "types": ["@testing-library/jest-dom"]
+    "types": ["node", "vite/client", "@testing-library/jest-dom"]
   },
-  "include": ["src"]
+  "include": ["src/**/*.tsx", "src/**/*.ts", "src/@types"]
 }

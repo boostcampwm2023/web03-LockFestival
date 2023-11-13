@@ -39,5 +39,12 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['.eslintrc.cjs', 'vite.config.ts', 'jest.config.ts', 'jest.setup.ts', 'public/'],
+  ignorePatterns: [
+    '.eslintrc.cjs',
+    'vite.config.ts',
+    'jest.config.ts',
+    'jest.setup.ts',
+    'public/',
+    'tailwind.config.ts',
+  ],
 };
