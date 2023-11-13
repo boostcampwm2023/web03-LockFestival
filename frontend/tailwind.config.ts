@@ -11,7 +11,7 @@ export default {
     fontFamily: {
       dnfbit: ['DNFBitBitv2'],
       jua: ['BMJUA'],
-      gsans: ['GmarketSansTTFMedium'],
+      gsans: ['GmarketSansMedium'],
     },
     fontSize: {
       xs: [
