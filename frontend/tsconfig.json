@@ -34,7 +34,7 @@
       "@utils/*": ["utils/*"],
       "@types/*": ["@types/*"]
     },
-    "types": ["@testing-library/jest-dom"]
+    "types": ["node", "vite/client", "@testing-library/jest-dom"]
   },
-  "include": ["src"]
+  "include": ["src/**/*.tsx", "src/**/*.tsx", "src/@types"]
 }
