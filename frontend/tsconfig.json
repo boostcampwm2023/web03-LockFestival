@@ -32,9 +32,9 @@
       "@config/*": ["config/*"],
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
-      "@types/*": ["@types/*"]
+      "types/*": ["types/*"]
     },
     "types": ["node", "vite/client", "@testing-library/jest-dom"]
   },
-  "include": ["src/**/*.tsx", "src/**/*.ts", "src/@types"]
+  "include": ["src/**/*.tsx", "src/**/*.ts", "src/types/**/*.ts"]
 }
