@@ -18,7 +18,7 @@ export class Group extends BaseTime {
   @Column({ name: 'recruitment_members' })
   recruitmentMembers: number;
 
-  @Column({ name: 'recruitment_content' })
+  @Column({ name: 'recruitment_content', length: 50 })
   recruitmentContent: string;
 
   @Column({ name: 'recruitment_completed', default: false })
