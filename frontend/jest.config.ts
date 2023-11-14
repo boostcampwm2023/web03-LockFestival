@@ -1,10 +1,19 @@
-export default {
+const babelConfigEmotion = {
+  presets: [
+    '@babel/preset-env',
+    ['@babel/preset-react', { runtime: 'automatic' }],
+    '@babel/preset-typescript',
+  ],
+  plugins: ['babel-plugin-macros', '@emotion/babel-plugin'],
+};
+
+const jestConfig = {
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {
     customExportConditions: [''],
   },
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
+    '^.+\\.(js|jsx|ts|tsx|mjs)$': ['babel-jest', babelConfigEmotion],
   },
   testMatch: ['**/__tests__/**/*.+(ts|tsx|js)', '**/?(*.)+(spec|test).+(ts|tsx|js)'],
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
@@ -25,3 +34,5 @@ export default {
   },
   setupFiles: ['./jest.polyfills.js'],
 };
+
+export default jestConfig;
