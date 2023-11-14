@@ -48,7 +48,7 @@ export default {
         'gray-dark': '#1A1A1A',
         'gray': '#222222',
         'gray-light': '#282828',
-        'while-60': '#D2DAD0',
+        'white-60': '#D2DAD0',
       },
     },
   },
