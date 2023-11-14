@@ -1,8 +1,8 @@
+import { BaseTime } from '@src/entity/baseTime.entity';
+import { Theme } from '@theme/entities/theme.entity';
+import { User } from '@user/entities/user.entity';
+import { UserGroup } from '@user/entities/userGroup.entity';
 import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToOne, OneToMany } from 'typeorm';
-import { User } from './user.entity';
-import { Theme } from './theme.entity';
-import { BaseTime } from './baseTime.entity';
-import { UserGroup } from './userGroup.entity';
 
 @Entity()
 export class Group extends BaseTime {
