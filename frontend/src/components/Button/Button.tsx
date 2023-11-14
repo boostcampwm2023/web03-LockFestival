@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import tw, { styled } from 'twin.macro';
-import { ButtonComponentProps, ButtonProps } from 'types/ButtonTypes';
+import { ButtonComponentProps, ButtonProps } from 'types/button';
 import { sizeStyleMap, fontStyleMap } from '@constants/ButtonsStyleMap';
 
 function Button({ text, size, font, width, clickHandler }: ButtonProps) {
