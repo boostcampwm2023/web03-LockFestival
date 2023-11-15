@@ -1,9 +1,7 @@
-import tw, { TwStyle, styled } from 'twin.macro';
-import { css } from '@emotion/react';
+import tw, { styled } from 'twin.macro';
 import { LabelComponentProps, LabelProps } from 'types/label';
-import { LabelBaseStyle, colorStyleMap } from '@constants/StyleMap/LabelStyleMap';
-import { sizeStyleMap, fontStyleMap } from '@constants/StyleMap/CommonStyleMap';
-import { colorCodeRegex } from '@constants/Regex';
+import { fontStyleMap, sizeStyleMap } from '@constants/StyleMap/CommonStyleMap';
+import { colorStyleMap, LabelBaseStyle } from '@constants/StyleMap/LabelStyleMap';
 import { isTwBackgroundColor } from '@utils/TypeValidation';
 
 function Label({ children, font, size, width, backgroundColor, isBorder, ...args }: LabelProps) {
@@ -34,19 +32,9 @@ rounded-default text-gray-dark`,
 
     const fontStyle = font ? fontStyleMap[font] : fontStyleMap.default;
     const sizeStyle = size ? sizeStyleMap[size] : sizeStyleMap.default;
-    const bgColor: TwStyle | Record<string, any> = (() => {
-      if (isTwBackgroundColor(backgroundColor)) {
-        return colorStyleMap[backgroundColor];
-      }
-
-      if (backgroundColor && colorCodeRegex.test(backgroundColor)) {
-        return css`
-          background-color: ${backgroundColor};
-        `;
-      }
-
-      return tw`bg-white`;
-    })();
+    const bgColor = isTwBackgroundColor(backgroundColor)
+      ? colorStyleMap[backgroundColor]
+      : colorStyleMap.default;
     const borderStyle = isBorder ? tw`border-[0.3rem] border-solid border-gray-light` : tw``;
 
     styleArray.push(LabelBaseStyle(width));
