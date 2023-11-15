@@ -1,9 +1,9 @@
+import { Diary } from '@diary/entities/diary.entity';
+import { BaseTime } from '@src/entity/baseTime.entity';
+import { User } from '@user/entities/user.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
-import { BaseTime } from './baseTime.entity';
-import { User } from './user.entity';
-import { Diary } from './diary.entity';
 @Entity()
-export class DiaryComment extends BaseTime {
+export class Comment extends BaseTime {
   @PrimaryGeneratedColumn()
   id: number;
 

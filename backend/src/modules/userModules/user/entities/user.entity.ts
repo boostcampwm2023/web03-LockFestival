@@ -1,9 +1,9 @@
+import { Gender } from '@enum/gender';
+import { BaseTime } from '@src/entity/baseTime.entity';
+import { Genre } from '@theme/entities/genre.entity';
+import { Theme } from '@theme/entities/theme.entity';
+import { UserGroup } from '@user/entities/userGroup.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
-import { BaseTime } from './baseTime.entity';
-import { Gender } from '../enum/gender';
-import { UserGroup } from './userGroup.entity';
-import { Theme } from './theme.entity';
-import { Genre } from './genre.entity';
 
 @Entity()
 export class User extends BaseTime {

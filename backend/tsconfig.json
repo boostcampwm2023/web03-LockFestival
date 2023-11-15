@@ -16,6 +16,22 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@src/*": ["./src/*"],
+      "@config/*": ["./src/config/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@enum/*": ["./src/enum/*"],
+      "@moudles/*": ["./src/modules/*"],
+      "@auth/*": ["./src/modules/authModules/auth/*"],
+      "@user/*": ["./src/modules/userModules/user/*"],
+      "@group/*": ["./src/modules/userModules/group/*"],
+      "@chat/*": ["./src/modules/userModules/chat/*"],
+      "@brand/*": ["./src/modules/themeModules/brand/*"],
+      "@theme/*": ["./src/modules/themeModules/theme/*"],
+      "@branch/*": ["./src/modules/themeModules/branch/*"],
+      "@diary/*": ["./src/modules/diaryModules/diary/*"],
+      "@comment/*": ["./src/modules/diaryModules/comment/*"]
+    }
   }
 }

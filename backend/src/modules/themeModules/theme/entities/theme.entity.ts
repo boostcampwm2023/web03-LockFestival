@@ -1,7 +1,7 @@
+import { Branch } from '@branch/entities/branch.entity';
+import { BaseTime } from '@src/entity/baseTime.entity';
+import { Genre } from '@theme/entities/genre.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
-import { Branch } from './branch.entity';
-import { Genre } from './genre.entity';
-import { BaseTime } from './baseTime.entity';
 
 @Entity()
 export class Theme extends BaseTime {
