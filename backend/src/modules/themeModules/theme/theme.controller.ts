@@ -1,16 +1,16 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, DefaultValuePipe, Get, ParseIntPipe, Query } from '@nestjs/common';
 import { ThemeService } from '@theme/theme.service';
-import { GenreThemesResponseDto } from './dtos/genre.themes.response.dto';
-import { ThemeResponseDto } from './dtos/theme.response.dto';
-import { ThemeLocationDto } from './dtos/theme.location.dto';
+import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
+import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
+import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 @Controller('themes')
 export class ThemeController {
   constructor(private readonly themeService: ThemeService) {}
 
   @Get('/random-genres')
   async getRandomGenresThemes(
-    @Query('genreCount') genreCount: number = 3,
-    @Query('themeCount') themeCount: number = 10
+    @Query('genreCount', new DefaultValuePipe(3), ParseIntPipe) genreCount: number,
+    @Query('themeCount', new DefaultValuePipe(10), ParseIntPipe) themeCount: number
   ): Promise<GenreThemesResponseDto[]> {
     return await this.themeService.getRandomGenresThemes(genreCount, themeCount);
   }
