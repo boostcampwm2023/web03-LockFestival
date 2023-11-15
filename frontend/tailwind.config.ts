@@ -68,6 +68,7 @@ export default {
         'green-light': '#1AB93D',
         'green-dark': '#1F371D',
         'red-dark': '#BE3144',
+        'white': '#F2F2F2',
       },
     },
   },
