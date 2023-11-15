@@ -3,10 +3,9 @@ import { ButtonComponentProps, ButtonProps } from 'types/button';
 import {
   iconButtonBaseStyle,
   basicButtonBaseStyle,
-  sizeStyleMap,
-  fontStyleMap,
   iconStyleMap,
-} from '@constants/ButtonsStyleMap';
+} from '@constants/StyleMap/ButtonsStyleMap';
+import { sizeStyleMap, fontStyleMap } from '@constants/StyleMap/CommonStyleMap';
 
 function Button({ children, size, font, width, isIcon, ...args }: ButtonProps) {
   return (
