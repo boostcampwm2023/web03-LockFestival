@@ -5,6 +5,7 @@ import { GenreRepository } from '@theme/genre.repository';
 import { GenreDto } from '@src/modules/themeModules/theme/dtos/genre.dto';
 import { ThemeResponseDto } from './dtos/theme.response.dto';
 import { GenreThemesResponseDto } from './dtos/genre.themes.response.dto';
+import { ThemeLocationDto } from './dtos/theme.location.dto';
 
 @Injectable()
 export class ThemeService {
@@ -29,5 +30,8 @@ export class ThemeService {
         return { genre: genreDto.name, themes: themeDtos };
       })
     );
+  }
+  public async getLocationThemes(themeLocationDto: ThemeLocationDto): Promise<ThemeResponseDto[]> {
+    return await this.themeRepository.getThemesByBoundary(themeLocationDto);
   }
 }
