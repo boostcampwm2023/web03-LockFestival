@@ -1,7 +1,9 @@
 import { Repository, DataSource } from 'typeorm';
-import { Theme } from '@theme/entities/theme.entity';
 import { Injectable } from '@nestjs/common';
+import { Branch } from '@branch/entities/branch.entity';
+import { Theme } from '@theme/entities/theme.entity';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
+import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
 
 const KM = 1000;
 
@@ -9,6 +11,27 @@ const KM = 1000;
 export class ThemeRepository extends Repository<Theme> {
   constructor(private dataSource: DataSource) {
     super(Theme, dataSource.createEntityManager());
+  }
+
+  async getThemeDetailsById(themeId: number): Promise<ThemeDeatailsResponseDto> {
+    const themeDetailsResponseDto: ThemeDeatailsResponseDto = await this.dataSource
+      .createQueryBuilder()
+      .select([
+        'theme.name as name',
+        'branch.branch_name as branchName',
+        'theme.real_genre as realGenre',
+        'theme.poster_image_url as posterImageUrl',
+        'theme.difficulty as difficulty',
+        'theme.min_member as minMember',
+        'theme.max_member as maxMember',
+        'branch.website as website',
+      ])
+      .from(Theme, 'theme')
+      .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
+      .where('theme.id = :themeId', { themeId })
+      .getRawOne();
+
+    return themeDetailsResponseDto;
   }
 
   async getRandomThemesByGenre(genreId: number, themeCount: number): Promise<ThemeResponseDto[]> {
