@@ -7,7 +7,7 @@ describe('버튼 컴포넌트 테스트', () => {
   const CALLED = 1;
 
   it('버튼에 지정한 text가 들어가고, 클릭 시 handler가 실행되는지 테스트', () => {
-    render(<Button text="test" clickHandler={handler} />);
+    render(<Button children={<>test</>} isIcon={false} onClick={handler} />);
 
     const text = screen.getByText(/test/i);
 
@@ -19,7 +19,9 @@ describe('버튼 컴포넌트 테스트', () => {
   });
 
   it('버튼에 사이즈를 지정했을때, 설정한 폰트, 넓이가 적용되는지 테스트', () => {
-    render(<Button text="test" font="jua" width="20rem" clickHandler={handler} />);
+    render(
+      <Button children={<>test</>} isIcon={false} font="jua" width="20rem" onClick={handler} />
+    );
     const myButton = screen.getByText(/test/i);
 
     const computedStyle = window.getComputedStyle(myButton);
