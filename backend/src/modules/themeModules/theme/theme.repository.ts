@@ -2,8 +2,6 @@ import { Repository, DataSource } from 'typeorm';
 import { Theme } from '@theme/entities/theme.entity';
 import { Injectable } from '@nestjs/common';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
-import { Branch } from '@branch/entities/branch.entity';
-import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 
 const KM = 1000;
 
@@ -45,6 +43,22 @@ export class ThemeRepository extends Repository<Theme> {
         y,
         boundary: boundary * KM,
       })
+      .limit(count)
+      .getRawMany();
+
+    return themes;
+  }
+
+  async getThemesByGenre(genreId: number, count: number): Promise<Array<ThemeResponseDto>> {
+    const themes: ThemeResponseDto[] = await this.dataSource
+      .createQueryBuilder()
+      .select([
+        'theme.id as themeId',
+        'theme.name as name',
+        'theme.poster_image_url as posterImageUrl',
+      ])
+      .from(Theme, 'theme')
+      .where('theme.genre_id = :genreId', { genreId })
       .limit(count)
       .getRawMany();
 
