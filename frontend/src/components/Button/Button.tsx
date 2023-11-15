@@ -1,13 +1,18 @@
-import { css } from '@emotion/react';
 import tw, { styled } from 'twin.macro';
 import { ButtonComponentProps, ButtonProps } from 'types/button';
-import { sizeStyleMap, fontStyleMap } from '@constants/ButtonsStyleMap';
+import {
+  iconButtonBaseStyle,
+  basicButtonBaseStyle,
+  sizeStyleMap,
+  fontStyleMap,
+  iconStyleMap,
+} from '@constants/ButtonsStyleMap';
 
-function Button({ text, size, font, width, clickHandler }: ButtonProps) {
+function Button({ children, size, font, width, isIcon, ...args }: ButtonProps) {
   return (
     <>
-      <ButtonComponent font={font} size={size} width={width} onClick={clickHandler}>
-        {text}
+      <ButtonComponent font={font} size={size} width={width} isIcon={isIcon} {...args}>
+        {children}
       </ButtonComponent>
     </>
   );
@@ -15,24 +20,27 @@ function Button({ text, size, font, width, clickHandler }: ButtonProps) {
 
 export default Button;
 
-const ButtonComponent = styled.button<ButtonComponentProps>(({ font, size, width }) => {
-  const styleArray = [];
-  const fontStyle = font ? fontStyleMap[font] : fontStyleMap.default;
-  const sizeStyle = size ? sizeStyleMap[size] : sizeStyleMap.default;
-
-  styleArray.push(fontStyle);
-  styleArray.push(sizeStyle);
-
-  return [
-    ...styleArray,
+const ButtonComponent = styled.button<ButtonComponentProps>(({ font, size, width, isIcon }) => {
+  const styleArray = [
     tw`
 rounded-default bg-gray-light text-white
 `,
-    css`
-      width: ${width || 'fit-content'};
-      text-align: center;
-      border: 1px solid white;
-      cursor: pointer;
-    `,
   ];
+
+  const fontStyle = font ? fontStyleMap[font] : fontStyleMap.default;
+  const sizeStyle = size ? sizeStyleMap[size] : sizeStyleMap.default;
+  const iconStyle = size ? iconStyleMap[size] : iconStyleMap.default;
+
+  if (isIcon) {
+    styleArray.push(iconButtonBaseStyle);
+    styleArray.push(...iconStyle);
+
+    return styleArray;
+  }
+
+  styleArray.push(basicButtonBaseStyle(width));
+  styleArray.push(fontStyle);
+  styleArray.push(...sizeStyle);
+
+  return styleArray;
 });
