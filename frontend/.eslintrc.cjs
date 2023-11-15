@@ -44,6 +44,7 @@ module.exports = {
     'vite.config.ts',
     'jest.config.ts',
     'jest.setup.ts',
+    'jest.polyfills.js',
     'public/',
     'tailwind.config.ts',
   ],

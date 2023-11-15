@@ -1,5 +1,21 @@
 import type { Config } from 'tailwindcss';
 
+function generateSpacingValues() {
+  const spacingValues: Record<number, string> = {};
+  const RATIO = 0.4;
+  let key = 0.5;
+
+  while (key <= 10) {
+    let value = Number((key * RATIO).toPrecision(2));
+    spacingValues[key] = `${value}rem`;
+    key += 0.5;
+  }
+
+  return spacingValues;
+}
+
+const spacingObject = generateSpacingValues();
+
 export default {
   content: ['index.html', './src/components/**/*.tsx', './src/pages/**/*.tsx'],
   theme: {
@@ -17,29 +33,29 @@ export default {
       xs: [
         '1rem',
         {
-          lineHeight: '1.6rem',
+          lineHeight: '1rem',
         },
       ],
       s: [
         '1.2rem',
         {
-          lineHeight: '1.8rem',
+          lineHeight: '1.2rem',
         },
       ],
       m: [
         '1.4rem',
         {
-          lineHeight: '2rem',
+          lineHeight: '1.4rem',
         },
       ],
       l: [
         '1.6rem',
         {
-          lineHeight: '2.2rem',
+          lineHeight: '1.6rem',
         },
       ],
     },
-
+    spacing: spacingObject,
     extend: {
       borderRadius: {
         default: '3rem',
