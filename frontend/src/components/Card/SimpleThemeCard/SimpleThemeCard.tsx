@@ -3,7 +3,7 @@ import { SimpleThemeCardData } from 'types/theme';
 
 const SimpleThemeCard = ({ themeId, name, posterImageUrl }: SimpleThemeCardData) => {
   return (
-    <CardContainer>
+    <CardContainer key={themeId}>
       <CardImg alt="테마사진" src={posterImageUrl} />
       <CardText>{name}</CardText>
     </CardContainer>
