@@ -1,7 +1,8 @@
 import tw, { TwStyle } from 'twin.macro';
 import { css } from '@emotion/react';
+import { CSSInterpolation } from '@emotion/serialize';
 
-const LabelBaseStyle = (width: string | undefined): Record<string, any> => css`
+const LabelBaseStyle = (width: string | undefined): CSSInterpolation => css`
   width: ${width || 'fit-content'};
   display: flex;
   justify-content: space-between;

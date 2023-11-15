@@ -1,4 +1,4 @@
-import tw, { styled } from 'twin.macro';
+import tw, { TwStyle, styled } from 'twin.macro';
 import { LabelComponentProps, LabelProps } from 'types/label';
 import { fontStyleMap, sizeStyleMap } from '@constants/StyleMap/CommonStyleMap';
 import { colorStyleMap, LabelBaseStyle } from '@constants/StyleMap/LabelStyleMap';
@@ -37,7 +37,7 @@ rounded-default text-gray-dark`,
       : colorStyleMap.default;
     const borderStyle = isBorder ? tw`border-[0.3rem] border-solid border-gray-light` : tw``;
 
-    styleArray.push(LabelBaseStyle(width));
+    styleArray.push(LabelBaseStyle(width) as TwStyle);
     styleArray.push(fontStyle);
     styleArray.push(...sizeStyle);
     styleArray.push(bgColor);

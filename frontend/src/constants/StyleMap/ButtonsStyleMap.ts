@@ -1,7 +1,8 @@
 import tw, { TwStyle } from 'twin.macro';
 import { css } from '@emotion/react';
+import { CSSInterpolation } from '@emotion/serialize';
 
-const iconButtonBaseStyle: Record<string, any> = css`
+const iconButtonBaseStyle: CSSInterpolation = css`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,7 +12,7 @@ const iconButtonBaseStyle: Record<string, any> = css`
   cursor: pointer;
 `;
 
-const basicButtonBaseStyle = (width: string | undefined): Record<string, any> => css`
+const basicButtonBaseStyle = (width: string | undefined): CSSInterpolation => css`
   width: ${width || 'fit-content'};
   display: flex;
   justify-content: space-between;
