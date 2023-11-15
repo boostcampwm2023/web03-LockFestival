@@ -65,6 +65,7 @@ export default {
         'gray': '#222222',
         'gray-light': '#282828',
         'white-60': '#D2DAD0',
+        'white': '#F2F2F2',
       },
     },
   },
