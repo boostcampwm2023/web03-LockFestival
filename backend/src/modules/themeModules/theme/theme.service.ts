@@ -34,4 +34,8 @@ export class ThemeService {
   public async getLocationThemes(themeLocationDto: ThemeLocationDto): Promise<ThemeResponseDto[]> {
     return await this.themeRepository.getThemesByBoundary(themeLocationDto);
   }
+
+  public async getGenreThemes(genreId: number, count: number): Promise<Array<ThemeResponseDto>> {
+    return await this.themeRepository.getThemesByGenre(genreId, count);
+  }
 }
