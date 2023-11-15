@@ -2,8 +2,8 @@ import { Repository, DataSource } from 'typeorm';
 import { Theme } from '@theme/entities/theme.entity';
 import { Injectable } from '@nestjs/common';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
-import { Branch } from '../branch/entities/branch.entity';
-import { ThemeLocationDto } from './dtos/theme.location.dto';
+import { Branch } from '@branch/entities/branch.entity';
+import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 
 const KM = 1000;
 

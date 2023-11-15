@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ThemeRepository } from '@theme/theme.repository';
 import { GenreRepository } from '@theme/genre.repository';
-import { GenreDto } from '@src/modules/themeModules/theme/dtos/genre.dto';
-import { ThemeResponseDto } from './dtos/theme.response.dto';
-import { GenreThemesResponseDto } from './dtos/genre.themes.response.dto';
-import { ThemeLocationDto } from './dtos/theme.location.dto';
+import { GenreDto } from '@theme/dtos/genre.dto';
+import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
+import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
+import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 
 @Injectable()
 export class ThemeService {

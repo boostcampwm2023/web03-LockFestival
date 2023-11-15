@@ -1,8 +1,8 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ThemeService } from '@theme/theme.service';
-import { GenreThemesResponseDto } from './dtos/genre.themes.response.dto';
-import { ThemeResponseDto } from './dtos/theme.response.dto';
-import { ThemeLocationDto } from './dtos/theme.location.dto';
+import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
+import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
+import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 @Controller('themes')
 export class ThemeController {
   constructor(private readonly themeService: ThemeService) {}
