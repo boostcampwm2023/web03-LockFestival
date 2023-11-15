@@ -27,10 +27,10 @@ export class Branch extends BaseTime {
   @Column({ name: 'small_region' })
   smallRegion: string;
 
-  @Column('decimal', { precision: 10, scale: 6 })
+  @Column('decimal', { precision: 10, scale: 7 })
   x: number;
 
-  @Column('decimal', { precision: 10, scale: 6 })
+  @Column('decimal', { precision: 10, scale: 7 })
   y: number;
 
   @ManyToOne(
