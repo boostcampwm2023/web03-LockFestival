@@ -14,16 +14,20 @@ export class ThemeRepository extends Repository<Theme> {
   }
 
   async getRandomThemesByGenre(genreId: number, themeCount: number): Promise<ThemeResponseDto[]> {
-    const themes: Theme[] = await this.dataSource
-      .createQueryBuilder(Theme, 'theme')
+    const themes: ThemeResponseDto[] = await this.dataSource
+      .createQueryBuilder()
+      .select([
+        'theme.id as themeId',
+        'theme.name as name',
+        'theme.poster_image_url as posterImageUrl',
+      ])
+      .from(Theme, 'theme')
       .where('theme.genre_id = :genreId', { genreId })
       .orderBy('Rand()')
       .limit(themeCount)
-      .getMany();
+      .getRawMany();
 
-    return themes.map(({ posterImageUrl, name, id }): ThemeResponseDto => {
-      return new ThemeResponseDto({ posterImageUrl, name, id });
-    });
+    return themes;
   }
 
   async getThemesByBoundary({ x, y, boundary, count }): Promise<ThemeResponseDto[]> {
