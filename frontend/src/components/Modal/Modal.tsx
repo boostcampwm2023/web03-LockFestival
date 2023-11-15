@@ -41,12 +41,9 @@ const ModalBackground = styled.div([
 ]);
 
 const ModalContainer = styled.div([
-  tw`rounded-[2rem]`,
+  tw`rounded-[2rem] bg-gray-light`,
   tw`desktop:(min-w-[50rem] min-h-[40rem])`,
   tw`mobile:(min-w-[20rem] min-h-[16rem])`,
-  css`
-    background-color: #282828;
-  `,
 ]);
 
 export default Modal;
