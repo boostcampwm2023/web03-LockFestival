@@ -3,6 +3,14 @@ import { BrandModule } from '@brand/brand.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Theme } from '@theme/entities/theme.entity';
+import { ThemeController } from '@theme/theme.controller';
+import { ThemeService } from '@theme/theme.service';
+import { ThemeRepository } from '@theme/theme.repository';
+import { GenreRepository } from '@theme/genre.repository';
 
-@Module({ imports: [TypeOrmModule.forFeature([Theme]), BrandModule, BranchModule] })
+@Module({
+  imports: [TypeOrmModule.forFeature([Theme]), BrandModule, BranchModule],
+  controllers: [ThemeController],
+  providers: [ThemeService, ThemeRepository, GenreRepository],
+})
 export class ThemeModule {}
