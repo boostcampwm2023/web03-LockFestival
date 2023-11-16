@@ -1,16 +1,17 @@
+import { DataSourceOptions, DataSource } from 'typeorm';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSourceOptions, DataSource } from 'typeorm';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TypeormConfig } from './typeorm.config';
-import { ThemeModule } from './modules/themeModules/theme/theme.module';
+import { AppController } from '@src/app.controller';
+import { AppService } from '@src/app.service';
+import { TypeormConfig } from '@src/typeorm.config';
+import { AuthModule } from '@auth/auth.module';
+import { ThemeModule } from '@theme/theme.module';
 
 @Module({
   imports: [
     ThemeModule,
+    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
