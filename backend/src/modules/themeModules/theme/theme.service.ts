@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ThemeRepository } from '@theme/theme.repository';
 import { GenreRepository } from '@theme/genre.repository';
@@ -6,6 +6,7 @@ import { GenreDto } from '@theme/dtos/genre.dto';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
+import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
 
 @Injectable()
 export class ThemeService {
@@ -15,6 +16,16 @@ export class ThemeService {
     @InjectRepository(GenreRepository)
     private readonly genreRepository: GenreRepository
   ) {}
+
+  public async getThemeDetailsById(themeId: number): Promise<ThemeDeatailsResponseDto> {
+    const themeDeatailsResponseDto: ThemeDeatailsResponseDto =
+      await this.themeRepository.getThemeDetailsById(themeId);
+
+    if (!themeDeatailsResponseDto) {
+      throw new NotFoundException('Theme not found : themeId = ' + themeId.toString());
+    }
+    return themeDeatailsResponseDto;
+  }
 
   public async getRandomGenresThemes(
     genreCount: number = 3,
