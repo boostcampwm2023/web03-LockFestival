@@ -87,4 +87,19 @@ export class ThemeRepository extends Repository<Theme> {
 
     return themes;
   }
+
+  async getThemesByBranchId({ branchId, count }): Promise<ThemeResponseDto[]> {
+    const themeDtos = await this.dataSource
+      .createQueryBuilder()
+      .select([
+        'theme.id as themeId',
+        'theme.name as name',
+        'theme.poster_image_url as posterImageUrl',
+      ])
+      .from(Theme, 'theme')
+      .where('theme.branch_id = :branchId', { branchId })
+      .limit(count)
+      .getRawMany();
+    return themeDtos;
+  }
 }
