@@ -1,12 +1,11 @@
-import tw, { styled } from 'twin.macro';
+import tw, { TwStyle, styled } from 'twin.macro';
 import { ButtonComponentProps, ButtonProps } from 'types/button';
 import {
   iconButtonBaseStyle,
   basicButtonBaseStyle,
-  sizeStyleMap,
-  fontStyleMap,
   iconStyleMap,
-} from '@constants/ButtonsStyleMap';
+} from '@constants/StyleMap/ButtonsStyleMap';
+import { sizeStyleMap, fontStyleMap } from '@constants/StyleMap/CommonStyleMap';
 
 function Button({ children, size, font, width, isIcon, ...args }: ButtonProps) {
   return (
@@ -32,13 +31,13 @@ rounded-default bg-gray-light text-white
   const iconStyle = size ? iconStyleMap[size] : iconStyleMap.default;
 
   if (isIcon) {
-    styleArray.push(iconButtonBaseStyle);
+    styleArray.push(iconButtonBaseStyle as TwStyle);
     styleArray.push(...iconStyle);
 
     return styleArray;
   }
 
-  styleArray.push(basicButtonBaseStyle(width));
+  styleArray.push(basicButtonBaseStyle(width) as TwStyle);
   styleArray.push(fontStyle);
   styleArray.push(...sizeStyle);
 
