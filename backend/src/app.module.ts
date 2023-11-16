@@ -6,11 +6,13 @@ import { DataSourceOptions, DataSource } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeormConfig } from './typeorm.config';
+import { AuthModule } from '@auth/auth.module';
 import { ThemeModule } from './modules/themeModules/theme/theme.module';
 
 @Module({
   imports: [
     ThemeModule,
+    AuthModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
