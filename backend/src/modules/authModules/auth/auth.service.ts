@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { PayloadDto } from './dtos/payload.dto';
+import { PayloadDto } from '@auth/dtos/payload.dto';
 
 @Injectable()
 export class AuthService {
