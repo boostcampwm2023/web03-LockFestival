@@ -1,6 +1,6 @@
+import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
 import { Brand } from '@brand/entities/brand.entity';
 import { BaseTime } from '@src/entity/baseTime.entity';
-import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Branch extends BaseTime {
