@@ -1,8 +1,8 @@
 export type BackgroundColor = 'white' | 'green-light' | 'green-dark' | 'transparent';
 
 export interface LabelComponentProps {
-  font?: 'dnfbit' | 'jua' | 'gsans';
-  size?: 's' | 'm' | 'l';
+  font?: 'pretendard' | 'maplestory';
+  size?: 's' | 'm' | 'l' | 's-bold' | 'm-bold' | 'l-bold';
   width?: string;
   backgroundColor?: BackgroundColor | string;
   isBorder: boolean;
