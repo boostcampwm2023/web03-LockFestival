@@ -11,7 +11,7 @@ const SimpleThemeCard = ({ themeId, name, posterImageUrl }: SimpleThemeCardData)
 };
 
 const CardContainer = styled.div([
-  tw`font-gsans text-white bg-gray`,
+  tw`font-pretendard text-white bg-gray`,
   tw`desktop:(text-s h-[30.4rem] w-[19.2rem] rounded-[2rem])`,
   tw`mobile:(text-xs h-[20.3rem] w-[12.8rem] rounded-[1.4rem])`,
   css`
