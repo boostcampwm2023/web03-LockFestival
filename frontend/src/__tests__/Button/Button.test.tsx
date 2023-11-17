@@ -20,13 +20,19 @@ describe('버튼 컴포넌트 테스트', () => {
 
   it('버튼에 사이즈를 지정했을때, 설정한 폰트, 넓이가 적용되는지 테스트', () => {
     render(
-      <Button children={<>test</>} isIcon={false} font="jua" width="20rem" onClick={handler} />
+      <Button
+        children={<>test</>}
+        isIcon={false}
+        font="pretendard"
+        width="20rem"
+        onClick={handler}
+      />
     );
     const myButton = screen.getByText(/test/i);
 
     const computedStyle = window.getComputedStyle(myButton);
 
-    expect(computedStyle.fontFamily).toBe('BMJUA');
+    expect(computedStyle.fontFamily).toBe('Pretendard-Regular');
     expect(computedStyle.width).toBe('20rem');
   });
 });
