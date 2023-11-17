@@ -1,10 +1,10 @@
-import { Branch } from '@branch/entities/branch.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BranchController } from './branch.controller';
-import { BranchService } from './branch.service';
-import { ThemeRepository } from '../theme/theme.repository';
-import { BranchRepository } from './branch.repository';
+import { Branch } from '@branch/entities/branch.entity';
+import { BranchController } from '@branch/branch.controller';
+import { BranchRepository } from '@branch/branch.repository';
+import { BranchService } from '@branch/branch.service';
+import { ThemeRepository } from '@theme/theme.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Branch])],

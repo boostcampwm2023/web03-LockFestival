@@ -1,5 +1,5 @@
 import { Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
-import { BranchService } from './branch.service';
+import { BranchService } from '@branch/branch.service';
 
 const DEFAULT_THEME_COUNT = 10;
 
