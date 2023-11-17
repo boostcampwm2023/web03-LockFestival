@@ -6,13 +6,22 @@ import { keyframes } from '@emotion/react';
 import { useState } from 'react';
 import useProfileQuery from '@hooks/useProfileQuery';
 import useInput from '@hooks/useInput';
+import useModal from '@hooks/useModal';
+import Modal from '@components/Modal/Modal';
+import LoginModal from '@components/LoginModal/LoginModal';
 
 const HeaderRest = () => {
+  const { openModal, closeModal } = useModal();
   const { data, isSuccess, isError } = useProfileQuery();
 
   const [isClickSearchButton, setIsClickSearchButton] = useState<boolean>(false);
+  const [searchInput, setSearchInput, resetSearchInput] = useInput('');
 
-  const [searchInput, setSearchInput] = useInput('');
+  const handleBlur = () => {
+    setIsClickSearchButton(false);
+    resetSearchInput();
+  };
+  const modalCloseCallback = () => closeModal(Modal);
 
   return (
     <HeaderRestContainer>
@@ -22,7 +31,13 @@ const HeaderRest = () => {
             <Button isIcon={true} size="l">
               <FaSistrix />
             </Button>
-            <SearchInput value={searchInput} onChange={setSearchInput} type="text" />
+            <SearchInput
+              value={searchInput}
+              onChange={setSearchInput}
+              onBlur={handleBlur}
+              autoFocus
+              type="text"
+            />
           </SearchInputForm>
         ) : (
           <Button isIcon={true} size="l" onClick={() => setIsClickSearchButton(true)}>
@@ -38,7 +53,18 @@ const HeaderRest = () => {
           </>
         )}
         {isError && (
-          <Button size="l" font="maplestory" isIcon={false}>
+          <Button
+            size="l"
+            font="maplestory"
+            isIcon={false}
+            onClick={() =>
+              openModal(Modal, {
+                children: LoginModal(modalCloseCallback),
+                onClose: modalCloseCallback,
+                closeOnExternalClick: true,
+              })
+            }
+          >
             <>로그인</>
           </Button>
         )}
