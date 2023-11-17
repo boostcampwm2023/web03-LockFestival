@@ -19,7 +19,7 @@ export class GenreRepository extends Repository<Genre> {
     });
   }
 
-  async findAllGenres(): Promise<GenreDto[]> {
+  async getAllGenres(): Promise<GenreDto[]> {
     const genreDtos: GenreDto[] = await this.dataSource
       .createQueryBuilder()
       .select('genre.id', 'id')

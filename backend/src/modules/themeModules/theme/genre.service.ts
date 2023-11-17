@@ -11,6 +11,6 @@ export class GenreService {
   ) {}
 
   async getAllGenres(): Promise<GenreDto[]> {
-    return await this.genreRepository.findAllGenres();
+    return await this.genreRepository.getAllGenres();
   }
 }
