@@ -42,15 +42,15 @@ const Nav = styled.nav([
 
 const HeaderLogo = styled.img([
   tw`desktop:(w-[18rem] h-[3.6rem])`,
-  tw`mobile:(w-[12rem] h-[2.4rem])`,
+  tw`mobile:(w-[18rem] h-[3.2rem])`,
   css`
     cursor: pointer;
   `,
 ]);
 
 const NavContainer = styled.ul([
-  tw`font-dnfbit border border-white border-solid`,
-  tw`desktop:(w-[50rem] h-[3.3rem] mx-4 rounded-[4rem])`,
+  tw`border border-white border-solid`,
+  tw`desktop:(w-[50rem] h-[3.6rem] mx-4 rounded-[4rem])`,
   tw`mobile:(hidden)`,
   css`
     display: grid;
