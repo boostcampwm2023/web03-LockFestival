@@ -9,7 +9,7 @@ export class AuthController {
     private userService: UserService
   ) {}
 
-  @Get('/naver')
+  @Get('/login/naver')
   async getLogin(@Query('code') code: string) {
     const accessToken = await this.authService.getNaverAccessToken(code);
     const naverUserData = await this.authService.getNaverUser(accessToken);
