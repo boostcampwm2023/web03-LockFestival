@@ -34,13 +34,21 @@ export class AuthService {
     const url = 'https://nid.naver.com/oauth2.0/token';
     const clientId = this.configService.get('NAVER_CLIENT_ID');
     const clientSecret = this.configService.get('NAVER_CLIENT_SECRET');
-    const fullurl = `${url}?grant_type=authorization_code&client_id=${clientId}&client_secret=${clientSecret}&code=${code}`;
+
     try {
       return (
         await this.httpService.axiosRef.post(
-          fullurl,
+          url,
           {},
-          { headers: { 'X-Naver-Client-Id': clientId, 'X-Naver-Client-Secret': clientSecret } }
+          {
+            params: {
+              grant_type: 'authorization_code',
+              client_id: clientId,
+              client_secret: clientSecret,
+              code: code,
+            },
+            headers: { 'X-Naver-Client-Id': clientId, 'X-Naver-Client-Secret': clientSecret },
+          }
         )
       ).data.access_token;
     } catch (error) {
