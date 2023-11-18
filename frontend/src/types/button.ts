@@ -1,6 +1,6 @@
 export interface ButtonComponentProps {
-  font?: 'dnfbit' | 'jua' | 'gsans';
-  size?: 's' | 'm' | 'l';
+  font?: 'pretendard' | 'maplestory';
+  size?: 's' | 'm' | 'l' | 's-bold' | 'm-bold' | 'l-bold';
   width?: string;
   isIcon: boolean;
 }

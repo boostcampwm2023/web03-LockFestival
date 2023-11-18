@@ -26,7 +26,7 @@ const Modal = ({ children, onClose, closeOnExternalClick, isOpen }: ModalProps) 
 };
 
 const ModalBackground = styled.div([
-  tw`font-gsans text-white-60`,
+  tw`font-pretendard text-white-60`,
   css`
     position: fixed;
     top: 0;

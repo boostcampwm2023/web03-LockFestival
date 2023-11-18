@@ -19,13 +19,13 @@ const HeaderRest = () => {
       <SearchContainer>
         {isClickSearchButton ? (
           <SearchInputForm>
-            <Button isIcon={true} width="3.6rem">
+            <Button isIcon={true} size="l">
               <FaSistrix />
             </Button>
             <SearchInput value={searchInput} onChange={setSearchInput} type="text" />
           </SearchInputForm>
         ) : (
-          <Button isIcon={true} onClick={() => setIsClickSearchButton(true)}>
+          <Button isIcon={true} size="l" onClick={() => setIsClickSearchButton(true)}>
             <FaSistrix />
           </Button>
         )}
@@ -38,7 +38,7 @@ const HeaderRest = () => {
           </>
         )}
         {isError && (
-          <Button size="l" font="dnfbit" isIcon={false}>
+          <Button size="l" font="maplestory" isIcon={false}>
             <>로그인</>
           </Button>
         )}
@@ -66,7 +66,7 @@ const widthAnimation = keyframes`
 
 const SearchContainer = styled.div([
   tw`desktop:(w-[20rem])`,
-  tw`mobile:(w-[14rem])`,
+  tw`mobile:(w-[12.4rem])`,
   css`
     display: flex;
     align-items: center;
@@ -75,9 +75,9 @@ const SearchContainer = styled.div([
 ]);
 
 const SearchInputForm = styled.div([
-  tw`font-gsans bg-gray-light`,
-  tw`desktop:(max-w-[16rem] w-[16rem] h-[3.6rem] rounded-[4rem])`,
-  tw`mobile:(w-[14rem] h-[2.4rem] rounded-[3rem])`,
+  tw`bg-gray-light`,
+  tw`desktop:(max-w-[16.4rem] w-[16.4rem] h-[3.6rem] rounded-[4rem])`,
+  tw`mobile:(w-[12.4rem] h-[3.2rem] rounded-[3rem])`,
   css`
     animation: 1s ${widthAnimation} forwards;
     display: flex;
@@ -86,9 +86,9 @@ const SearchInputForm = styled.div([
 ]);
 
 const SearchInput = styled.input([
-  tw`(h-full bg-gray-light text-white rounded-[4rem])`,
-  tw`desktop:(max-w-[12rem] text-m)`,
-  tw`mobile:(max-w-[8rem] text-s)`,
+  tw`(font-pretendard h-full pl-2 pr-3 bg-gray-light text-white rounded-[4rem])`,
+  tw`desktop:(max-w-[12.8rem] text-m)`,
+  tw`mobile:(max-w-[9.2rem] text-s)`,
   css`
     animation: 1s ${widthAnimation} forwards;
     border: none;

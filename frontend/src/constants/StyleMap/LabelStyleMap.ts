@@ -7,7 +7,7 @@ const LabelBaseStyle = (width: string | undefined): CSSInterpolation => css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: pointer;
+  cursor: default;
 `;
 
 const colorStyleMap: Record<string, TwStyle> = {

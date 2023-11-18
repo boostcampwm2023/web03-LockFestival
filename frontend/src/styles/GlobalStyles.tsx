@@ -131,23 +131,16 @@ const globalStyle = css`
   }
 
   @font-face {
-    font-family: 'DNFBitBitv2';
-    font-style: normal;
-    font-weight: 400;
-    src: url('//cdn.df.nexon.com/img/common/font/DNFBitBitv2.otf') format('opentype');
-  }
-
-  @font-face {
-    font-family: 'BMJUA';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff')
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
       format('woff');
-    font-weight: normal;
+    font-weight: 400;
     font-style: normal;
   }
 
   @font-face {
-    font-family: 'GmarketSansMedium';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff')
+    font-family: 'MaplestoryOTFLight';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFLight.woff')
       format('woff');
     font-weight: normal;
     font-style: normal;

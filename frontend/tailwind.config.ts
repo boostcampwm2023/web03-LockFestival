@@ -25,33 +25,60 @@ export default {
       desktop: '431px',
     },
     fontFamily: {
-      dnfbit: ['DNFBitBitv2'],
-      jua: ['BMJUA'],
-      gsans: ['GmarketSansMedium'],
+      pretendard: ['Pretendard-Regular'],
+      maplestory: ['MaplestoryOTFLight'],
     },
     fontSize: {
-      xs: [
+      'xs': [
         '1rem',
         {
           lineHeight: '1rem',
         },
       ],
-      s: [
+      'xs-bold': [
+        '1rem',
+        {
+          lineHeight: '1rem',
+          fontWeight: 900,
+        },
+      ],
+      's': [
         '1.2rem',
         {
           lineHeight: '1.2rem',
         },
       ],
-      m: [
+      's-bold': [
+        '1.2rem',
+        {
+          lineHeight: '1.2rem',
+          fontWeight: 900,
+        },
+      ],
+      'm': [
         '1.4rem',
         {
           lineHeight: '1.4rem',
         },
       ],
-      l: [
+      'm-bold': [
+        '1.4rem',
+        {
+          lineHeight: '1.4rem',
+          fontWeight: 900,
+        },
+      ],
+      'l': [
         '1.6rem',
         {
           lineHeight: '1.6rem',
+        },
+      ],
+      'l-bold': [
+        '1.6rem',
+        {
+          lineHeight: '1.6rem',
+          fontWeight: 900,
         },
       ],
     },
