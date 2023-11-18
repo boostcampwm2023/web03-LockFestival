@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from '@user/entities/user.entity';
 import { UserNaverDto } from '@user/dtos/user.naver.dto';
 import { Gender } from '@enum/gender';
-import { UserProfileDto } from './dtos/user.profile.dto';
+import { UserProfileDto } from '@user/dtos/user.profile.dto';
 
 @Injectable()
 export class UserRepository extends Repository<User> {

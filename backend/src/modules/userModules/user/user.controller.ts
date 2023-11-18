@@ -1,7 +1,7 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
 import { TokenAuthGuard } from '@src/modules/authModules/auth/auth.guard';
 import { UserService } from '@user/user.service';
-import { UserProfileDto } from './dtos/user.profile.dto';
+import { UserProfileDto } from '@user/dtos/user.profile.dto';
 
 @Controller('users')
 export class UserController {
