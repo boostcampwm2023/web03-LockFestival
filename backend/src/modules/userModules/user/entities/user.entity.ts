@@ -16,7 +16,7 @@ export class User extends BaseTime {
   @Column({ length: 10 })
   name: string;
 
-  @Column({ length: 20, unique: true })
+  @Column({ length: 8, unique: true })
   nickname: string;
 
   //format : 010-1234-5678

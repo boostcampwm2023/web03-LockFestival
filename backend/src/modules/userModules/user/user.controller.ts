@@ -1,7 +1,13 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { UserService } from '@user/user.service';
+import { NicknameRequestDto } from '@user/dtos/nickname.request.dto';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
+
+  @Get('check-nickname/:nickname')
+  async checkNickname(@Param() nicknameRequestDto: NicknameRequestDto) {
+    return await this.userService.checkUsableNickname(nicknameRequestDto.nickname);
+  }
 }

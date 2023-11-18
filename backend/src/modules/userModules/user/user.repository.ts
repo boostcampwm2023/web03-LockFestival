@@ -10,6 +10,12 @@ export class UserRepository extends Repository<User> {
     super(User, dataSource.createEntityManager());
   }
 
+  async existsByNickname(nickname: string): Promise<boolean> {
+    const user = await this.findOneBy({ nickname });
+
+    return !!user;
+  }
+
   async createUserByNaver(data: UserNaverDto): Promise<User> {
     return await this.save({
       gender: Gender[data.gender],
@@ -20,6 +26,7 @@ export class UserRepository extends Repository<User> {
       birthYear: Number(data.birthyear),
     });
   }
+
   async findUserByEmail(email: string) {
     return await this.findOneBy({ email });
   }
