@@ -10,19 +10,17 @@ export class UserRepository extends Repository<User> {
     super(User, dataSource.createEntityManager());
   }
 
-  async userSave(data: UserNaverDto): Promise<User> {
-    const mappedGender = data.gender === 'M' ? Gender.M : Gender.F;
+  async createUserByNaver(data: UserNaverDto): Promise<User> {
     return await this.save({
-      gender: mappedGender,
+      gender: Gender[data.gender],
       email: data.email,
       nickname: data.id.slice(1, data.id.length / 4),
       phoneNumber: data.mobile,
       name: data.name,
       birthYear: Number(data.birthyear),
-      isMoreInfo: false,
     });
   }
-  async findUserData(email: string) {
+  async findUserByEmail(email: string) {
     return await this.findOneBy({ email });
   }
 }

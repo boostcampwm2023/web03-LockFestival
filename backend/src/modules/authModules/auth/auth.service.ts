@@ -9,8 +9,8 @@ import { UserNaverDto } from '@user/dtos/user.naver.dto';
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private configService: ConfigService,
-    private httpService: HttpService
+    private readonly configService: ConfigService,
+    private readonly httpService: HttpService
   ) {}
 
   async getAccessToken(payload: PayloadDto): Promise<{ token: string }> {
@@ -37,19 +37,15 @@ export class AuthService {
     const clientSecret = this.configService.get('NAVER_CLIENT_SECRET');
     const fullurl = `${url}?grant_type=authorization_code&client_id=${clientId}&client_secret=${clientSecret}&code=${code}`;
     try {
-      return await lastValueFrom(
-        this.httpService
-          .post(
+      return (
+        await lastValueFrom(
+          this.httpService.post(
             fullurl,
             {},
             { headers: { 'X-Naver-Client-Id': clientId, 'X-Naver-Client-Secret': clientSecret } }
           )
-          .pipe(
-            map((res) => {
-              return res.data.access_token;
-            })
-          )
-      );
+        )
+      ).data.access_token;
     } catch (error) {
       throw new HttpException('Failed to get Naver access token', HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -57,19 +53,15 @@ export class AuthService {
 
   async getNaverUser(accessNaverToken: string): Promise<UserNaverDto> {
     try {
-      return await lastValueFrom(
-        this.httpService
-          .post(
+      return (
+        await lastValueFrom(
+          this.httpService.post(
             'https://openapi.naver.com/v1/nid/me',
             {},
             { headers: { Authorization: `Bearer ${accessNaverToken}` } }
           )
-          .pipe(
-            map((res) => {
-              return res.data.response;
-            })
-          )
-      );
+        )
+      ).data.response;
     } catch (error) {
       throw new HttpException('Failed to get Naver user data.', HttpStatus.INTERNAL_SERVER_ERROR);
     }

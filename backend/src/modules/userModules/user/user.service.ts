@@ -13,9 +13,9 @@ export class UserService {
 
   async login(data: UserNaverDto): Promise<User> {
     try {
-      const userData = await this.userRepository.findUserData(data.email);
+      const userData = await this.userRepository.findUserByEmail(data.email);
       if (!userData) {
-        return await this.userRepository.userSave(data);
+        return await this.userRepository.createUserByNaver(data);
       }
       return userData;
     } catch (error) {
