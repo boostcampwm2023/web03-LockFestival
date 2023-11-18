@@ -1,4 +1,3 @@
-import { map, lastValueFrom } from 'rxjs';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -38,12 +37,10 @@ export class AuthService {
     const fullurl = `${url}?grant_type=authorization_code&client_id=${clientId}&client_secret=${clientSecret}&code=${code}`;
     try {
       return (
-        await lastValueFrom(
-          this.httpService.post(
-            fullurl,
-            {},
-            { headers: { 'X-Naver-Client-Id': clientId, 'X-Naver-Client-Secret': clientSecret } }
-          )
+        await this.httpService.axiosRef.post(
+          fullurl,
+          {},
+          { headers: { 'X-Naver-Client-Id': clientId, 'X-Naver-Client-Secret': clientSecret } }
         )
       ).data.access_token;
     } catch (error) {
@@ -54,12 +51,10 @@ export class AuthService {
   async getNaverUser(accessNaverToken: string): Promise<UserNaverDto> {
     try {
       return (
-        await lastValueFrom(
-          this.httpService.post(
-            'https://openapi.naver.com/v1/nid/me',
-            {},
-            { headers: { Authorization: `Bearer ${accessNaverToken}` } }
-          )
+        await this.httpService.axiosRef.post(
+          'https://openapi.naver.com/v1/nid/me',
+          {},
+          { headers: { Authorization: `Bearer ${accessNaverToken}` } }
         )
       ).data.response;
     } catch (error) {
