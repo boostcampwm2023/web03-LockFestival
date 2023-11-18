@@ -7,11 +7,13 @@ import { AppService } from '@src/app.service';
 import { TypeormConfig } from '@src/typeorm.config';
 import { AuthModule } from '@auth/auth.module';
 import { ThemeModule } from '@theme/theme.module';
+import { UserModule } from '@user/user.module';
 
 @Module({
   imports: [
     ThemeModule,
     AuthModule,
+    UserModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
