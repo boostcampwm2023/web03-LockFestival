@@ -9,7 +9,7 @@ export class UserService {
     private readonly userRepository: UserRepository
   ) {}
 
-  async existsByNickname(nickname: string) {
-    return this.userRepository.existsByNickname(nickname);
+  async checkUsableNickname(nickname: string) {
+    return !(await this.userRepository.existsByNickname(nickname));
   }
 }

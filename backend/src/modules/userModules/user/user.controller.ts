@@ -7,6 +7,6 @@ export class UserController {
 
   @Get('check-nickname/:nickname')
   async checkNickname(@Param('nickname') nickname: string) {
-    return await this.userService.existsByNickname(nickname);
+    return await this.userService.checkUsableNickname(nickname);
   }
 }
