@@ -18,4 +18,15 @@ export class GenreRepository extends Repository<Genre> {
       return { id, name };
     });
   }
+
+  async getAllGenres(): Promise<GenreDto[]> {
+    const genreDtos: GenreDto[] = await this.dataSource
+      .createQueryBuilder()
+      .select('genre.id', 'id')
+      .addSelect('genre.name', 'name')
+      .from(Genre, 'genre')
+      .orderBy('genre.id')
+      .getRawMany();
+    return genreDtos;
+  }
 }
