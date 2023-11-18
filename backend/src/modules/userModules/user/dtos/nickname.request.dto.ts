@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length, MaxLength, MinLength, Matches } from 'class-validator';
+import { IsNotEmpty, Length, Matches } from 'class-validator';
 
 const ERROR_MESSAGE = '닉네임은 특수문자를 제외한 2~8자의 영문, 한글, 숫자만 가능합니다.';
 
