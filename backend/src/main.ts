@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
-import { AppModule } from './app.module';
+import { AppModule } from '@src/app.module';
 import { HTTP_ALLOWED_METHOD } from '@enum/http.method';
 import { ConfigService } from '@nestjs/config';
 

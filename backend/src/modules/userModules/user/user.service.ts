@@ -12,6 +12,10 @@ export class UserService {
     private readonly userRepository: UserRepository
   ) {}
 
+  async checkUsableNickname(nickname: string) {
+    return !(await this.userRepository.existsByNickname(nickname));
+  }
+
   async login(data: UserNaverDto): Promise<User> {
     try {
       const userData = await this.userRepository.findUserByEmail(data.email);
