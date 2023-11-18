@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from '@user/entities/user.entity';
 import { UserNaverDto } from '@user/dtos/user.naver.dto';
 import { Gender } from '@enum/gender';
+import { UserProfileDto } from './dtos/user.profile.dto';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -20,7 +21,15 @@ export class UserRepository extends Repository<User> {
       birthYear: Number(data.birthyear),
     });
   }
+
   async findUserByEmail(email: string) {
     return await this.findOneBy({ email });
+  }
+
+  async findUserProfileByNickname(nickname: string): Promise<UserProfileDto> {
+    return await this.findOne({
+      select: ['nickname', 'profileImageUrl', 'isMoreInfo'],
+      where: { nickname },
+    });
   }
 }
