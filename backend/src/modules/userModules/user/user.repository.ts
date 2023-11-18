@@ -14,7 +14,7 @@ export class UserRepository extends Repository<User> {
     return await this.save({
       gender: Gender[data.gender],
       email: data.email,
-      nickname: data.id.slice(1, data.id.length / 4),
+      nickname: data.id.slice(0, 8),
       phoneNumber: data.mobile,
       name: data.name,
       birthYear: Number(data.birthyear),
