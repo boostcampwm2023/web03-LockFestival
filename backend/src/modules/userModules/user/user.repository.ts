@@ -48,18 +48,20 @@ export class UserRepository extends Repository<User> {
     dto: UserInfoRequestDto,
     preferGenres: Genre[],
     preferThemes: Theme[]
-  ): Promise<void> {
+  ): Promise<User> {
     const queryRunner = this.dataSource.createQueryRunner();
     try {
       await queryRunner.startTransaction();
 
       const user: User = await queryRunner.manager.findOneBy(User, { nickname: originNickname });
 
-      await queryRunner.manager.save(
+      const newUser: User = await queryRunner.manager.save(
         user.updateUserInfo(dto.nickname, dto.profileImageUrl, preferGenres, preferThemes)
       );
 
       await queryRunner.commitTransaction();
+
+      return newUser;
     } catch (error) {
       console.error(error);
       await queryRunner.rollbackTransaction();

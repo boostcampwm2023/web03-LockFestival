@@ -42,13 +42,13 @@ export class UserService {
     return this.userRepository.findUserProfileByNickname(nickname);
   }
 
-  async updateUserInfo(originNickname: string, dto: UserInfoRequestDto): Promise<void> {
+  async updateUserInfo(originNickname: string, dto: UserInfoRequestDto): Promise<User> {
     try {
       // genres와 themes는 변화가 99.9% 없는 테이블들 이므로 transaction에 포함하지 않아도 괜찮음
       const genres: Genre[] = await this.genreRepository.findBy({ name: In(dto.favoriteGenres) });
       const themes: Theme[] = await this.themeRepository.findBy({ id: In(dto.favoriteThemes) });
 
-      await this.userRepository.updateUserInfo(originNickname, dto, genres, themes);
+      return await this.userRepository.updateUserInfo(originNickname, dto, genres, themes);
     } catch (error) {
       console.error(error);
       throw new HttpException('Update user info failed.', HttpStatus.INTERNAL_SERVER_ERROR);
