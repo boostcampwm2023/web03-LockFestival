@@ -4,6 +4,9 @@ import { User } from '@user/entities/user.entity';
 import { UserNaverDto } from '@user/dtos/user.naver.dto';
 import { Gender } from '@enum/gender';
 import { UserProfileDto } from '@user/dtos/user.profile.dto';
+import { UserInfoRequestDto } from '@user/dtos/userInfo.request.dto';
+import { Genre } from '@theme/entities/genre.entity';
+import { Theme } from '@theme/entities/theme.entity';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -37,5 +40,31 @@ export class UserRepository extends Repository<User> {
       select: ['nickname', 'profileImageUrl', 'isMoreInfo'],
       where: { nickname },
     });
+  }
+
+  //transaction
+  async updateUserInfo(
+    originNickname: string,
+    dto: UserInfoRequestDto,
+    preferGenres: Genre[],
+    preferThemes: Theme[]
+  ): Promise<void> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    try {
+      await queryRunner.startTransaction();
+
+      const user: User = await queryRunner.manager.findOneBy(User, { nickname: originNickname });
+
+      await queryRunner.manager.save(
+        user.updateUserInfo(dto.nickname, dto.profileImageUrl, preferGenres, preferThemes)
+      );
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      console.error(error);
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 }
