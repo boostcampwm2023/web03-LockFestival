@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Get, Req, UseGuards, Put } from '@nestjs/common';
+import { Body, Controller, Param, Get, Req, UseGuards, Put, Patch } from '@nestjs/common';
 import { TokenAuthGuard } from '@auth/auth.guard';
 import { UserService } from '@user/user.service';
 import { UserProfileDto } from '@user/dtos/user.profile.dto';
@@ -28,7 +28,7 @@ export class UserController {
   }
 
   @UseGuards(TokenAuthGuard)
-  @Put('/user-info')
+  @Patch('/user-info')
   async updateUserInfo(@Req() { user }, @Body() body: UserInfoRequestDto) {
     const { nickname, email } = await this.userService.updateUserInfo(user.nickname, body);
 
