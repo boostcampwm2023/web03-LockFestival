@@ -8,11 +8,23 @@ import { TypeormConfig } from '@src/typeorm.config';
 import { AuthModule } from '@auth/auth.module';
 import { ThemeModule } from '@theme/theme.module';
 import { UserModule } from '@user/user.module';
+import { CommentModule } from '@comment/comment.module';
+import { DiaryModule } from '@diary/diary.module';
+import { BranchModule } from '@branch/branch.module';
+import { BrandModule } from '@brand/brand.module';
+import { ChatModule } from '@chat/chat.module';
+import { GroupModule } from '@group/group.module';
 
 @Module({
   imports: [
-    ThemeModule,
     AuthModule,
+    CommentModule,
+    DiaryModule,
+    BranchModule,
+    BrandModule,
+    ThemeModule,
+    ChatModule,
+    GroupModule,
     UserModule,
     ConfigModule.forRoot({
       isGlobal: true,
