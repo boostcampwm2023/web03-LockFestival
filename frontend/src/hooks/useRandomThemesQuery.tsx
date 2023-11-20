@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-
-import QUERY_MANAGEMENT from '@constants/QueryManagement';
+import QUERY_MANAGEMENT from '@constants/queryManagement';
 
 const useRandomThemesQuery = () => {
   const { data, isSuccess, isError, isLoading } = useQuery({
