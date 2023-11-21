@@ -13,5 +13,6 @@ import { GenreService } from '@theme/genre.service';
   imports: [TypeOrmModule.forFeature([Theme]), BrandModule, BranchModule],
   controllers: [ThemeController],
   providers: [ThemeService, ThemeRepository, GenreRepository, GenreService],
+  exports: [ThemeRepository],
 })
 export class ThemeModule {}
