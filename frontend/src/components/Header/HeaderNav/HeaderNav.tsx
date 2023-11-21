@@ -1,17 +1,23 @@
 import tw, { css, styled } from 'twin.macro';
 import { useState } from 'react';
 import { NavMenu } from 'types/navMenu';
-
+import { useNavigate } from 'react-router-dom';
 const HeaderNav = () => {
+  const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState<NavMenu>('');
 
   const handleSelectedItem = (item: NavMenu) => {
     setSelectedItem(item);
+    navigate(`/${item}`);
   };
 
   return (
     <Nav>
-      <HeaderLogo src="/src/assets/images/logo/Big-Dark.png" alt="logo" />
+      <HeaderLogo
+        src="/src/assets/images/logo/Big-Dark.png"
+        alt="logo"
+        onClick={() => handleSelectedItem('')}
+      />
       <NavContainer>
         <NavItem
           onClick={() => handleSelectedItem('recruitment')}
