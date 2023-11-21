@@ -35,6 +35,9 @@ export class Group extends BaseTime {
   @Column({ name: ' appointment_time', nullable: true })
   appointmentTime: string;
 
+  @Column({ name: 'appointment_completed', default: false })
+  appointmentCompleted: boolean;
+
   @ManyToOne(
     () => {
       return User;
