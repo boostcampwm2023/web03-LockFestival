@@ -62,4 +62,27 @@ export class Group extends BaseTime {
     }
   )
   userGroups: UserGroup[];
+
+  static createGroupObject(groupRequest: GroupRequestDto, user: User, theme: Theme) {
+    return {
+      recruitmentMembers: groupRequest.recruitmentMembers,
+      recruitmentCompleted: groupRequest.recruitmentCompleted,
+      recruitmentContent: groupRequest.recruitmentContent,
+      theme_id: groupRequest.themeId,
+      appointmentDate: groupRequest.appointmentDate,
+      theme: theme,
+      leader: user,
+      leader_id: user.id,
+    };
+  }
+
+  static createUserGroupObject(newGroup, user: User) {
+    return {
+      group: newGroup,
+      user_id: user.id,
+      group_id: newGroup.id,
+      user: user,
+      hasWrittenComment: false,
+    };
+  }
 }
