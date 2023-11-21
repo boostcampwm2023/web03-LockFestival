@@ -1,8 +1,10 @@
+import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToMany, ManyToOne } from 'typeorm';
+
 import { BaseTime } from '@src/entity/baseTime.entity';
 import { Theme } from '@theme/entities/theme.entity';
 import { User } from '@user/entities/user.entity';
 import { UserGroup } from '@user/entities/userGroup.entity';
-import { Entity, Column, PrimaryGeneratedColumn, JoinColumn, OneToOne, OneToMany } from 'typeorm';
+import { GroupRequestDto } from '@group/dtos/group.create.dto';
 
 @Entity()
 export class Group extends BaseTime {
@@ -33,7 +35,7 @@ export class Group extends BaseTime {
   @Column({ name: ' appointment_time', nullable: true })
   appointmentTime: string;
 
-  @OneToOne(
+  @ManyToOne(
     () => {
       return User;
     },
@@ -42,7 +44,7 @@ export class Group extends BaseTime {
   @JoinColumn({ name: 'leader_id', referencedColumnName: 'id' })
   leader: User;
 
-  @OneToOne(
+  @ManyToOne(
     () => {
       return Theme;
     },
