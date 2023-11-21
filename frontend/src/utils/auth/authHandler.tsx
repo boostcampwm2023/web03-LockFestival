@@ -11,6 +11,7 @@ function AuthHandler() {
     });
     try {
       const response = await loginAPI;
+      console.log(response);
       window.history.back();
     } catch (error) {
       // Handle the error as needed

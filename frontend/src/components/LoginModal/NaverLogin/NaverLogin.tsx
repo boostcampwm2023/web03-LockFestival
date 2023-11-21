@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-import { SERVER_URL } from '@config/server';
-import axios from 'axios';
+import { useEffect } from 'react';
 
 declare global {
   interface Window {
