@@ -30,7 +30,12 @@ export class UserService {
     try {
       const userData = await this.userRepository.findUserByEmail(data.email);
       if (!userData) {
-        return await this.userRepository.createUserByNaver(data);
+        let nickname: string = this.generateRandomString();
+        while (!(await this.checkUsableNickname(nickname))) {
+          nickname = this.generateRandomString();
+        }
+
+        return await this.userRepository.createUserByNaver(data, nickname);
       }
       return userData;
     } catch (error) {
