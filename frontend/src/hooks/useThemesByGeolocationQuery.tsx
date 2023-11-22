@@ -17,7 +17,7 @@ const useThemesByGeolocationQuery = () => {
 
   useEffect(() => {
     geolocation.latitude !== INITAL_LATITUDE && refetch();
-  }, [geolocation, refetch]);
+  }, [geolocation]);
 
   return { data };
 };
