@@ -8,9 +8,6 @@ export class TokenAuthGuard extends AuthGuard('jwt') {
   constructor(private reflector: Reflector) {
     super();
   }
-  canActivate(context: ExecutionContext) {
-    return super.canActivate(context);
-  }
 
   handleRequest(err: any, user: any, info: any, context: ExecutionContext) {
     const optional = this.reflector.getAllAndOverride<boolean>(OPTIONAL_GUARD, [
