@@ -10,8 +10,11 @@ import useModal from '@hooks/useModal';
 import Modal from '@components/Modal/Modal';
 import LoginModal from '@components/LoginModal/LoginModal';
 import JoinModal from '@components/JoinModal/JoinModal';
+import { useLocation } from 'react-router-dom';
 
 const HeaderRest = () => {
+  const location = useLocation();
+
   const { openModal, closeModal } = useModal();
   const { data, isSuccess, isError } = useProfileQuery();
 
@@ -22,7 +25,16 @@ const HeaderRest = () => {
     setIsClickSearchButton(false);
     resetSearchInput();
   };
-  const modalCloseCallback = () => closeModal(Modal);
+
+  const handleLogin = () => {
+    localStorage.setItem('lastVisited', location.pathname);
+
+    openModal(Modal, {
+      children: LoginModal(() => closeModal(Modal)),
+      onClose: () => closeModal(Modal),
+      closeOnExternalClick: true,
+    });
+  };
 
   return (
     <HeaderRestContainer>
@@ -63,18 +75,7 @@ const HeaderRest = () => {
           </Button>
         )}
         {isError && (
-          <Button
-            size="l"
-            font="maplestory"
-            isIcon={false}
-            onClick={() =>
-              openModal(Modal, {
-                children: LoginModal(modalCloseCallback),
-                onClose: modalCloseCallback,
-                closeOnExternalClick: true,
-              })
-            }
-          >
+          <Button size="l" font="maplestory" isIcon={false} onClick={handleLogin}>
             <>로그인</>
           </Button>
         )}
@@ -84,8 +85,8 @@ const HeaderRest = () => {
           isIcon={false}
           onClick={() =>
             openModal(Modal, {
-              children: JoinModal(modalCloseCallback),
-              onClose: modalCloseCallback,
+              children: JoinModal(() => closeModal(Modal)),
+              onClose: () => closeModal(Modal),
               closeOnExternalClick: false,
             })
           }

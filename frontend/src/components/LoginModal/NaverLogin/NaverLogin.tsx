@@ -1,35 +1,25 @@
-import { useEffect } from 'react';
-
-declare global {
-  interface Window {
-    naver: any;
-  }
-}
+import tw, { css, styled } from 'twin.macro';
 
 function NaverLogin() {
-  const NAVER_CLIENT_ID = import.meta.env.VITE_NAVER_CLIENT_ID;
-  const NAVER_CALLBACK_URL = import.meta.env.VITE_NAVER_REDIRECT_URI;
-
-  const { naver } = window;
-  const naverLogin = new naver.LoginWithNaverId({
-    clientId: NAVER_CLIENT_ID,
-    callbackUrl: NAVER_CALLBACK_URL,
-    isPopup: false,
-    loginButton: { color: 'green', type: 3, height: 36 },
-    callbackHandle: false,
-  });
-
-  useEffect(() => {
-    naverLogin.init();
-  }, []);
+  const { VITE_NAVER_CLIENT_ID, VITE_NAVER_REDIRECT_URI } = import.meta.env;
 
   return (
-    <>
-      <div>
-        <div id="naverIdLogin"></div>
-      </div>
-    </>
+    <a
+      href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${VITE_NAVER_CLIENT_ID}&redirect_uri=${VITE_NAVER_REDIRECT_URI}`}
+    >
+      <Button />
+    </a>
   );
 }
+
+const Button = styled.button([
+  tw`h-[5rem] w-[20rem] rounded-[0.4rem]`,
+  css`
+    background-image: url('/src/assets/images/oauth/naver/naver.png');
+    background-size: 20rem 5rem;
+
+    cursor: pointer;
+  `,
+]);
 
 export default NaverLogin;

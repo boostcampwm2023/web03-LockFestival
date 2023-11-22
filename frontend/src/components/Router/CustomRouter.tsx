@@ -1,13 +1,13 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import Layout from '@components/Layout';
 
-import Root from '@pages/Root/Root';
 import Diary from '@pages/Diary/Diary';
-import MyPage from '@pages/Mypage/Mypage';
 import GroupChat from '@pages/GroupChat/GroupChat';
 import Recruitment from '@pages/Recruitment/Recruitment';
-import AuthHandler from '@utils/auth/authHandler';
-
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Auth from '@pages/Auth/Auth';
+import MyPage from '@pages/Mypage/Mypage';
+import Root from '@pages/Root/Root';
 
 const CustomRouter = () => {
   return (
@@ -18,9 +18,8 @@ const CustomRouter = () => {
           <Route path="/mypage" element={<MyPage />}></Route>
           <Route path="/recruitment" element={<Recruitment />}></Route>
           <Route path="/group-chat" element={<GroupChat />}></Route>
-          <Route path="/mypage" element={<MyPage />}></Route>
           <Route path="/diary" element={<Diary />}></Route>
-          <Route path="/auth" element={<AuthHandler />}></Route>
+          <Route path="/auth" element={<Auth />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
