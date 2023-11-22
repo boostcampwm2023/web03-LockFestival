@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Req, Res, UseGuards, HttpStatus } from '@nestjs/common';
 import { GroupService } from '@group/group.service';
 import { TokenAuthGuard } from '@auth/auth.guard';
 import { GroupRequestDto } from '@group/dtos/group.create.dto';
@@ -9,7 +9,16 @@ export class GroupController {
 
   @Post()
   @UseGuards(TokenAuthGuard)
-  async createGroup(@Req() { user }, @Body() groupRequest: GroupRequestDto) {
-    return this.groupService.createGroup(groupRequest, user.nickname);
+  async createGroup(@Req() { user }, @Res() res, @Body() groupRequest: GroupRequestDto) {
+    try {
+      await this.groupService.createGroup(groupRequest, user.nickname);
+      return res
+        .status(HttpStatus.OK)
+        .json({ success: true, message: 'Group created successfully' });
+    } catch (err) {
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({ success: false, message: 'Error creating group' });
+    }
   }
 }

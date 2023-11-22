@@ -1,5 +1,5 @@
 import { Repository, DataSource } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Group } from '@group/entities/group.entity';
 import { GroupRequestDto } from '@group/dtos/group.create.dto';
 import { User } from '@user/entities/user.entity';
@@ -24,8 +24,9 @@ export class GroupRepository extends Repository<Group> {
       await queryRunner.commitTransaction();
     } catch (err) {
       await queryRunner.rollbackTransaction();
+      throw new HttpException('Error creating group', HttpStatus.INTERNAL_SERVER_ERROR);
     } finally {
-      return await queryRunner.release();
+      await queryRunner.release();
     }
   }
 }

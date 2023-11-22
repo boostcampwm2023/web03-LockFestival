@@ -13,6 +13,6 @@ export class GroupService {
   ) {}
   async createGroup(groupRequest: GroupRequestDto, nickname: string) {
     const theme = await this.themeRepository.findOneBy({ id: groupRequest.themeId });
-    return await this.groupRepository.createGroup(groupRequest, nickname, theme);
+    await this.groupRepository.createGroup(groupRequest, nickname, theme);
   }
 }
