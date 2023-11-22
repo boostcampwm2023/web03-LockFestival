@@ -1,22 +1,35 @@
-import { SERVER_URL } from '@config/server';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { Profile } from 'types/profile';
+import userInstance from '@config/userInstance';
+import { useEffect } from 'react';
+import useModal from './useModal';
+import Modal from '@components/Modal/Modal';
+import JoinModal from '@components/JoinModal/JoinModal';
 
 const fetchUserProfile = async () => {
-  //TODO: axios 인스턴스 생성 후 리팩토링
-
-  return (await axios({ method: 'get', url: SERVER_URL + '/users/profile' })).data;
+  return (await userInstance({ method: 'get', url: '/users/profile' })).data;
 };
 
 const useProfileQuery = () => {
+  const { openModal, closeModal } = useModal();
   const { data, isSuccess, isLoading, isError } = useQuery<Profile>({
     queryKey: ['profile'],
     queryFn: fetchUserProfile,
     staleTime: 3600,
-    refetchOnMount: true,
-    retry: false,
   });
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    if (!data.isMoreInfo) {
+      openModal(Modal, {
+        children: JoinModal(() => closeModal(Modal)),
+        onClose: () => closeModal(Modal),
+        closeOnExternalClick: false,
+      });
+    }
+  }, [data]);
 
   return { data, isSuccess, isLoading, isError };
 };
