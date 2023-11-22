@@ -1,4 +1,7 @@
+import CustomRouter from '@components/Router/CustomRouter';
+
 function App() {
-  return <>Hello World</>;
+  return <CustomRouter />;
 }
+
 export default App;

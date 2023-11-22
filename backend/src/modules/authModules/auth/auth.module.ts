@@ -9,5 +9,6 @@ import { UserModule } from '@user/user.module';
   imports: [JwtModule, HttpModule, UserModule],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {}

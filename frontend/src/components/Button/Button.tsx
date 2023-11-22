@@ -1,4 +1,4 @@
-import tw, { TwStyle, styled } from 'twin.macro';
+import tw, { TwStyle, styled, css } from 'twin.macro';
 import { ButtonComponentProps, ButtonProps } from 'types/button';
 import {
   iconButtonBaseStyle,
@@ -24,6 +24,12 @@ const ButtonComponent = styled.button<ButtonComponentProps>(({ font, size, width
     tw`
 rounded-default bg-gray-light text-white
 `,
+    css`
+      :disabled {
+        cursor: default;
+        opacity: 60%;
+      }
+    `,
   ];
 
   const fontStyle = font ? fontStyleMap[font] : fontStyleMap.default;
