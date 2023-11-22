@@ -1,10 +1,12 @@
 import tw, { styled } from 'twin.macro';
 import RandomThemeListContainer from './RandomThemeListContainer';
+import GeoLocationThemeListContainer from './GeoLocationThemeListContainer';
 
 const RootLayout = () => {
   return (
     <Container>
       <RandomThemeListContainer />
+      <GeoLocationThemeListContainer />
     </Container>
   );
 };
