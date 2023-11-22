@@ -14,6 +14,8 @@ const useProfileQuery = () => {
     queryKey: ['profile'],
     queryFn: fetchUserProfile,
     staleTime: 3600,
+    refetchOnMount: true,
+    retry: false,
   });
 
   return { data, isSuccess, isLoading, isError };

@@ -1,14 +1,7 @@
-import RootLayout from '@pages/Root/components/RootLayout';
-import tw, { styled } from 'twin.macro';
+import CustomRouter from '@components/Router/CustomRouter';
 
 function App() {
-  return (
-    <Container>
-      <RootLayout />;
-    </Container>
-  );
+  return <CustomRouter />;
 }
-
-const Container = styled.div([tw`bg-gray-dark h-screen`]);
 
 export default App;

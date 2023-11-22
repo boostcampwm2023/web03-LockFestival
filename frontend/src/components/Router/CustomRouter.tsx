@@ -5,6 +5,7 @@ import Diary from '@pages/Diary/Diary';
 import MyPage from '@pages/Mypage/Mypage';
 import GroupChat from '@pages/GroupChat/GroupChat';
 import Recruitment from '@pages/Recruitment/Recruitment';
+import AuthHandler from '@utils/auth/authHandler';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ const CustomRouter = () => {
           <Route path="/group-chat" element={<GroupChat />}></Route>
           <Route path="/mypage" element={<MyPage />}></Route>
           <Route path="/diary" element={<Diary />}></Route>
+          <Route path="/auth" element={<AuthHandler />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
