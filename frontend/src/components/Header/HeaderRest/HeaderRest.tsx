@@ -9,14 +9,13 @@ import useInput from '@hooks/useInput';
 import useModal from '@hooks/useModal';
 import Modal from '@components/Modal/Modal';
 import LoginModal from '@components/LoginModal/LoginModal';
-import JoinModal from '@components/JoinModal/JoinModal';
 import { useLocation } from 'react-router-dom';
 
 const HeaderRest = () => {
   const location = useLocation();
 
   const { openModal, closeModal } = useModal();
-  const { data, isSuccess, isError } = useProfileQuery();
+  const { data, isSuccess, isLoading, isError } = useProfileQuery();
 
   const [isClickSearchButton, setIsClickSearchButton] = useState<boolean>(false);
   const [searchInput, setSearchInput, resetSearchInput] = useInput('');
@@ -34,6 +33,11 @@ const HeaderRest = () => {
       onClose: () => closeModal(Modal),
       closeOnExternalClick: true,
     });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    window.location.reload();
   };
 
   return (
@@ -60,49 +64,33 @@ const HeaderRest = () => {
       </SearchContainer>
       <ProfileContainer>
         {isSuccess && (
-          <Button
-            size="l"
-            onClick={() => {
-              localStorage.clear();
-              window.location.replace('/');
-            }}
-            isIcon={false}
-          >
+          <Button size="l" onClick={handleLogout} isIcon={false}>
             <>
               <FaUser size={20} />
               {data?.nickname}님
             </>
           </Button>
         )}
-        {isError && (
-          <Button size="l" font="maplestory" isIcon={false} onClick={handleLogin}>
-            <>로그인</>
-          </Button>
+        {(isLoading || isError) && (
+          <>
+            <Button size="l" font="maplestory" isIcon={false} onClick={handleLogin}>
+              <>로그인</>
+            </Button>
+          </>
         )}
-        <Button
-          size="l"
-          font="maplestory"
-          isIcon={false}
-          onClick={() =>
-            openModal(Modal, {
-              children: JoinModal(() => closeModal(Modal)),
-              onClose: () => closeModal(Modal),
-              closeOnExternalClick: false,
-            })
-          }
-        >
-          <>회원가입</>
-        </Button>
       </ProfileContainer>
     </HeaderRestContainer>
   );
 };
 
 const HeaderRestContainer = styled.div([
+  tw`desktop:(w-[40rem])`,
+  tw`mobile:(w-[20rem])`,
   css`
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 2rem;
   `,
 ]);
 
@@ -116,8 +104,6 @@ const widthAnimation = keyframes`
 `;
 
 const SearchContainer = styled.div([
-  tw`desktop:(w-[15rem])`,
-  tw`mobile:(w-[12.4rem])`,
   css`
     display: flex;
     align-items: center;
@@ -148,7 +134,6 @@ const SearchInput = styled.input([
 ]);
 
 const ProfileContainer = styled.div([
-  tw`desktop:(w-[15rem])`,
   css`
     display: flex;
     align-items: center;
