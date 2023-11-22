@@ -5,9 +5,9 @@ import Layout from '@components/Layout';
 import Diary from '@pages/Diary/Diary';
 import GroupChat from '@pages/GroupChat/GroupChat';
 import Recruitment from '@pages/Recruitment/Recruitment';
-import Auth from '@pages/auth/Auth';
-import Root from '@pages/root/Root';
-import MyPage from '@pages/mypage/Mypage';
+import Auth from '@pages/Auth/Auth';
+import MyPage from '@pages/Mypage/Mypage';
+import Root from '@pages/Root/Root';
 
 const CustomRouter = () => {
   return (
