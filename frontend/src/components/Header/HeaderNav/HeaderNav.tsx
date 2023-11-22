@@ -31,9 +31,6 @@ const HeaderNav = () => {
         >
           그룹 채팅방
         </NavItem>
-        <NavItem onClick={() => handleSelectedItem('diary')} isSelected={selectedItem === 'diary'}>
-          탈출 일기
-        </NavItem>
       </NavContainer>
     </Nav>
   );
@@ -56,11 +53,11 @@ const HeaderLogo = styled.img([
 
 const NavContainer = styled.ul([
   tw`border border-white border-solid`,
-  tw`desktop:(w-[50rem] h-[3.6rem] mx-4 rounded-[4rem])`,
+  tw`desktop:(w-[40rem] h-[3.6rem] mx-4 rounded-[4rem])`,
   tw`mobile:(hidden)`,
   css`
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     align-items: center;
     background-color: #282828;
   `,
