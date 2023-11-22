@@ -16,7 +16,7 @@ function StepTwoContent({ selectGenre, setSelectGenre, onClose }: StepTwoContent
   return (
     <>
       <TopWrapper>
-        <JoinModalInfo>선호하시는 테마를 전부 선택해주세요.</JoinModalInfo>
+        <JoinModalInfo>선호하시는 장르를 전부 선택해주세요.</JoinModalInfo>
         <ThemeButtonsContainer>
           {genreList.map((item, idx) => (
             <ThemeButton
