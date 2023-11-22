@@ -1,5 +1,5 @@
 const REQUEST_INFO = {
-  km: 5,
+  km: 10,
   themeCount: 10,
 };
 
