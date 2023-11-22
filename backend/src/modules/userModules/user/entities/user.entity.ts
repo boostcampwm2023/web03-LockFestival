@@ -60,4 +60,26 @@ export class User extends BaseTime {
   })
   @JoinTable({ name: 'favorite_genre' })
   favoriteGenres: Genre[];
+
+  public updateUserInfo(
+    nickname: string,
+    profileImageUrl: string,
+    favoriteGenres: Genre[],
+    favoriteThemes: Theme[]
+  ): User {
+    if (nickname != null) {
+      this.nickname = nickname;
+    }
+    if (profileImageUrl != null) {
+      this.profileImageUrl = profileImageUrl;
+    }
+    if (favoriteGenres != null) {
+      this.favoriteGenres = favoriteGenres;
+    }
+    if (favoriteThemes != null) {
+      this.favoriteThemes = favoriteThemes;
+    }
+    this.isMoreInfo = true;
+    return this;
+  }
 }

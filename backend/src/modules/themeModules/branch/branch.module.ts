@@ -4,11 +4,11 @@ import { Branch } from '@branch/entities/branch.entity';
 import { BranchController } from '@branch/branch.controller';
 import { BranchRepository } from '@branch/branch.repository';
 import { BranchService } from '@branch/branch.service';
-import { ThemeRepository } from '@theme/theme.repository';
+import { ThemeModule } from '@theme/theme.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Branch])],
+  imports: [TypeOrmModule.forFeature([Branch]), ThemeModule],
   controllers: [BranchController],
-  providers: [BranchService, ThemeRepository, BranchRepository],
+  providers: [BranchService, BranchRepository],
 })
 export class BranchModule {}

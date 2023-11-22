@@ -5,7 +5,9 @@ import { User } from '@user/entities/user.entity';
 import { UserRepository } from '@user/user.repository';
 import { UserService } from '@user/user.service';
 import { UserController } from '@user/user.controller';
-import { ThemeModule } from '@theme/theme.module';
+import { ThemeRepository } from '@theme/theme.repository';
+import { GenreRepository } from '@theme/genre.repository';
+import { AuthModule } from '@auth/auth.module';
 
 @Module({
   imports: [
@@ -13,11 +15,9 @@ import { ThemeModule } from '@theme/theme.module';
     forwardRef(() => {
       return AuthModule;
     }),
-    ,
-    ThemeModule,
   ],
   controllers: [UserController],
-  providers: [UserService, UserRepository],
-  exports: [UserService, UserRepository],
+  providers: [UserService, UserRepository, ThemeRepository, GenreRepository],
+  exports: [UserService],
 })
 export class UserModule {}
