@@ -37,6 +37,7 @@ const ModalBackground = styled.div([
     justify-content: center;
     align-items: center;
     background-color: rgba(6, 5, 5, 0.63);
+    z-index: 99;
   `,
 ]);
 
@@ -44,9 +45,6 @@ const ModalContainer = styled.div([
   tw`rounded-[2rem] bg-gray-light`,
   tw`desktop:(min-w-[50rem] min-h-[40rem])`,
   tw`mobile:(min-w-[20rem] min-h-[16rem])`,
-  css`
-    z-index: 99;
-  `
 ]);
 
 export default Modal;
