@@ -14,7 +14,7 @@ const HeaderNav = () => {
   return (
     <Nav>
       <HeaderLogo
-        src="/src/assets/images/logo/Big-Dark.png"
+        src="assets/images/logo/Big-Dark.png"
         alt="logo"
         onClick={() => handleSelectedItem('')}
       />
