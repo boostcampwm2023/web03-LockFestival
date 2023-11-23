@@ -15,7 +15,7 @@ function NaverLogin() {
 const Button = styled.button([
   tw`h-[5rem] w-[20rem] rounded-[0.4rem]`,
   css`
-    background-image: url('/assets/images/oauth/naver/naver.png');
+    background-image: url('assets/images/oauth/naver/naver.png');
     background-size: 20rem 5rem;
 
     cursor: pointer;
