@@ -1,0 +1,46 @@
+name: CI/CD using github action & docker
+
+on:
+  push:
+    branches: ["main", "HotFix/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # 실행 환경 지정
+    steps:
+      - uses: actions/checkout@v3
+      - name: Docker build & push
+        run: |
+          docker login -u ${{ secrets.DOCKER_BACK_REPO }} -p ${{ secrets.DOCKER_BACK_PASSWORD }}
+          cd ./backend
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_BACK_REPO }}/${{secrets.DOCKER_BACK_TAG}} .
+          docker push ${{ secrets.DOCKER_BACK_REPO }}/${{secrets.DOCKER_BACK_TAG}}
+
+      - name: Depoly to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.HOST}}
+          username: ${{secrets.USERNAME}}
+          key: ${{secrets.KEY}}
+          envs: GITHUB_SHA
+          script: |
+            sudo docker ps
+            sudo docker rm -f $(docker ps -aqf "name=^${{secrets.DOCKER_BACK_CONTAINER}}")
+            sudo docker pull ${{ secrets.DOCKER_BACK_REPO }}/${{secrets.DOCKER_BACK_TAG}}
+            sudo docker run -d -p 3000:3000 \
+            -e "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" \
+            -e "DATABASE_DATABASE=${{ secrets.DATABASE_DATABASE }}" \
+            -e "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" \
+            -e "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" \
+            -e "DATABASE_USER=${{ secrets.DATABASE_USER }}" \
+            -e "JWT_ACCESS_TOKEN_SECRET=${{ secrets.JWT_ACCESS_TOKEN_SECRET }}" \
+            -e "JWT_ACCESS_TOKEN_TIME=${{ secrets.JWT_ACCESS_TOKEN_TIME }}" \
+            -e "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" \
+            -e "NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}" \
+            -e "NODE_ENV=${{ secrets.NODE_ENV }}" \
+            -e "PORT=${{ secrets.BACK_PORT }}" \
+            --name ${{secrets.DOCKER_BACK_CONTAINER}} ${{ secrets.DOCKER_BACK_REPO }}/${{secrets.DOCKER_BACK_TAG}}
+            sudo docker image prune -f
