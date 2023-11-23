@@ -5,8 +5,8 @@ import { ModalProps } from 'types/modal';
 import ThemeButton from './ThemeButton/ThemeButton';
 
 interface StepTwoContentProps {
-  selectGenre: Set<number>;
-  setSelectGenre: (idx: number) => void;
+  selectGenre: Set<string>;
+  setSelectGenre: (genre: string) => void;
   onClose: ModalProps['onClose'];
 }
 
@@ -23,7 +23,7 @@ function StepTwoContent({ selectGenre, setSelectGenre, onClose }: StepTwoContent
               item={item}
               idx={idx}
               buttonHandler={setSelectGenre}
-              isSelected={selectGenre.has(idx)}
+              isSelected={selectGenre.has(item.genre)}
             />
           ))}
         </ThemeButtonsContainer>

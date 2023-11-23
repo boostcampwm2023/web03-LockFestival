@@ -3,13 +3,13 @@ import tw, { styled, css } from 'twin.macro';
 interface ThemeButtonProps {
   item: { thumbnail: string; genre: string };
   idx: number;
-  buttonHandler: (idx: number) => void;
+  buttonHandler: (genre: string) => void;
   isSelected: boolean;
 }
 
 function ThemeButton({ item, idx, buttonHandler, isSelected }: ThemeButtonProps) {
   return (
-    <ThemeButtonWrapper key={idx} onClick={() => buttonHandler(idx)} isSelected={isSelected}>
+    <ThemeButtonWrapper key={idx} onClick={() => buttonHandler(item.genre)} isSelected={isSelected}>
       <SelectedState isSelected={isSelected}></SelectedState>
       <ThemeImg src={item.thumbnail} alt="genreImg" />
       <ThemeGenre isSelected={isSelected}>{item.genre}</ThemeGenre>
