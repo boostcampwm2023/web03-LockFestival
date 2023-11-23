@@ -30,8 +30,8 @@ jobs:
           REPO: boostcamp-lockfestival # 레파지토리 이름(소문자만 가능)
         run: |
           cd frontend && docker build -t $REPO .
-          docker tag $REPO:${{secrets.DOCKER_FRONT_TAG}} $NAME/$REPO:${{secrets.DOCKER_FRONT_TAG}}
-          docker push $NAME/$REPO:${{secrets.DOCKER_FRONT_TAG}}
+          docker tag $REPO:latest $NAME/$REPO:latest
+          docker push $NAME/$REPO:latest
 
       - name: Deploy to server
         uses: appleboy/ssh-action@master
@@ -42,5 +42,5 @@ jobs:
           key: ${{ secrets.KEY }} # pem키
           script: |
             sudo docker rm -f $(docker ps -aqf "name=^${{secrets.DOCKER_FRONT_CONTAINER}}") # 컨테이너 찾아서 종료
-            sudo docker pull ${{ secrets.DOCKER_REPO }}:${{secrets.DOCKER_FRONT_TAG}}
-            sudo docker run -d -p 80:80 --name ${{secrets.DOCKER_FRONT_CONTAINER}} ${{ secrets.DOCKER_REPO }}:${{secrets.DOCKER_FRONT_TAG}}
+            sudo docker pull ${{ secrets.DOCKER_REPO }}:latest
+            sudo docker run -d -p 80:80 --name ${{secrets.DOCKER_FRONT_CONTAINER}} ${{ secrets.DOCKER_REPO }}:latest
