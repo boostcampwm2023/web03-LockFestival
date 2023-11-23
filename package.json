@@ -1,0 +1,15 @@
+{
+  "name": "lock-festival",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "prepare": "husky install",
+    "test-frontend": "cd frontend && yarn test",
+    "test-backend": "cd backend && yarn test",
+    "lint-staged-frontend": "cd frontend && yarn lint-staged",
+    "lint-staged-backend": "cd backend && yarn lint-staged"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3"
+  }
+}
