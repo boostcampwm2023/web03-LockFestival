@@ -15,7 +15,6 @@ const useProfileQuery = () => {
   const { data, isSuccess, isLoading, isError } = useQuery<Profile>({
     queryKey: ['profile'],
     queryFn: fetchUserProfile,
-    staleTime: 3600,
   });
 
   useEffect(() => {
