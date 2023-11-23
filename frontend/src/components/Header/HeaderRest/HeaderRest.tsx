@@ -3,7 +3,7 @@ import Button from '@components/Button/Button';
 import { FaUser } from 'react-icons/fa6';
 import { FaSistrix } from 'react-icons/fa6';
 import { keyframes } from '@emotion/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useProfileQuery from '@hooks/useProfileQuery';
 import useInput from '@hooks/useInput';
 import useModal from '@hooks/useModal';
@@ -16,7 +16,7 @@ const HeaderRest = () => {
   const location = useLocation();
 
   const { openModal, closeModal } = useModal();
-  const { data, isSuccess, isError } = useProfileQuery();
+  const { data, isSuccess, isLoading, isError } = useProfileQuery();
 
   const [isClickSearchButton, setIsClickSearchButton] = useState<boolean>(false);
   const [searchInput, setSearchInput, resetSearchInput] = useInput('');
@@ -35,6 +35,24 @@ const HeaderRest = () => {
       closeOnExternalClick: true,
     });
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    if (!data.isMoreInfo) {
+      openModal(Modal, {
+        children: JoinModal(() => closeModal(Modal)),
+        onClose: () => closeModal(Modal),
+        closeOnExternalClick: false,
+      });
+    }
+  }, [data]);
 
   return (
     <HeaderRestContainer>
@@ -60,49 +78,33 @@ const HeaderRest = () => {
       </SearchContainer>
       <ProfileContainer>
         {isSuccess && (
-          <Button
-            size="l"
-            onClick={() => {
-              localStorage.clear();
-              window.location.replace('/');
-            }}
-            isIcon={false}
-          >
+          <Button size="l" onClick={handleLogout} isIcon={false}>
             <>
               <FaUser size={20} />
               {data?.nickname}님
             </>
           </Button>
         )}
-        {isError && (
-          <Button size="l" font="maplestory" isIcon={false} onClick={handleLogin}>
-            <>로그인</>
-          </Button>
+        {(isLoading || isError) && (
+          <>
+            <Button size="l" font="maplestory" isIcon={false} onClick={handleLogin}>
+              <>로그인</>
+            </Button>
+          </>
         )}
-        <Button
-          size="l"
-          font="maplestory"
-          isIcon={false}
-          onClick={() =>
-            openModal(Modal, {
-              children: JoinModal(() => closeModal(Modal)),
-              onClose: () => closeModal(Modal),
-              closeOnExternalClick: false,
-            })
-          }
-        >
-          <>회원가입</>
-        </Button>
       </ProfileContainer>
     </HeaderRestContainer>
   );
 };
 
 const HeaderRestContainer = styled.div([
+  tw`desktop:(w-[40rem])`,
+  tw`mobile:(w-[20rem])`,
   css`
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 2rem;
   `,
 ]);
 
@@ -116,8 +118,6 @@ const widthAnimation = keyframes`
 `;
 
 const SearchContainer = styled.div([
-  tw`desktop:(w-[15rem])`,
-  tw`mobile:(w-[12.4rem])`,
   css`
     display: flex;
     align-items: center;
@@ -148,7 +148,6 @@ const SearchInput = styled.input([
 ]);
 
 const ProfileContainer = styled.div([
-  tw`desktop:(w-[15rem])`,
   css`
     display: flex;
     align-items: center;

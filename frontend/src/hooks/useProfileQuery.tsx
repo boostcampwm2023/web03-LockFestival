@@ -1,24 +1,18 @@
-import { SERVER_URL } from '@config/server';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { Profile } from 'types/profile';
+import userInstance from '@config/userInstance';
 
 const fetchUserProfile = async () => {
-  //TODO: axios 인스턴스 생성 후 리팩토링
-
-  return (await axios({ method: 'get', url: SERVER_URL + '/users/profile' })).data;
+  return (await userInstance({ method: 'get', url: '/users/profile' })).data;
 };
 
 const useProfileQuery = () => {
-  const { data, isSuccess, isLoading, isError } = useQuery<Profile>({
+  const { data, isSuccess, isLoading, isError, refetch } = useQuery<Profile>({
     queryKey: ['profile'],
     queryFn: fetchUserProfile,
-    staleTime: 3600,
-    refetchOnMount: true,
-    retry: false,
   });
 
-  return { data, isSuccess, isLoading, isError };
+  return { data, isSuccess, isLoading, isError, refetch };
 };
 
 export default useProfileQuery;

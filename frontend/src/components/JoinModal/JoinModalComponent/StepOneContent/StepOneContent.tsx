@@ -1,6 +1,9 @@
 import Button from '@components/Button/Button';
-import { ChangeEventHandler, MouseEventHandler } from 'react';
+import { ChangeEventHandler, MouseEventHandler, useEffect } from 'react';
 import tw, { styled, css } from 'twin.macro';
+import useNameValidation from './useNameValidation';
+import userInstance from '@config/userInstance';
+import { useQuery } from '@tanstack/react-query';
 
 interface StepOneContentProps {
   nameInput: string;
@@ -8,26 +11,57 @@ interface StepOneContentProps {
   nextStep: MouseEventHandler;
 }
 
+const NOT_CHECK = 0;
+
+const fetchCheckNickName = async (nickname: string) => {
+  const response = await userInstance({
+    method: 'get',
+    url: `/users/check-nickname/${nickname}`,
+  });
+
+  return response.data;
+};
+
 function StepOneContent({ nameInput, setNameInput, nextStep }: StepOneContentProps) {
-  const checkDuplicated = () => {
-    //TODO: 닉네임 중복확인 API 호출
-  };
+  const [isValidName, isDuplicated, checkValidation, warning] = useNameValidation(nameInput);
+  const { data, isSuccess, isError, refetch } = useQuery<boolean>({
+    queryKey: ['checkNickName', nameInput],
+    queryFn: () => fetchCheckNickName(nameInput),
+    staleTime: 0,
+    enabled: false,
+  });
+
+  useEffect(() => {
+    checkValidation(data, isSuccess, isError);
+  }, [isError, isSuccess, data]);
 
   return (
     <>
       <TopWrapper>
         <JoinModalInfo>Lock Festival에서 사용하실 닉네임을 입력하세요.</JoinModalInfo>
-        <NameInput value={nameInput} onChange={setNameInput} type="text" />
+        <NameInput value={nameInput} onChange={setNameInput} type="text" autoFocus />
         <InputButtonWrapper>
-          <Button size="l" isIcon={false} onClick={checkDuplicated}>
+          <Button
+            size="l"
+            isIcon={false}
+            onClick={() => {
+              refetch();
+            }}
+          >
             <>중복확인</>
           </Button>
         </InputButtonWrapper>
-        <WarningText isValid={true}>사용가능한 닉네임입니다!</WarningText>
       </TopWrapper>
+      <WarningTextWrapper>
+        <WarningText isValid={warning.status}>{warning.message}</WarningText>
+      </WarningTextWrapper>
 
       <ButtonWrapper>
-        <Button isIcon={false} onClick={nextStep} disabled={!nameInput}>
+        <Button
+          isIcon={false}
+          onClick={nextStep}
+          disabled={!nameInput || !isValidName || isDuplicated === NOT_CHECK}
+        >
           <>NEXT</>
         </Button>
       </ButtonWrapper>
@@ -42,11 +76,21 @@ const TopWrapper = styled.div([
     position: relative;
     display: flex;
     gap: 4rem;
-    margin-top: 6.4rem;
-    height: 27.2rem;
+    margin-top: 13.4rem;
+    height: 14.2rem;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+  `,
+]);
+
+const WarningTextWrapper = styled.div([
+  css`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 6rem;
   `,
 ]);
 
@@ -64,8 +108,8 @@ const NameInput = styled.input([
 const InputButtonWrapper = styled.div([
   css`
     position: absolute;
-    top: 12.9rem;
-    left: 33rem;
+    top: 5.6rem;
+    left: 32.9rem;
   `,
 ]);
 
