@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { AppModule } from '@src/app.module';
 import { HTTP_ALLOWED_METHOD } from '@enum/http.method';
 import { ConfigService } from '@nestjs/config';
@@ -12,7 +12,11 @@ async function bootstrap() {
     methods: Object.keys(HTTP_ALLOWED_METHOD),
     credentials: true,
   });
-
+  app.setGlobalPrefix('api');
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1',
+  });
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   await app.listen(app.get(ConfigService).get('PORT') || 3000);
   if (module.hot) {

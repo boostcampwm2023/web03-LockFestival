@@ -5,7 +5,6 @@ import SimpleThemeCardList from '@components/List/SimpleThemeCardList/SimpleThem
 
 const RandomThemeListContainer = () => {
   const { data } = useRandomThemesQuery();
-
   if (!data) {
     return <div>error</div>;
   }
@@ -28,6 +27,6 @@ const RandomThemeListContainer = () => {
   );
 };
 
-const SimpleCardContainer = styled.div([tw`my-2`]);
+const SimpleCardContainer = styled.div([tw`my-2 mt-[-0.5rem]`]);
 
 export default RandomThemeListContainer;

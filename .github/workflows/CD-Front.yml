@@ -2,7 +2,9 @@ name: Frontend CD with Docker Hub
 
 on:
   push:
-    branches: [main] # main push되었을 때 해당 yml을 실행한다.
+    branches: 
+      - main # main push되었을 때 해당 yml을 실행한다.
+      - 'HotFix/**' #HotFix 시에 무조건 실행하도록 설정한다.
 
 jobs:
   build:
@@ -13,11 +15,7 @@ jobs:
       - name: make env3
         run: |
           cd ./frontend
-
-        env:
-          VITE_NAVER_CLIENT_ID: ${{ secrets.VITE_NAVER_CLIENT_ID }}
-          VITE_NAVER_REDIRECT_URI: ${{ secrets.VITE_NAVER_REDIRECT_URI }}
-
+          
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
@@ -43,4 +41,7 @@ jobs:
           script: |
             sudo docker rm -f $(docker ps -aqf "name=^${{secrets.DOCKER_FRONT_CONTAINER}}") # 컨테이너 찾아서 종료
             sudo docker pull ${{ secrets.DOCKER_REPO }}:latest
-            sudo docker run -d -p 80:80 --name ${{secrets.DOCKER_FRONT_CONTAINER}} ${{ secrets.DOCKER_REPO }}:latest
+            sudo docker run -d -p 80:80 \
+	          -e "VITE_NAVER_CLIENT_ID=${{ secrets.VITE_NAVER_CLIENT_ID }}" \
+	          -e "VITE_NAVER_REDIRECT_URI=${{ secrets.VITE_NAVER_REDIRECT_URI }}" \
+						--name ${{secrets.DOCKER_FRONT_CONTAINER}} ${{ secrets.DOCKER_REPO }}:latest 
