@@ -5,6 +5,7 @@ import useInput from '@hooks/useInput';
 import StepOneContent from './StepOneContent/StepOneContent';
 import StepTwoContent from './StepTwoContent/StepTwoContent';
 import fetchJoin from '@apis/fetchJoin';
+import useProfileQuery from '@hooks/useProfileQuery';
 
 interface JoinModalProps {
   onClose: ModalProps['onClose'];
@@ -16,7 +17,7 @@ function JoinModalComponent({ onClose }: JoinModalProps) {
   const [step, setStep] = useState<number>(STEP1);
   const [nameInput, setNameInput] = useInput('');
   const [selectGenre, setSelectGenre] = useState<Set<string>>(new Set());
-
+  const { refetch } = useProfileQuery();
   const selectGenreHandler = (idx: string) => {
     setSelectGenre((prevSet) => {
       const newSet = new Set(prevSet);
@@ -38,12 +39,12 @@ function JoinModalComponent({ onClose }: JoinModalProps) {
     };
 
     try {
-      const response = await fetchJoin(userData);
-      if (response) {
-        onClose();
-      }
+      const { token } = await fetchJoin(userData);
+      localStorage.setItem('accessToken', token);
+      onClose();
+      refetch();
     } catch (error) {
-      console.log(error);
+      alert('서버에러');
     }
   };
 

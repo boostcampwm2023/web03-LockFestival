@@ -3,12 +3,13 @@ import Button from '@components/Button/Button';
 import { FaUser } from 'react-icons/fa6';
 import { FaSistrix } from 'react-icons/fa6';
 import { keyframes } from '@emotion/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useProfileQuery from '@hooks/useProfileQuery';
 import useInput from '@hooks/useInput';
 import useModal from '@hooks/useModal';
 import Modal from '@components/Modal/Modal';
 import LoginModal from '@components/LoginModal/LoginModal';
+import JoinModal from '@components/JoinModal/JoinModal';
 import { useLocation } from 'react-router-dom';
 
 const HeaderRest = () => {
@@ -39,6 +40,19 @@ const HeaderRest = () => {
     localStorage.removeItem('accessToken');
     window.location.reload();
   };
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    if (!data.isMoreInfo) {
+      openModal(Modal, {
+        children: JoinModal(() => closeModal(Modal)),
+        onClose: () => closeModal(Modal),
+        closeOnExternalClick: false,
+      });
+    }
+  }, [data]);
 
   return (
     <HeaderRestContainer>
