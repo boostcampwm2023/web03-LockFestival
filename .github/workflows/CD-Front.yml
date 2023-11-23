@@ -1,8 +1,10 @@
 name: Frontend CD with Docker Hub
 
 on:
-  push:z
-    branches: [main] # main push되었을 때 해당 yml을 실행한다.
+  push:
+    branches: 
+      - main # main push되었을 때 해당 yml을 실행한다.
+      - 'HotFix/**' #HotFix 시에 무조건 실행하도록 설정한다.
 
 jobs:
   build:
@@ -13,7 +15,7 @@ jobs:
       - name: make env3
         run: |
           cd ./frontend
-
+          
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:

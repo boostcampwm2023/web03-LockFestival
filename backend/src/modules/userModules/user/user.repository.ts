@@ -20,11 +20,11 @@ export class UserRepository extends Repository<User> {
     return !!user;
   }
 
-  async createUserByNaver(data: UserNaverDto): Promise<User> {
+  async createUserByNaver(data: UserNaverDto, nickname: string): Promise<User> {
     return await this.save({
       gender: Gender[data.gender],
       email: data.email,
-      nickname: data.id.slice(0, 8),
+      nickname: nickname,
       phoneNumber: data.mobile,
       name: data.name,
       birthYear: Number(data.birthyear),

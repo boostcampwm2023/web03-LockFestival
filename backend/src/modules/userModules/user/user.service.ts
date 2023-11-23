@@ -30,7 +30,12 @@ export class UserService {
     try {
       const userData = await this.userRepository.findUserByEmail(data.email);
       if (!userData) {
-        return await this.userRepository.createUserByNaver(data);
+        let nickname: string = this.generateRandomString();
+        while (!(await this.checkUsableNickname(nickname))) {
+          nickname = this.generateRandomString();
+        }
+
+        return await this.userRepository.createUserByNaver(data, nickname);
       }
       return userData;
     } catch (error) {
@@ -53,5 +58,25 @@ export class UserService {
       console.error(error);
       throw new HttpException('Update user info failed.', HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  //made by ChatGPT
+  private generateRandomString(length: number = 8): string {
+    let characters: string = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    // 한글 범위를 추가
+    characters += String.fromCodePoint(
+      ...Array.from({ length: 0xd7a3 - 0xac00 + 1 }, (_, i) => {
+        return i + 0xac00;
+      })
+    );
+
+    let result: string = '';
+    for (let i: number = 0; i < length; i++) {
+      const randomIndex: number = Math.floor(Math.random() * characters.length);
+      result += characters.charAt(randomIndex);
+    }
+
+    return result;
   }
 }
