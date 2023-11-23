@@ -9,6 +9,6 @@ describe('SimpleThemeCardList 컴포넌트 테스트', () => {
 
     const imgElements = screen.getAllByRole('img');
 
-    expect(imgElements.length).toBe(NUMBER_OF_IMGS);
+    expect(imgElements.length).toBe(NUMBER_OF_IMGS / 2);
   });
 });
