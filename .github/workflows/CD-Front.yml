@@ -30,8 +30,8 @@ jobs:
           REPO: boostcamp-lockfestival # 레파지토리 이름(소문자만 가능)
         run: |
           cd frontend && docker build -t $REPO .
-          docker tag $REPO:latest $NAME/$REPO:latest
-          docker push $NAME/$REPO:latest
+          docker tag $REPO:${{secrets.DOCKER_FRONT_TAG}} $NAME/$REPO:${{secrets.DOCKER_FRONT_TAG}}
+          docker push $NAME/$REPO:${{secrets.DOCKER_FRONT_TAG}}
 
       - name: Deploy to server
         uses: appleboy/ssh-action@master
