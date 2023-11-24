@@ -42,5 +42,6 @@ jobs:
             -e "NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}" \
             -e "NODE_ENV=${{ secrets.NODE_ENV }}" \
             -e "PORT=${{ secrets.BACK_PORT }}" \
+            -e "FRONTEND_BASE_URL=${{secrets.FRONTEND_BASE_URL}}" \
             --name ${{secrets.DOCKER_BACK_CONTAINER}} ${{ secrets.DOCKER_BACK_REPO }}/${{secrets.DOCKER_BACK_TAG}}
             sudo docker image prune -f

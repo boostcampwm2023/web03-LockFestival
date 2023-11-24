@@ -37,6 +37,7 @@ const ModalBackground = styled.div([
     justify-content: center;
     align-items: center;
     background-color: rgba(6, 5, 5, 0.63);
+    z-index: 99;
   `,
 ]);
 
