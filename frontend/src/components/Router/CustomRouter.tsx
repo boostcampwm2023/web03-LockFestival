@@ -8,7 +8,7 @@ import Recruitment from '@pages/Recruitment/Recruitment';
 import Auth from '@pages/Auth/Auth';
 import MyPage from '@pages/Mypage/Mypage';
 import Root from '@pages/Root/Root';
-import Search from '@pages/Search/search';
+import Search from '@pages/Search/Search';
 
 const CustomRouter = () => {
   return (
