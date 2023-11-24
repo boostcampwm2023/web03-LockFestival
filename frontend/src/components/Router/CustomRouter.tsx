@@ -8,6 +8,7 @@ import Recruitment from '@pages/Recruitment/Recruitment';
 import Auth from '@pages/Auth/Auth';
 import MyPage from '@pages/Mypage/Mypage';
 import Root from '@pages/Root/Root';
+import Search from '@pages/Search/Search';
 
 const CustomRouter = () => {
   return (
@@ -20,6 +21,7 @@ const CustomRouter = () => {
           <Route path="/group-chat" element={<GroupChat />}></Route>
           <Route path="/diary" element={<Diary />}></Route>
           <Route path="/auth" element={<Auth />}></Route>
+          <Route path="/search" element={<Search />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
