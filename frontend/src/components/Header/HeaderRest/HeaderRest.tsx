@@ -3,28 +3,25 @@ import Button from '@components/Button/Button';
 import { FaUser } from 'react-icons/fa6';
 import { FaSistrix } from 'react-icons/fa6';
 import { keyframes } from '@emotion/react';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import useProfileQuery from '@hooks/useProfileQuery';
-import useInput from '@hooks/useInput';
 import useModal from '@hooks/useModal';
 import Modal from '@components/Modal/Modal';
 import LoginModal from '@components/LoginModal/LoginModal';
 import JoinModal from '@components/JoinModal/JoinModal';
-import { useLocation } from 'react-router-dom';
+import useHeaderSearchInput from '@hooks/useHeaderSearchInput';
 
 const HeaderRest = () => {
-  const location = useLocation();
-
   const { openModal, closeModal } = useModal();
   const { data, isSuccess, isLoading, isError } = useProfileQuery();
 
-  const [isClickSearchButton, setIsClickSearchButton] = useState<boolean>(false);
-  const [searchInput, setSearchInput, resetSearchInput] = useInput('');
-
-  const handleBlur = () => {
-    setIsClickSearchButton(false);
-    resetSearchInput();
-  };
+  const {
+    searchInput,
+    handleSearchInput,
+    isClickSearchButton,
+    handleBlur,
+    setIsClickSearchButton,
+  } = useHeaderSearchInput();
 
   const handleLogin = () => {
     localStorage.setItem('lastVisited', location.pathname);
@@ -64,7 +61,7 @@ const HeaderRest = () => {
             </Button>
             <SearchInput
               value={searchInput}
-              onChange={setSearchInput}
+              onChange={handleSearchInput}
               onBlur={handleBlur}
               autoFocus
               type="text"
@@ -110,7 +107,7 @@ const HeaderRestContainer = styled.div([
 
 const widthAnimation = keyframes`
   0% {
-    width: 30%;
+    width: 40%;
   }
   100% {
     width: 100%;
@@ -130,7 +127,7 @@ const SearchInputForm = styled.div([
   tw`desktop:(max-w-[16.4rem] w-[16.4rem] h-[3.6rem] rounded-[4rem])`,
   tw`mobile:(w-[12.4rem] h-[3.2rem] rounded-[3rem])`,
   css`
-    animation: 1s ${widthAnimation} forwards;
+    animation: 0.6s ${widthAnimation} forwards;
     display: flex;
     align-items: center;
   `,
