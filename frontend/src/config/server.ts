@@ -1,4 +1,4 @@
-let SERVER_URL = 'http://localhost:3000/api/v1';
+let SERVER_URL = '/api/v1';
 
 if (process.env.DEV === 'false') {
   //TODO: 추후에 실제 서버 주소로 변경

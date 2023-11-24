@@ -3,7 +3,7 @@ export const carouselConfig = {
   infinite: true,
   speed: 500,
   slidesToShow: 5,
-  slidesToScroll: 2,
+  slidesToScroll: 5,
   initialSlide: 0,
   responsive: [
     {
