@@ -5,6 +5,7 @@ import { User } from '@user/entities/user.entity';
 import { UserRepository } from '@user/user.repository';
 import { UserService } from '@user/user.service';
 import { UserController } from '@user/user.controller';
+import { UserGroupRepository } from '@user/userGroup.repository';
 import { ThemeModule } from '@theme/theme.module';
 
 @Module({
@@ -16,7 +17,7 @@ import { ThemeModule } from '@theme/theme.module';
     ThemeModule,
   ],
   controllers: [UserController],
-  providers: [UserService, UserRepository],
-  exports: [UserService, UserRepository],
+  providers: [UserService, UserRepository, UserGroupRepository],
+  exports: [UserService, UserRepository, UserGroupRepository],
 })
 export class UserModule {}
