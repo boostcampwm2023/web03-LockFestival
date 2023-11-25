@@ -1,11 +1,12 @@
 import { IsNumber, IsLatitude, IsLongitude } from 'class-validator';
 import { Transform } from 'class-transformer';
+
 import { ApiProperty } from '@nestjs/swagger';
+import { PaginationDto } from '@src/dtos/pagination.dto';
 
 const DEFAULT_BOUNDARY = 5 as const;
-const DEFAULT_COUNT = 10 as const;
 
-export class ThemeLocationDto {
+export class ThemeLocationDto extends PaginationDto {
   @Transform(({ value }) => {
     return parseFloat(value);
   })
@@ -19,13 +20,6 @@ export class ThemeLocationDto {
   @IsLongitude()
   @ApiProperty({ description: '경로', example: '126.97255197' })
   y: number;
-
-  @Transform(({ value }) => {
-    return parseInt(value);
-  })
-  @IsNumber()
-  @ApiProperty({ description: '가져올 테마 개수', default: DEFAULT_COUNT, required: false })
-  count: number = DEFAULT_COUNT;
 
   @Transform(({ value }) => {
     return parseInt(value);
