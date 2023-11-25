@@ -1,6 +1,5 @@
 import { IsNumber, IsLatitude, IsLongitude } from 'class-validator';
 import { Transform } from 'class-transformer';
-
 import { ApiProperty } from '@nestjs/swagger';
 import { PaginationDto } from '@src/dtos/pagination.dto';
 
