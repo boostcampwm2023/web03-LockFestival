@@ -74,8 +74,10 @@ export class ThemeController {
     description: '',
     type: [ThemeResponseDto],
   })
-  async getLocationThemes(@Query() themeLocation: ThemeLocationDto): Promise<ThemeResponseDto[]> {
-    return await this.themeService.getLocationThemes(themeLocation);
+  async getLocationThemes(
+    @Query() themeLocationDto: ThemeLocationDto
+  ): Promise<ThemeResponseDto[]> {
+    return await this.themeService.getLocationThemes(themeLocationDto);
   }
 
   @Get('/genres/:genreId')
