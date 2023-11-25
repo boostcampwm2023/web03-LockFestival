@@ -1,6 +1,6 @@
-import { PaginationDto } from '@src/dto/pagination.dto';
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsOptional } from 'class-validator';
+import { PaginationDto } from '@src/dtos/pagination.dto';
 
 export class GroupFindOptionsDto extends PaginationDto {
   @IsOptional()
