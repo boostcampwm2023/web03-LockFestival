@@ -1,5 +1,7 @@
+import RecruitmentLayout from './components/RecruitmentLayout';
+
 const Recruitment = () => {
-  return <div>모집 페이지</div>;
+  return <RecruitmentLayout />;
 };
 
 export default Recruitment;
