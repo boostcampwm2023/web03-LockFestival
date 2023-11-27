@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from '@src/app.module';
 import { HTTP_ALLOWED_METHOD } from '@enum/http.method';
 import { ConfigService } from '@nestjs/config';
@@ -18,6 +19,15 @@ async function bootstrap() {
     defaultVersion: '1',
   });
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+
+  const config = new DocumentBuilder()
+    .setTitle('LockFestival API')
+    .setDescription('LockFestival API description')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/swagger', app, document);
   await app.listen(app.get(ConfigService).get('PORT') || 3000);
   if (module.hot) {
     module.hot.accept();
