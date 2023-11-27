@@ -18,12 +18,15 @@ export class ThemeService {
   ) {}
 
   public async getThemeDetailsById(themeId: number): Promise<ThemeDeatailsResponseDto> {
-    const themeDeatailsResponseDto: ThemeDeatailsResponseDto =
-      await this.themeRepository.getThemeDetailsById(themeId);
+    const [themeDeatailsResponseDto, sameBranchThemesDto] = await Promise.all([
+      this.themeRepository.getThemeDetailsById(themeId),
+      this.themeRepository.getSameBranchThemesById(themeId),
+    ]);
 
     if (!themeDeatailsResponseDto) {
       throw new NotFoundException('Theme not found : themeId = ' + themeId.toString());
     }
+    themeDeatailsResponseDto.otherThemes = sameBranchThemesDto;
     return themeDeatailsResponseDto;
   }
 
