@@ -4,10 +4,10 @@ export class ThemeResponseDto {
   @ApiProperty({
     name: 'posterImageUrl',
     description: '테마 포스터 이미지 URL',
-    example: 'https://www.keyescape.co.kr/file/theme_info/40_a.jpg',
+    example: 'https://i.postimg.cc/nLwL9k0H/theme-SOUL-CHASER.jpg',
   })
   posterImageUrl?: string;
-  @ApiProperty({ name: 'name', description: '테마명', example: 'BACK TO THE SCENE+' })
+  @ApiProperty({ name: 'name', description: '테마명', example: 'SOUL CHASER - 실종' })
   name: string;
   @ApiProperty({ name: 'themeId', description: '테마 id', example: 1 })
   themeId: number;
