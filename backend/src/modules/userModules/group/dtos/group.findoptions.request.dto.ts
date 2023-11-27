@@ -1,8 +1,8 @@
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsOptional } from 'class-validator';
-import { PaginationDto } from '@src/dtos/pagination.dto';
+import { GroupsPaginationCursorDto } from '@group/dtos/pagination.cursor.dto';
 
-export class GroupFindOptionsDto extends PaginationDto {
+export class GroupFindOptionsDto extends GroupsPaginationCursorDto {
   @IsOptional()
   @Transform(({ value }) => {
     if (value === 'true') {

@@ -88,10 +88,12 @@ export class GroupRepository extends Repository<Group> {
       });
     }
 
-    return await qb
-      .orderBy('group.created_at', 'DESC')
-      .offset(findOptions.page * findOptions.count - findOptions.count)
-      .limit(findOptions.count)
-      .getRawMany();
+    if (findOptions.cursorGroupId) {
+      qb.andWhere('group.id >= :cursorId', {
+        cursorId: findOptions.cursorGroupId,
+      });
+    }
+
+    return await qb.orderBy('group.id', findOptions.isDesc).limit(findOptions.count).getRawMany();
   }
 }
