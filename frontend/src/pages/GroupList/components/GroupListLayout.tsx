@@ -1,5 +1,4 @@
 import tw, { styled, css } from 'twin.macro';
-import Group from './Group/Group';
 
 const GroupListLayout = () => {
   return <Container></Container>;
