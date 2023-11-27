@@ -3,7 +3,7 @@ import { GroupLeaderDto } from '@group/dtos/group.leader.dto';
 import { GroupThemeDetailDto } from '@group/dtos/group.theme.detail.dto';
 
 export class GroupFindResponseDto {
-  writer: GroupLeaderDto;
+  leader: GroupLeaderDto;
   themeDetail: GroupThemeDetailDto;
   groupDetail: GroupFindDetailResponseDto;
 
@@ -25,7 +25,7 @@ export class GroupFindResponseDto {
     hasPassword,
     isEnter,
   }) {
-    this.writer = new GroupLeaderDto({ nickname, profileImageUrl });
+    this.leader = new GroupLeaderDto({ nickname, profileImageUrl });
     this.themeDetail = new GroupThemeDetailDto({
       brandBranchName,
       themeName,
