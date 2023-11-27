@@ -29,7 +29,7 @@ export class ThemeRepository extends Repository<Theme> {
         'branch.website as website',
         'branch.phone_number as phone',
         'branch.address as address',
-        "CONCAT(branch.branch_name, ' ', brand.brand_name) AS brandBranch",
+        "CONCAT(branch.branch_name, ' ', brand.brand_name) AS brandBranchName",
       ])
       .from(Theme, 'theme')
       .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
