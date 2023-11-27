@@ -6,6 +6,7 @@ import { GroupFindOptionsDto } from '@group/dtos/group.findoptions.request.dto';
 import { User } from '@user/entities/user.entity';
 import { UserGroup } from '@user/entities/userGroup.entity';
 import { Theme } from '@theme/entities/theme.entity';
+import { convertSortToSymbol } from '@src/enum/sort.enum';
 
 @Injectable()
 export class GroupRepository extends Repository<Group> {
@@ -89,7 +90,8 @@ export class GroupRepository extends Repository<Group> {
     }
 
     if (findOptions.cursorGroupId) {
-      qb.andWhere('group.id >= :cursorId', {
+      const symbol = convertSortToSymbol(findOptions.isDesc);
+      qb.andWhere(`group.id ${symbol} :cursorId`, {
         cursorId: findOptions.cursorGroupId,
       });
     }

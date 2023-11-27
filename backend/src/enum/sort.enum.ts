@@ -9,3 +9,10 @@ export const convertBoolToSort = (isDesc: boolean): Sort => {
   }
   return Sort.ASC;
 };
+
+export const convertSortToSymbol = (sort: Sort): string => {
+  if (sort === Sort.ASC) {
+    return '>';
+  }
+  return '<';
+};
