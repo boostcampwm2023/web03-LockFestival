@@ -1,1 +1,1 @@
-export type NavMenu = '' | 'recruitment' | 'group-chat' | 'diary' | 'search' | 'mypage';
+export type NavMenu = '' | 'recruitment' | 'group-list' | 'diary' | 'search' | 'mypage';
