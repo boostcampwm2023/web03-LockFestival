@@ -1,6 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsOptional } from 'class-validator';
-import { GroupsPaginationCursorDto } from '@group/dtos/pagination.cursor.dto';
+import { GroupsPaginationCursorDto } from '@src/modules/userModules/group/dtos/group.pagination.cursor.dto';
 
 export class GroupFindOptionsDto extends GroupsPaginationCursorDto {
   @IsOptional()
