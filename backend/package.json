@@ -28,6 +28,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.2",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/swagger": "^7.1.16",
     "@nestjs/typeorm": "^10.0.0",
     "axios": "^1.6.2",
     "class-transformer": "^0.5.1",
