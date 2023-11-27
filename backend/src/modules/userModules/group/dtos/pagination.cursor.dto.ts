@@ -1,9 +1,11 @@
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsNumber } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional } from 'class-validator';
+import { Sort } from '@src/enum/sort.enum';
 
 const DEFAULT_COUNT = 10 as const;
 
 export class GroupsPaginationCursorDto {
+  @IsOptional()
   @Transform(({ value }) => {
     return parseInt(value);
   })
@@ -13,12 +15,12 @@ export class GroupsPaginationCursorDto {
   // 기본값: true
   @Transform(({ value }) => {
     if (value === 'false') {
-      return false;
+      return Sort.ASC;
     }
-    return true;
+    return Sort.DESC;
   })
-  @IsBoolean()
-  isDesc: boolean;
+  @IsEnum(Sort)
+  isDesc: Sort = Sort.DESC;
 
   @Transform(({ value }) => {
     return parseInt(value);
