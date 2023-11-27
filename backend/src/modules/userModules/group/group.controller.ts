@@ -16,7 +16,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { OptionalGuard } from '@src/decorator';
+import { OptionalGuard } from '@src/utils/decorator';
 import { GroupService } from '@group/group.service';
 import { TokenAuthGuard } from '@auth/auth.guard';
 import { GroupRequestDto } from '@group/dtos/group.create.dto';
