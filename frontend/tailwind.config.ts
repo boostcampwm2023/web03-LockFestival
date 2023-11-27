@@ -20,9 +20,9 @@ export default {
   content: ['index.html', './src/components/**/*.tsx', './src/pages/**/*.tsx'],
   theme: {
     screens: {
-      mobile: { max: '430px' },
-      // tablet: { min: '431px', max: '1023px' },
-      desktop: '431px',
+      mobile: { max: '640px' },
+      tablet: { min: '641px', max: '1023px' },
+      desktop: { min: '1024px' },
     },
     fontFamily: {
       pretendard: ['Pretendard-Regular'],
