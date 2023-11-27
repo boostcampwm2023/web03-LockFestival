@@ -23,20 +23,28 @@ const basicButtonBaseStyle = (width: string | undefined): CSSInterpolation => cs
 
 const iconStyleMap: Record<string, TwStyle[]> = {
   l: [
-    tw`mobile:(w-[3.2rem] h-[3.2rem]) desktop:(w-[3.6rem] h-[3.6rem])`,
-    { svg: tw`mobile:(w-[1.8rem] h-[1.8rem]) desktop:(w-[2.2rem] h-[2.2rem])` },
+    tw`mobile:(w-[3.2rem] h-[3.2rem]) tablet:(w-[3.6rem] h-[3.6rem]) desktop:(w-[3.6rem] h-[3.6rem])`,
+    {
+      svg: tw`mobile:(w-[1.8rem] h-[1.8rem]) tablet:(w-[2.2rem] h-[2.2rem]) desktop:(w-[2.2rem] h-[2.2rem])`,
+    },
   ],
   m: [
-    tw`mobile:(w-[2.8rem] h-[2.8rem]) desktop:(w-[3.2rem] h-[3.2rem])`,
-    { svg: tw`mobile:(w-[1.5rem] h-[1.5rem]) desktop:(w-[1.8rem] h-[1.8rem])` },
+    tw`mobile:(w-[2.8rem] h-[2.8rem]) tablet:(w-[3.2rem] h-[3.2rem]) desktop:(w-[3.2rem] h-[3.2rem])`,
+    {
+      svg: tw`mobile:(w-[1.5rem] h-[1.5rem]) tablet:(w-[1.8rem] h-[1.8rem]) desktop:(w-[1.8rem] h-[1.8rem])`,
+    },
   ],
   s: [
-    tw`mobile:(w-[2.4rem] h-[2.4rem]) desktop:(w-[2.8rem] h-[2.8rem])`,
-    { svg: tw`mobile:(w-[1.2rem] h-[1.2rem]) desktop:(w-[1.5rem] h-[1.5rem])` },
+    tw`mobile:(w-[2.4rem] h-[2.4rem]) tablet:(w-[2.8rem] h-[2.8rem]) desktop:(w-[2.8rem] h-[2.8rem])`,
+    {
+      svg: tw`mobile:(w-[1.2rem] h-[1.2rem]) tablet:(w-[1.5rem] h-[1.5rem]) desktop:(w-[1.5rem] h-[1.5rem])`,
+    },
   ],
   default: [
-    tw`mobile:(w-[2.8rem] h-[2.8rem]) desktop:(w-[3.2rem] h-[3.2rem])`,
-    { svg: tw`mobile:(w-[1.5rem] h-[1.5rem]) desktop:(w-[1.8rem] h-[1.8rem])` },
+    tw`mobile:(w-[2.8rem] h-[2.8rem]) tablet:(w-[3.2rem] h-[3.2rem]) desktop:(w-[3.2rem] h-[3.2rem])`,
+    {
+      svg: tw`mobile:(w-[1.5rem] h-[1.5rem]) tablet:(w-[1.8rem] h-[1.8rem]) desktop:(w-[1.8rem] h-[1.8rem])`,
+    },
   ],
 };
 
