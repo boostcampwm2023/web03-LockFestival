@@ -1,14 +1,8 @@
 import tw, { styled, css } from 'twin.macro';
 import Group from './Group/Group';
-import groupListMock from '@__mocks__/group/groupListMock';
 
 const GroupListLayout = () => {
-  return (
-    <Container>
-      <Group {...groupListMock[0]} />
-      <Group {...groupListMock[1]} />
-    </Container>
-  );
+  return <Container></Container>;
 };
 export default GroupListLayout;
 
