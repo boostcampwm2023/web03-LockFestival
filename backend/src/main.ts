@@ -4,10 +4,13 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from '@src/app.module';
 import { HTTP_ALLOWED_METHOD } from '@enum/http.method';
 import { ConfigService } from '@nestjs/config';
+import { winstonLogger } from '@src/utils/logger';
 
 declare const module: any;
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {});
+  const app = await NestFactory.create(AppModule, {
+    logger: winstonLogger,
+  });
   app.enableCors({
     origin: app.get(ConfigService).get('FRONTEND_BASE_URL'),
     methods: Object.keys(HTTP_ALLOWED_METHOD),
@@ -28,6 +31,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/swagger', app, document);
+
   await app.listen(app.get(ConfigService).get('PORT') || 3000);
   if (module.hot) {
     module.hot.accept();
