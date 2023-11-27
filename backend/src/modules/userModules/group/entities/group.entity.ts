@@ -32,8 +32,11 @@ export class Group extends BaseTime {
   @Column({ name: 'appointment_date' })
   appointmentDate: Date;
 
-  @Column({ name: ' appointment_time', nullable: true })
+  @Column({ name: 'appointment_time', nullable: true })
   appointmentTime: string;
+
+  @Column({ name: 'appointment_completed', default: false })
+  appointmentCompleted: boolean;
 
   @ManyToOne(
     () => {

@@ -1,6 +1,6 @@
-import { Group } from '@group/entities/group.entity';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Group } from '@group/entities/group.entity';
 import { GroupController } from '@group/group.controller';
 import { GroupService } from '@group/group.service';
 import { GroupRepository } from '@group/group.repository';
