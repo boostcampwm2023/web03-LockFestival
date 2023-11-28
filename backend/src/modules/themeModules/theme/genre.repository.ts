@@ -15,15 +15,15 @@ export class GenreRepository extends Repository<Genre> {
       .limit(count)
       .getMany();
     return genres.map(({ id, name }) => {
-      return { id, name };
+      return { genreId: id, genreName: name };
     });
   }
 
   async getAllGenres(): Promise<GenreDto[]> {
     const genreDtos: GenreDto[] = await this.dataSource
       .createQueryBuilder()
-      .select('genre.id', 'id')
-      .addSelect('genre.name', 'name')
+      .select('genre.id', 'genreId')
+      .addSelect('genre.name', 'genreName')
       .from(Genre, 'genre')
       .orderBy('genre.id')
       .getRawMany();
