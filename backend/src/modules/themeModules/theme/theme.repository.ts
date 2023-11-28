@@ -19,7 +19,7 @@ export class ThemeRepository extends Repository<Theme> {
     const themeDetailsResponseDto: ThemeDeatailsResponseDto = await this.dataSource
       .createQueryBuilder()
       .select([
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.id as themeId',
         'theme.real_genre as realGenre',
         'theme.poster_image_url as posterImageUrl',
@@ -45,7 +45,7 @@ export class ThemeRepository extends Repository<Theme> {
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.poster_image_url as posterImageUrl',
       ])
       .from(Theme, 'theme')
@@ -62,7 +62,7 @@ export class ThemeRepository extends Repository<Theme> {
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.poster_image_url as posterImageUrl',
       ])
       .from(Theme, 'theme')
@@ -83,7 +83,7 @@ export class ThemeRepository extends Repository<Theme> {
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.poster_image_url as posterImageUrl',
       ])
       .from(Theme, 'theme')
@@ -99,7 +99,7 @@ export class ThemeRepository extends Repository<Theme> {
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.poster_image_url as posterImageUrl',
       ])
       .from(Theme, 'theme')
@@ -114,7 +114,7 @@ export class ThemeRepository extends Repository<Theme> {
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.poster_image_url as posterImageUrl',
       ])
       .from(Theme, 'theme')
@@ -133,7 +133,7 @@ export class ThemeRepository extends Repository<Theme> {
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.poster_image_url as posterImageUrl',
         'branch.branch_name as BranchName',
       ])

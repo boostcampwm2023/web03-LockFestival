@@ -39,10 +39,10 @@ export class ThemeService {
     return await Promise.all(
       genreDtos.map(async (genreDto: GenreDto): Promise<GenreThemesResponseDto> => {
         const themeDtos = await this.themeRepository.getRandomThemesByGenre(
-          genreDto.id,
+          genreDto.genreId,
           themeCount
         );
-        return { genre: genreDto.name, themes: themeDtos };
+        return { genreName: genreDto.genreName, themes: themeDtos };
       })
     );
   }
