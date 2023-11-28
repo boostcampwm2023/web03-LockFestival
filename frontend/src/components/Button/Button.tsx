@@ -29,6 +29,9 @@ rounded-default bg-gray-light text-white
         cursor: default;
         opacity: 60%;
       }
+      svg {
+        pointer-events: none;
+      }
     `,
   ];
 
