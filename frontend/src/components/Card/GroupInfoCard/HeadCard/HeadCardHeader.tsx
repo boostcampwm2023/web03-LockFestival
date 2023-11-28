@@ -3,25 +3,25 @@ import { FaRegUser } from 'react-icons/fa6';
 import { FaLock } from 'react-icons/fa6';
 
 interface Props {
-  profileUrl: string;
-  nickName: string;
-  isLock: boolean;
+  profileImageUrl: string;
+  nickname: string;
+  hasPassword: boolean;
 }
 
-const HeadCardHeader = ({ profileUrl, nickName, isLock }: Props) => {
+const HeadCardHeader = ({ profileImageUrl, nickname, hasPassword }: Props) => {
   return (
     <Header>
       <UserContainer>
-        {profileUrl ? (
-          <ProfileImg src={profileUrl} />
+        {profileImageUrl ? (
+          <ProfileImg src={profileImageUrl} />
         ) : (
           <Circle>
             <FaRegUser size={16} />
           </Circle>
         )}
-        <Text>{nickName}</Text>
+        <Text>{nickname}</Text>
       </UserContainer>
-      {isLock && <FaLock size={16} />}
+      {hasPassword && <FaLock size={16} />}
     </Header>
   );
 };
