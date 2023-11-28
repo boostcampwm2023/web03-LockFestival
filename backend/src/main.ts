@@ -27,7 +27,7 @@ async function bootstrap() {
     .setTitle('LockFestival API')
     .setDescription('LockFestival API description')
     .setVersion('1.0')
-    .addBearerAuth({ type: 'http', scheme: 'bearer', name: 'JWT', in: 'header' }, 'Authentication')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', name: 'JWT', in: 'header' }, 'Authorization')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
