@@ -1,3 +1,4 @@
+import fetchRecruitmentByCursor from '@apis/fetchRecruitmentByCursor';
 import fetchThemesByLocation from '@apis/fetchThemesByLocation';
 import fetchThemesByRandomGenres from '@apis/fetchThemesByRandomGenres';
 import fetchThemeDetails from '@apis/fetchThemeDetails';
@@ -10,6 +11,10 @@ const QUERY_MANAGEMENT = {
   randomThemes: {
     key: 'randomThemes',
     fn: fetchThemesByRandomGenres,
+  },
+  recruitmentList: {
+    key: 'recruitmentList',
+    fn: fetchRecruitmentByCursor,
   },
   themeDetails: {
     key: ['themeDetails'],

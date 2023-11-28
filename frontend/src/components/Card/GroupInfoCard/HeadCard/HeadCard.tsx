@@ -7,15 +7,19 @@ export interface HeadCardProps extends GroupInfoCardProps {
   handleClickFlipButton: () => void;
 }
 
-const HeadCard = ({ writer, etc, theme, handleClickFlipButton }: HeadCardProps) => {
+const HeadCard = ({ leader, themeDetail, groupDetail, handleClickFlipButton }: HeadCardProps) => {
   return (
     <Container>
       <HeadCardHeader
-        nickName={writer.nickName}
-        profileUrl={writer.profileUrl}
-        isLock={etc.isLock}
+        nickname={leader.nickname}
+        profileImageUrl={leader.profileImageUrl}
+        hasPassword={groupDetail.hasPassword}
       />
-      <HeadCardContent etc={etc} theme={theme} handleClickFlipButton={handleClickFlipButton} />
+      <HeadCardContent
+        themeDetail={themeDetail}
+        groupDetail={groupDetail}
+        handleClickFlipButton={handleClickFlipButton}
+      />
     </Container>
   );
 };
