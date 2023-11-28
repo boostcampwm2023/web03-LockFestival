@@ -1,7 +1,7 @@
 import tw, { styled, css } from 'twin.macro';
 import Label from '@components/Label/Label';
 import { FaCircleUser } from 'react-icons/fa6';
-import LeaderIcon from './LeaderIcon.svg?react';
+import LeaderIcon from '../../icon/LeaderIcon.svg?react';
 
 interface UserItemProps {
   profileImg: string;
@@ -21,7 +21,7 @@ const UserItem = ({ profileImg, nickname, isLeader }: UserItemProps) => {
       <Label isBorder={false} backgroundColor="transparent" size="l" width="11rem">
         <NameTag>{nickname}</NameTag>
       </Label>
-      {isLeader ? <LeaderIcon width={20} /> : ''}
+      {isLeader ? <LeaderIcon width={20} height={20} /> : ''}
     </UserItemWrapper>
   );
 };
