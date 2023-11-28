@@ -6,8 +6,8 @@ import { GenreDto } from '@theme/dtos/genre.dto';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
-import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
 import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
+import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 
 @Injectable()
 export class ThemeService {
@@ -18,7 +18,7 @@ export class ThemeService {
     private readonly genreRepository: GenreRepository
   ) {}
 
-  public async getThemeDetailsById(themeId: number): Promise<ThemeDeatailsResponseDto> {
+  public async getThemeDetailsById(themeId: number): Promise<ThemeBranchThemesDeatailsResponseDto> {
     const [themeDeatailsResponseDto, sameBranchThemesDto] = await Promise.all([
       this.themeRepository.getThemeDetailsById(themeId),
       this.themeRepository.getSameBranchThemesById(themeId),
@@ -27,6 +27,7 @@ export class ThemeService {
     if (!themeDeatailsResponseDto) {
       throw new NotFoundException('Theme not found : themeId = ' + themeId.toString());
     }
+
     themeDeatailsResponseDto.otherThemes = sameBranchThemesDto;
     return themeDeatailsResponseDto;
   }

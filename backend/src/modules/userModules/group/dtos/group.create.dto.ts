@@ -5,8 +5,7 @@ export class GroupRequestDto {
   recruitmentMembers: number;
   @ApiProperty({
     description: '모집 내용',
-    example:
-      '11월 5일 오후 5시에 갈사람 구해요. (테마 변경 가능)11월 5일 오후 5시에 갈사람 구해요. ',
+    example: '(테마 변경 가능)11월 5일 오후 5시에 갈사람 구해요. ',
   })
   recruitmentContent: string;
   @ApiProperty({ description: '모집 완료 여부', example: false })
