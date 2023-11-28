@@ -1,7 +1,7 @@
 import tw, { styled, css } from 'twin.macro';
 
 import Label from '@components/Label/Label';
-import getStringByDate from '@utils/getStringByDate';
+import { getStringByDate } from '@utils/dateUtil';
 
 import { HeadCardProps } from './HeadCard';
 import { FaRegUser } from 'react-icons/fa6';
