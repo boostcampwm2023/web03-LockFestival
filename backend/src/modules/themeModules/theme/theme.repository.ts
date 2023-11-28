@@ -1,10 +1,10 @@
 import { Repository, DataSource } from 'typeorm';
 import { Injectable } from '@nestjs/common';
+import { ORDER_BY, SELECT } from '@config/constants/query';
 import { Branch } from '@branch/entities/branch.entity';
 import { Brand } from '@brand/entities/brand.entity';
 import { Theme } from '@theme/entities/theme.entity';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
-import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
 import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
@@ -20,20 +20,7 @@ export class ThemeRepository extends Repository<Theme> {
   async getThemeDetailsById(themeId: number): Promise<ThemeBranchThemesDeatailsResponseDto> {
     const themeDetailsResponseDto: ThemeBranchThemesDeatailsResponseDto = await this.dataSource
       .createQueryBuilder()
-      .select([
-        'theme.name as themeName',
-        'theme.id as themeId',
-        'theme.real_genre as realGenre',
-        'theme.poster_image_url as posterImageUrl',
-        'theme.difficulty as difficulty',
-        'theme.min_member as minMember',
-        'theme.max_member as maxMember',
-        'theme.time_limit as playTime',
-        'branch.website as website',
-        'branch.phone_number as phone',
-        'branch.address as address',
-        "CONCAT(branch.branch_name, ' ', brand.brand_name) AS brandBranchName",
-      ])
+      .select(SELECT.THEME_DETAIL)
       .from(Theme, 'theme')
       .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
       .innerJoin(Brand, 'brand', 'branch.brand_id = brand.id')
@@ -45,11 +32,7 @@ export class ThemeRepository extends Repository<Theme> {
   async getRandomThemesByGenre(genreId: number, themeCount: number): Promise<ThemeResponseDto[]> {
     const themes: ThemeResponseDto[] = await this.dataSource
       .createQueryBuilder()
-      .select([
-        'theme.id as themeId',
-        'theme.name as themeName',
-        'theme.poster_image_url as posterImageUrl',
-      ])
+      .select(SELECT.SIMPLE_THEME_BY_THEME_ID)
       .from(Theme, 'theme')
       .where('theme.genre_id = :genreId', { genreId })
       .orderBy('Rand()')
@@ -62,11 +45,7 @@ export class ThemeRepository extends Repository<Theme> {
   async getThemesByBoundary(themeLocationDto: ThemeLocationDto) {
     const qb = this.dataSource
       .createQueryBuilder()
-      .select([
-        'theme.id as themeId',
-        'theme.name as themeName',
-        'theme.poster_image_url as posterImageUrl',
-      ])
+      .select(SELECT.SIMPLE_THEME_BY_THEME_ID)
       .from(Theme, 'theme')
       .innerJoin('theme.branch', 'branch')
       .where('ST_Distance_Sphere(point(branch.y, branch.x), point(:y, :x)) <= :boundary', {
@@ -92,11 +71,7 @@ export class ThemeRepository extends Repository<Theme> {
   async getThemesByGenre(genreId: number, count: number): Promise<Array<ThemeResponseDto>> {
     const themes: ThemeResponseDto[] = await this.dataSource
       .createQueryBuilder()
-      .select([
-        'theme.id as themeId',
-        'theme.name as themeName',
-        'theme.poster_image_url as posterImageUrl',
-      ])
+      .select(SELECT.SIMPLE_THEME_BY_THEME_ID)
       .from(Theme, 'theme')
       .where('theme.genre_id = :genreId', { genreId })
       .limit(count)
@@ -108,11 +83,7 @@ export class ThemeRepository extends Repository<Theme> {
   async getThemesByBranchId({ branchId, count }): Promise<ThemeResponseDto[]> {
     const themeDtos = await this.dataSource
       .createQueryBuilder()
-      .select([
-        'theme.id as themeId',
-        'theme.name as themeName',
-        'theme.poster_image_url as posterImageUrl',
-      ])
+      .select(SELECT.SIMPLE_THEME_BY_THEME_ID)
       .from(Theme, 'theme')
       .where('theme.branch_id = :branchId', { branchId })
       .limit(count)
@@ -123,11 +94,7 @@ export class ThemeRepository extends Repository<Theme> {
   async getSameBranchThemesById(themeId: number, count: number = 5): Promise<ThemeResponseDto[]> {
     const themes: ThemeResponseDto[] = await this.dataSource
       .createQueryBuilder()
-      .select([
-        'theme.id as themeId',
-        'theme.name as themeName',
-        'theme.poster_image_url as posterImageUrl',
-      ])
+      .select(SELECT.SIMPLE_THEME_BY_THEME_ID)
       .from(Theme, 'theme')
       .where('theme.branch_id = (SELECT branch_id FROM theme WHERE id = :themeId)', { themeId })
       .andWhere('theme.id<> :themeId', { themeId })
@@ -142,23 +109,11 @@ export class ThemeRepository extends Repository<Theme> {
   ): Promise<ThemeSimpleSearchResponseDto[]> {
     const themes: ThemeSimpleSearchResponseDto[] = await this.dataSource
       .createQueryBuilder()
-      .select([
-        'theme.id as themeId',
-        'theme.name as themeName',
-        'theme.poster_image_url as posterImageUrl',
-        'branch.branch_name as BranchName',
-      ])
+      .select(SELECT.THEME_BY_THEME_ID)
       .from(Theme, 'theme')
       .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
       .where('theme.name LIKE :themeName', { themeName: `%${query}%` })
-      .orderBy(
-        `CASE WHEN theme.name = :exactQuery THEN 0 
-      WHEN theme.name LIKE :startWithQuery THEN 1 
-      WHEN theme.name LIKE :containsQuery THEN 2 
-      WHEN theme.name LIKE :endsWithQuery THEN 3 
-    END`,
-        'ASC'
-      )
+      .orderBy(ORDER_BY.QUERY, 'ASC')
       .setParameters({
         exactQuery: query,
         startWithQuery: `${query}%`,
