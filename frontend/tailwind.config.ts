@@ -81,6 +81,19 @@ export default {
           fontWeight: 900,
         },
       ],
+      'xl': [
+        '1.8rem',
+        {
+          lineHeight: '1.8rem',
+        },
+      ],
+      'xl-bold': [
+        '1.8rem',
+        {
+          lineHeight: '1.8rem',
+          fontWeight: 900,
+        },
+      ],
     },
     spacing: spacingObject,
     extend: {
