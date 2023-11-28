@@ -6,7 +6,7 @@ import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { GenreService } from '@theme/genre.service';
 import { GenreDto } from '@theme/dtos/genre.dto';
-import { ThemeBranchDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
+import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 
 const DEFAULT_THEME_COUNT = 10;
 
@@ -26,11 +26,11 @@ export class ThemeController {
   @ApiOkResponse({
     status: 200,
     description: '',
-    type: ThemeBranchDeatailsResponseDto,
+    type: ThemeBranchThemesDeatailsResponseDto,
   })
   async getThemeDetails(
     @Param('themeId', ParseIntPipe) themeId: number
-  ): Promise<ThemeBranchDeatailsResponseDto> {
+  ): Promise<ThemeBranchThemesDeatailsResponseDto> {
     return await this.themeService.getThemeDetailsById(themeId);
   }
 

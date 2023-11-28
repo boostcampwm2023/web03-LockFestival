@@ -6,7 +6,7 @@ import { GenreDto } from '@theme/dtos/genre.dto';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
-import { ThemeBranchDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
+import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 
 @Injectable()
 export class ThemeService {
@@ -17,7 +17,7 @@ export class ThemeService {
     private readonly genreRepository: GenreRepository
   ) {}
 
-  public async getThemeDetailsById(themeId: number): Promise<ThemeBranchDeatailsResponseDto> {
+  public async getThemeDetailsById(themeId: number): Promise<ThemeBranchThemesDeatailsResponseDto> {
     const [themeDeatailsResponseDto, sameBranchThemesDto] = await Promise.all([
       this.themeRepository.getThemeDetailsById(themeId),
       this.themeRepository.getSameBranchThemesById(themeId),
