@@ -4,6 +4,8 @@ import { Branch } from '@branch/entities/branch.entity';
 import { Brand } from '@brand/entities/brand.entity';
 import { Theme } from '@theme/entities/theme.entity';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
+import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
+import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
 import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 
@@ -57,8 +59,8 @@ export class ThemeRepository extends Repository<Theme> {
     return themes;
   }
 
-  async getThemesByBoundary({ x, y, boundary, count }): Promise<ThemeResponseDto[]> {
-    const themes: ThemeResponseDto[] = await this.dataSource
+  async getThemesByBoundary(themeLocationDto: ThemeLocationDto) {
+    const qb = this.dataSource
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
@@ -68,14 +70,23 @@ export class ThemeRepository extends Repository<Theme> {
       .from(Theme, 'theme')
       .innerJoin('theme.branch', 'branch')
       .where('ST_Distance_Sphere(point(branch.y, branch.x), point(:y, :x)) <= :boundary', {
-        x,
-        y,
-        boundary: boundary * KM,
+        x: themeLocationDto.x,
+        y: themeLocationDto.y,
+        boundary: themeLocationDto.boundary * KM,
       })
-      .limit(count)
-      .getRawMany();
+      .orderBy(
+        `ST_Distance_Sphere(point(branch.y, branch.x), point(${themeLocationDto.y}, ${themeLocationDto.x}))`
+      );
 
-    return themes;
+    const [count, themes] = await Promise.all([
+      qb.getCount(),
+      qb
+        .offset(themeLocationDto.page * themeLocationDto.count - themeLocationDto.count)
+        .limit(themeLocationDto.count)
+        .getRawMany(),
+    ]);
+
+    return { count, themes };
   }
 
   async getThemesByGenre(genreId: number, count: number): Promise<Array<ThemeResponseDto>> {

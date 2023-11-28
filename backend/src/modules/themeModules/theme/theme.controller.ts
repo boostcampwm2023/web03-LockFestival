@@ -5,7 +5,8 @@ import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { GenreService } from '@theme/genre.service';
-import { GenreDto } from '@theme/dtos/genre.dto'
+import { GenreDto } from '@theme/dtos/genre.dto';
+import { ThemeLocationResponseDto } from '@theme/dtos/theme.location.response.dto';
 import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
 import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 
@@ -74,10 +75,12 @@ export class ThemeController {
   @ApiOkResponse({
     status: 200,
     description: '',
-    type: [ThemeResponseDto],
+    type: ThemeLocationResponseDto,
   })
-  async getLocationThemes(@Query() themeLocation: ThemeLocationDto): Promise<ThemeResponseDto[]> {
-    return await this.themeService.getLocationThemes(themeLocation);
+  async getLocationThemes(
+    @Query() themeLocationDto: ThemeLocationDto
+  ): Promise<ThemeLocationResponseDto> {
+    return await this.themeService.getLocationThemes(themeLocationDto);
   }
 
   @Get('/genres/:genreId')
