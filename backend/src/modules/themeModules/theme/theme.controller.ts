@@ -7,7 +7,9 @@ import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { GenreService } from '@theme/genre.service';
 import { GenreDto } from '@theme/dtos/genre.dto';
 import { ThemeLocationResponseDto } from '@theme/dtos/theme.location.response.dto';
+import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
 import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
+
 
 const DEFAULT_THEME_COUNT = 10;
 
@@ -120,5 +122,24 @@ export class ThemeController {
   })
   async getGenres(): Promise<GenreDto[]> {
     return await this.genreService.getAllGenres();
+  }
+
+  @Get('/simple-themes')
+  @ApiOperation({
+    summary: '검색 리스트 반환',
+    description: '모집글 생성 시 검색한 테마 리스트를 10개 반환합니다',
+  })
+  @ApiQuery({
+    description: `검색어`,
+    name: 'query',
+    required: true,
+  })
+  @ApiOkResponse({
+    status: 200,
+    description: '',
+    type: [ThemeSimpleSearchResponseDto],
+  })
+  async getSimpleThemes(@Query('query') query: string): Promise<ThemeSimpleSearchResponseDto[]> {
+    return await this.themeService.getSimpleThemesBySearch(query);
   }
 }

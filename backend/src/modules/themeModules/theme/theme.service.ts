@@ -8,6 +8,7 @@ import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
 import { ThemeLocationResponseDto } from '@theme/dtos/theme.location.response.dto';
+import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
 import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 
 @Injectable()
@@ -41,10 +42,10 @@ export class ThemeService {
     return await Promise.all(
       genreDtos.map(async (genreDto: GenreDto): Promise<GenreThemesResponseDto> => {
         const themeDtos = await this.themeRepository.getRandomThemesByGenre(
-          genreDto.id,
+          genreDto.genreId,
           themeCount
         );
-        return { genre: genreDto.name, themes: themeDtos };
+        return { genreName: genreDto.genreName, themes: themeDtos };
       })
     );
   }
@@ -71,5 +72,8 @@ export class ThemeService {
 
   public async getGenreThemes(genreId: number, count: number): Promise<Array<ThemeResponseDto>> {
     return await this.themeRepository.getThemesByGenre(genreId, count);
+  }
+  public async getSimpleThemesBySearch(query: string): Promise<ThemeSimpleSearchResponseDto[]> {
+    return await this.themeRepository.getSimpleThemesBySearch(query);
   }
 }
