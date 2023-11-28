@@ -64,11 +64,12 @@ export class GroupController {
   @ApiOperation({
     summary: '그룹 리스트 조회(검색)',
     description:
-      '입력받은 조건을 기준으로 그룹 리스트를 반환합니다. 로그인한 사용자에게는 그룹에 속하는지에 대한 정보도 추가로 제공합니다.',
+      '입력받은 조건을 기준으로 그룹 리스트를 반환합니다. 로그인한 사용자에게는 그룹에 속하는지에 대한 정보도 추가로 제공합니다.(Authentication: Optional)',
   })
   @ApiOkResponse({
     type: GroupsResponseDto,
   })
+  @ApiBearerAuth('Authorization')
   async getAllGroups(
     @Req() { user },
     @Query() findOptions: GroupFindOptionsDto
