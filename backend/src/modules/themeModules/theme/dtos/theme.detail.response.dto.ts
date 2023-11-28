@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 
 export class ThemeDeatailsResponseDto {
   @ApiProperty({ example: 'SOUL CHASER - 실종' })
@@ -26,6 +25,4 @@ export class ThemeDeatailsResponseDto {
   address: string;
   @ApiProperty({ example: 'https://www.nextedition.co.kr/shops/NextEdition%20Gundae' })
   website: string;
-  @ApiProperty({ type: [ThemeResponseDto] })
-  otherThemes: ThemeResponseDto[];
 }

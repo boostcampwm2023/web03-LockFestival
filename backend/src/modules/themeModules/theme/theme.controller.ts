@@ -1,12 +1,12 @@
 import { Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ThemeService } from '@theme/theme.service';
 import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
-import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
 import { GenreService } from '@theme/genre.service';
 import { GenreDto } from '@theme/dtos/genre.dto';
-import { ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ThemeBranchDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 
 const DEFAULT_THEME_COUNT = 10;
 
@@ -26,11 +26,11 @@ export class ThemeController {
   @ApiOkResponse({
     status: 200,
     description: '',
-    type: [ThemeDeatailsResponseDto],
+    type: ThemeBranchDeatailsResponseDto,
   })
   async getThemeDetails(
     @Param('themeId', ParseIntPipe) themeId: number
-  ): Promise<ThemeDeatailsResponseDto> {
+  ): Promise<ThemeBranchDeatailsResponseDto> {
     return await this.themeService.getThemeDetailsById(themeId);
   }
 
