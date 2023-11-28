@@ -17,7 +17,16 @@ function ThemeDetailsModal({ themeId, onClose }: ThemeDetailsModalProps) {
   const navigate = useNavigate();
 
   if (isError) {
-    return <DetailModalContainer>해당 테마의 상세정보가 없습니다.</DetailModalContainer>;
+    return (
+      <ErrorContainer>
+        해당 테마의 상세정보가 없습니다.
+        <Button isIcon={true} onClick={onClose}>
+          <>
+            <FaXmark />
+          </>
+        </Button>
+      </ErrorContainer>
+    );
   }
 
   return (
@@ -94,6 +103,18 @@ function ThemeDetailsModal({ themeId, onClose }: ThemeDetailsModalProps) {
 }
 
 export default ThemeDetailsModal;
+
+const ErrorContainer = styled.div([
+  css`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 38rem;
+    align-items: center;
+    gap: 3.6rem;
+  `,
+  tw`font-pretendard text-l`,
+]);
 
 const DetailModalContainer = styled.div([
   css`
