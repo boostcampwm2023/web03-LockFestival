@@ -5,6 +5,7 @@ import { Brand } from '@brand/entities/brand.entity';
 import { Theme } from '@theme/entities/theme.entity';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
+import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
 
 const KM = 1000;
 
@@ -119,6 +120,40 @@ export class ThemeRepository extends Repository<Theme> {
       .from(Theme, 'theme')
       .where('theme.branch_id = (SELECT branch_id FROM theme WHERE id = :themeId)', { themeId })
       .andWhere('theme.id<> :themeId', { themeId })
+      .limit(count)
+      .getRawMany();
+    return themes;
+  }
+
+  async getSimpleThemesBySearch(
+    query: string,
+    count: number = 10
+  ): Promise<ThemeSimpleSearchResponseDto[]> {
+    const themes: ThemeSimpleSearchResponseDto[] = await this.dataSource
+      .createQueryBuilder()
+      .select([
+        'theme.id as themeId',
+        'theme.name as name',
+        'theme.poster_image_url as posterImageUrl',
+        'branch.branch_name as BranchName',
+      ])
+      .from(Theme, 'theme')
+      .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
+      .where('theme.name LIKE :themeName', { themeName: `%${query}%` })
+      .orderBy(
+        `CASE WHEN theme.name = :exactQuery THEN 0 
+      WHEN theme.name LIKE :startWithQuery THEN 1 
+      WHEN theme.name LIKE :containsQuery THEN 2 
+      WHEN theme.name LIKE :endsWithQuery THEN 3 
+    END`,
+        'ASC'
+      )
+      .setParameters({
+        exactQuery: query,
+        startWithQuery: `${query}%`,
+        containsQuery: `%${query}%`,
+        endsWithQuery: `%${query}`,
+      })
       .limit(count)
       .getRawMany();
     return themes;

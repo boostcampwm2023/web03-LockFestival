@@ -1,4 +1,5 @@
 import { Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ThemeService } from '@theme/theme.service';
 import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
@@ -6,7 +7,7 @@ import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
 import { GenreService } from '@theme/genre.service';
 import { GenreDto } from '@theme/dtos/genre.dto';
-import { ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
 
 const DEFAULT_THEME_COUNT = 10;
 
@@ -117,5 +118,24 @@ export class ThemeController {
   })
   async getGenres(): Promise<GenreDto[]> {
     return await this.genreService.getAllGenres();
+  }
+
+  @Get('/simple-themes')
+  @ApiOperation({
+    summary: '검색 리스트 반환',
+    description: '모집글 생성 시 검색한 테마 리스트를 10개 반환합니다',
+  })
+  @ApiQuery({
+    description: `검색어`,
+    name: 'query',
+    required: true,
+  })
+  @ApiOkResponse({
+    status: 200,
+    description: '',
+    type: [ThemeSimpleSearchResponseDto],
+  })
+  async getSimpleThemes(@Query('query') query: string): Promise<ThemeSimpleSearchResponseDto[]> {
+    return await this.themeService.getSimpleThemesBySearch(query);
   }
 }
