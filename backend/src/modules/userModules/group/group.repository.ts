@@ -1,12 +1,12 @@
 import { Repository, DataSource } from 'typeorm';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { convertSortToSymbol } from '@src/enum/sort.enum';
 import { Group } from '@group/entities/group.entity';
 import { GroupRequestDto } from '@group/dtos/group.create.dto';
 import { GroupFindOptionsDto } from '@group/dtos/group.findoptions.request.dto';
 import { User } from '@user/entities/user.entity';
 import { UserGroup } from '@user/entities/userGroup.entity';
 import { Theme } from '@theme/entities/theme.entity';
-import { convertSortToSymbol } from '@src/enum/sort.enum';
 
 @Injectable()
 export class GroupRepository extends Repository<Group> {
@@ -96,6 +96,13 @@ export class GroupRepository extends Repository<Group> {
       });
     }
 
-    return await qb.orderBy('group.id', findOptions.isDesc).limit(findOptions.count).getRawMany();
+    qb.orderBy('group.id', findOptions.isDesc);
+
+    const [count, dtos] = await Promise.all([
+      await qb.getCount(),
+      qb.limit(findOptions.count).getRawMany(),
+    ]);
+
+    return { count, dtos };
   }
 }
