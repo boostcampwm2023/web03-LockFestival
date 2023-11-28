@@ -107,7 +107,7 @@ export class GroupRepository extends Repository<Group> {
     qb.orderBy('group.id', findOptions.isDesc);
 
     const [count, dtos] = await Promise.all([
-      await qb.getCount(),
+      qb.getCount(),
       qb.limit(findOptions.count).getRawMany(),
     ]);
 
