@@ -57,8 +57,8 @@ export class ThemeRepository extends Repository<Theme> {
     return themes;
   }
 
-  async getThemesByBoundary(themeLocationDto: ThemeLocationDto): Promise<ThemeResponseDto[]> {
-    const themes: ThemeResponseDto[] = await this.dataSource
+  async getThemesByBoundary(themeLocationDto: ThemeLocationDto) {
+    const qb = this.dataSource
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
@@ -72,11 +72,19 @@ export class ThemeRepository extends Repository<Theme> {
         y: themeLocationDto.y,
         boundary: themeLocationDto.boundary * KM,
       })
-      .offset(themeLocationDto.page * themeLocationDto.count - themeLocationDto.count)
-      .limit(themeLocationDto.count)
-      .getRawMany();
+      .orderBy(
+        `ST_Distance_Sphere(point(branch.y, branch.x), point(${themeLocationDto.y}, ${themeLocationDto.x}))`
+      );
 
-    return themes;
+    const [count, themes] = await Promise.all([
+      qb.getCount(),
+      qb
+        .offset(themeLocationDto.page * themeLocationDto.count - themeLocationDto.count)
+        .limit(themeLocationDto.count)
+        .getRawMany(),
+    ]);
+
+    return { count, themes };
   }
 
   async getThemesByGenre(genreId: number, count: number): Promise<Array<ThemeResponseDto>> {

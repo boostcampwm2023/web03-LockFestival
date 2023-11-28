@@ -7,6 +7,7 @@ import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
+import { ThemeLocationResponseDto } from '@theme/dtos/theme.location.response.dto';
 
 @Injectable()
 export class ThemeService {
@@ -45,8 +46,25 @@ export class ThemeService {
       })
     );
   }
-  public async getLocationThemes(themeLocationDto: ThemeLocationDto): Promise<ThemeResponseDto[]> {
-    return await this.themeRepository.getThemesByBoundary(themeLocationDto);
+  public async getLocationThemes(
+    themeLocationDto: ThemeLocationDto
+  ): Promise<ThemeLocationResponseDto> {
+    const { count, themes } = await this.themeRepository.getThemesByBoundary(themeLocationDto);
+
+    const restCount = Math.max(
+      count - (themeLocationDto.page * themeLocationDto.count + themes.length),
+      0
+    );
+
+    if (restCount === 0) {
+      return new ThemeLocationResponseDto(0, undefined, themes);
+    }
+
+    return new ThemeLocationResponseDto(
+      restCount,
+      restCount > 0 ? themeLocationDto.page + 1 : undefined,
+      themes
+    );
   }
 
   public async getGenreThemes(genreId: number, count: number): Promise<Array<ThemeResponseDto>> {
