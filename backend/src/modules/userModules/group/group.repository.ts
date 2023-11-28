@@ -1,12 +1,12 @@
 import { Repository, DataSource } from 'typeorm';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { convertSortToSymbol } from '@src/enum/sort.enum';
 import { Group } from '@group/entities/group.entity';
 import { GroupRequestDto } from '@group/dtos/group.create.dto';
 import { GroupFindOptionsDto } from '@group/dtos/group.findoptions.request.dto';
 import { User } from '@user/entities/user.entity';
 import { UserGroup } from '@user/entities/userGroup.entity';
 import { Theme } from '@theme/entities/theme.entity';
-import { convertSortToSymbol } from '@src/enum/sort.enum';
 
 @Injectable()
 export class GroupRepository extends Repository<Group> {
@@ -40,11 +40,19 @@ export class GroupRepository extends Repository<Group> {
         'leader.nickname as nickname',
         'leader.profile_image_url as profileImageUrl',
 
-        'brand.brand_name as brandName',
+        'theme.id as themeId',
+        'branch.branchName as branchName',
         'theme.name as themeName',
+        'theme.real_genre as realGenre',
         'theme.poster_image_url as posterImageUrl',
-        'branch.branch_name as branchName',
-        'branch.address as themeAddress',
+        'theme.difficulty as difficulty',
+        'theme.min_member as minMember',
+        'theme.max_member as maxMember',
+        'theme.time_limit as playTime',
+        'branch.website as website',
+        'branch.phone_number as phone',
+        'branch.address as address',
+        "CONCAT(branch.branch_name, ' ', brand.brand_name) AS brandBranchName",
 
         'group.id as groupId',
         'group.appointment_date as appointmentDate',
@@ -96,6 +104,13 @@ export class GroupRepository extends Repository<Group> {
       });
     }
 
-    return await qb.orderBy('group.id', findOptions.isDesc).limit(findOptions.count).getRawMany();
+    qb.orderBy('group.id', findOptions.isDesc);
+
+    const [count, dtos] = await Promise.all([
+      qb.getCount(),
+      qb.limit(findOptions.count).getRawMany(),
+    ]);
+
+    return { count, dtos };
   }
 }

@@ -3,9 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { GroupRepository } from '@group/group.repository';
 import { GroupRequestDto } from '@group/dtos/group.create.dto';
 import { ThemeRepository } from '@theme/theme.repository';
-import { Theme } from '@theme/entities/theme.entity';
 import { GroupFindOptionsDto } from '@group/dtos/group.findoptions.request.dto';
 import { GroupFindResponseDto } from '@group/dtos/group.find.response.dto';
+import { GroupsResponseDto } from '@group/dtos/groups.response.dto';
+import { Theme } from '@theme/entities/theme.entity';
 import { UserGroupRepository } from '@user/userGroup.repository';
 
 @Injectable()
@@ -27,11 +28,11 @@ export class GroupService {
   async getAllGroups(
     nickname: string,
     findOptions: GroupFindOptionsDto
-  ): Promise<GroupFindResponseDto[]> {
-    const rawDtos = await this.groupRepository.findByFindOptions(findOptions);
+  ): Promise<GroupsResponseDto> {
+    const { count, dtos: rawDtos } = await this.groupRepository.findByFindOptions(findOptions);
 
     if (rawDtos.length === 0) {
-      return rawDtos;
+      return new GroupsResponseDto(0, undefined, []);
     }
 
     let enteredGroupsSet: Set<number> = new Set();
@@ -49,13 +50,19 @@ export class GroupService {
       }, enteredGroupsSet);
     }
 
-    return rawDtos.map((dto) => {
-      dto.hasPassword = dto.password !== null;
-      dto.isEnter = enteredGroupsSet.has(dto.groupId);
-      dto.appointmentCompleted = dto.appointmentCompleted === 1;
-      dto.recruitmentCompleted = dto.recruitmentCompleted === 1;
-      dto.brandBranchName = `${dto.brandName} ${dto.branchName}`;
-      return new GroupFindResponseDto(dto);
-    });
+    const restCount = Math.max(count - findOptions.count, 0);
+
+    return new GroupsResponseDto(
+      restCount,
+      restCount > 0 ? rawDtos[rawDtos.length - 1].groupId : undefined,
+      rawDtos.map((dto) => {
+        dto.hasPassword = dto.password !== null;
+        dto.isEnter = enteredGroupsSet.has(dto.groupId);
+        dto.appointmentCompleted = dto.appointmentCompleted === 1;
+        dto.recruitmentCompleted = dto.recruitmentCompleted === 1;
+        dto.brandBranchName = `${dto.brandName} ${dto.branchName}`;
+        return new GroupFindResponseDto(dto);
+      })
+    );
   }
 }

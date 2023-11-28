@@ -4,7 +4,7 @@ import { Branch } from '@branch/entities/branch.entity';
 import { Brand } from '@brand/entities/brand.entity';
 import { Theme } from '@theme/entities/theme.entity';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
-import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
+import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 
 const KM = 1000;
 
@@ -14,8 +14,8 @@ export class ThemeRepository extends Repository<Theme> {
     super(Theme, dataSource.createEntityManager());
   }
 
-  async getThemeDetailsById(themeId: number): Promise<ThemeDeatailsResponseDto> {
-    const themeDetailsResponseDto: ThemeDeatailsResponseDto = await this.dataSource
+  async getThemeDetailsById(themeId: number): Promise<ThemeBranchThemesDeatailsResponseDto> {
+    const themeDetailsResponseDto: ThemeBranchThemesDeatailsResponseDto = await this.dataSource
       .createQueryBuilder()
       .select([
         'theme.name as name',
