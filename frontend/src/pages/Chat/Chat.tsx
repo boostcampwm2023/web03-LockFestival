@@ -2,13 +2,23 @@ import tw, { styled, css } from 'twin.macro';
 import ChatContainer from './components/ChatContainer';
 import RoomInfoContainer from './components/RoomInfoContainer';
 import UserListContainer from './components/UserListContainer';
+import { useParams } from 'react-router-dom';
+import useSocket from '@hooks/socket/useSocket';
 
 const Chat = () => {
+  const roomId = useParams<{ roomId: string }>().roomId;
+
+  const { roomInfo, userListInfo, sendChat } = useSocket(roomId);
+
+  if (!roomId || !roomInfo || !userListInfo) {
+    return;
+  }
+
   return (
     <Container>
-      <UserListContainer />
-      <ChatContainer />
-      <RoomInfoContainer />
+      <UserListContainer userListInfo={userListInfo} />
+      <ChatContainer userListInfo={userListInfo} roomId={roomId} sendChat={sendChat} />
+      <RoomInfoContainer roomInfo={roomInfo} />
     </Container>
   );
 };
