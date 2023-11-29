@@ -2,15 +2,9 @@ import tw, { styled, css } from 'twin.macro';
 import Label from '@components/Label/Label';
 import { FaCircleUser } from 'react-icons/fa6';
 import LeaderIcon from '../../icon/LeaderIcon.svg?react';
+import { UserInfo } from 'types/chat';
 
-interface UserItemProps {
-  profileImg: string;
-  nickname: string;
-  isLeader: boolean;
-  isMe: boolean;
-}
-
-const UserItem = ({ profileImg, nickname, isLeader }: UserItemProps) => {
+const UserItem = ({ profileImg, nickname, isLeader }: Omit<UserInfo, 'userId' | 'isLeave'>) => {
   return (
     <UserItemWrapper>
       {profileImg !== '' ? (

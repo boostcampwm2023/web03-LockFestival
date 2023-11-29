@@ -1,13 +1,6 @@
-interface UserDataType {
-  userId: string;
-  profileImg: string;
-  nickname: string;
-  isLeader: boolean;
-  isLeave: boolean;
-  isMe: boolean;
-}
+import { UserInfo } from 'types/chat';
 
-const mockUserData: UserDataType[] = [
+const mockUserData: UserInfo[] = [
   {
     userId: 'user_1',
     profileImg: 'https://i.ibb.co/6RfQQLF/image.jpg',
