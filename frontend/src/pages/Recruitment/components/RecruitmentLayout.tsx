@@ -14,8 +14,7 @@ const RecruitmentLayout = () => {
 
   const { openModal, closeModal } = useModal();
 
-  const { data, fetchNextPage, hasNextPage, isFetching, isSuccess } =
-    useRecruitmentListInfiniteQuery();
+  const { data, fetchNextPage, hasNextPage, isFetching } = useRecruitmentListInfiniteQuery();
 
   useIntersectionObserver({
     eventHandler: fetchNextPage,

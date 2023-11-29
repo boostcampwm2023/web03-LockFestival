@@ -12,7 +12,7 @@ const SelectThemeForm = ({ theme }: Props) => {
         <SelectThemeContainer>
           <Title>선택한 테마</Title>
           <SelectImg src={theme.posterImageUrl}></SelectImg>
-          <Text>[{theme.BranchName}]</Text>
+          <Text>[{theme.branchName}]</Text>
           <Text>{theme.themeName}</Text>
         </SelectThemeContainer>
       )}
