@@ -35,27 +35,6 @@ const CalendarContainer = ({ isClickCalendar, setIsClickCalendar, date, setDate 
   );
 };
 
-const Container = styled.div([
-  tw`w-full p-4 mx-auto text-l`,
-  tw`desktop:(w-auto)`,
-  css`
-    display: flex;
-  `,
-]);
-
-const Wrapper = styled.div([]);
-
-const FormElement = styled.div([
-  tw`h-[4rem] mb-4 w-auto`,
-  css`
-    position: relative;
-    display: flex;
-    column-gap: 2rem;
-    align-items: center;
-    justify-self: center;
-  `,
-]);
-
 const Text = styled.div([tw`mx-auto`]);
 
 const CalendarWrapper = styled.div([
@@ -67,38 +46,8 @@ const CalendarWrapper = styled.div([
   `,
 ]);
 
-const Input = styled.input([
-  tw`font-pretendard w-[24rem] h-[3.6rem] bg-white rounded-[2rem] pl-[1rem] text-l`,
-]);
-
 const CalendarButton = styled.button([
   tw`font-pretendard w-[24rem] h-[3.6rem] bg-white rounded-[2rem] pl-[1rem] text-l`,
 ]);
-
-const Button = styled.button<{ isSelected: boolean }>(({ isSelected }) => [
-  tw`w-[10rem] h-[2.8rem] text-gray-dark text-l font-pretendard rounded-[2rem]`,
-  css`
-    background-color: ${isSelected ? '#1AB93D' : '#1F371D'};
-  `,
-]);
-
-const RangeInput = styled.input([
-  css`
-    width: 20rem;
-    background-color: red;
-    color: white;
-  `,
-]);
-
-const SelectThemeContainer = styled.div([
-  tw`text-m`,
-  css`
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-  `,
-]);
-
-const SelectImg = styled.img([tw`w-[6rem] h-[9rem]`]);
 
 export default CalendarContainer;
