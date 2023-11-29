@@ -1,6 +1,7 @@
 import { DataSourceOptions, DataSource } from 'typeorm';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from '@src/app.controller';
 import { AppService } from '@src/app.service';
@@ -36,6 +37,16 @@ import { GroupModule } from '@group/group.module';
       dataSourceFactory: async (options: DataSourceOptions) => {
         return new DataSource(options).initialize();
       },
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        return {
+          uri: configService.get<string>('MONGODB_URL'),
+          dbName: configService.get<string>('MONGODB_DBNAME'),
+        };
+      },
+      inject: [ConfigService],
     }),
   ],
   controllers: [AppController],

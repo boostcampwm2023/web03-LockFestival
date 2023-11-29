@@ -1,48 +1,19 @@
 import { GroupFindDetailResponseDto } from '@group/dtos/group.find.detail.response.dto';
 import { GroupLeaderDto } from '@group/dtos/group.leader.dto';
-import { GroupThemeDetailDto } from '@group/dtos/group.theme.detail.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { ThemeDeatailsWithBranchNameResponseDto } from '@src/modules/themeModules/theme/dtos/theme.detail.branch.response.dto';
 
 export class GroupFindResponseDto {
+  @ApiProperty({ type: GroupLeaderDto })
   leader: GroupLeaderDto;
-  themeDetail: GroupThemeDetailDto;
+  @ApiProperty({ type: ThemeDeatailsWithBranchNameResponseDto })
+  themeDetail: ThemeDeatailsWithBranchNameResponseDto;
+  @ApiProperty({ type: GroupFindDetailResponseDto })
   groupDetail: GroupFindDetailResponseDto;
 
-  constructor({
-    nickname,
-    profileImageUrl,
-    brandBranchName,
-    themeName,
-    posterImageUrl,
-    themeAddress,
-    groupId,
-    appointmentDate,
-    appointmentTime,
-    currentMembers,
-    recruitmentMembers,
-    recruitmentCompleted,
-    appointmentCompleted,
-    recruitmentContent,
-    hasPassword,
-    isEnter,
-  }) {
-    this.leader = new GroupLeaderDto({ nickname, profileImageUrl });
-    this.themeDetail = new GroupThemeDetailDto({
-      brandBranchName,
-      themeName,
-      posterImageUrl,
-      themeAddress,
-    });
-    this.groupDetail = new GroupFindDetailResponseDto({
-      groupId,
-      appointmentDate,
-      appointmentTime,
-      currentMembers,
-      recruitmentMembers,
-      recruitmentCompleted,
-      appointmentCompleted,
-      recruitmentContent,
-      hasPassword,
-      isEnter,
-    });
+  constructor(options) {
+    this.leader = new GroupLeaderDto(options);
+    this.themeDetail = new ThemeDeatailsWithBranchNameResponseDto(options);
+    this.groupDetail = new GroupFindDetailResponseDto(options);
   }
 }

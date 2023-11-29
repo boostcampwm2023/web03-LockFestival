@@ -1,16 +1,20 @@
 import tw, { styled, css } from 'twin.macro';
 
 import Label from '@components/Label/Label';
-import getStringByDate from '@utils/getStringByDate';
+import { getStringByDate } from '@utils/dateUtil';
 
 import { HeadCardProps } from './HeadCard';
 import { FaRegUser } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 
-const HeadCardContent = ({ theme, etc, handleClickFlipButton }: Omit<HeadCardProps, 'writer'>) => {
+const HeadCardContent = ({
+  themeDetail,
+  groupDetail,
+  handleClickFlipButton,
+}: Omit<HeadCardProps, 'leader'>) => {
   const navigate = useNavigate();
 
-  const handleNavigate = (isEnter: boolean, groudId: string) => {
+  const handleNavigate = (isEnter: boolean, groudId: number) => {
     if (!isEnter) {
       navigate(`chat/${groudId}`);
     }
@@ -19,7 +23,7 @@ const HeadCardContent = ({ theme, etc, handleClickFlipButton }: Omit<HeadCardPro
   return (
     <Content>
       <ThemeCard>
-        <ThemeImg src={theme.themeUrl} />
+        <ThemeImg src={themeDetail.posterImageUrl} />
       </ThemeCard>
       <ThemeContent>
         <ThemeInfo>
@@ -27,29 +31,36 @@ const HeadCardContent = ({ theme, etc, handleClickFlipButton }: Omit<HeadCardPro
             <Label isBorder={true} size="l" font="pretendard">
               <LabelText>지점</LabelText>
             </Label>
-            <Text>{theme.zizum}</Text>
+            <Text>{themeDetail.branchName}</Text>
           </List>
           <List>
             <Label isBorder={true} size="l" font="pretendard">
               <LabelText>날짜</LabelText>
             </Label>
-            <Text>{getStringByDate(theme.date)}</Text>
+            <Text>
+              {groupDetail.appointmentDate
+                ? getStringByDate(new Date(groupDetail.appointmentDate))
+                : '미정'}
+            </Text>
           </List>
           <List>
             <Label isBorder={true} size="l" font="pretendard">
               <LabelText>인원</LabelText>
             </Label>
             <Text>
-              {Array.from({ length: theme.curCount }, (_) => (
-                <Circle isCur={true}>
+              {Array.from({ length: groupDetail.currentMembers }, (_, index) => (
+                <Circle isCur={true} key={index}>
                   <FaRegUser size={10} color="#40B753" />
                 </Circle>
               ))}
-              {Array.from({ length: theme.maxCount - theme.curCount }, (_) => (
-                <Circle isCur={false}>
-                  <FaRegUser size={10} color="#525252" />
-                </Circle>
-              ))}
+              {Array.from(
+                { length: groupDetail.recruitmentMembers - groupDetail.currentMembers },
+                (_, index) => (
+                  <Circle isCur={false} key={index}>
+                    <FaRegUser size={10} color="#525252" />
+                  </Circle>
+                )
+              )}
             </Text>
           </List>
           <List>
@@ -61,25 +72,28 @@ const HeadCardContent = ({ theme, etc, handleClickFlipButton }: Omit<HeadCardPro
                 <Label
                   isBorder={false}
                   size="s"
-                  backgroundColor={theme.isRevervation ? 'green-dark' : 'green-light'}
+                  backgroundColor={groupDetail.appointmentCompleted ? 'green-dark' : 'green-light'}
                 >
-                  <>{theme.isRevervation ? '예약완료' : '예약중'}</>
+                  <>{groupDetail.appointmentCompleted ? '예약완료' : '예약중'}</>
                 </Label>
                 <Label
                   isBorder={false}
                   size="s"
-                  backgroundColor={theme.isRecruitment ? 'green-dark' : 'green-light'}
+                  backgroundColor={groupDetail.recruitmentCompleted ? 'green-dark' : 'green-light'}
                 >
-                  <>{theme.isRecruitment ? '모집완료' : '모집중'}</>
+                  <>{groupDetail.recruitmentCompleted ? '모집완료' : '모집중'}</>
                 </Label>
               </LabelContainer>
             </Text>
           </List>
-          <TitleText>{theme.title}</TitleText>
+          <TitleText>{groupDetail.recruitmentContent}</TitleText>
         </ThemeInfo>
         <ButtonContainer>
           <Button onClick={handleClickFlipButton}>상세보기</Button>
-          <Button isEnter={etc.isEnter} onClick={() => handleNavigate(etc.isEnter, etc.groupId)}>
+          <Button
+            isEnter={groupDetail.isEnter}
+            onClick={() => handleNavigate(groupDetail.isEnter, groupDetail.groupId)}
+          >
             입장하기
           </Button>
         </ButtonContainer>

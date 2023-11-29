@@ -1,27 +1,40 @@
 export interface GroupInfoCardProps {
-  writer: {
-    profileUrl: string;
-    nickName: string;
+  leader: {
+    nickname: string;
+    profileImageUrl: string;
   };
-  theme: {
-    themeUrl: string;
-    themeTitle: string;
-    zizum: string;
-    date: Date;
-    maxCount: number;
-    curCount: number;
-    isRevervation: boolean;
-    isRecruitment: boolean;
-    title: string;
+  themeDetail: {
+    themeName: string;
+    realGenre: string;
+    themeId: number;
+    posterImageUrl: string;
+    difficulty: number;
+    minMember: number;
+    maxMember: number;
+    playTime: number;
     phone: string;
     address: string;
-    personnel: string;
-    playTime: number;
-    genre: string;
+    website: string;
+    branchName: string;
   };
-  etc: {
-    groupId: string;
+  groupDetail: {
+    groupId: number;
+    appointmentDate: Date;
+    appointmentTime: Date;
+    currentMembers: number;
+    recruitmentMembers: number;
+    recruitmentCompleted: boolean;
+    appointmentCompleted: boolean;
+    recruitmentContent: string;
+    hasPassword: boolean;
     isEnter: boolean;
-    isLock: boolean;
   };
+}
+
+export interface FetchRecruitmentByCursor {
+  _meta: {
+    restCount: number;
+    nextCursor: number;
+  };
+  data: Array<GroupInfoCardProps>;
 }

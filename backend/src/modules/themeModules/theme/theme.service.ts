@@ -7,6 +7,9 @@ import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
+import { ThemeLocationResponseDto } from '@theme/dtos/theme.location.response.dto';
+import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
+import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 
 @Injectable()
 export class ThemeService {
@@ -17,7 +20,7 @@ export class ThemeService {
     private readonly genreRepository: GenreRepository
   ) {}
 
-  public async getThemeDetailsById(themeId: number): Promise<ThemeDeatailsResponseDto> {
+  public async getThemeDetailsById(themeId: number): Promise<ThemeBranchThemesDeatailsResponseDto> {
     const [themeDeatailsResponseDto, sameBranchThemesDto] = await Promise.all([
       this.themeRepository.getThemeDetailsById(themeId),
       this.themeRepository.getSameBranchThemesById(themeId),
@@ -26,6 +29,7 @@ export class ThemeService {
     if (!themeDeatailsResponseDto) {
       throw new NotFoundException('Theme not found : themeId = ' + themeId.toString());
     }
+
     themeDeatailsResponseDto.otherThemes = sameBranchThemesDto;
     return themeDeatailsResponseDto;
   }
@@ -38,18 +42,38 @@ export class ThemeService {
     return await Promise.all(
       genreDtos.map(async (genreDto: GenreDto): Promise<GenreThemesResponseDto> => {
         const themeDtos = await this.themeRepository.getRandomThemesByGenre(
-          genreDto.id,
+          genreDto.genreId,
           themeCount
         );
-        return { genre: genreDto.name, themes: themeDtos };
+        return { genreName: genreDto.genreName, themes: themeDtos };
       })
     );
   }
-  public async getLocationThemes(themeLocationDto: ThemeLocationDto): Promise<ThemeResponseDto[]> {
-    return await this.themeRepository.getThemesByBoundary(themeLocationDto);
+  public async getLocationThemes(
+    themeLocationDto: ThemeLocationDto
+  ): Promise<ThemeLocationResponseDto> {
+    const { count, themes } = await this.themeRepository.getThemesByBoundary(themeLocationDto);
+
+    const restCount = Math.max(
+      count - (themeLocationDto.page * themeLocationDto.count + themes.length),
+      0
+    );
+
+    if (restCount === 0) {
+      return new ThemeLocationResponseDto(0, undefined, themes);
+    }
+
+    return new ThemeLocationResponseDto(
+      restCount,
+      restCount > 0 ? themeLocationDto.page + 1 : undefined,
+      themes
+    );
   }
 
   public async getGenreThemes(genreId: number, count: number): Promise<Array<ThemeResponseDto>> {
     return await this.themeRepository.getThemesByGenre(genreId, count);
+  }
+  public async getSimpleThemesBySearch(query: string): Promise<ThemeSimpleSearchResponseDto[]> {
+    return await this.themeRepository.getSimpleThemesBySearch(query);
   }
 }

@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiBody,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiOperation,
@@ -20,8 +21,8 @@ import { OptionalGuard } from '@src/utils/decorator';
 import { GroupService } from '@group/group.service';
 import { TokenAuthGuard } from '@auth/auth.guard';
 import { GroupRequestDto } from '@group/dtos/group.create.dto';
-import { GroupFindResponseDto } from '@group/dtos/group.find.response.dto';
 import { GroupFindOptionsDto } from '@group/dtos/group.findoptions.request.dto';
+import { GroupsResponseDto } from '@group/dtos/groups.response.dto';
 
 @ApiTags('groups')
 @Controller('groups')
@@ -43,6 +44,7 @@ export class GroupController {
     description: JSON.stringify({ success: false, message: 'Error creating group' }),
   })
   @ApiBearerAuth('Authorization')
+  @ApiBody({ type: GroupRequestDto })
   async createGroup(@Req() { user }, @Res() res, @Body() groupRequest: GroupRequestDto) {
     try {
       await this.groupService.createGroup(groupRequest, user.nickname);
@@ -62,12 +64,16 @@ export class GroupController {
   @ApiOperation({
     summary: '그룹 리스트 조회(검색)',
     description:
-      '입력받은 조건을 기준으로 그룹 리스트를 반환합니다. 로그인한 사용자에게는 그룹에 속하는지에 대한 정보도 추가로 제공합니다.',
+      '입력받은 조건을 기준으로 그룹 리스트를 반환합니다. 로그인한 사용자에게는 그룹에 속하는지에 대한 정보도 추가로 제공합니다.(Authentication: Optional)',
   })
+  @ApiOkResponse({
+    type: GroupsResponseDto,
+  })
+  @ApiBearerAuth('Authorization')
   async getAllGroups(
     @Req() { user },
     @Query() findOptions: GroupFindOptionsDto
-  ): Promise<GroupFindResponseDto[]> {
+  ): Promise<GroupsResponseDto> {
     return await this.groupService.getAllGroups(user?.nickname, findOptions);
   }
 }
