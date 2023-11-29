@@ -6,11 +6,11 @@ import { useParams } from 'react-router-dom';
 import useSocket from '@hooks/socket/useSocket';
 
 const Chat = () => {
-  const roomId = useParams<{ roomId: string }>().roomId;
+  const roomId = useParams<{ roomId: string }>().roomId as string;
 
   const { roomInfo, userListInfo, sendChat } = useSocket(roomId);
 
-  if (!roomId || !roomInfo || !userListInfo) {
+  if (!roomInfo || !userListInfo) {
     return;
   }
 
@@ -23,7 +23,6 @@ const Chat = () => {
   );
 };
 
-export default Chat;
 const Container = styled.div([
   tw`w-full mx-auto mt-[4rem] h-[calc(100vh -10rem)]`,
   tw`desktop:(max-w-[102.4rem] pb-[10rem])`,
@@ -32,3 +31,5 @@ const Container = styled.div([
     gap: 3.2rem;
   `,
 ]);
+
+export default Chat;
