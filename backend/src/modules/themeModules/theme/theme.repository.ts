@@ -5,6 +5,9 @@ import { Brand } from '@brand/entities/brand.entity';
 import { Theme } from '@theme/entities/theme.entity';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
+import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
+import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
+import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 
 const KM = 1000;
 
@@ -14,11 +17,11 @@ export class ThemeRepository extends Repository<Theme> {
     super(Theme, dataSource.createEntityManager());
   }
 
-  async getThemeDetailsById(themeId: number): Promise<ThemeDeatailsResponseDto> {
-    const themeDetailsResponseDto: ThemeDeatailsResponseDto = await this.dataSource
+  async getThemeDetailsById(themeId: number): Promise<ThemeBranchThemesDeatailsResponseDto> {
+    const themeDetailsResponseDto: ThemeBranchThemesDeatailsResponseDto = await this.dataSource
       .createQueryBuilder()
       .select([
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.id as themeId',
         'theme.real_genre as realGenre',
         'theme.poster_image_url as posterImageUrl',
@@ -44,7 +47,7 @@ export class ThemeRepository extends Repository<Theme> {
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.poster_image_url as posterImageUrl',
       ])
       .from(Theme, 'theme')
@@ -56,25 +59,34 @@ export class ThemeRepository extends Repository<Theme> {
     return themes;
   }
 
-  async getThemesByBoundary({ x, y, boundary, count }): Promise<ThemeResponseDto[]> {
-    const themes: ThemeResponseDto[] = await this.dataSource
+  async getThemesByBoundary(themeLocationDto: ThemeLocationDto) {
+    const qb = this.dataSource
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.poster_image_url as posterImageUrl',
       ])
       .from(Theme, 'theme')
       .innerJoin('theme.branch', 'branch')
       .where('ST_Distance_Sphere(point(branch.y, branch.x), point(:y, :x)) <= :boundary', {
-        x,
-        y,
-        boundary: boundary * KM,
+        x: themeLocationDto.x,
+        y: themeLocationDto.y,
+        boundary: themeLocationDto.boundary * KM,
       })
-      .limit(count)
-      .getRawMany();
+      .orderBy(
+        `ST_Distance_Sphere(point(branch.y, branch.x), point(${themeLocationDto.y}, ${themeLocationDto.x}))`
+      );
 
-    return themes;
+    const [count, themes] = await Promise.all([
+      qb.getCount(),
+      qb
+        .offset(themeLocationDto.page * themeLocationDto.count - themeLocationDto.count)
+        .limit(themeLocationDto.count)
+        .getRawMany(),
+    ]);
+
+    return { count, themes };
   }
 
   async getThemesByGenre(genreId: number, count: number): Promise<Array<ThemeResponseDto>> {
@@ -82,7 +94,7 @@ export class ThemeRepository extends Repository<Theme> {
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.poster_image_url as posterImageUrl',
       ])
       .from(Theme, 'theme')
@@ -98,7 +110,7 @@ export class ThemeRepository extends Repository<Theme> {
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.poster_image_url as posterImageUrl',
       ])
       .from(Theme, 'theme')
@@ -113,12 +125,46 @@ export class ThemeRepository extends Repository<Theme> {
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
-        'theme.name as name',
+        'theme.name as themeName',
         'theme.poster_image_url as posterImageUrl',
       ])
       .from(Theme, 'theme')
       .where('theme.branch_id = (SELECT branch_id FROM theme WHERE id = :themeId)', { themeId })
       .andWhere('theme.id<> :themeId', { themeId })
+      .limit(count)
+      .getRawMany();
+    return themes;
+  }
+
+  async getSimpleThemesBySearch(
+    query: string,
+    count: number = 10
+  ): Promise<ThemeSimpleSearchResponseDto[]> {
+    const themes: ThemeSimpleSearchResponseDto[] = await this.dataSource
+      .createQueryBuilder()
+      .select([
+        'theme.id as themeId',
+        'theme.name as themeName',
+        'theme.poster_image_url as posterImageUrl',
+        'branch.branch_name as BranchName',
+      ])
+      .from(Theme, 'theme')
+      .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
+      .where('theme.name LIKE :themeName', { themeName: `%${query}%` })
+      .orderBy(
+        `CASE WHEN theme.name = :exactQuery THEN 0 
+      WHEN theme.name LIKE :startWithQuery THEN 1 
+      WHEN theme.name LIKE :containsQuery THEN 2 
+      WHEN theme.name LIKE :endsWithQuery THEN 3 
+    END`,
+        'ASC'
+      )
+      .setParameters({
+        exactQuery: query,
+        startWithQuery: `${query}%`,
+        containsQuery: `%${query}%`,
+        endsWithQuery: `%${query}`,
+      })
       .limit(count)
       .getRawMany();
     return themes;

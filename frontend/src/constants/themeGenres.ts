@@ -4,8 +4,7 @@ export const themeGenres = ['공포', '코믹', '감성'];
 export const genreList = [
   {
     genre: '공포',
-    thumbnail:
-      'https://www.master-key.co.kr/upload/room/197_img1.gif',
+    thumbnail: 'https://www.master-key.co.kr/upload/room/197_img1.gif',
   },
   {
     genre: '코믹',
@@ -17,8 +16,7 @@ export const genreList = [
   },
   {
     genre: '판타지',
-    thumbnail:
-      'https://www.master-key.co.kr/upload/room/198_img1.gif',
+    thumbnail: 'https://www.master-key.co.kr/upload/room/198_img1.gif',
   },
   {
     genre: '드라마',
