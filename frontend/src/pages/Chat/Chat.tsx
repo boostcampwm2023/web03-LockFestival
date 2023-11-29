@@ -1,13 +1,9 @@
-import { useSearchParams } from 'react-router-dom';
 import tw, { styled, css } from 'twin.macro';
 import ChatContainer from './components/ChatContainer';
 import RoomInfoContainer from './components/RoomInfoContainer';
 import UserListContainer from './components/UserListContainer';
 
 const Chat = () => {
-  const [searchParams] = useSearchParams();
-  const roomId = searchParams.get('roomId');
-
   return (
     <Container>
       <UserListContainer />
