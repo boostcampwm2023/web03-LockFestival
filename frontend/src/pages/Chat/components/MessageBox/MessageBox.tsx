@@ -18,6 +18,7 @@ const MessageLayout = styled.div([
     align-items: center;
     width: 15rem;
     padding: 1rem;
+    margin-bottom: 1rem;
   `,
   tw`font-pretendard text-m border border-gray border-solid rounded-[2rem]`,
 ]);

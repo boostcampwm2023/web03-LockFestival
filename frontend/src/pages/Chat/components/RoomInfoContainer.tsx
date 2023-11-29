@@ -1,34 +1,36 @@
 import tw, { styled, css } from 'twin.macro';
-import { mockRoomInfo } from '../mock/mockRoomInfoData';
 import Label from '@components/Label/Label';
+import { RoomInfo } from 'types/chat';
 
-const RoomInfoContainer = () => {
-  const appointmentText = mockRoomInfo.recruitmentCompleted ? '예약 O' : '예약 X';
-  const recruitmentText = mockRoomInfo.recruitmentCompleted ? '모집 O' : '모집X';
+const RoomInfoContainer = ({ roomInfo }: { roomInfo: RoomInfo }) => {
+  const appointmentText = roomInfo.recruitmentCompleted ? '예약 O' : '예약 X';
+  const recruitmentText = roomInfo.recruitmentCompleted ? '모집 O' : '모집X';
 
   return (
     <Layout>
       <HeadContainer>
-        <ThemePoster src={mockRoomInfo.posterImageUrl} alt="테마_포스터" />
+        <ThemePoster src={roomInfo.posterImageUrl} alt="테마_포스터" />
         <ThemeInfoWrapper>
-          <ThemeInfo>{mockRoomInfo.regionName}</ThemeInfo>
-          <ThemeInfo>{mockRoomInfo.brandName}</ThemeInfo>
-          <ThemeInfo>{mockRoomInfo.branchName}</ThemeInfo>
-          <ThemeInfo>{mockRoomInfo.themeName}</ThemeInfo>
+          <ThemeInfo>{roomInfo.regionName}</ThemeInfo>
+          <ThemeInfo>{roomInfo.brandName}</ThemeInfo>
+          <ThemeInfo>{roomInfo.branchName}</ThemeInfo>
+          <ThemeInfo>{roomInfo.themeName}</ThemeInfo>
         </ThemeInfoWrapper>
       </HeadContainer>
       <RoomInfoWrapper>
         <Label isBorder={true} width="10rem">
           <LabelText>모집내용</LabelText>
         </Label>
-        <RoomInfoContent>{mockRoomInfo.contents}</RoomInfoContent>
+        <RoomInfoContent>{roomInfo.contents}</RoomInfoContent>
       </RoomInfoWrapper>
       <RoomInfoWrapper>
         <Label isBorder={true} width="10rem">
           <LabelText>날짜</LabelText>
         </Label>
         <RoomInfoContent>
-          {mockRoomInfo.appointmentDate.toLocaleString('ko-KR', { timeZone: 'UTC' }).slice(0, 11)}
+          {new Date(roomInfo.appointmentDate)
+            .toLocaleString('ko-KR', { timeZone: 'UTC' })
+            .slice(0, 11)}
         </RoomInfoContent>
       </RoomInfoWrapper>
       <RoomInfoWrapper>
@@ -36,7 +38,7 @@ const RoomInfoContainer = () => {
           <LabelText>인원</LabelText>
         </Label>
         <RoomInfoContent>
-          {mockRoomInfo.currentMembers}명/{mockRoomInfo.recruitmentMembers}명
+          {roomInfo.currentMembers}명/{roomInfo.recruitmentMembers}명
         </RoomInfoContent>
       </RoomInfoWrapper>
       <RoomInfoWrapper>
