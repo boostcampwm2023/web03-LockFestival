@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { SwaggerModule, DocumentBuilder, SwaggerCustomOptions } from '@nestjs/swagger';
 import { AppModule } from '@src/app.module';
 import { HTTP_ALLOWED_METHOD } from '@enum/http.method';
 import { ConfigService } from '@nestjs/config';
@@ -27,10 +27,17 @@ async function bootstrap() {
     .setTitle('LockFestival API')
     .setDescription('LockFestival API description')
     .setVersion('1.0')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', name: 'JWT', in: 'header' }, 'Authorization')
     .build();
 
+  const swaggerOptions: SwaggerCustomOptions = {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  };
+
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/swagger', app, document);
+  SwaggerModule.setup('api/swagger', app, document, swaggerOptions);
 
   await app.listen(app.get(ConfigService).get('PORT') || 3000);
   if (module.hot) {

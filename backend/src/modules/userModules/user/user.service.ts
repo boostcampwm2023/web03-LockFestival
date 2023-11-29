@@ -5,11 +5,13 @@ import { User } from '@user/entities/user.entity';
 import { UserNaverDto } from '@user/dtos/user.naver.dto';
 import { UserProfileDto } from '@user/dtos/user.profile.dto';
 import { UserRepository } from '@user/user.repository';
+import { UserGroupRepository } from '@user/userGroup.repository';
 import { Theme } from '@theme/entities/theme.entity';
 import { Genre } from '@theme/entities/genre.entity';
 import { UserInfoRequestDto } from '@user/dtos/userInfo.request.dto';
 import { ThemeRepository } from '@theme/theme.repository';
 import { GenreRepository } from '@theme/genre.repository';
+import { UsersRoomsResponseDto } from '@user/dtos/users.rooms.response.dto';
 
 @Injectable()
 export class UserService {
@@ -19,7 +21,9 @@ export class UserService {
     @InjectRepository(ThemeRepository)
     private readonly themeRepository: ThemeRepository,
     @InjectRepository(GenreRepository)
-    private readonly genreRepository: GenreRepository
+    private readonly genreRepository: GenreRepository,
+    @InjectRepository(UserGroupRepository)
+    private readonly userGroupRepository: UserGroupRepository
   ) {}
 
   async checkUsableNickname(nickname: string) {
@@ -78,5 +82,9 @@ export class UserService {
     }
 
     return result;
+  }
+
+  async getGroupsByNickname(nickname: string): Promise<UsersRoomsResponseDto[]> {
+    return await this.userGroupRepository.findGroupsByNickname(nickname);
   }
 }

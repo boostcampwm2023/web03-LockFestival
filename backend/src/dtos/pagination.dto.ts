@@ -7,6 +7,9 @@ const DEFAULT_PAGE = 1 as const;
 
 export class PaginationDto {
   @Transform(({ value }) => {
+    if (['0', '', 'undefined'].includes(value)) {
+      return DEFAULT_PAGE;
+    }
     return parseInt(value);
   })
   @IsNumber()

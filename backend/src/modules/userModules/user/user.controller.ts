@@ -5,7 +5,6 @@ import {
   Get,
   Req,
   UseGuards,
-  Put,
   Patch,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -19,11 +18,10 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
-  ApiResponse,
-  ApiSecurity,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { UsersRoomsResponseDto } from '@user/dtos/users.rooms.response.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -81,5 +79,21 @@ export class UserController {
     const { nickname, email } = await this.userService.updateUserInfo(user.nickname, body);
 
     return this.authService.getAccessToken({ nickname, username: email });
+  }
+
+  @UseGuards(TokenAuthGuard)
+  @Get('/rooms')
+  @ApiOperation({
+    summary: '채팅방 리스트 반환',
+    description: '유저가 속한 채팅방 리스트를 반환합니다.',
+  })
+  @ApiOkResponse({
+    status: 200,
+    description: '',
+    type: [UsersRoomsResponseDto],
+  })
+  @ApiBearerAuth('Authorization')
+  async findGroupsByNickname(@Req() { user }): Promise<UsersRoomsResponseDto[]> {
+    return await this.userService.getGroupsByNickname(user.nickname);
   }
 }

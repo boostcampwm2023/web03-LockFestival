@@ -2,6 +2,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import EnvironmentPlugin from 'vite-plugin-environment';
+import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
   build: {
@@ -20,5 +21,6 @@ export default defineConfig({
     }),
     EnvironmentPlugin(['DEV']),
     tsconfigPaths(),
+    svgr(),
   ],
 });

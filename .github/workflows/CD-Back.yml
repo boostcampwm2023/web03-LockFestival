@@ -36,6 +36,8 @@ jobs:
             -e "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" \
             -e "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" \
             -e "DATABASE_USER=${{ secrets.DATABASE_USER }}" \
+            -e "MONGODB_URL=${{secrets.MONGODB_URL}}" \
+            -e "MONGODB_DBNAME=${{secrets.MONGODB_DBNAME}}" \
             -e "JWT_ACCESS_TOKEN_SECRET=${{ secrets.JWT_ACCESS_TOKEN_SECRET }}" \
             -e "JWT_ACCESS_TOKEN_TIME=${{ secrets.JWT_ACCESS_TOKEN_TIME }}" \
             -e "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" \

@@ -8,6 +8,9 @@ const DEFAULT_COUNT = 10 as const;
 export class GroupsPaginationCursorDto {
   @IsOptional()
   @Transform(({ value }) => {
+    if (value === 'undefined' || value === '0' || value === '') {
+      return undefined;
+    }
     return parseInt(value);
   })
   @IsNumber()

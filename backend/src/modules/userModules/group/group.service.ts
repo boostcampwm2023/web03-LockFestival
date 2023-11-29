@@ -50,11 +50,13 @@ export class GroupService {
       }, enteredGroupsSet);
     }
 
-    const restCount = Math.max(count - findOptions.count, 0);
+    const restCount: number = Math.max(count - findOptions.count, 0);
+    const nextCursor: number | undefined =
+      restCount > 0 ? rawDtos[rawDtos.length - 1].groupId : undefined;
 
     return new GroupsResponseDto(
       restCount,
-      restCount > 0 ? rawDtos[rawDtos.length - 1].groupId : undefined,
+      nextCursor,
       rawDtos.map((dto) => {
         dto.hasPassword = dto.password !== null;
         dto.isEnter = enteredGroupsSet.has(dto.groupId);
