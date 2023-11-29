@@ -37,11 +37,11 @@ export class ChatRepository {
     return userList;
   }
 
-  async validateRoomAndGetProfiles(roomId: string, user_id: number): Promise<ChatUser[]> {
+  async validateRoomAndGetChatUserList(roomId: string, nickname: string): Promise<ChatUser[]> {
     const userList: FlattenMaps<ChatUser>[] = await this.findUserListByRoomId(roomId);
 
     const isUserInRoom: boolean = userList.some((roomUser: ChatUser) => {
-      return roomUser._id.equals(new mongoose.Types.ObjectId(user_id));
+      return roomUser.user_nickname === nickname;
     });
 
     if (!isUserInRoom) {
