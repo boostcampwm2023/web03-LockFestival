@@ -48,8 +48,6 @@ export class UserGroupRepository extends Repository<UserGroup> {
       .innerJoin('user_group.group', 'group')
       .innerJoin('group.theme', 'theme')
       .innerJoin('theme.branch', 'branch')
-      .innerJoin('branch.brand', 'brand')
-      .innerJoin('group.leader', 'leader')
       .orderBy('user_group.created_at', 'DESC')
       .getRawMany();
 
