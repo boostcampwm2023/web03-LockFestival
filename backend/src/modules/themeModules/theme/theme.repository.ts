@@ -4,7 +4,6 @@ import { Branch } from '@branch/entities/branch.entity';
 import { Brand } from '@brand/entities/brand.entity';
 import { Theme } from '@theme/entities/theme.entity';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
-import { ThemeDeatailsResponseDto } from '@theme/dtos/theme.detail.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
 import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
