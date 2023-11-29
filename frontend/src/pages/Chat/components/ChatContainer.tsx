@@ -3,10 +3,15 @@ import Button from '@components/Button/Button';
 import { FaRightFromBracket } from 'react-icons/fa6';
 import useInput from '@hooks/useInput';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { chatLog } from 'store/chatRoom';
+import { ChatLog } from 'types/chat';
+import MessageBox from './MessageBox/MessageBox';
 
 const ChatContainer = () => {
   const navigate = useNavigate();
   const [inputValue, handleValue, resetValue] = useInput('');
+  const chatLogData: ChatLog[] = useRecoilValue(chatLog);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -37,7 +42,11 @@ const ChatContainer = () => {
           <FaRightFromBracket />
         </Button>
       </ButtonWrapper>
-      <ChatDisplayContainer></ChatDisplayContainer>
+      <ChatDisplayContainer>
+        {chatLogData.map((log) => (
+          <MessageBox message={log.message} userId={log.userId} type={log.type} time={log.time} />
+        ))}
+      </ChatDisplayContainer>
       <InputChatContainer
         value={inputValue}
         onChange={handleValue}
@@ -77,7 +86,16 @@ const ButtonWrapper = styled.div([
   `,
 ]);
 
-const ChatDisplayContainer = styled.div([tw`w-[100%] h-[100%] bg-white rounded-[2rem]`]);
+const ChatDisplayContainer = styled.div([
+  tw`w-[100%] h-[100%] bg-white rounded-[2rem] font-pretendard text-l p-4`,
+  css`
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow-y: auto;
+    gap: 1rem;
+  `,
+]);
 
 const InputChatContainer = styled.textarea([
   tw`font-pretendard text-white text-m w-[100%] h-[10rem] bg-gray-dark rounded-[2rem] p-4`,
