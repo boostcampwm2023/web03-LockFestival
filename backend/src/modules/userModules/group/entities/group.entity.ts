@@ -78,14 +78,4 @@ export class Group extends BaseTime {
       leader_id: user.id,
     };
   }
-
-  static createUserGroupObject(newGroup, user: User) {
-    return {
-      group: newGroup,
-      user_id: user.id,
-      group_id: newGroup.id,
-      user: user,
-      hasWrittenComment: false,
-    };
-  }
 }

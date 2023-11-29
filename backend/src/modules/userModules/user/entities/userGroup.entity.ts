@@ -34,4 +34,14 @@ export class UserGroup extends BaseTime {
   )
   @JoinColumn({ name: 'group_id', referencedColumnName: 'id' })
   group: Group;
+
+  static createUserGroupObject(group: Group, user: User) {
+    return {
+      group: group,
+      user_id: user.id,
+      group_id: group.id,
+      user: user,
+      hasWrittenComment: false,
+    };
+  }
 }

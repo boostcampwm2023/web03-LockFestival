@@ -23,7 +23,7 @@ export class GroupRepository extends Repository<Group> {
         Group,
         Group.createGroupObject(groupRequest, user, theme)
       );
-      await queryRunner.manager.save(UserGroup, Group.createUserGroupObject(newGroup, user));
+      await queryRunner.manager.save(UserGroup, UserGroup.createUserGroupObject(newGroup, user));
       await queryRunner.commitTransaction();
     } catch (err) {
       await queryRunner.rollbackTransaction();
