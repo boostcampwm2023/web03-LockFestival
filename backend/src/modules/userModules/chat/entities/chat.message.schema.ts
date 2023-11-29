@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ChatType } from '@src/enum/chat.type';
 import { HydratedDocument } from 'mongoose';
 
 @Schema()
@@ -11,6 +12,9 @@ export class ChatMessage {
 
   @Prop()
   chat_message: string;
+
+  @Prop()
+  type: ChatType;
 
   @Prop()
   chat_date: Date;

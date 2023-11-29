@@ -12,5 +12,8 @@ export class Room extends Document {
 
   @Prop({ type: [ChatMessage] })
   chat_list: ChatMessage[];
+
+  @Prop({ type: ChatMessage })
+  last_chat: ChatMessage;
 }
 export const RoomSchema = SchemaFactory.createForClass(Room);
