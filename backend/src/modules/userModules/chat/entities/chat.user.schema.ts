@@ -1,6 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
 
-@Schema()
 export class ChatUser {
   @Prop()
   user_id: number;
@@ -18,6 +17,6 @@ export class ChatUser {
   is_leave: boolean;
 
   @Prop()
-  last_chat_log_id: number;
+  last_chat_log_id: string;
 }
 export const ChatUserSchema = SchemaFactory.createForClass(ChatUser);
