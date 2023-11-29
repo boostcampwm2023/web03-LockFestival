@@ -15,7 +15,9 @@ async function deferRender() {
   await initMockAPI();
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
 
 deferRender().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
