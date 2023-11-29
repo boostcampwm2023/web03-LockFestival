@@ -3,7 +3,7 @@ import { ChatUser } from '@chat/entities/chat.user.schema';
 import { ChatMessage } from '@chat/entities/chat.message.schema';
 import mongoose, { Document } from 'mongoose';
 
-@Schema()
+@Schema({ versionKey: false })
 export class Room extends Document {
   @Prop()
   group_id: string;
