@@ -23,7 +23,7 @@ const CustomRouter = () => {
           <Route path="/diary" element={<Diary />}></Route>
           <Route path="/auth" element={<Auth />}></Route>
           <Route path="/search" element={<Search />}></Route>
-          <Route path="/chat-room" element={<Chat />}></Route>
+          <Route path="/chat-room/:roomId" element={<Chat />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
