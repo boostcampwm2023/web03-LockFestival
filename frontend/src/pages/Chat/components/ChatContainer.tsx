@@ -98,7 +98,7 @@ const ChatDisplayContainer = styled.div([
 ]);
 
 const InputChatContainer = styled.textarea([
-  tw`font-pretendard text-white text-m w-[100%] h-[10rem] bg-gray-dark rounded-[2rem] p-4`,
+  tw`font-pretendard text-white text-m w-[100%] h-[10rem] bg-gray-dark rounded-[2rem] p-4 pr-[6.4rem]`,
   css`
     resize: none;
 
