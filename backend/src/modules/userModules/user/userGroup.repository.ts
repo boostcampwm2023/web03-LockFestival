@@ -33,7 +33,7 @@ export class UserGroupRepository extends Repository<UserGroup> {
         'theme.poster_image_url as posterImageUrl',
         'branch.branch_name as branchName',
         'group.id as groupId',
-        'group.recruitment_content as content',
+        'group.recruitment_content as recruitmentContent',
       ])
       .from(UserGroup, 'user_group')
       .where((qb) => {
