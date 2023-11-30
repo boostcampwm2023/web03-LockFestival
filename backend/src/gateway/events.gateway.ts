@@ -14,6 +14,8 @@ import { JwtService } from '@nestjs/jwt';
 import { Logger } from '@nestjs/common';
 import { PayloadDto } from '@src/modules/authModules/auth/dtos/payload.dto';
 import { ConfigService } from '@nestjs/config';
+import { ChatMessageRequestDto } from '@src/modules/userModules/chat/dtos/chat.message.request.dto';
+import { ChatType } from '@src/enum/chat.type';
 
 @WebSocketGateway({
   cors: {
@@ -52,12 +54,21 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     const { prevMessages, unreadCountMap, chatUsers } =
       await this.chatService.validateRoomAndGetChatUserList(roomId, payload.nickname);
 
+    if (!this.socketsInrooms[roomId]) {
+      this.socketsInrooms[roomId] = {};
+    }
+
+    this.socketsInrooms[roomId][client.id] = chatUsers.find((user) => {
+      return user.nickname === payload.nickname;
+    }).userId;
+
     await client.join(roomId);
 
     //client.emit('roomInfo', { roomId, lastChatLogId });
     client.emit('chatLog', prevMessages);
     client.emit('userListInfo', chatUsers);
     this.server.to(roomId).emit('unread', unreadCountMap);
+    return 'ok';
   }
 
   @SubscribeMessage('chatLog')
@@ -79,12 +90,23 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
   @SubscribeMessage('chat')
   async handleEvent(
-    @MessageBody('message') data,
+    @MessageBody('message') message: string,
     @ConnectedSocket() client: Socket
   ): Promise<string> {
+    console.log(message);
     const roomId = this.exportGroupId(client);
-    const message = await this.chatService.createMessageByChat(data);
-    client.to(roomId).emit('chat', message);
+    const userId = this.socketsInrooms[roomId][client.id];
+
+    const request = new ChatMessageRequestDto(
+      message,
+      userId,
+      Number(roomId),
+      ChatType.message,
+      new Date()
+    );
+
+    const messageObject = await this.chatService.createMessageByChat(request);
+    client.to(roomId).emit('chat', messageObject);
     return 'ok';
   }
 
