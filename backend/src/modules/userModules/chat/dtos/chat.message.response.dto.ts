@@ -1,17 +1,17 @@
 import { ChatType } from '@enum/chat.type';
 
 export class ChatMessageResponseDto {
-  logId: string;
-  chatMessage: string;
-  chatType: ChatType;
-  chatDate: Date;
-  sender: string;
+  chatId: string;
+  message: string;
+  type: ChatType;
+  time: Date;
+  userId: number;
 
-  constructor(message) {
-    this.logId = message._id.toString();
-    this.chatMessage = message.chat_message;
-    this.chatType = message.type;
-    this.chatDate = message.chat_date;
-    this.sender = message.sender.user_nickname;
+  constructor(chat) {
+    this.chatId = chat._id.toString();
+    this.message = chat.chat_message;
+    this.type = chat.type;
+    this.time = chat.chat_date;
+    this.userId = Number(chat.sender.user_id);
   }
 }

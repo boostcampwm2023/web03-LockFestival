@@ -53,7 +53,7 @@ export class ChatRepository {
         populate: {
           path: 'sender',
           model: 'ChatUser',
-          select: 'user_nickname',
+          select: 'user_id',
         },
       })
     ).chat_list.map((message) => {
