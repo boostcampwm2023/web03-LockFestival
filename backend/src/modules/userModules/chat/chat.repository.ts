@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ChatUser } from '@chat/entities/chat.user.schema';
@@ -17,14 +17,17 @@ export class ChatRepository {
   ) {}
 
   async createMessgeByChat(chatMessageDto: ChatMessageDto): Promise<ChatMessageResponseDto> {
-    const chatUser = await this.chatUserModel.findOne({ user_id: chatMessageDto.userId });
-
-    const chat = await this.chatMessageModel.create({
-      chat_message: chatMessageDto.message,
-      sender: chatUser,
-      type: chatMessageDto.type,
-      chat_date: chatMessageDto.time,
-    });
+    const objectId = new mongoose.Types.ObjectId(chatMessageDto.userId);
+    const chat = await this.chatMessageModel
+      .create({
+        chat_message: chatMessageDto.message,
+        sender: objectId,
+        type: chatMessageDto.type,
+        chat_date: chatMessageDto.time,
+      })
+      .then((message) => {
+        return message.populate('sender');
+      });
 
     await this.roomModel
       .updateOne(
@@ -34,6 +37,9 @@ export class ChatRepository {
         {
           $push: {
             chat_list: chat._id,
+          },
+          $set: {
+            last_chat: chat._id,
           },
         }
       )
@@ -53,7 +59,6 @@ export class ChatRepository {
         populate: {
           path: 'sender',
           model: 'ChatUser',
-          select: 'user_id',
         },
       })
     ).chat_list.map((message) => {
