@@ -2,7 +2,7 @@ name: CI/CD using github action & docker
 
 on:
   push:
-    branches: ["main", "dev", "HotFix/**"]
+    branches: ["main", "dev", "HotFix/**", "Chat/**"]
 
 permissions:
   contents: read
