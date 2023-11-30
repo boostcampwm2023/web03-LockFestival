@@ -1,7 +1,7 @@
 import tw, { styled, css } from 'twin.macro';
 import { GroupProps } from 'types/group';
 
-const GroupHeader = ({
+const RoomHeader = ({
   posterImageUrl,
   branchName,
   themeName,
@@ -41,4 +41,4 @@ const Name = styled.div([tw`pt-2`]);
 
 const Title = styled.div([]);
 
-export default GroupHeader;
+export default RoomHeader;
