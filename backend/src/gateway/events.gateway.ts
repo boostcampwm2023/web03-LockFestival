@@ -47,7 +47,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     @ConnectedSocket() client: Socket
   ) {
     const payload: PayloadDto = await this.jwtService.verify(authorization, {
-      secret: this.configService.get<string>('JWT_SECRET_KEY'),
+      secret: this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET'),
     });
     const { prevMessages, unreadCountMap, chatUsers } =
       await this.chatService.validateRoomAndGetChatUserList(roomId, payload.nickname);
