@@ -8,7 +8,7 @@ const RoomListLayout = () => {
   return (
     <Container>
       {data.map((room) => {
-        return <Room {...room} />;
+        return <Room {...room} key={room.groupId} />;
       })}
     </Container>
   );
