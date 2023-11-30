@@ -3,6 +3,7 @@ import fetchThemesByLocation from '@apis/fetchThemesByLocation';
 import fetchThemesByRandomGenres from '@apis/fetchThemesByRandomGenres';
 import fetchThemeDetails from '@apis/fetchThemeDetails';
 import fetchRoomList from '@apis/fetchRoomList';
+import fetchUserProfile from '@apis/fetchUserProfile';
 
 const QUERY_MANAGEMENT = {
   geolocation: {
@@ -24,6 +25,10 @@ const QUERY_MANAGEMENT = {
   roomList: {
     key: 'roomList',
     fn: fetchRoomList,
+  },
+  profile: {
+    key: 'profile',
+    fn: fetchUserProfile,
   },
 };
 
