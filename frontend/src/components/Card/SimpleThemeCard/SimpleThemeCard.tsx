@@ -3,19 +3,23 @@ import { SimpleThemeCardData } from 'types/theme';
 import Modal from '@components/Modal/Modal';
 import useModal from '@hooks/useModal';
 import ThemeDetailsModal from '@components/ThemeDetailsModal/ThemeDetailsModal';
+import { useRecoilValue } from 'recoil';
+import isSwipingAtom from '@store/isSwipingAtom';
 
 const SimpleThemeCard = ({ themeId, themeName, posterImageUrl }: SimpleThemeCardData) => {
   const { openModal, closeModal } = useModal();
+  const isSwiping = useRecoilValue(isSwipingAtom);
 
   return (
     <CardContainer
       key={themeId}
       onClick={() => {
-        openModal(Modal, {
-          children: <ThemeDetailsModal themeId={themeId} onClose={() => closeModal(Modal)} />,
-          onClose: () => closeModal(Modal),
-          closeOnExternalClick: true,
-        });
+        !isSwiping &&
+          openModal(Modal, {
+            children: <ThemeDetailsModal themeId={themeId} onClose={() => closeModal(Modal)} />,
+            onClose: () => closeModal(Modal),
+            closeOnExternalClick: true,
+          });
       }}
     >
       <CardImg id={themeId.toString()} alt="테마사진" src={posterImageUrl} />

@@ -1,18 +1,33 @@
+import 'slick-carousel/slick/slick-theme.css';
+import 'slick-carousel/slick/slick.css';
+
 import { ReactNode } from 'react';
 import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { carouselConfig } from '@config/carouselConfig';
 import tw, { styled, css } from 'twin.macro';
+import { useSetRecoilState } from 'recoil';
+import { carouselConfig } from '@config/carouselConfig';
+import isSwipingAtom from '@store/isSwipingAtom';
 
 interface CarouselProps {
   children: ReactNode;
 }
 
 const Carousel = ({ children }: CarouselProps) => {
+  const setIsSwiping = useSetRecoilState(isSwipingAtom);
+
+  const updateSwipeState = (state: boolean) => {
+    setIsSwiping(state);
+  };
+
   return (
     <CarouselContainer>
-      <Slider {...carouselConfig}>{children}</Slider>
+      <Slider
+        afterChange={() => updateSwipeState(false)}
+        onSwipe={() => updateSwipeState(true)}
+        {...carouselConfig}
+      >
+        {children}
+      </Slider>
     </CarouselContainer>
   );
 };
