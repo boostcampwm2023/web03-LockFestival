@@ -125,6 +125,16 @@ export class GroupRepository extends Repository<Group> {
         throw new HttpException('해당 그룹은 존재하지 않습니다', HttpStatus.BAD_REQUEST);
       }
 
+      if (
+        await queryRunner.manager
+          .createQueryBuilder(UserGroup, 'userGroup')
+          .where('user_id = :userId', { userId: user.id })
+          .andWhere('group_id = :groupId', { groupId: group.id })
+          .getExists()
+      ) {
+        throw new HttpException('이미 해당 그룹의 소속되어 있습니다.', HttpStatus.BAD_REQUEST);
+      }
+
       if (group.recruitmentMembers <= group.currentMembers) {
         throw new HttpException('이미 그룹이 꽉차있습니다.', HttpStatus.BAD_REQUEST);
       }
