@@ -5,6 +5,7 @@ import { ChatMessage } from '@chat/entities/chat.message.schema';
 import { ChatUser } from '@chat/entities/chat.user.schema';
 import { Room } from '@chat/entities/room.schema';
 import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
+import { ChatType } from '@enum/chat.type';
 
 @Injectable()
 export class ChatRepository {
@@ -85,5 +86,43 @@ export class ChatRepository {
         },
       }
     );
+  }
+
+  async addUserInRoom(
+    groupId: number,
+    userId: number,
+    nickname: string,
+    profileImageUrl: string,
+    isLeader: boolean = false
+  ): Promise<void> {
+    const inChat = await this.chatMessageModel.create({
+      chat_message: `${nickname}님이 입장하셨습니다.`,
+      chat_date: new Date(),
+      type: ChatType.in,
+    });
+
+    const chatUser = await this.chatUserModel.create({
+      user_id: userId,
+      user_nickname: nickname,
+      user_profile_url: profileImageUrl,
+      is_leader: isLeader,
+      is_leave: false,
+      last_chat_log_id: inChat._id,
+    });
+
+    await this.roomModel
+      .updateOne(
+        { group_id: groupId },
+        {
+          $push: {
+            user_list: chatUser._id,
+            chat_list: inChat._id,
+          },
+          $set: {
+            last_chat: inChat._id,
+          },
+        }
+      )
+      .exec();
   }
 }
