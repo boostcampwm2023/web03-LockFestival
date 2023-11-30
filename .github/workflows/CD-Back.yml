@@ -42,6 +42,7 @@ jobs:
             -e "JWT_ACCESS_TOKEN_TIME=${{ secrets.JWT_ACCESS_TOKEN_TIME }}" \
             -e "NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" \
             -e "NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}" \
+            -e "REDIS_URL=${{ secrets.REDIS_URL }}" \
             -e "NODE_ENV=${{ secrets.NODE_ENV }}" \
             -e "PORT=${{ secrets.BACK_PORT }}" \
             -e "FRONTEND_BASE_URL=${{secrets.FRONTEND_BASE_URL}}" \
