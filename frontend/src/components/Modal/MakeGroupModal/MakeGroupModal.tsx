@@ -48,8 +48,9 @@ const MakeGroupModal = ({ onClose }: { onClose: () => void }) => {
         isReservation,
         Number(memberCount)
       );
+
       onClose();
-      navigate('/group-chat');
+      navigate('/room-list');
     } catch (error) {
       // console.log(error);
     }
