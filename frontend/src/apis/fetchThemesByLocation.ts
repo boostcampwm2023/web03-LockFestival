@@ -10,9 +10,14 @@ interface FetchThemesByLocation {
   };
 }
 
+interface ThemeByLocationData {
+  _meta: Record<string, number>;
+  data: SimpleThemeCardData[];
+}
+
 const fetchThemesByLocation = async ({ geolocation }: FetchThemesByLocation) => {
   return (
-    await axios<Array<SimpleThemeCardData>>({
+    await axios<ThemeByLocationData>({
       method: 'get',
       url:
         SERVER_URL +

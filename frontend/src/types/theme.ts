@@ -1,6 +1,6 @@
 export interface SimpleThemeCardData {
   themeId: number;
-  name: string;
+  themeName: string;
   posterImageUrl: string;
 }
 

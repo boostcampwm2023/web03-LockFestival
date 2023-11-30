@@ -4,7 +4,7 @@ import Modal from '@components/Modal/Modal';
 import useModal from '@hooks/useModal';
 import ThemeDetailsModal from '@components/ThemeDetailsModal/ThemeDetailsModal';
 
-const SimpleThemeCard = ({ themeId, name, posterImageUrl }: SimpleThemeCardData) => {
+const SimpleThemeCard = ({ themeId, themeName, posterImageUrl }: SimpleThemeCardData) => {
   const { openModal, closeModal } = useModal();
 
   return (
@@ -19,7 +19,7 @@ const SimpleThemeCard = ({ themeId, name, posterImageUrl }: SimpleThemeCardData)
       }}
     >
       <CardImg id={themeId.toString()} alt="테마사진" src={posterImageUrl} />
-      <CardText>{name}</CardText>
+      <CardText>{themeName}</CardText>
     </CardContainer>
   );
 };

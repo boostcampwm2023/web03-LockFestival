@@ -37,7 +37,7 @@ function ThemeDetailsModal({ themeId, onClose }: ThemeDetailsModalProps) {
         data && (
           <DetailModalContainer>
             <HeadWrapper>
-              <div>{data.name}</div>
+              <div>{data.themeName}</div>
               <Button isIcon={true} onClick={onClose}>
                 <>
                   <FaXmark />
@@ -83,12 +83,12 @@ function ThemeDetailsModal({ themeId, onClose }: ThemeDetailsModalProps) {
               <HeadWrapper>{data.brandBranchName}의 다른 테마</HeadWrapper>
               <OtherThemeList>
                 {data.otherThemes.map((theme) => {
-                  const { themeId, posterImageUrl, name } = theme;
+                  const { themeId, posterImageUrl, themeName } = theme;
                   return (
                     <ThemeCard
                       themeId={themeId}
                       posterImageUrl={posterImageUrl}
-                      name={name}
+                      name={themeName}
                       onClose={onClose}
                     />
                   );
@@ -121,7 +121,7 @@ const DetailModalContainer = styled.div([
     display: flex;
     flex-direction: column;
   `,
-  tw`p-4 bg-gray-light rounded-default`,
+  tw`p-6 bg-gray-light rounded-default`,
 ]);
 
 const HeadWrapper = styled.div([
@@ -131,7 +131,7 @@ const HeadWrapper = styled.div([
     align-items: center;
     height: 1.8rem;
   `,
-  tw`font-maplestory text-xl-bold mb-2 ml-2`,
+  tw`font-maplestory text-xl-bold mb-4 ml-2`,
 ]);
 
 const MainWrapper = styled.div([
@@ -188,6 +188,7 @@ const BottomWrapper = styled.div([
 const OtherThemeList = styled.div([
   css`
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 1.2rem;
   `,
 ]);
