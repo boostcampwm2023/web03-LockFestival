@@ -92,7 +92,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     @MessageBody('count') count: number,
     @ConnectedSocket() client: Socket
   ): Promise<string> {
-    const roomId = [...client.rooms.values()][0];
+    const roomId = this.exportGroupId(client);
     const chatMessageResponseDto = await this.chatService.findMessagesByLogId({
       roomId,
       startLogId,
