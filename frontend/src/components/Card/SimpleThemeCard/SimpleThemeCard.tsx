@@ -4,7 +4,7 @@ import Modal from '@components/Modal/Modal';
 import useModal from '@hooks/useModal';
 import ThemeDetailsModal from '@components/ThemeDetailsModal/ThemeDetailsModal';
 import { useRecoilValue } from 'recoil';
-import isSwipingAtom from 'store/isSwipingAtom';
+import isSwipingAtom from '@store/isSwipingAtom';
 
 const SimpleThemeCard = ({ themeId, themeName, posterImageUrl }: SimpleThemeCardData) => {
   const { openModal, closeModal } = useModal();

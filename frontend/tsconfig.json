@@ -32,7 +32,9 @@
       "@config/*": ["config/*"],
       "@hooks/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
-      "types/*": ["types/*"]
+      "@store/*" : [ "store/*"],
+      "types/*": ["types/*"],
+  
     },
     "types": ["node", "vite/client", "@testing-library/jest-dom", "vite-plugin-svgr/client"]
   },

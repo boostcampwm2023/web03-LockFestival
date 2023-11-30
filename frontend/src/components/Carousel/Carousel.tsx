@@ -5,8 +5,8 @@ import { ReactNode } from 'react';
 import Slider from 'react-slick';
 import tw, { styled, css } from 'twin.macro';
 import { useSetRecoilState } from 'recoil';
-import isSwipingAtom from 'store/isSwipingAtom';
 import { carouselConfig } from '@config/carouselConfig';
+import isSwipingAtom from '@store/isSwipingAtom';
 
 interface CarouselProps {
   children: ReactNode;
