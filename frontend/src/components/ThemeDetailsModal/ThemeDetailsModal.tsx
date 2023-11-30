@@ -86,6 +86,7 @@ function ThemeDetailsModal({ themeId, onClose }: ThemeDetailsModalProps) {
                   const { themeId, posterImageUrl, themeName } = theme;
                   return (
                     <ThemeCard
+                      key={themeId}
                       themeId={themeId}
                       posterImageUrl={posterImageUrl}
                       name={themeName}
