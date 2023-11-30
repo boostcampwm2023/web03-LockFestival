@@ -43,7 +43,7 @@ jobs:
           script: |
             sudo docker rm -f $(docker ps -aqf "name=^${{secrets.DOCKER_FRONT_CONTAINER}}") # 컨테이너 찾아서 종료
             sudo docker pull ${{ secrets.DOCKER_REPO }}:latest
-            sudo docker run -d -p 80:80 \
+            sudo docker run -d -p 80:80 --network backend_default \
             -e "VITE_NAVER_CLIENT_ID=${{ secrets.VITE_NAVER_CLIENT_ID }}" \
             -e "VITE_NAVER_REDIRECT_URI=${{ secrets.VITE_NAVER_REDIRECT_URI }}" \
             --name ${{secrets.DOCKER_FRONT_CONTAINER}} ${{ secrets.DOCKER_REPO }}:latest
