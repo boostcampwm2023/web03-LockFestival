@@ -1,11 +1,13 @@
 import tw, { styled, css } from 'twin.macro';
 import Label from '@components/Label/Label';
 import { RoomInfo } from 'types/chat';
+import StateLabel from './StateLabel/StateLabel';
 
-const RoomInfoContainer = ({ roomInfo }: { roomInfo: RoomInfo }) => {
-  const appointmentText = roomInfo.recruitmentCompleted ? '예약 O' : '예약 X';
-  const recruitmentText = roomInfo.recruitmentCompleted ? '모집 O' : '모집X';
+interface RoomInfoProps {
+  roomInfo: RoomInfo;
+}
 
+const RoomInfoContainer = ({ roomInfo }: RoomInfoProps) => {
   return (
     <Layout>
       <HeadContainer>
@@ -46,12 +48,8 @@ const RoomInfoContainer = ({ roomInfo }: { roomInfo: RoomInfo }) => {
           <LabelText>상태</LabelText>
         </Label>
         <RoomInfoContent>
-          <Label isBorder={true} backgroundColor={'green-dark'} width="10rem">
-            <LabelText>{appointmentText}</LabelText>
-          </Label>
-          <Label isBorder={true} backgroundColor={'green-light'} width="10rem">
-            <LabelText>{recruitmentText}</LabelText>
-          </Label>
+          <StateLabel text="예약" state={roomInfo.appointmentCompleted} />
+          <StateLabel text="모집" state={roomInfo.recruitmentCompleted} />
         </RoomInfoContent>
       </RoomInfoWrapper>
     </Layout>
