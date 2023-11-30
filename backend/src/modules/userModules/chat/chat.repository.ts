@@ -36,16 +36,12 @@ export class ChatRepository {
 
   async createMessageByChat(chatMessageDto: ChatMessageRequestDto): Promise<ChatMessageDto> {
     const objectId = new mongoose.Types.ObjectId(chatMessageDto.userId);
-    const chat = await this.chatMessageModel
-      .create({
-        chat_message: chatMessageDto.message,
-        sender: objectId,
-        type: chatMessageDto.type,
-        chat_date: chatMessageDto.time,
-      })
-      .then((message) => {
-        return message.populate('sender');
-      });
+    const chat = await this.chatMessageModel.create({
+      chat_message: chatMessageDto.message,
+      sender: objectId,
+      type: chatMessageDto.type,
+      chat_date: chatMessageDto.time,
+    });
 
     this.logger.log('make chat with user');
     this.logger.log(chat);
