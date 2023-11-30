@@ -64,7 +64,22 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     await client.join(roomId);
 
-    //client.emit('roomInfo', { roomId, lastChatLogId });
+    //TODO 진짜로 고치기
+    client.emit('roomInfo', {
+      brandName: '마스터키',
+      branchName: '강남점',
+      regionName: '서울 강남', //CONCAT 필요
+      themeName: '테마',
+      themeId: 11, //시간표 불러올 때 사용
+      posterImageUrl: '',
+      contents: 'contents',
+      appointmentDate: new Date(),
+      recruitmentMembers: 4,
+      currentMembers: 3,
+      recruitmentCompleted: false,
+      appointmentCompleted: false,
+    });
+
     client.emit('chatLog', prevMessages);
     client.emit('userListInfo', chatUsers);
     this.server.to(roomId).emit('unread', unreadCountMap);
