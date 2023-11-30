@@ -24,6 +24,10 @@ const useHeaderSearchInput = () => {
   };
 
   useEffect(() => {
+    if (searchInput === '' && !isClickSearchButton) {
+      return;
+    }
+
     if (searchInput === '') {
       navigate(urlBeforeSearch);
       return;
