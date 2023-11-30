@@ -8,23 +8,20 @@ export class ChatService {
   async validateRoomAndGetChatUserList(roomId: string, nickname: string) {
     const chatUsers = (
       await this.chatRepository.validateRoomAndGetChatUserList(roomId, nickname)
-    ).map((chatUser) => {
-      return {
-        ...chatUser,
-        isMe: chatUser.user_nickname === nickname,
-      };
+    ).map((chatUser: ChatUserInfoDto) => {
+      return chatUser.updateIsMe(chatUser.nickname === nickname);
     });
 
     const lastChatLogId: string = chatUsers.find(({ isMe }) => {
       return isMe;
-    }).last_chat_log_id;
+    }).lastChatLogId;
 
     const countMap: object = chatUsers
       .filter((user) => {
         return !user.isMe;
       })
-      .map(({ last_chat_log_id: lastChatLogId }) => {
-        return lastChatLogId.toString();
+      .map(({ lastChatLogId }) => {
+        return lastChatLogId;
       })
       .reduce((acc, cur) => {
         acc[cur] = acc[cur] ? acc[cur] + 1 : 1;
