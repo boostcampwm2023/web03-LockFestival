@@ -2,12 +2,14 @@ import {
   Body,
   Controller,
   Get,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
-  HttpStatus,
-  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -15,6 +17,7 @@ import {
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import { OptionalGuard } from '@src/utils/decorator';
@@ -75,5 +78,29 @@ export class GroupController {
     @Query() findOptions: GroupFindOptionsDto
   ): Promise<GroupsResponseDto> {
     return await this.groupService.getAllGroups(user?.nickname, findOptions);
+  }
+
+  @Post(`:groupId/enter`)
+  @UseGuards(TokenAuthGuard)
+  @ApiOperation({
+    summary: '그룹에 해당 유저 추가',
+    description: '그룹에 로그인한 현재 유저를 추가하고 채팅방에 추가해줍니다.',
+  })
+  @ApiParam({
+    name: 'groupId',
+    description: '입장하고자하는 그룹의 groupId',
+  })
+  @ApiOkResponse({
+    type: Boolean,
+  })
+  @ApiBearerAuth('Authorization')
+  async enterGroup(
+    @Req() { user },
+    @Param('groupId', ParseIntPipe)
+    groupId: number,
+    @Res() res
+  ): Promise<boolean> {
+    await this.groupService.enterGroup(user.nickname, groupId);
+    return res.status(HttpStatus.OK).json({ success: true, message: 'Group created successfully' });
   }
 }
