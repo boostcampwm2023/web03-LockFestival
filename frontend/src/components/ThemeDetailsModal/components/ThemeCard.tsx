@@ -51,7 +51,7 @@ const ThemeCardBox = styled.div([
     img {
       width: 7.8rem;
       height: 13.6rem;
-      border-radius: 2rem;
+      border-radius: 1.5rem;
     }
   `,
   tw`

@@ -15,7 +15,7 @@ const RandomThemeListContainer = () => {
         return (
           <>
             <Label isBorder={true} font="maplestory" size="l">
-              <>{ele.genre}</>
+              <>{ele.genreName}</>
             </Label>
             <SimpleCardContainer>
               <SimpleThemeCardList themes={ele.themes} />

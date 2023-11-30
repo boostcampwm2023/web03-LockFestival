@@ -2,7 +2,7 @@ import { ThemeDetailsData } from 'types/theme';
 
 export const themeDetailsByThemeId: Record<string, ThemeDetailsData> = {
   '34': {
-    name: '머니머니패키지',
+    themeName: '머니머니패키지',
     posterImageUrl: 'https://www.keyescape.co.kr/file/theme_info/38_a.jpg',
     brandBranchName: '키이스케이프 강남점',
     themeId: 34,
@@ -16,35 +16,35 @@ export const themeDetailsByThemeId: Record<string, ThemeDetailsData> = {
     website: 'https://www.keyescape.co.kr/web/home.php',
     otherThemes: [
       {
-        name: 'SOUL CHASER - 실종',
+        themeName: 'SOUL CHASER - 실종',
         posterImageUrl: 'https://i.postimg.cc/nLwL9k0H/theme-SOUL-CHASER.jpg',
         themeId: 5,
       },
       {
-        name: 'B아파트 13동 1313호',
+        themeName: 'B아파트 13동 1313호',
         posterImageUrl:
           'https://i.postimg.cc/B6ktkgKh/theme-Kakao-Talk-Photo-2019-03-05-17-11-51-4-B-13-1313.jpg',
         themeId: 6,
       },
       {
-        name: '어제, 그리고 오늘',
+        themeName: '어제, 그리고 오늘',
         posterImageUrl: 'https://i.postimg.cc/CxRkKmG4/theme.png',
         themeId: 7,
       },
       {
-        name: '동화나라 수비대',
+        themeName: '동화나라 수비대',
         posterImageUrl: 'https://i.postimg.cc/ZYLrs9Y6/theme-80min.png',
         themeId: 8,
       },
       {
-        name: '안녕하세요? 무엇을 도와드릴까요?',
+        themeName: '안녕하세요? 무엇을 도와드릴까요?',
         posterImageUrl: 'https://i.postimg.cc/qRJZSPKL/theme.jpg',
         themeId: 9,
       },
     ],
   },
   '5': {
-    name: 'SOUL CHASER - 실종',
+    themeName: 'SOUL CHASER - 실종',
     posterImageUrl: 'https://i.postimg.cc/nLwL9k0H/theme-SOUL-CHASER.jpg',
     brandBranchName: '키이스케이프 강남점',
     themeId: 34,
@@ -58,35 +58,35 @@ export const themeDetailsByThemeId: Record<string, ThemeDetailsData> = {
     website: 'https://www.keyescape.co.kr/web/home.php',
     otherThemes: [
       {
-        name: '머니머니패키지',
+        themeName: '머니머니패키지',
         posterImageUrl: 'https://www.keyescape.co.kr/file/theme_info/38_a.jpg',
         themeId: 34,
       },
       {
-        name: 'B아파트 13동 1313호',
+        themeName: 'B아파트 13동 1313호',
         posterImageUrl:
           'https://i.postimg.cc/B6ktkgKh/theme-Kakao-Talk-Photo-2019-03-05-17-11-51-4-B-13-1313.jpg',
         themeId: 6,
       },
       {
-        name: '어제, 그리고 오늘',
+        themeName: '어제, 그리고 오늘',
         posterImageUrl: 'https://i.postimg.cc/CxRkKmG4/theme.png',
         themeId: 7,
       },
       {
-        name: '동화나라 수비대',
+        themeName: '동화나라 수비대',
         posterImageUrl: 'https://i.postimg.cc/ZYLrs9Y6/theme-80min.png',
         themeId: 8,
       },
       {
-        name: '안녕하세요? 무엇을 도와드릴까요?',
+        themeName: '안녕하세요? 무엇을 도와드릴까요?',
         posterImageUrl: 'https://i.postimg.cc/qRJZSPKL/theme.jpg',
         themeId: 9,
       },
     ],
   },
   '6': {
-    name: 'B아파트 13동 1313호',
+    themeName: 'B아파트 13동 1313호',
     posterImageUrl:
       'https://i.postimg.cc/B6ktkgKh/theme-Kakao-Talk-Photo-2019-03-05-17-11-51-4-B-13-1313.jpg',
     brandBranchName: '키이스케이프 강남점',
@@ -101,34 +101,34 @@ export const themeDetailsByThemeId: Record<string, ThemeDetailsData> = {
     website: 'https://www.keyescape.co.kr/web/home.php',
     otherThemes: [
       {
-        name: 'SOUL CHASER - 실종',
+        themeName: 'SOUL CHASER - 실종',
         posterImageUrl: 'https://i.postimg.cc/nLwL9k0H/theme-SOUL-CHASER.jpg',
         themeId: 5,
       },
       {
-        name: '머니머니패키지',
+        themeName: '머니머니패키지',
         posterImageUrl: 'https://www.keyescape.co.kr/file/theme_info/38_a.jpg',
         themeId: 34,
       },
       {
-        name: '어제, 그리고 오늘',
+        themeName: '어제, 그리고 오늘',
         posterImageUrl: 'https://i.postimg.cc/CxRkKmG4/theme.png',
         themeId: 7,
       },
       {
-        name: '동화나라 수비대',
+        themeName: '동화나라 수비대',
         posterImageUrl: 'https://i.postimg.cc/ZYLrs9Y6/theme-80min.png',
         themeId: 8,
       },
       {
-        name: '안녕하세요? 무엇을 도와드릴까요?',
+        themeName: '안녕하세요? 무엇을 도와드릴까요?',
         posterImageUrl: 'https://i.postimg.cc/qRJZSPKL/theme.jpg',
         themeId: 9,
       },
     ],
   },
   '7': {
-    name: '어제, 그리고 오늘',
+    themeName: '어제, 그리고 오늘',
     posterImageUrl: 'https://i.postimg.cc/CxRkKmG4/theme.png',
     brandBranchName: '키이스케이프 강남점',
     themeId: 34,
@@ -142,35 +142,35 @@ export const themeDetailsByThemeId: Record<string, ThemeDetailsData> = {
     website: 'https://www.keyescape.co.kr/web/home.php',
     otherThemes: [
       {
-        name: 'SOUL CHASER - 실종',
+        themeName: 'SOUL CHASER - 실종',
         posterImageUrl: 'https://i.postimg.cc/nLwL9k0H/theme-SOUL-CHASER.jpg',
         themeId: 5,
       },
       {
-        name: 'B아파트 13동 1313호',
+        themeName: 'B아파트 13동 1313호',
         posterImageUrl:
           'https://i.postimg.cc/B6ktkgKh/theme-Kakao-Talk-Photo-2019-03-05-17-11-51-4-B-13-1313.jpg',
         themeId: 6,
       },
       {
-        name: '머니머니패키지',
+        themeName: '머니머니패키지',
         posterImageUrl: 'https://www.keyescape.co.kr/file/theme_info/38_a.jpg',
         themeId: 34,
       },
       {
-        name: '동화나라 수비대',
+        themeName: '동화나라 수비대',
         posterImageUrl: 'https://i.postimg.cc/ZYLrs9Y6/theme-80min.png',
         themeId: 8,
       },
       {
-        name: '안녕하세요? 무엇을 도와드릴까요?',
+        themeName: '안녕하세요? 무엇을 도와드릴까요?',
         posterImageUrl: 'https://i.postimg.cc/qRJZSPKL/theme.jpg',
         themeId: 9,
       },
     ],
   },
   '8': {
-    name: '동화나라 수비대',
+    themeName: '동화나라 수비대',
     posterImageUrl: 'https://i.postimg.cc/ZYLrs9Y6/theme-80min.png',
     brandBranchName: '키이스케이프 강남점',
     themeId: 34,
@@ -184,35 +184,35 @@ export const themeDetailsByThemeId: Record<string, ThemeDetailsData> = {
     website: 'https://www.keyescape.co.kr/web/home.php',
     otherThemes: [
       {
-        name: 'SOUL CHASER - 실종',
+        themeName: 'SOUL CHASER - 실종',
         posterImageUrl: 'https://i.postimg.cc/nLwL9k0H/theme-SOUL-CHASER.jpg',
         themeId: 5,
       },
       {
-        name: 'B아파트 13동 1313호',
+        themeName: 'B아파트 13동 1313호',
         posterImageUrl:
           'https://i.postimg.cc/B6ktkgKh/theme-Kakao-Talk-Photo-2019-03-05-17-11-51-4-B-13-1313.jpg',
         themeId: 6,
       },
       {
-        name: '어제, 그리고 오늘',
+        themeName: '어제, 그리고 오늘',
         posterImageUrl: 'https://i.postimg.cc/CxRkKmG4/theme.png',
         themeId: 7,
       },
       {
-        name: '머니머니패키지',
+        themeName: '머니머니패키지',
         posterImageUrl: 'https://www.keyescape.co.kr/file/theme_info/38_a.jpg',
         themeId: 34,
       },
       {
-        name: '안녕하세요? 무엇을 도와드릴까요?',
+        themeName: '안녕하세요? 무엇을 도와드릴까요?',
         posterImageUrl: 'https://i.postimg.cc/qRJZSPKL/theme.jpg',
         themeId: 9,
       },
     ],
   },
   '9': {
-    name: '안녕하세요? 무엇을 도와드릴까요?',
+    themeName: '안녕하세요? 무엇을 도와드릴까요?',
     posterImageUrl: 'https://i.postimg.cc/qRJZSPKL/theme.jpg',
     brandBranchName: '키이스케이프 강남점',
     themeId: 34,
@@ -226,28 +226,28 @@ export const themeDetailsByThemeId: Record<string, ThemeDetailsData> = {
     website: 'https://www.keyescape.co.kr/web/home.php',
     otherThemes: [
       {
-        name: 'SOUL CHASER - 실종',
+        themeName: 'SOUL CHASER - 실종',
         posterImageUrl: 'https://i.postimg.cc/nLwL9k0H/theme-SOUL-CHASER.jpg',
         themeId: 5,
       },
       {
-        name: 'B아파트 13동 1313호',
+        themeName: 'B아파트 13동 1313호',
         posterImageUrl:
           'https://i.postimg.cc/B6ktkgKh/theme-Kakao-Talk-Photo-2019-03-05-17-11-51-4-B-13-1313.jpg',
         themeId: 6,
       },
       {
-        name: '어제, 그리고 오늘',
+        themeName: '어제, 그리고 오늘',
         posterImageUrl: 'https://i.postimg.cc/CxRkKmG4/theme.png',
         themeId: 7,
       },
       {
-        name: '동화나라 수비대',
+        themeName: '동화나라 수비대',
         posterImageUrl: 'https://i.postimg.cc/ZYLrs9Y6/theme-80min.png',
         themeId: 8,
       },
       {
-        name: '머니머니패키지',
+        themeName: '머니머니패키지',
         posterImageUrl: 'https://www.keyescape.co.kr/file/theme_info/38_a.jpg',
         themeId: 34,
       },
