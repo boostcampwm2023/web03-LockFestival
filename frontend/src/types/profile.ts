@@ -1,5 +1,5 @@
 export interface Profile {
   nickname: string;
-  profileImageUrl: string;
+  profileImageUrl: string | null;
   isMoreInfo: boolean;
 }
