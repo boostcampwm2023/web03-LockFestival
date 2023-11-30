@@ -1,7 +1,7 @@
 export type TotalChatLog = Record<string, Map<string, ChatLog>>;
 
 export interface ServerChatLog extends ChatLog {
-  logId: string;
+  chatId: string;
 }
 export interface ChatLog {
   message: string;

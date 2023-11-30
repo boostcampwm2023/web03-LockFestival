@@ -2,11 +2,7 @@ import tw, { styled, css } from 'twin.macro';
 import { ChatLog } from 'types/chat';
 
 const MessageBox = ({ message, userId, type, time }: ChatLog) => {
-  return (
-    <MessageLayout>
-      {message} {userId} {time.toLocaleString('ko-KR', { timeZone: 'UTC' })}
-    </MessageLayout>
-  );
+  return <MessageLayout>{message}</MessageLayout>;
 };
 
 export default MessageBox;

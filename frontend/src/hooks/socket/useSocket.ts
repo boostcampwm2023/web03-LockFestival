@@ -59,8 +59,8 @@ const useSocket = (roomId: string) => {
     });
 
     socket?.on('chat', (res: ServerChatLog) => {
-      const { message, userId, type, time, logId } = res;
-      setReceiveChat({ message, userId, type, time, logId });
+      const { message, userId, type, time, chatId } = res;
+      setReceiveChat({ message, userId, type, time, chatId });
     });
   };
 
@@ -68,9 +68,9 @@ const useSocket = (roomId: string) => {
     const currentRoomChatting = new Map<string, ChatLog>(chatLog[roomId]);
 
     if (receiveChat) {
-      const { logId, message, userId, type, time } = receiveChat;
+      const { chatId, message, userId, type, time } = receiveChat;
 
-      currentRoomChatting.set(logId, {
+      currentRoomChatting.set(chatId, {
         message,
         userId,
         type,
@@ -78,6 +78,7 @@ const useSocket = (roomId: string) => {
       });
 
       setChatLog((prev) => ({ ...prev, [roomId]: currentRoomChatting }));
+      console.log('채팅방 로그', chatLog);
     }
   }, [receiveChat]);
 
