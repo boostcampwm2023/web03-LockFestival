@@ -53,7 +53,7 @@ export class ChatService {
   }
 
   async createMessgeByChat(chatMessageDto: ChatMessageDto): Promise<ChatMessageResponseDto> {
-    return await this.chatRepository.createMessgeByChat(chatMessageDto);
+    return await this.chatRepository.createMessageByChat(chatMessageDto);
   }
   async findMessagesByLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageResponseDto[]> {
     return await this.chatRepository.findMessagesByStartLogId(chatUnreadDto);

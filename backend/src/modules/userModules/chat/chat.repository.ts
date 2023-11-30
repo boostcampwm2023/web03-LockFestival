@@ -17,7 +17,7 @@ export class ChatRepository {
     @InjectModel(ChatUser.name) private chatUserModel: Model<ChatUser>
   ) {}
 
-  async createMessgeByChat(chatMessageDto: ChatMessageDto): Promise<ChatMessageResponseDto> {
+  async createMessageByChat(chatMessageDto: ChatMessageDto): Promise<ChatMessageResponseDto> {
     const objectId = new mongoose.Types.ObjectId(chatMessageDto.userId);
     const chat = await this.chatMessageModel
       .create({
