@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ChatRepository } from '@chat/chat.repository';
-import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
+import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
 import { ChatUnreadDto } from '@chat/dtos/chat.unread.dto';
-import { ChatMessageResponseDto } from '@chat/dtos/chat.message.response.dto';
+import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
 import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
+import { ChatMessageResponseDto } from '@chat/dtos/chat.mesage.response.dto';
 
 @Injectable()
 export class ChatService {
@@ -52,10 +53,12 @@ export class ChatService {
     return await this.chatRepository.validateLeaderByRoomId(roomId, userId);
   }
 
-  async createMessgeByChat(chatMessageDto: ChatMessageDto): Promise<ChatMessageResponseDto> {
+  async createMessageByChat(chatMessageDto: ChatMessageRequestDto): Promise<ChatMessageDto> {
     return await this.chatRepository.createMessageByChat(chatMessageDto);
   }
-  async findMessagesByLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageResponseDto[]> {
-    return await this.chatRepository.findMessagesByStartLogId(chatUnreadDto);
+  async findMessagesByLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageResponseDto> {
+    const messages: ChatMessageDto[] =
+      await this.chatRepository.findMessagesByStartLogId(chatUnreadDto);
+    return new ChatMessageResponseDto(chatUnreadDto.startLogId, messages);
   }
 }

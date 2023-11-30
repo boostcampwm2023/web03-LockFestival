@@ -5,8 +5,8 @@ import { ChatUser } from '@chat/entities/chat.user.schema';
 import { ChatMessage } from '@chat/entities/chat.message.schema';
 import { Room } from '@chat/entities/room.schema';
 import { ChatUnreadDto } from '@chat/dtos/chat.unread.dto';
+import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
 import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
-import { ChatMessageResponseDto } from '@chat/dtos/chat.message.response.dto';
 import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 import { ChatType } from '@enum/chat.type';
 import { User } from '@user/entities/user.entity';
@@ -33,7 +33,7 @@ export class ChatRepository {
     });
   }
 
-  async createMessageByChat(chatMessageDto: ChatMessageDto): Promise<ChatMessageResponseDto> {
+  async createMessageByChat(chatMessageDto: ChatMessageRequestDto): Promise<ChatMessageDto> {
     const objectId = new mongoose.Types.ObjectId(chatMessageDto.userId);
     const chat = await this.chatMessageModel
       .create({
@@ -62,16 +62,16 @@ export class ChatRepository {
       )
       .exec();
 
-    return new ChatMessageResponseDto(chat);
+    return new ChatMessageDto(chat);
   }
-  async findMessagesByStartLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageResponseDto[]> {
+  async findMessagesByStartLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageDto[]> {
     return (
       await this.roomModel.findOne({ group_id: chatUnreadDto.roomId }).populate({
         path: 'chat_list',
         model: 'ChatMessage',
         match: { _id: { $gt: chatUnreadDto.startLogId } },
         options: {
-          sort: { _id: 1 },
+          sort: { _id: chatUnreadDto.direction },
         },
         populate: {
           path: 'sender',
@@ -79,7 +79,7 @@ export class ChatRepository {
         },
       })
     ).chat_list.map((message) => {
-      return new ChatMessageResponseDto(message);
+      return new ChatMessageDto(message);
     });
   }
 
