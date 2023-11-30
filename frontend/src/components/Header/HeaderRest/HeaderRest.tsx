@@ -10,10 +10,16 @@ import Modal from '@components/Modal/Modal';
 import LoginModal from '@components/LoginModal/LoginModal';
 import JoinModal from '@components/JoinModal/JoinModal';
 import useHeaderSearchInput from '@hooks/useHeaderSearchInput';
+import { useRecoilState } from 'recoil';
+import userAtom from 'store/userAtom';
+import { Profile } from 'types/profile';
 
 const HeaderRest = () => {
   const { openModal, closeModal } = useModal();
-  const { data, isSuccess, isLoading, isError } = useProfileQuery();
+
+  const { data } = useProfileQuery();
+
+  const [profileData, setProfileData] = useRecoilState<Profile>(userAtom);
 
   const {
     searchInput,
@@ -42,6 +48,8 @@ const HeaderRest = () => {
     if (!data) {
       return;
     }
+    setProfileData(data);
+
     if (!data.isMoreInfo) {
       openModal(Modal, {
         children: JoinModal(() => closeModal(Modal)),
@@ -74,20 +82,17 @@ const HeaderRest = () => {
         )}
       </SearchContainer>
       <ProfileContainer>
-        {isSuccess && (
+        {profileData.nickname ? (
           <Button size="l" onClick={handleLogout} isIcon={false}>
             <>
               <FaUser size={20} />
-              {data?.nickname}님
+              {profileData.nickname}님
             </>
           </Button>
-        )}
-        {(isLoading || isError) && (
-          <>
-            <Button size="l" font="maplestory" isIcon={false} onClick={handleLogin}>
-              <>로그인</>
-            </Button>
-          </>
+        ) : (
+          <Button size="l" font="maplestory" isIcon={false} onClick={handleLogin}>
+            <>로그인</>
+          </Button>
         )}
       </ProfileContainer>
     </HeaderRestContainer>
