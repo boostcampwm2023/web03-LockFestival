@@ -6,6 +6,7 @@ on:
       - main # main push되었을 때 해당 yml을 실행한다.
       - dev
       - "HotFix/**" #HotFix 시에 무조건 실행하도록 설정한다.
+      - "Chat/**" #채팅 개발 시에 무조건 실행하도록 설정한다.
 
 jobs:
   build:
