@@ -16,6 +16,7 @@ import { BranchModule } from '@branch/branch.module';
 import { BrandModule } from '@brand/brand.module';
 import { ChatModule } from '@chat/chat.module';
 import { GroupModule } from '@group/group.module';
+import { EventsModule } from '@src/gateway/events.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { GroupModule } from '@group/group.module';
     ChatModule,
     GroupModule,
     UserModule,
+    EventsModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
