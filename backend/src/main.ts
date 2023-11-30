@@ -5,6 +5,7 @@ import { AppModule } from '@src/app.module';
 import { HTTP_ALLOWED_METHOD } from '@enum/http.method';
 import { ConfigService } from '@nestjs/config';
 import { winstonLogger } from '@src/utils/logger';
+import { RedisIoAdapter } from '@src/adapter/redis.io.adapter';
 
 declare const module: any;
 async function bootstrap() {
@@ -16,6 +17,11 @@ async function bootstrap() {
     methods: Object.keys(HTTP_ALLOWED_METHOD),
     credentials: true,
   });
+
+  const redisIoAdapter = new RedisIoAdapter(app, app.get(ConfigService));
+  await redisIoAdapter.connectToRedis();
+  app.useWebSocketAdapter(redisIoAdapter);
+
   app.setGlobalPrefix('api');
   app.enableVersioning({
     type: VersioningType.URI,
