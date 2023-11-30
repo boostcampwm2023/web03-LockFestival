@@ -1,5 +1,5 @@
 import mongoose, { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ChatUser } from '@chat/entities/chat.user.schema';
 import { ChatMessage } from '@chat/entities/chat.message.schema';
@@ -13,6 +13,7 @@ import { User } from '@user/entities/user.entity';
 
 @Injectable()
 export class ChatRepository {
+  private readonly logger = new Logger(ChatRepository.name);
   constructor(
     @InjectModel(Room.name) private roomModel: Model<Room>,
     @InjectModel(ChatMessage.name) private chatMessageModel: Model<ChatMessage>,
@@ -45,6 +46,9 @@ export class ChatRepository {
       .then((message) => {
         return message.populate('sender');
       });
+
+    this.logger.log('make chat with user');
+    this.logger.log(chat);
 
     await this.roomModel
       .updateOne(
