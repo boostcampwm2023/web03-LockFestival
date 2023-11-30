@@ -6,6 +6,7 @@ import { getStringByDate } from '@utils/dateUtil';
 import { HeadCardProps } from './HeadCard';
 import { FaRegUser } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
+import fetchEnterRoom from '@apis/fetchEnterRoom';
 
 const HeadCardContent = ({
   themeDetail,
@@ -14,12 +15,18 @@ const HeadCardContent = ({
 }: Omit<HeadCardProps, 'leader'>) => {
   const navigate = useNavigate();
 
-  const handleNavigate = (isEnter: boolean, groudId: number) => {
+  const handleNavigate = async (isEnter: boolean, groudId: number) => {
     if (isEnter) {
       return;
     }
 
-    navigate(`/chat-room/${groudId}`);
+    try {
+      await fetchEnterRoom(groudId);
+      navigate(`/chat-room/${groudId}`);
+    } catch (error) {
+      alert('입장에 실패했습니다.');
+      console.log(error);
+    }
   };
 
   return (

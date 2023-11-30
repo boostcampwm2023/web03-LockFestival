@@ -4,7 +4,7 @@ type CreateRecruitment = (
   themeId: number,
   recruitmentContent: string,
   appointmentDate: Date,
-  recruitmentCompleted: boolean,
+  appointmentCompleted: boolean,
   recruitmentMembers: number
 ) => Promise<any>;
 
@@ -12,7 +12,7 @@ const createRecruitment: CreateRecruitment = async (
   themeId,
   recruitmentContent,
   appointmentDate,
-  recruitmentCompleted,
+  appointmentCompleted,
   recruitmentMembers
 ) => {
   return (
@@ -23,7 +23,7 @@ const createRecruitment: CreateRecruitment = async (
         themeId,
         recruitmentContent,
         appointmentDate,
-        recruitmentCompleted,
+        appointmentCompleted,
         recruitmentMembers,
       },
     })

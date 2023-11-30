@@ -2,16 +2,23 @@ import tw, { css, styled } from 'twin.macro';
 import { HeadCardProps } from '../HeadCard/HeadCard';
 import Label from '@components/Label/Label';
 import { useNavigate } from 'react-router-dom';
+import fetchEnterRoom from '@apis/fetchEnterRoom';
 
 const TailCard = ({ leader, themeDetail, groupDetail, handleClickFlipButton }: HeadCardProps) => {
   const navigate = useNavigate();
 
-  const handleNavigate = (isEnter: boolean, groudId: number) => {
+  const handleNavigate = async (isEnter: boolean, groudId: number) => {
     if (isEnter) {
       return;
     }
 
-    navigate(`/chat-room/${groudId}`);
+    try {
+      await fetchEnterRoom(groudId);
+      navigate(`/chat-room/${groudId}`);
+    } catch (error) {
+      alert('입장에 실패했습니다.');
+      console.log(error);
+    }
   };
 
   return (
