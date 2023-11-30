@@ -1,10 +1,12 @@
 import tw, { styled, css } from 'twin.macro';
-import GroupHeader from './GroupHeader';
-import GroupContent from './GroupContent';
-import GroupFooter from './GroupFooter';
+
 import { GroupProps } from 'types/group';
 
-const Group = ({
+import RoomHeader from './RoomHeader';
+import RoomContent from './RoomContent';
+import RoomFooter from './RoomFooter';
+
+const Room = ({
   groupId,
   posterImageUrl,
   branchName,
@@ -17,19 +19,15 @@ const Group = ({
   return (
     <Container>
       <Wrapper>
-        <GroupHeader
-          posterImageUrl={posterImageUrl}
-          branchName={branchName}
-          themeName={themeName}
-        />
-        <GroupContent
+        <RoomHeader posterImageUrl={posterImageUrl} branchName={branchName} themeName={themeName} />
+        <RoomContent
           contents={contents}
           lastChat={lastChat}
           lastChatTime={lastChatTime}
           haveNewMessage={haveNewMessage}
         />
       </Wrapper>
-      <GroupFooter groupId={groupId} />
+      <RoomFooter groupId={groupId} />
     </Container>
   );
 };
@@ -54,4 +52,4 @@ const Wrapper = styled.div([
   `,
 ]);
 
-export default Group;
+export default Room;

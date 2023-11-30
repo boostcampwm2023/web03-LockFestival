@@ -2,6 +2,7 @@ import fetchRecruitmentByCursor from '@apis/fetchRecruitmentByCursor';
 import fetchThemesByLocation from '@apis/fetchThemesByLocation';
 import fetchThemesByRandomGenres from '@apis/fetchThemesByRandomGenres';
 import fetchThemeDetails from '@apis/fetchThemeDetails';
+import fetchRoomList from '@apis/fetchRoomList';
 
 const QUERY_MANAGEMENT = {
   geolocation: {
@@ -19,6 +20,10 @@ const QUERY_MANAGEMENT = {
   themeDetails: {
     key: ['themeDetails'],
     fn: (themeId: number) => fetchThemeDetails(themeId),
+  },
+  roomList: {
+    key: 'roomList',
+    fn: fetchRoomList,
   },
 };
 

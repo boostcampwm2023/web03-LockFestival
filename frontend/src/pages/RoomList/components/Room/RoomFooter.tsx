@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import tw, { styled, css } from 'twin.macro';
 import { GroupProps } from 'types/group';
 
-const GroupFooter = ({ groupId }: Pick<GroupProps, 'groupId'>) => {
+const RoomFooter = ({ groupId }: Pick<GroupProps, 'groupId'>) => {
   const navigate = useNavigate();
 
   return (
@@ -12,7 +12,7 @@ const GroupFooter = ({ groupId }: Pick<GroupProps, 'groupId'>) => {
         font="maplestory"
         size="l-bold"
         isIcon={false}
-        onClick={() => navigate(`/chat/${groupId}`)}
+        onClick={() => navigate(`/chat-room/${groupId}`)}
       >
         <>입장하기</>
       </Button>
@@ -23,8 +23,6 @@ const GroupFooter = ({ groupId }: Pick<GroupProps, 'groupId'>) => {
   );
 };
 
-export default GroupFooter;
-
 const Container = styled.div([
   tw`w-[10rem] h-[10.4rem] pt-4 gap-x-4 rounded-[2rem] font-pretendard flex-row h-auto w-full justify-end items-center`,
   tw`desktop:(flex-col items-end p-4)`,
@@ -34,3 +32,5 @@ const Container = styled.div([
     row-gap: 1.6rem;
   `,
 ]);
+
+export default RoomFooter;
