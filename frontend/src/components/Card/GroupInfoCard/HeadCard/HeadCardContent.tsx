@@ -15,9 +15,11 @@ const HeadCardContent = ({
   const navigate = useNavigate();
 
   const handleNavigate = (isEnter: boolean, groudId: number) => {
-    if (!isEnter) {
-      navigate(`chat/${groudId}`);
+    if (isEnter) {
+      return;
     }
+
+    navigate(`/chat-room/${groudId}`);
   };
 
   return (
