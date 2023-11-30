@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ChatRepository } from '@chat/chat.repository';
+import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
+import { ChatUnreadDto } from '@chat/dtos/chat.unread.dto';
+import { ChatMessageResponseDto } from '@chat/dtos/chat.message.response.dto';
 import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 
 @Injectable()
@@ -47,5 +50,12 @@ export class ChatService {
 
   async validateLeader(roomId: string, userId: string) {
     return await this.chatRepository.validateLeaderByRoomId(roomId, userId);
+  }
+
+  async createMessgeByChat(chatMessageDto: ChatMessageDto): Promise<ChatMessageResponseDto> {
+    return await this.chatRepository.createMessageByChat(chatMessageDto);
+  }
+  async findMessagesByLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageResponseDto[]> {
+    return await this.chatRepository.findMessagesByStartLogId(chatUnreadDto);
   }
 }

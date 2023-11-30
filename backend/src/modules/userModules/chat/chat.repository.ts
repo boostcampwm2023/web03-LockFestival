@@ -1,9 +1,12 @@
+import mongoose, { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { ChatMessage } from '@chat/entities/chat.message.schema';
 import { ChatUser } from '@chat/entities/chat.user.schema';
+import { ChatMessage } from '@chat/entities/chat.message.schema';
 import { Room } from '@chat/entities/room.schema';
+import { ChatUnreadDto } from '@chat/dtos/chat.unread.dto';
+import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
+import { ChatMessageResponseDto } from '@chat/dtos/chat.message.response.dto';
 import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 
 @Injectable()
@@ -13,6 +16,56 @@ export class ChatRepository {
     @InjectModel(ChatMessage.name) private chatMessageModel: Model<ChatMessage>,
     @InjectModel(ChatUser.name) private chatUserModel: Model<ChatUser>
   ) {}
+
+  async createMessageByChat(chatMessageDto: ChatMessageDto): Promise<ChatMessageResponseDto> {
+    const objectId = new mongoose.Types.ObjectId(chatMessageDto.userId);
+    const chat = await this.chatMessageModel
+      .create({
+        chat_message: chatMessageDto.message,
+        sender: objectId,
+        type: chatMessageDto.type,
+        chat_date: chatMessageDto.time,
+      })
+      .then((message) => {
+        return message.populate('sender');
+      });
+
+    await this.roomModel
+      .updateOne(
+        {
+          group_id: chatMessageDto.groupId,
+        },
+        {
+          $push: {
+            chat_list: chat._id,
+          },
+          $set: {
+            last_chat: chat._id,
+          },
+        }
+      )
+      .exec();
+
+    return new ChatMessageResponseDto(chat);
+  }
+  async findMessagesByStartLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageResponseDto[]> {
+    return (
+      await this.roomModel.findOne({ group_id: chatUnreadDto.roomId }).populate({
+        path: 'chat_list',
+        model: 'ChatMessage',
+        match: { _id: { $gt: chatUnreadDto.startLogId } },
+        options: {
+          sort: { _id: 1 },
+        },
+        populate: {
+          path: 'sender',
+          model: 'ChatUser',
+        },
+      })
+    ).chat_list.map((message) => {
+      return new ChatMessageResponseDto(message);
+    });
+  }
 
   async findUserListWithLeavedUserByRoomId(roomId: string): Promise<ChatUserInfoDto[]> {
     const queryResult = await this.roomModel
