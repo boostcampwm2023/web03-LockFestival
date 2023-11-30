@@ -49,9 +49,9 @@ export class GroupController {
   async createGroup(@Req() { user }, @Res() res, @Body() groupRequest: GroupRequestDto) {
     try {
       await this.groupService.createGroup(groupRequest, user.nickname);
-      return res.status(HttpStatus.OK);
+      return res.status(HttpStatus.OK).send();
     } catch (err) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
     }
   }
 
