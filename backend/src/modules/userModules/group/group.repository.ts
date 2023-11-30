@@ -118,7 +118,7 @@ export class GroupRepository extends Repository<Group> {
     const queryRunner = this.dataSource.createQueryRunner();
     try {
       await queryRunner.startTransaction();
-      // group의 count 검증 증가
+
       const group: Group = await queryRunner.manager.findOneBy(Group, { id: groupId });
 
       if (!group) {
