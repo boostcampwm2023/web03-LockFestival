@@ -71,4 +71,19 @@ export class ChatRepository {
       return user.isLeader && user.userId === user_id;
     });
   }
+
+  async updateRead(userId: string) {
+    this.chatUserModel.updateOne(
+      {
+        _id: {
+          $eq: { userId },
+        },
+      },
+      {
+        $unset: {
+          last_chat_log_id: true,
+        },
+      }
+    );
+  }
 }

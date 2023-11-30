@@ -1,23 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { ChatRepository } from '@chat/chat.repository';
+import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 
 @Injectable()
 export class ChatService {
   constructor(private readonly chatRepository: ChatRepository) {}
 
   async validateRoomAndGetChatUserList(roomId: string, nickname: string) {
-    const chatUsers = (
+    const chatUsers: ChatUserInfoDto[] = (
       await this.chatRepository.validateRoomAndGetChatUserList(roomId, nickname)
     ).map((chatUser: ChatUserInfoDto) => {
       return chatUser.updateIsMe(chatUser.nickname === nickname);
     });
 
-    const lastChatLogId: string = chatUsers.find(({ isMe }) => {
+    const meUser: ChatUserInfoDto = chatUsers.find(({ isMe }) => {
       return isMe;
-    }).lastChatLogId;
+    });
 
     const countMap: object = chatUsers
-      .filter((user) => {
+      .filter((user: ChatUserInfoDto) => {
         return !user.isMe;
       })
       .map(({ lastChatLogId }) => {
@@ -39,6 +40,12 @@ export class ChatService {
         return acc;
       }, {});
 
-    return { lastChatLogId, unreadCountMap, chatUsers };
+    await this.chatRepository.updateRead(meUser.userId);
+
+    return { lastChatLogId: meUser.lastChatLogId, unreadCountMap, chatUsers };
+  }
+
+  async validateLeader(roomId: string, userId: string) {
+    return await this.chatRepository.validateLeaderByRoomId(roomId, userId);
   }
 }
