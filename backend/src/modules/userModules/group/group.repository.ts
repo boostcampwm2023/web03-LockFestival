@@ -25,6 +25,7 @@ export class GroupRepository extends Repository<Group> {
       );
       await queryRunner.manager.save(UserGroup, UserGroup.createUserGroupObject(newGroup, user));
       await queryRunner.commitTransaction();
+      return { groupId: newGroup.id, user };
     } catch (err) {
       await queryRunner.rollbackTransaction();
       throw new HttpException('Error creating group', HttpStatus.INTERNAL_SERVER_ERROR);

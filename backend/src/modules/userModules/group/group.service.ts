@@ -28,7 +28,9 @@ export class GroupService {
 
   async createGroup(groupRequest: GroupRequestDto, nickname: string) {
     const theme: Theme = await this.themeRepository.findOneBy({ id: groupRequest.themeId });
-    await this.groupRepository.createGroup(groupRequest, nickname, theme);
+    const { groupId, user } = await this.groupRepository.createGroup(groupRequest, nickname, theme);
+
+    await this.chatRepository.createRoomByleader(groupId, user);
   }
 
   async getAllGroups(

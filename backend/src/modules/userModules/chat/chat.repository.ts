@@ -9,6 +9,7 @@ import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
 import { ChatMessageResponseDto } from '@chat/dtos/chat.message.response.dto';
 import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 import { ChatType } from '@enum/chat.type';
+import { User } from '@user/entities/user.entity';
 
 @Injectable()
 export class ChatRepository {
@@ -17,6 +18,20 @@ export class ChatRepository {
     @InjectModel(ChatMessage.name) private chatMessageModel: Model<ChatMessage>,
     @InjectModel(ChatUser.name) private chatUserModel: Model<ChatUser>
   ) {}
+
+  async createRoomByleader(groupId: number, user: User) {
+    const userObject = await this.chatUserModel.create({
+      user_id: user.id,
+      user_nickname: user.nickname,
+      user_profile_url: user.profileImageUrl,
+      is_leader: true,
+      is_leave: false,
+    });
+    await this.roomModel.create({
+      group_id: groupId,
+      user_list: userObject._id,
+    });
+  }
 
   async createMessageByChat(chatMessageDto: ChatMessageDto): Promise<ChatMessageResponseDto> {
     const objectId = new mongoose.Types.ObjectId(chatMessageDto.userId);

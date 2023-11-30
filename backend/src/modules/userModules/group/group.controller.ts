@@ -40,20 +40,18 @@ export class GroupController {
   })
   @ApiOkResponse({
     status: 200,
-    description: JSON.stringify({ success: true, message: 'Group created successfully' }),
   })
   @ApiInternalServerErrorResponse({
     status: 500,
-    description: JSON.stringify({ success: false, message: 'Error creating group' }),
   })
   @ApiBearerAuth('Authorization')
   @ApiBody({ type: GroupRequestDto })
   async createGroup(@Req() { user }, @Res() res, @Body() groupRequest: GroupRequestDto) {
     try {
       await this.groupService.createGroup(groupRequest, user.nickname);
-      return res.status(HttpStatus.OK);
+      res.status(HttpStatus.OK);
     } catch (err) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR);
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

@@ -69,7 +69,7 @@ export class Group extends BaseTime {
   static createGroupObject(groupRequest: GroupRequestDto, user: User, theme: Theme) {
     return {
       recruitmentMembers: groupRequest.recruitmentMembers,
-      recruitmentCompleted: groupRequest.recruitmentCompleted,
+      appointmentCompleted: groupRequest.appointmentCompleted,
       recruitmentContent: groupRequest.recruitmentContent,
       theme_id: groupRequest.themeId,
       appointmentDate: groupRequest.appointmentDate,
