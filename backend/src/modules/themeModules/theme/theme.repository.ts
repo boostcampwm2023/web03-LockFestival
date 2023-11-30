@@ -145,7 +145,7 @@ export class ThemeRepository extends Repository<Theme> {
         'theme.id as themeId',
         'theme.name as themeName',
         'theme.poster_image_url as posterImageUrl',
-        'branch.branch_name as BranchName',
+        'branch.branch_name as branchName',
       ])
       .from(Theme, 'theme')
       .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
