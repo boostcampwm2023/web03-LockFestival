@@ -2,6 +2,7 @@ import tw, { styled } from 'twin.macro';
 import Label from '@components/Label/Label';
 import useRandomThemesQuery from '@hooks/useRandomThemesQuery';
 import SimpleThemeCardList from '@components/List/SimpleThemeCardList/SimpleThemeCardList';
+import { Fragment } from 'react';
 
 const RandomThemeListContainer = () => {
   const { data } = useRandomThemesQuery();
@@ -13,14 +14,14 @@ const RandomThemeListContainer = () => {
     <>
       {data.map((ele) => {
         return (
-          <>
+          <Fragment key={ele.genreName}>
             <Label isBorder={true} font="maplestory" size="l">
               <>{ele.genreName}</>
             </Label>
             <SimpleCardContainer>
               <SimpleThemeCardList themes={ele.themes} />
             </SimpleCardContainer>
-          </>
+          </Fragment>
         );
       })}
     </>
