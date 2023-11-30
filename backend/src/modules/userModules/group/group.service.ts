@@ -8,6 +8,9 @@ import { GroupFindResponseDto } from '@group/dtos/group.find.response.dto';
 import { GroupsResponseDto } from '@group/dtos/groups.response.dto';
 import { Theme } from '@theme/entities/theme.entity';
 import { UserGroupRepository } from '@user/userGroup.repository';
+import { UserRepository } from '@user/user.repository';
+import { User } from '@user/entities/user.entity';
+import { ChatRepository } from '@chat/chat.repository';
 
 @Injectable()
 export class GroupService {
@@ -17,7 +20,10 @@ export class GroupService {
     @InjectRepository(ThemeRepository)
     private readonly themeRepository: ThemeRepository,
     @InjectRepository(UserGroupRepository)
-    private readonly userGroupRepository: UserGroupRepository
+    private readonly userGroupRepository: UserGroupRepository,
+    @InjectRepository(UserRepository)
+    private readonly userRepository: UserRepository,
+    private readonly chatRepository: ChatRepository
   ) {}
 
   async createGroup(groupRequest: GroupRequestDto, nickname: string) {
@@ -66,5 +72,11 @@ export class GroupService {
         return new GroupFindResponseDto(dto);
       })
     );
+  }
+
+  async enterGroup(nickname: string, groupId: number) {
+    const user: User = await this.userRepository.findOneBy({ nickname });
+    await this.groupRepository.insertGroup(user, groupId);
+    await this.chatRepository.addUserInRoom(groupId, user.id, user.nickname, user.profileImageUrl);
   }
 }

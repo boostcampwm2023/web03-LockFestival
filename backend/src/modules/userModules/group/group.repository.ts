@@ -1,4 +1,4 @@
-import { Repository, DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { convertSortToSymbol } from '@src/enum/sort.enum';
 import { Group } from '@group/entities/group.entity';
@@ -23,7 +23,7 @@ export class GroupRepository extends Repository<Group> {
         Group,
         Group.createGroupObject(groupRequest, user, theme)
       );
-      await queryRunner.manager.save(UserGroup, Group.createUserGroupObject(newGroup, user));
+      await queryRunner.manager.save(UserGroup, UserGroup.createUserGroupObject(newGroup, user));
       await queryRunner.commitTransaction();
     } catch (err) {
       await queryRunner.rollbackTransaction();
@@ -112,5 +112,46 @@ export class GroupRepository extends Repository<Group> {
     ]);
 
     return { count, dtos };
+  }
+
+  async insertGroup(user: User, groupId: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    try {
+      await queryRunner.startTransaction();
+
+      const group: Group = await queryRunner.manager.findOneBy(Group, { id: groupId });
+
+      if (!group) {
+        throw new HttpException('해당 그룹은 존재하지 않습니다', HttpStatus.BAD_REQUEST);
+      }
+
+      if (
+        await queryRunner.manager
+          .createQueryBuilder(UserGroup, 'userGroup')
+          .where('user_id = :userId', { userId: user.id })
+          .andWhere('group_id = :groupId', { groupId: group.id })
+          .getExists()
+      ) {
+        throw new HttpException('이미 해당 그룹의 소속되어 있습니다.', HttpStatus.BAD_REQUEST);
+      }
+
+      if (group.recruitmentMembers <= group.currentMembers) {
+        throw new HttpException('이미 그룹이 꽉차있습니다.', HttpStatus.BAD_REQUEST);
+      }
+
+      // UserGroup 에 추가
+      await queryRunner.manager.save(UserGroup, UserGroup.createUserGroupObject(group, user));
+
+      // 현재 인원 1명 추가
+      group.currentMembers += 1;
+      await queryRunner.manager.save(group);
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
   }
 }

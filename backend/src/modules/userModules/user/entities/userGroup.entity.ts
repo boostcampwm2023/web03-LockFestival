@@ -8,7 +8,7 @@ export class UserGroup extends BaseTime {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'has_written_comment' })
+  @Column({ name: 'has_written_comment', default: false })
   hasWrittenComment: boolean;
 
   @ManyToOne(
@@ -34,4 +34,13 @@ export class UserGroup extends BaseTime {
   )
   @JoinColumn({ name: 'group_id', referencedColumnName: 'id' })
   group: Group;
+
+  static createUserGroupObject(group: Group, user: User) {
+    return {
+      group: group,
+      user_id: user.id,
+      group_id: group.id,
+      user: user,
+    };
+  }
 }
