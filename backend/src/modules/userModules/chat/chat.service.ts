@@ -46,7 +46,14 @@ export class ChatService {
 
     await this.chatRepository.updateRead(meUser.userId);
 
-    return { lastChatLogId: meUser.lastChatLogId, unreadCountMap, chatUsers };
+    const prevMessages: ChatMessageResponseDto = await this.findMessagesByLogId({
+      startLogId: meUser.lastChatLogId,
+      count: 0,
+      direction: 1,
+      roomId,
+    });
+
+    return { prevMessages, unreadCountMap, chatUsers };
   }
 
   async validateLeader(roomId: string, userId: string) {
