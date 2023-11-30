@@ -19,7 +19,7 @@ export class ChatRepository {
     @InjectModel(ChatUser.name) private chatUserModel: Model<ChatUser>
   ) {}
 
-  async createRoomByleader(groupId: number, user: User) {
+  async createRoomByLeader(groupId: number, user: User) {
     const userObject = await this.chatUserModel.create({
       user_id: user.id,
       user_nickname: user.nickname,
