@@ -3,7 +3,7 @@ import axios from 'axios';
 import { SimpleThemeCardData } from 'types/theme';
 
 interface FetchThemesByRandomGenres {
-  genre: string;
+  genreName: string;
   themes: Array<SimpleThemeCardData>;
 }
 

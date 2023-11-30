@@ -2,7 +2,7 @@ import { getTimeByDate, getStringByDate } from '@utils/dateUtil';
 import tw, { styled, css } from 'twin.macro';
 import { GroupProps } from 'types/group';
 
-const GroupContent = ({
+const RoomContent = ({
   contents,
   lastChat,
   lastChatTime,
@@ -13,13 +13,13 @@ const GroupContent = ({
       <Content>{contents}</Content>
       <LastChat>
         <Chat>{lastChat}</Chat>
-        <Time>{`${getStringByDate(lastChatTime)} ${getTimeByDate(lastChatTime)}`}</Time>
+        <Time>{`${getStringByDate(new Date(lastChatTime))} ${getTimeByDate(
+          new Date(lastChatTime)
+        )}`}</Time>
       </LastChat>
     </Container>
   );
 };
-
-export default GroupContent;
 
 const Container = styled.div([
   tw`h-[10.4rem] p-2 gap-x-4 rounded-[2rem] bg-gray font-pretendard`,
@@ -45,3 +45,5 @@ const LastChat = styled(Content)([tw`h-[2.4rem]`]);
 
 const Chat = styled.div([tw`pr-4`]);
 const Time = styled.div([tw`text-s`]);
+
+export default RoomContent;

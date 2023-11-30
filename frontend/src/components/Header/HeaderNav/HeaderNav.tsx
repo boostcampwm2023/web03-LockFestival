@@ -26,8 +26,8 @@ const HeaderNav = () => {
           탈출러 모집
         </NavItem>
         <NavItem
-          onClick={() => handleSelectedItem('group-list')}
-          isSelected={selectedItem === 'group-list'}
+          onClick={() => handleSelectedItem('room-list')}
+          isSelected={selectedItem === 'room-list'}
         >
           그룹 채팅방
         </NavItem>

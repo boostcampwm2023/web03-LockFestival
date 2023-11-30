@@ -1,10 +1,10 @@
 import tw, { styled, css } from 'twin.macro';
 import UserItem from './UserItem/UserItem';
-import mockUserData from '../mock/mockUserData';
 import Button from '@components/Button/Button';
 import { useNavigate } from 'react-router-dom';
+import { UserInfo } from 'types/chat';
 
-const UserListContainer = () => {
+const UserListContainer = ({ userListInfo }: { userListInfo: UserInfo[] }) => {
   const navigate = useNavigate();
   const handlerLeaveRoom = () => {
     //TODO: emit leave
@@ -13,7 +13,7 @@ const UserListContainer = () => {
   return (
     <Layout>
       <UserListWrapper>
-        {mockUserData.map((user) => {
+        {userListInfo.map((user: UserInfo) => {
           const { userId, nickname, profileImg, isLeader, isLeave, isMe } = user;
           if (!isLeave) {
             return (

@@ -3,9 +3,16 @@ import useRecruitmentListInfiniteQuery from '@hooks/query/useRecruitmentListInfi
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import { useRef } from 'react';
 import tw, { css, styled } from 'twin.macro';
+import { FaPlus } from 'react-icons/fa6';
+import Button from '@components/Button/Button';
+import useModal from '@hooks/useModal';
+import Modal from '@components/Modal/Modal';
+import MakeGroupModal from '@components/Modal/MakeGroupModal/MakeGroupModal';
 
 const RecruitmentLayout = () => {
   const targetRef = useRef<HTMLDivElement>(null);
+
+  const { openModal, closeModal } = useModal();
 
   const { data, fetchNextPage, hasNextPage, isFetching } = useRecruitmentListInfiniteQuery();
 
@@ -16,6 +23,22 @@ const RecruitmentLayout = () => {
 
   return (
     <Container>
+      <AddButton
+        isIcon={false}
+        size="l"
+        onClick={() =>
+          openModal(Modal, {
+            children: <MakeGroupModal onClose={() => closeModal(Modal)} />,
+            onClose: () => closeModal(Modal),
+            closeOnExternalClick: false,
+          })
+        }
+      >
+        <>
+          모집글 작성하기
+          <FaPlus color="white" />
+        </>
+      </AddButton>
       <RecruitList>
         {data?.pages.map((page) => {
           return page.data.map((list) => {
@@ -25,7 +48,7 @@ const RecruitmentLayout = () => {
         <div ref={targetRef}></div>
       </RecruitList>
       {isFetching && <TextContainer>모집글을 불러오는중 ...</TextContainer>}
-      {!hasNextPage && <TextContainer>마지막 모집글입니다!</TextContainer>}
+      {data && !hasNextPage && <TextContainer>마지막 모집글입니다!</TextContainer>}
     </Container>
   );
 };
@@ -49,6 +72,15 @@ const TextContainer = styled.div([
     display: flex;
     align-items: center;
     justify-content: center;
+  `,
+]);
+
+const AddButton = styled(Button)([
+  css`
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 3;
   `,
 ]);
 

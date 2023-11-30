@@ -1,3 +1,8 @@
+export type TotalChatLog = Record<string, Map<string, ChatLog>>;
+
+export interface ServerChatLog extends ChatLog {
+  logId: string;
+}
 export interface ChatLog {
   message: string;
   userId: string;

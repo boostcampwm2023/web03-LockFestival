@@ -12,7 +12,6 @@ const GeoLocationThemeListContainer = () => {
   if (!data) {
     return <div>error</div>;
   }
-
   return (
     <>
       <Text>
@@ -36,7 +35,7 @@ const GeoLocationThemeListContainer = () => {
       </Text>
 
       <SimpleCardContainer>
-        <SimpleThemeCardList themes={data} />
+        <SimpleThemeCardList themes={data.data} />
       </SimpleCardContainer>
     </>
   );

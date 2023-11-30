@@ -4,16 +4,22 @@ import { FaRightFromBracket } from 'react-icons/fa6';
 import useInput from '@hooks/useInput';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { chatLog } from 'store/chatRoom';
-import { ChatLog } from 'types/chat';
+import { chatLogAtom } from 'store/chatRoom';
+import { ChatLog, UserInfo } from 'types/chat';
 import MessageBox from './MessageBox/MessageBox';
 
-const ChatContainer = () => {
+interface ChatContainerProps {
+  userListInfo: UserInfo[];
+  roomId: string;
+  sendChat: (message: string) => void;
+}
+
+const ChatContainer = ({ roomId, sendChat }: ChatContainerProps) => {
   const navigate = useNavigate();
   const [inputValue, handleValue, resetValue] = useInput('');
-  const chatLogData: ChatLog[] = useRecoilValue(chatLog);
+  const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit();
@@ -25,7 +31,7 @@ const ChatContainer = () => {
   };
 
   const handleSubmit = () => {
-    //TODO: emit chat
+    sendChat(inputValue);
     resetValue();
   };
 
@@ -36,16 +42,23 @@ const ChatContainer = () => {
           isIcon={true}
           onClick={() => {
             //TODO: emit leave
-            navigate('/group-chat');
+            navigate('/group-list');
           }}
         >
           <FaRightFromBracket />
         </Button>
       </ButtonWrapper>
       <ChatDisplayContainer>
-        {chatLogData.map((log) => (
-          <MessageBox message={log.message} userId={log.userId} type={log.type} time={log.time} />
-        ))}
+        {chatLogData &&
+          Array.from(chatLogData).map(([logId, chat]) => (
+            <MessageBox
+              key={logId}
+              message={chat.message}
+              userId={chat.userId}
+              type={chat.type}
+              time={chat.time}
+            />
+          ))}
       </ChatDisplayContainer>
       <InputChatContainer
         value={inputValue}
@@ -89,11 +102,7 @@ const ButtonWrapper = styled.div([
 const ChatDisplayContainer = styled.div([
   tw`w-[100%] h-[100%] bg-white rounded-[2rem] font-pretendard text-l p-4`,
   css`
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
     overflow-y: scroll;
-    gap: 1rem;
   `,
 ]);
 

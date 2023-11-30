@@ -5,7 +5,7 @@ import { RecoilRoot } from 'recoil';
 
 describe('SimpleThemeCard 컴포넌트 테스트', () => {
   const tmpProps: SimpleThemeCardData = {
-    name: '삐릿-뽀',
+    themeName: '삐릿-뽀',
     posterImageUrl: 'a.png',
     themeId: 1,
   };
