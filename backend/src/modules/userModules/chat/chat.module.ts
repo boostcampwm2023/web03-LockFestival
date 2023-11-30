@@ -19,5 +19,6 @@ import { ChatMessage, ChatMessageSchema } from '@chat/entities/chat.message.sche
   ],
   controllers: [ChatController],
   providers: [ChatService, ChatRepository],
+  exports: [ChatRepository],
 })
 export class ChatModule {}
