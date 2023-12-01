@@ -12,6 +12,7 @@ import { UserInfoRequestDto } from '@user/dtos/userInfo.request.dto';
 import { ThemeRepository } from '@theme/theme.repository';
 import { GenreRepository } from '@theme/genre.repository';
 import { UsersRoomsResponseDto } from '@user/dtos/users.rooms.response.dto';
+import { ChatRepository } from '@chat/chat.repository';
 
 @Injectable()
 export class UserService {
@@ -24,7 +25,8 @@ export class UserService {
     @InjectRepository(GenreRepository)
     private readonly genreRepository: GenreRepository,
     @InjectRepository(UserGroupRepository)
-    private readonly userGroupRepository: UserGroupRepository
+    private readonly userGroupRepository: UserGroupRepository,
+    private readonly chatRepository: ChatRepository
   ) {}
 
   async checkUsableNickname(nickname: string) {
@@ -53,12 +55,24 @@ export class UserService {
   }
 
   async updateUserInfo(originNickname: string, dto: UserInfoRequestDto): Promise<User> {
+    if (!(await this.checkUsableNickname(dto.nickname))) {
+      throw new HttpException('중복된 닉네임 입니다.', HttpStatus.BAD_REQUEST);
+    }
     try {
       // genres와 themes는 변화가 99.9% 없는 테이블들 이므로 transaction에 포함하지 않아도 괜찮음
       const genres: Genre[] = await this.genreRepository.findBy({ name: In(dto.favoriteGenres) });
       const themes: Theme[] = await this.themeRepository.findBy({ id: In(dto.favoriteThemes) });
 
-      return await this.userRepository.updateUserInfo(originNickname, dto, genres, themes);
+      const updatedUser: User = await this.userRepository.updateUserInfo(
+        originNickname,
+        dto,
+        genres,
+        themes
+      );
+
+      await this.chatRepository.updateUserNickname(originNickname, dto.nickname);
+
+      return updatedUser;
     } catch (error) {
       this.logger.error(error);
       throw new HttpException('Update user info failed.', HttpStatus.INTERNAL_SERVER_ERROR);
