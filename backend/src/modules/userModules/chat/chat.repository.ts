@@ -193,4 +193,15 @@ export class ChatRepository {
       )
       .exec();
   }
+
+  async updateUserNickname(originNickname: string, nickname: string) {
+    await this.chatUserModel.updateMany(
+      { user_nickname: originNickname },
+      {
+        $set: {
+          user_nickname: nickname,
+        },
+      }
+    );
+  }
 }
