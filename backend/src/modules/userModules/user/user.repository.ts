@@ -1,5 +1,5 @@
 import { Repository, DataSource } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { User } from '@user/entities/user.entity';
 import { UserNaverDto } from '@user/dtos/user.naver.dto';
 import { Gender } from '@enum/gender';
@@ -10,6 +10,7 @@ import { Theme } from '@theme/entities/theme.entity';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
+  private readonly logger = new Logger(UserRepository.name);
   constructor(private dataSource: DataSource) {
     super(User, dataSource.createEntityManager());
   }
@@ -63,7 +64,7 @@ export class UserRepository extends Repository<User> {
 
       return newUser;
     } catch (error) {
-      console.error(error);
+      this.logger.error(error);
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In } from 'typeorm';
 import { User } from '@user/entities/user.entity';
@@ -15,6 +15,7 @@ import { UsersRoomsResponseDto } from '@user/dtos/users.rooms.response.dto';
 
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
   constructor(
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
@@ -59,7 +60,7 @@ export class UserService {
 
       return await this.userRepository.updateUserInfo(originNickname, dto, genres, themes);
     } catch (error) {
-      console.error(error);
+      this.logger.error(error);
       throw new HttpException('Update user info failed.', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
