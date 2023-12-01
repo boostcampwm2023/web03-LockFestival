@@ -42,7 +42,7 @@ const ChatContainer = ({ roomId, sendChat }: ChatContainerProps) => {
           isIcon={true}
           onClick={() => {
             //TODO: emit leave
-            navigate('/group-list');
+            navigate('/room-list');
           }}
         >
           <FaRightFromBracket />
