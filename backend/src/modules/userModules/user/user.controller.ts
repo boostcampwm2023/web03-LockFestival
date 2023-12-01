@@ -15,6 +15,7 @@ import { NicknameRequestDto } from '@user/dtos/nickname.request.dto';
 import { UserInfoRequestDto } from '@user/dtos/userInfo.request.dto';
 import { AuthService } from '@auth/auth.service';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
@@ -66,17 +67,24 @@ export class UserController {
   @Patch('/user-info')
   @ApiBearerAuth('Authorization')
   @ApiOperation({
-    summary: '유저 프로필 반환',
-    description: '상단바에 표기될 로그인된 회원 프로필 정보를 조회합니다.',
+    summary: '유저 프로필 변경',
+    description: '유저의 프로필 정보를 변경합니다.(회원 가입 후 최초 로그인 시 무조건 수행해야함).',
   })
   @ApiOkResponse({
     status: 200,
-    description:
-      '변경된 정보로 새로운 토큰을 반환합니다. ex)Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+    description: '변경된 정보로 새로운 토큰과 정보를 반환합니다. ',
+    type: UserInfoResponseDto,
+  })
+  @ApiBadRequestResponse({
+    status: 400,
+    description: '중복된 닉네임이 들어온 경우 (응답 ex. 중복된 닉네임 입니다.)',
     type: String,
   })
   @ApiUnauthorizedResponse({ description: '유효하지 않은 토큰', type: UnauthorizedException })
-  async updateUserInfo(@Req() { user }, @Body() body: UserInfoRequestDto) {
+  async updateUserInfo(
+    @Req() { user },
+    @Body() body: UserInfoRequestDto
+  ): Promise<UserInfoResponseDto> {
     const updatedUser = await this.userService.updateUserInfo(user.nickname, body);
 
     const { token } = await this.authService.getAccessToken({
