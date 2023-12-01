@@ -9,6 +9,8 @@ import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { ThemeLocationResponseDto } from '@theme/dtos/theme.location.response.dto';
 import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
 import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
+import { ThemeSearchRequestDto } from '@theme/dtos/theme.serach.request.dto';
+import { ThemeSearchResponseDto } from '@theme/dtos/theme.search.response.dto';
 
 @Injectable()
 export class ThemeService {
@@ -70,5 +72,21 @@ export class ThemeService {
   }
   public async getSimpleThemesBySearch(query: string): Promise<ThemeSimpleSearchResponseDto[]> {
     return await this.themeRepository.getSimpleThemesBySearch(query);
+  }
+  public async getThemesBySearch(
+    themeSearchRequestDto: ThemeSearchRequestDto
+  ): Promise<ThemeSearchResponseDto> {
+    const [count, themes] = await this.themeRepository.getThemesBySearch(themeSearchRequestDto);
+
+    const restCount = Math.max(
+      count - (themeSearchRequestDto.page * themeSearchRequestDto.count + themes.length),
+      0
+    );
+
+    return new ThemeSearchResponseDto(
+      restCount,
+      restCount > 0 ? themeSearchRequestDto.page + 1 : undefined,
+      themes
+    );
   }
 }

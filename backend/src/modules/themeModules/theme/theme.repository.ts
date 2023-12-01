@@ -7,6 +7,7 @@ import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
 import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
+import { ThemeSearchRequestDto } from '@theme/dtos/theme.serach.request.dto';
 
 const KM = 1000;
 
@@ -167,5 +168,53 @@ export class ThemeRepository extends Repository<Theme> {
       .limit(count)
       .getRawMany();
     return themes;
+  }
+
+  async getThemesBySearch(themeSearchRequestDto: ThemeSearchRequestDto) {
+    const qb = this.dataSource
+      .createQueryBuilder()
+      .select([
+        'theme.name as themeName',
+        'theme.id as themeId',
+        'theme.real_genre as realGenre',
+        'theme.poster_image_url as posterImageUrl',
+        'theme.difficulty as difficulty',
+        'theme.min_member as minMember',
+        'theme.max_member as maxMember',
+        'theme.time_limit as playTime',
+        'branch.website as website',
+        'branch.phone_number as phone',
+        'branch.address as address',
+        "CONCAT(branch.branch_name, ' ', brand.brand_name) AS brandBranchName",
+      ])
+      .from(Theme, 'theme')
+      .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
+      .innerJoin(Brand, 'brand', 'branch.brand_id = brand.id')
+      .where('theme.name LIKE :themeName', { themeName: `%${themeSearchRequestDto.query}%` })
+      .orderBy(
+        `CASE WHEN theme.name = :exactQuery THEN 0 
+      WHEN theme.name LIKE :startWithQuery THEN 1 
+      WHEN theme.name LIKE :containsQuery THEN 2 
+      WHEN theme.name LIKE :endsWithQuery THEN 3 
+    END`,
+        'ASC'
+      )
+      .setParameters({
+        exactQuery: themeSearchRequestDto.query,
+        startWithQuery: `${themeSearchRequestDto.query}%`,
+        containsQuery: `%${themeSearchRequestDto.query}%`,
+        endsWithQuery: `%${themeSearchRequestDto.query}`,
+      })
+      .limit(themeSearchRequestDto.count);
+
+    return await Promise.all([
+      qb.getCount(),
+      qb
+        .offset(
+          themeSearchRequestDto.page * themeSearchRequestDto.count - themeSearchRequestDto.count
+        )
+        .limit(themeSearchRequestDto.count)
+        .getRawMany(),
+    ]);
   }
 }
