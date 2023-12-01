@@ -22,6 +22,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { UsersRoomsResponseDto } from '@user/dtos/users.rooms.response.dto';
+import { UserInfoResponseDto } from '@user/dtos/userInfo.response.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -76,9 +77,19 @@ export class UserController {
   })
   @ApiUnauthorizedResponse({ description: '유효하지 않은 토큰', type: UnauthorizedException })
   async updateUserInfo(@Req() { user }, @Body() body: UserInfoRequestDto) {
-    const { nickname, email } = await this.userService.updateUserInfo(user.nickname, body);
+    const updatedUser = await this.userService.updateUserInfo(user.nickname, body);
 
-    return this.authService.getAccessToken({ nickname, username: email });
+    const { token } = await this.authService.getAccessToken({
+      nickname: updatedUser.nickname,
+      username: updatedUser.email,
+    });
+
+    return new UserInfoResponseDto(
+      token,
+      updatedUser.nickname,
+      updatedUser.profileImageUrl,
+      updatedUser.isMoreInfo
+    );
   }
 
   @UseGuards(TokenAuthGuard)
