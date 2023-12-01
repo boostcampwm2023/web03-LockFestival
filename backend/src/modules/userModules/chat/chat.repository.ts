@@ -65,14 +65,20 @@ export class ChatRepository {
     return new ChatMessageDto(chat);
   }
   async findMessagesByStartLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageDto[]> {
+    const options = {
+      sort: { _id: chatUnreadDto.direction },
+    };
+
+    if (chatUnreadDto?.count > 0) {
+      options['limit'] = chatUnreadDto.count;
+    }
+
     return (
       await this.roomModel.findOne({ group_id: chatUnreadDto.roomId }).populate({
         path: 'chat_list',
         model: 'ChatMessage',
         match: { _id: { $gt: chatUnreadDto.startLogId } },
-        options: {
-          sort: { _id: chatUnreadDto.direction },
-        },
+        options,
         populate: {
           path: 'sender',
           model: 'ChatUser',
