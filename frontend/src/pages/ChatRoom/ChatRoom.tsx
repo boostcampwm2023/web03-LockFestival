@@ -1,39 +1,38 @@
 import tw, { styled, css } from 'twin.macro';
-import ChatContainer from './components/ChatContainer';
-import RoomInfoContainer from './components/RoomInfoContainer';
-import UserListContainer from './components/UserListContainer';
 import { useParams } from 'react-router-dom';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallBack from './components/ErrorFallback/ErrorFallBack';
+import HostIdentification from './components/Validators/HostIdentification';
 import useSocket from '@hooks/socket/useSocket';
-import { useRecoilValue } from 'recoil';
-import userAtom from 'store/userAtom';
+import ChatRoomInfoValidator from './components/Validators/ChatRoomIfoValidator';
+import ChatRoomContainer from './components/ChatRoomContainer';
 
 const ChatRoom = () => {
   const roomId = useParams<{ roomId: string }>().roomId as string;
-  const userData = useRecoilValue(userAtom);
+  const { connecting, sendChat } = useSocket(roomId);
 
-  const { roomInfo, userListInfo, sendChat } = useSocket(roomId);
-
-  if (!roomInfo || !userListInfo) {
-    return;
-  }
-
-  const isLeader = userListInfo.filter((user) => user.isLeader)[0].nickname === userData.nickname;
-
-  return (
-    <Container>
-      <UserListContainer userListInfo={userListInfo} />
-      <ChatContainer userListInfo={userListInfo} roomId={roomId} sendChat={sendChat} />
-      <RoomInfoContainer isLeader={isLeader} roomInfo={roomInfo} />
-    </Container>
+  return connecting ? (
+    <Loading>
+      <h1>채팅방 정보를 불러오는 중</h1>
+    </Loading>
+  ) : (
+    <ErrorBoundary fallbackRender={(fallbackProps) => <ErrorFallBack {...fallbackProps} />}>
+      <ChatRoomInfoValidator>
+        <HostIdentification>
+          <ChatRoomContainer roomId={roomId} sendChat={sendChat} />
+        </HostIdentification>
+      </ChatRoomInfoValidator>
+    </ErrorBoundary>
   );
 };
 
-const Container = styled.div([
-  tw`w-full mx-auto mt-[4rem] h-[calc(100vh -10rem)]`,
-  tw`desktop:(max-w-[102.4rem] pb-[10rem])`,
+const Loading = styled.div([
+  tw`w-full font-pretendard text-xl text-white`,
   css`
     display: flex;
-    gap: 3.2rem;
+    justify-content: center;
+    align-items: center;
+    height: 50rem;
   `,
 ]);
 
