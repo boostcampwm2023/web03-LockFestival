@@ -5,16 +5,15 @@ import useInput from '@hooks/useInput';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { chatLogAtom } from 'store/chatRoom';
-import { ChatLog, UserInfo } from 'types/chat';
+import { ChatLog } from 'types/chat';
 import MessageBox from './MessageBox/MessageBox';
 
-interface ChatContainerProps {
-  userListInfo: UserInfo[];
+interface ChatPanelProps {
   roomId: string;
   sendChat: (message: string) => void;
 }
 
-const ChatContainer = ({ roomId, sendChat }: ChatContainerProps) => {
+const ChatPanel = ({ roomId, sendChat }: ChatPanelProps) => {
   const navigate = useNavigate();
   const [inputValue, handleValue, resetValue] = useInput('');
   const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
@@ -60,7 +59,7 @@ const ChatContainer = ({ roomId, sendChat }: ChatContainerProps) => {
             />
           ))}
       </ChatDisplayContainer>
-      <InputChatContainer
+      <InputChatPanel
         value={inputValue}
         onChange={handleValue}
         rows={4}
@@ -77,7 +76,7 @@ const ChatContainer = ({ roomId, sendChat }: ChatContainerProps) => {
   );
 };
 
-export default ChatContainer;
+export default ChatPanel;
 const Layout = styled.div([
   css`
     position: relative;
@@ -106,7 +105,7 @@ const ChatDisplayContainer = styled.div([
   `,
 ]);
 
-const InputChatContainer = styled.textarea([
+const InputChatPanel = styled.textarea([
   tw`font-pretendard text-white text-m w-[100%] h-[10rem] bg-gray rounded-[2rem] p-4 pr-[6.4rem]`,
   css`
     resize: none;

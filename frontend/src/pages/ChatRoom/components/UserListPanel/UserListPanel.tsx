@@ -2,23 +2,28 @@ import tw, { styled, css } from 'twin.macro';
 import UserItem from './UserItem/UserItem';
 import Button from '@components/Button/Button';
 import { useNavigate } from 'react-router-dom';
-import { UserInfo } from 'types/chat';
+import { useRecoilValue } from 'recoil';
+import { userListInfoAtom } from '@store/chatRoom';
+import { UserInfoObject } from 'types/chat';
 
-const UserListContainer = ({ userListInfo }: { userListInfo: UserInfo[] }) => {
+const UserListPanel = () => {
+  const userListInfo = useRecoilValue(userListInfoAtom) as UserInfoObject;
   const navigate = useNavigate();
   const handlerLeaveRoom = () => {
     //TODO: emit leave
     navigate('/group-chat');
   };
+
   return (
     <Layout>
       <UserListWrapper>
-        {userListInfo.map((user: UserInfo) => {
-          const { userId, nickname, profileImg, isLeader, isLeave, isMe } = user;
+        {Array.from(userListInfo).map(([userId, userData]) => {
+          const { nickname, profileImg, isLeader, isLeave, isMe, lastReadChatId } = userData;
           if (!isLeave) {
             return (
               <div key={userId}>
                 <UserItem
+                  lastReadChatId={lastReadChatId}
                   nickname={nickname}
                   profileImg={profileImg}
                   isLeader={isLeader}
@@ -37,7 +42,7 @@ const UserListContainer = ({ userListInfo }: { userListInfo: UserInfo[] }) => {
   );
 };
 
-export default UserListContainer;
+export default UserListPanel;
 
 const Layout = styled.div([
   css`

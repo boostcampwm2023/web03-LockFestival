@@ -1,15 +1,17 @@
 import tw, { styled, css } from 'twin.macro';
 import { ChatLog } from 'types/chat';
+import { userListInfoAtom } from '@store/chatRoom';
+import { useRecoilValue } from 'recoil';
 
 const MessageBox = ({ message, userId, type, time }: ChatLog) => {
+  const userData = useRecoilValue(userListInfoAtom);
+  const nickname = userData?.get(userId)?.nickname;
   return (
     <>
       <MessageLayout>
         <div>{message}</div>
-
-        {/* {time.toLocaleString('ko-KR', { timeZone: 'UTC' })} */}
       </MessageLayout>
-      <div>{userId}</div>
+      <div>{nickname}</div>
     </>
   );
 };

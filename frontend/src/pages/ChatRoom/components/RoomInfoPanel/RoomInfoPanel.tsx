@@ -7,13 +7,28 @@ import { FaGear } from 'react-icons/fa6';
 import useModal from '@hooks/useModal';
 import Modal from '@components/Modal/Modal';
 import MakeGroupModal from '@components/Modal/MakeGroupModal/MakeGroupModal';
-interface RoomInfoProps {
-  isLeader: boolean;
-  roomInfo: RoomInfo;
-}
+import { useRecoilValue } from 'recoil';
+import { roomInfoAtom } from '@store/chatRoom';
+import { getStringByDate } from '@utils/dateUtil';
 
-const RoomInfoContainer = ({ isLeader, roomInfo }: RoomInfoProps) => {
+const RoomInfoPanel = () => {
   const { openModal, closeModal } = useModal();
+  const isLeader = true;
+  const roomInfo = useRecoilValue(roomInfoAtom);
+  const {
+    brandName,
+    branchName,
+    regionName,
+    themeName,
+    posterImageUrl,
+    contents,
+    appointmentDate,
+    recruitmentMembers,
+    currentMembers,
+    recruitmentCompleted,
+    appointmentCompleted,
+  } = roomInfo as RoomInfo;
+
   return (
     <Layout>
       {isLeader ? (
@@ -35,28 +50,29 @@ const RoomInfoContainer = ({ isLeader, roomInfo }: RoomInfoProps) => {
         ''
       )}
       <HeadContainer>
-        <ThemePoster src={roomInfo.posterImageUrl} alt="테마_포스터" />
+        <ThemePoster src={posterImageUrl} alt="테마_포스터" />
         <ThemeInfoWrapper>
-          <ThemeInfo>{roomInfo.regionName}</ThemeInfo>
-          <ThemeInfo>{roomInfo.brandName}</ThemeInfo>
-          <ThemeInfo>{roomInfo.branchName}</ThemeInfo>
-          <ThemeInfo>{roomInfo.themeName}</ThemeInfo>
+          <ThemeInfo>{regionName}</ThemeInfo>
+          <ThemeInfo>{brandName}</ThemeInfo>
+          <ThemeInfo>{branchName}</ThemeInfo>
+          <ThemeInfo>{themeName}</ThemeInfo>
         </ThemeInfoWrapper>
       </HeadContainer>
       <RoomInfoWrapper>
         <Label isBorder={true} width="10rem">
           <LabelText>모집내용</LabelText>
         </Label>
-        <RoomInfoContent>{roomInfo.contents}</RoomInfoContent>
+        <RoomInfoContent>{contents}</RoomInfoContent>
       </RoomInfoWrapper>
       <RoomInfoWrapper>
         <Label isBorder={true} width="10rem">
           <LabelText>날짜</LabelText>
         </Label>
         <RoomInfoContent>
-          {new Date(roomInfo.appointmentDate)
-            .toLocaleString('ko-KR', { timeZone: 'UTC' })
-            .slice(0, 11)}
+          {
+            //TODO: 현재 방정보가 Mock데이터 여서 이후에 appointmentDate로 변경
+            getStringByDate(new Date())
+          }
         </RoomInfoContent>
       </RoomInfoWrapper>
       <RoomInfoWrapper>
@@ -64,7 +80,7 @@ const RoomInfoContainer = ({ isLeader, roomInfo }: RoomInfoProps) => {
           <LabelText>인원</LabelText>
         </Label>
         <RoomInfoContent>
-          {roomInfo.currentMembers}명/{roomInfo.recruitmentMembers}명
+          {currentMembers}명/{recruitmentMembers}명
         </RoomInfoContent>
       </RoomInfoWrapper>
       <RoomInfoWrapper>
@@ -72,15 +88,15 @@ const RoomInfoContainer = ({ isLeader, roomInfo }: RoomInfoProps) => {
           <LabelText>상태</LabelText>
         </Label>
         <RoomInfoContent>
-          <StateLabel text="예약" state={roomInfo.appointmentCompleted} />
-          <StateLabel text="모집" state={roomInfo.recruitmentCompleted} />
+          <StateLabel text="예약" state={appointmentCompleted} />
+          <StateLabel text="모집" state={recruitmentCompleted} />
         </RoomInfoContent>
       </RoomInfoWrapper>
     </Layout>
   );
 };
 
-export default RoomInfoContainer;
+export default RoomInfoPanel;
 
 const Layout = styled.div([
   css`
