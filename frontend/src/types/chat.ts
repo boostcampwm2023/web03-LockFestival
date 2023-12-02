@@ -10,6 +10,8 @@ export interface ChatLog {
   time: Date;
 }
 
+export type UserInfoObject = Map<string, Omit<UserInfo, 'userId'>>;
+
 export interface UserInfo {
   userId: string;
   profileImg: string | null;
