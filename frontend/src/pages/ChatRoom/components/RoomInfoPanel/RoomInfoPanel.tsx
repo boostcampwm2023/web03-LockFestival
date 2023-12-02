@@ -22,7 +22,7 @@ const RoomInfoPanel = () => {
     themeName,
     posterImageUrl,
     contents,
-    appointmentDate,
+    // appointmentDate,
     recruitmentMembers,
     currentMembers,
     recruitmentCompleted,

@@ -4,7 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallBack from './components/ErrorFallback/ErrorFallBack';
 import HostIdentification from './components/Validators/HostIdentification';
 import useSocket from '@hooks/socket/useSocket';
-import ChatRoomInfoValidator from './components/Validators/ChatRoomIfoValidator';
+import ChatRoomInfoValidator from './components/Validators/ChatRoomInfoValidator';
 import ChatRoomContainer from './components/ChatRoomContainer';
 
 const ChatRoom = () => {
