@@ -1,8 +1,8 @@
-import tw, { styled, css } from 'twin.macro';
-import Label from '@components/Label/Label';
 import { FaCircleUser } from 'react-icons/fa6';
-import LeaderIcon from '../../icon/LeaderIcon.svg?react';
+import tw, { css, styled } from 'twin.macro';
 import { UserInfo } from 'types/chat';
+import Label from '@components/Label/Label';
+import LeaderIcon from '../../icon/LeaderIcon.svg?react';
 
 const UserItem = ({
   nickname,
