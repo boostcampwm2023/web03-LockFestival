@@ -2,6 +2,7 @@
   "name": "crawler",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "node ./bin/www"
   },
