@@ -11,7 +11,9 @@ import { ChatModule } from '@chat/chat.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Group]),
-    UserModule,
+    forwardRef(() => {
+      return UserModule;
+    }),
     ThemeModule,
     forwardRef(() => {
       return ChatModule;

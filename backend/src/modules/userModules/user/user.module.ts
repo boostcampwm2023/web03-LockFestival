@@ -7,6 +7,7 @@ import { UserService } from '@user/user.service';
 import { UserController } from '@user/user.controller';
 import { UserGroupRepository } from '@user/userGroup.repository';
 import { ThemeModule } from '@theme/theme.module';
+import { ChatModule } from '@chat/chat.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ThemeModule } from '@theme/theme.module';
       return AuthModule;
     }),
     ThemeModule,
+    ChatModule,
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository, UserGroupRepository],
