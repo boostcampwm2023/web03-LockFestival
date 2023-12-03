@@ -8,6 +8,7 @@ const mockUserData: UserInfo[] = [
     isLeader: false,
     isLeave: false,
     isMe: true,
+    lastReadChatId: '',
   },
   {
     userId: 'user_2',
@@ -16,6 +17,7 @@ const mockUserData: UserInfo[] = [
     isLeader: true,
     isLeave: false,
     isMe: false,
+    lastReadChatId: '',
   },
   {
     userId: 'user_3',
@@ -24,6 +26,7 @@ const mockUserData: UserInfo[] = [
     isLeader: false,
     isLeave: true,
     isMe: false,
+    lastReadChatId: '',
   },
   {
     userId: 'user_4',
@@ -32,6 +35,7 @@ const mockUserData: UserInfo[] = [
     isLeader: false,
     isLeave: false,
     isMe: false,
+    lastReadChatId: '',
   },
   {
     userId: 'user_5',
@@ -40,6 +44,7 @@ const mockUserData: UserInfo[] = [
     isLeader: false,
     isLeave: false,
     isMe: false,
+    lastReadChatId: '',
   },
 ];
 

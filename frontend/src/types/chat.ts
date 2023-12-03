@@ -1,7 +1,7 @@
 export type TotalChatLog = Record<string, Map<string, ChatLog>>;
 
 export interface ServerChatLog extends ChatLog {
-  logId: string;
+  chatId: string;
 }
 export interface ChatLog {
   message: string;
@@ -10,12 +10,15 @@ export interface ChatLog {
   time: Date;
 }
 
+export type UserInfoObject = Map<string, Omit<UserInfo, 'userId'>>;
+
 export interface UserInfo {
   userId: string;
-  profileImg: string;
+  profileImg: string | null;
   nickname: string;
   isLeader: boolean;
   isLeave: boolean;
+  lastReadChatId: string;
   isMe: boolean;
 }
 
@@ -33,3 +36,8 @@ export interface RoomInfo {
   recruitmentCompleted: boolean;
   appointmentCompleted: boolean;
 }
+
+export type RoomThemeType = Pick<
+  RoomInfo,
+  'brandName' | 'branchName' | 'themeName' | 'posterImageUrl' | 'themeId'
+>;

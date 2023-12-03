@@ -8,7 +8,7 @@ import Auth from '@pages/Auth/Auth';
 import MyPage from '@pages/Mypage/Mypage';
 import Root from '@pages/Root/Root';
 import Search from '@pages/Search/Search';
-import Chat from '@pages/Chat/Chat';
+import ChatRoom from '@pages/ChatRoom/ChatRoom';
 import RoomList from '@pages/RoomList/RoomList';
 
 const CustomRouter = () => {
@@ -22,7 +22,7 @@ const CustomRouter = () => {
           <Route path="/diary" element={<Diary />}></Route>
           <Route path="/auth" element={<Auth />}></Route>
           <Route path="/search" element={<Search />}></Route>
-          <Route path="/chat-room/:roomId" element={<Chat />}></Route>
+          <Route path="/chat-room/:roomId" element={<ChatRoom />}></Route>
           <Route path="/room-list" element={<RoomList />}></Route>
         </Route>
       </Routes>
