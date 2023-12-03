@@ -66,7 +66,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     await client.join(roomId);
 
-    client.emit('roomInfo', this.groupService.getGroupInfo(Number(roomId)));
+    client.emit('roomInfo', await this.groupService.getGroupInfo(Number(roomId)));
 
     client.emit('chatLog', prevMessages);
     client.emit('userListInfo', chatUsers);
