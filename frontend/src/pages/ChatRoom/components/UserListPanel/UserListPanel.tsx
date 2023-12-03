@@ -36,20 +36,23 @@ const UserListPanel = ({ settingMode }: { settingMode: boolean }) => {
                   isLeader={isLeader}
                   isMe={isMe}
                 />
-                <ButtonWrapper settingMode={settingMode}>
-                  <Button
-                    isIcon={false}
-                    width="100%"
-                    data-user-id={userId}
-                    onClick={handleUserKick}
-                  >
-                    <Text>추방</Text>
-                  </Button>
-                </ButtonWrapper>
+                {!isMe && (
+                  <ButtonWrapper settingMode={settingMode}>
+                    <Button
+                      isIcon={false}
+                      width="100%"
+                      data-user-id={userId}
+                      onClick={handleUserKick}
+                    >
+                      <Text>추방</Text>
+                    </Button>
+                  </ButtonWrapper>
+                )}
                 <Division />
               </UserItemWrapper>
             );
           }
+          return null;
         })}
       </UserListWrapper>
       <Button isIcon={false} onClick={handlerLeaveRoom}>
