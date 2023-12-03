@@ -53,7 +53,7 @@ export class GroupRepository extends Repository<Group> {
         'branch.website as website',
         'branch.phone_number as phone',
         'branch.address as address',
-        "CONCAT(branch.branch_name, ' ', brand.brand_name) AS brandBranchName",
+        "CONCAT(brand.brand_name, ' ', branch.branch_name) AS brandBranchName",
 
         'group.id as groupId',
         'group.appointment_date as appointmentDate',
