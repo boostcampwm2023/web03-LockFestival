@@ -161,12 +161,11 @@ export class GroupRepository extends Repository<Group> {
 
   async getGroupInfo(groupId: number): Promise<GroupInfoResponseDto> {
     const queryRunner = this.dataSource.createQueryRunner();
+    const group: Group = await queryRunner.manager.findOneBy(Group, { id: groupId });
+    if (!group) {
+      throw new HttpException('해당 그룹은 존재하지 않습니다', HttpStatus.BAD_REQUEST);
+    }
     try {
-      await queryRunner.startTransaction();
-      const group: Group = await queryRunner.manager.findOneBy(Group, { id: groupId });
-      if (!group) {
-        throw new HttpException('해당 그룹은 존재하지 않습니다', HttpStatus.BAD_REQUEST);
-      }
       const qb = await this.dataSource
         .createQueryBuilder(Group, 'group')
         .select([
@@ -188,13 +187,9 @@ export class GroupRepository extends Repository<Group> {
         .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
         .innerJoin(Brand, 'brand', 'branch.brand_id = brand.id')
         .getRawOne();
-      await queryRunner.commitTransaction();
       return new GroupInfoResponseDto(qb);
     } catch (err) {
-      await queryRunner.rollbackTransaction();
-      throw new HttpException('Error getting group infomation', HttpStatus.INTERNAL_SERVER_ERROR);
-    } finally {
-      await queryRunner.release();
+      throw new HttpException('Error getting group information', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
