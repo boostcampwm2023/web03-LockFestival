@@ -1,39 +1,23 @@
 import { ModalProps } from 'types/modal';
-import Button from '@components/Button/Button';
-import { FaXmark } from 'react-icons/fa6';
 import NaverLogin from '@components/LoginModal/NaverLogin/NaverLogin';
 import tw, { css, styled } from 'twin.macro';
+import ModalCloseButton from '@components/Button/ModalCloseButton';
 
 function LoginModal(onClose: ModalProps['onClose']) {
   return (
-    <>
-      <ButtonWrapper>
-        <Button isIcon={true} onClick={onClose}>
-          <>
-            <FaXmark />
-          </>
-        </Button>
-      </ButtonWrapper>
+    <Layout>
+      <ModalCloseButton onClose={onClose} />
       <BottomWrapper>
         Lock Festival 로그인
         <NaverLogin />
       </BottomWrapper>
-    </>
+    </Layout>
   );
 }
 
 export default LoginModal;
 
-const ButtonWrapper = styled.div([
-  css`
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-  `,
-  tw`
-    p-4
-  `,
-]);
+const Layout = styled.div([tw`p-6`]);
 
 const BottomWrapper = styled.div([
   tw`font-maplestory text-l text-white m-5`,

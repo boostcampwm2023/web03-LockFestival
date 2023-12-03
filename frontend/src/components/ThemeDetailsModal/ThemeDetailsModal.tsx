@@ -1,11 +1,11 @@
 import { ModalProps } from 'types/modal';
 import tw, { css, styled } from 'twin.macro';
 import Button from '@components/Button/Button';
-import { FaXmark } from 'react-icons/fa6';
 import { ThemeInfoItem } from './components/ThemeInfoItem';
 import { useNavigate } from 'react-router-dom';
 import useThemeDetailsQuery from './useThemeDetailsQuery';
 import ThemeCard from './components/ThemeCard';
+import ModalCloseButton from '@components/Button/ModalCloseButton';
 
 interface ThemeDetailsModalProps {
   themeId: number;
@@ -20,11 +20,7 @@ function ThemeDetailsModal({ themeId, onClose }: ThemeDetailsModalProps) {
     return (
       <ErrorContainer>
         해당 테마의 상세정보가 없습니다.
-        <Button isIcon={true} onClick={onClose}>
-          <>
-            <FaXmark />
-          </>
-        </Button>
+        <ModalCloseButton onClose={onClose} />
       </ErrorContainer>
     );
   }
@@ -38,11 +34,7 @@ function ThemeDetailsModal({ themeId, onClose }: ThemeDetailsModalProps) {
           <DetailModalContainer>
             <HeadWrapper>
               <div>{data.themeName}</div>
-              <Button isIcon={true} onClick={onClose}>
-                <>
-                  <FaXmark />
-                </>
-              </Button>
+              <ModalCloseButton onClose={onClose} />
             </HeadWrapper>
             <MainWrapper>
               <MainThemePosterBox>
@@ -130,7 +122,7 @@ const HeadWrapper = styled.div([
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 1.8rem;
+    height: 3.2rem;
   `,
   tw`font-maplestory text-xl-bold mb-4 ml-2`,
 ]);
