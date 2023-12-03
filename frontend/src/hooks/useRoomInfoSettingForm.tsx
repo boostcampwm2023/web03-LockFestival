@@ -42,7 +42,7 @@ const useRoomInfoSettingForm = () => {
   };
 
   const checkValidate = () => {
-    //TODO: 이전 날짜 선택했을때 처리
+    //TODO: 예외처리 및 안내 문구 추가
     if (!theme || !newContents || currentMembers > Number(memberCount)) {
       return false;
     }
