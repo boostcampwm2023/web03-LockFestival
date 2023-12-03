@@ -1,0 +1,49 @@
+name: Frontend CD with Docker Hub
+
+on:
+  push:
+    branches:
+      - main # main push되었을 때 해당 yml을 실행한다.
+      - dev
+      - "HotFix/**" #HotFix 시에 무조건 실행하도록 설정한다.
+      - "Chat/**" #채팅 개발 시에 무조건 실행하도록 설정한다.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: make env3
+        run: |
+          cd ./frontend
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}} # 도커 허브 이름
+          password: ${{secrets.DOCKERHUB_TOKEN}} # 도커 허브 TOKEN
+
+      - name: build and release to DockerHub
+        env:
+          NAME: wjdtjr8649 # 계정명
+          REPO: boostcamp-lockfestival # 레파지토리 이름(소문자만 가능)
+        run: |
+          cd frontend && docker build -t $REPO .
+          docker tag $REPO:latest $NAME/$REPO:latest
+          docker push $NAME/$REPO:latest
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        id: deploy
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }} # pem키
+          script: |
+            sudo docker rm -f $(docker ps -aqf "name=^${{secrets.DOCKER_FRONT_CONTAINER}}") # 컨테이너 찾아서 종료
+            sudo docker pull ${{ secrets.DOCKER_REPO }}:latest
+            sudo docker run -d -p 80:80 --network backend_default \
+            -e "VITE_NAVER_CLIENT_ID=${{ secrets.VITE_NAVER_CLIENT_ID }}" \
+            -e "VITE_NAVER_REDIRECT_URI=${{ secrets.VITE_NAVER_REDIRECT_URI }}" \
+            --name ${{secrets.DOCKER_FRONT_CONTAINER}} ${{ secrets.DOCKER_REPO }}:latest

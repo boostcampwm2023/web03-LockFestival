@@ -1,4 +1,4 @@
-name: CD using github action & docker
+name: CI/CD using github action & docker
 
 on:
   push:
@@ -37,13 +37,13 @@ jobs:
           echo "FRONTEND_BASE_URL=${{ secrets.FRONTEND_BASE_URL }}" >> .env
           cd ..
 
-      - name: Login to DockerHub for Frontend
+      - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{secrets.DOCKERHUB_USERNAME}} # 도커 허브 이름
           password: ${{secrets.DOCKERHUB_TOKEN}} # 도커 허브 TOKEN
 
-      - name: build and release to DockerHub for Frontend
+      - name: build and release to DockerHub
         env:
           NAME: wjdtjr8649 # 계정명
           REPO: boostcamp-lockfestival # 레파지토리 이름(소문자만 가능)
@@ -63,7 +63,7 @@ jobs:
           target: "~"
           overwrite: true
 
-      - name: Copy docker-compose.yaml to Remote Server
+      - name: Copy .env to Remote Server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -83,7 +83,7 @@ jobs:
           target: "~/conf"
           overwrite: true
 
-      - name: Remove copied file
+      - name: Remove local docker-compose copied file
         run: |
           rm ./docker-compose.yaml
           rm ./backend/.env
