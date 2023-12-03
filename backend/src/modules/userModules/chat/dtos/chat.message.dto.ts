@@ -12,6 +12,6 @@ export class ChatMessageDto {
     this.message = chat.chat_message;
     this.type = chat.type;
     this.time = chat.chat_date;
-    this.userId = chat.sender.toString();
+    this.userId = chat.sender?.toString();
   }
 }
