@@ -11,6 +11,7 @@ import { UserGroupRepository } from '@user/userGroup.repository';
 import { UserRepository } from '@user/user.repository';
 import { User } from '@user/entities/user.entity';
 import { ChatRepository } from '@chat/chat.repository';
+import { GroupInfoResponseDto } from '@group/dtos/group.info.response.dto';
 
 @Injectable()
 export class GroupService {
@@ -79,5 +80,8 @@ export class GroupService {
     const user: User = await this.userRepository.findOneBy({ nickname });
     await this.groupRepository.insertGroup(user, groupId);
     await this.chatRepository.addUserInRoom(groupId, user.id, user.nickname, user.profileImageUrl);
+  }
+  async getGroupInfo(groupId: number): Promise<GroupInfoResponseDto> {
+    return await this.groupRepository.getGroupInfo(groupId);
   }
 }
