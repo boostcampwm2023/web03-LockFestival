@@ -1,4 +1,4 @@
-import tw, { styled, css } from 'twin.macro';
+import { styled, css } from 'twin.macro';
 import Button from './Button';
 import { ModalProps } from 'types/modal';
 import { FaXmark } from 'react-icons/fa6';
