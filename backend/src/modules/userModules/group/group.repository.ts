@@ -7,6 +7,9 @@ import { GroupFindOptionsDto } from '@group/dtos/group.findoptions.request.dto';
 import { User } from '@user/entities/user.entity';
 import { UserGroup } from '@user/entities/userGroup.entity';
 import { Theme } from '@theme/entities/theme.entity';
+import { Branch } from '@branch/entities/branch.entity';
+import { Brand } from '@brand/entities/brand.entity';
+import { GroupInfoResponseDto } from '@group/dtos/group.info.response.dto';
 
 @Injectable()
 export class GroupRepository extends Repository<Group> {
@@ -153,6 +156,35 @@ export class GroupRepository extends Repository<Group> {
       throw error;
     } finally {
       await queryRunner.release();
+    }
+  }
+
+  async getGroupInfo(groupId: number): Promise<GroupInfoResponseDto> {
+    try {
+      const qb = await this.dataSource
+        .createQueryBuilder(Group, 'group')
+        .select([
+          'brand.brandName as brandName',
+          'branch.branchName as branchName',
+          "CONCAT(branch.big_region, ' ', branch.small_region) AS regionName",
+          'theme.name as themeName',
+          'theme.id as themeId',
+          'theme.poster_image_url as posterImageUrl',
+          'group.recruitment_content as recruitmentContent',
+          'group.appointment_date as appointmentDate',
+          'group.recruitment_members as recruitmentMembers',
+          'group.current_members as currentMembers',
+          'group.recruitment_completed as recruitmentCompleted',
+          'group.appointment_completed as appointmentCompleted',
+        ])
+        .where('group.id = :groupId', { groupId })
+        .innerJoin(Theme, 'theme', 'group.theme_id = theme.id')
+        .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
+        .innerJoin(Brand, 'brand', 'branch.brand_id = brand.id')
+        .getRawOne();
+      return new GroupInfoResponseDto(qb);
+    } catch (err) {
+      throw new HttpException('Error getting group information', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
