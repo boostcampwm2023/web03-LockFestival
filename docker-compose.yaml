@@ -32,6 +32,6 @@ services:
       - 443:443
 
     volumes:
-    - ./conf/conf.d:/etc/nginx/conf.d
+    - /root/conf/nginx.conf:/etc/nginx/conf.d
     - /etc/letsencrypt/live/lockfestival.com/fullchain.pem:/etc/ssl/cert.pem
     - /etc/letsencrypt/live/lockfestival.com/privkey.pem:/etc/ssl/key.pem
