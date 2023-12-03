@@ -152,7 +152,7 @@ export class ThemeController {
   @ApiOkResponse({
     status: 200,
     description: '',
-    type: [ThemeSearchResponseDto],
+    type: ThemeSearchResponseDto,
   })
   async getThemes(
     @Query() themeSearchRequestDto: ThemeSearchRequestDto
