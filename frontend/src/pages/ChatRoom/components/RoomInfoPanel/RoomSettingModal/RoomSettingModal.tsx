@@ -34,8 +34,8 @@ const RoomSettingModal = ({ onClose }: Props) => {
     handleMemberCount,
     theme,
     setTheme,
-    newContents,
-    setNewContents,
+    contents,
+    setContents,
     isReservation,
     setIsReservation,
     checkValidate,
@@ -79,7 +79,7 @@ const RoomSettingModal = ({ onClose }: Props) => {
             <ThemeSearchContainer theme={theme} setTheme={setTheme} />
           </FormElement>
           <FormElement>
-            <ContentsContainer contents={newContents} setContents={setNewContents} />
+            <ContentsContainer contents={contents} setContents={setContents} />
           </FormElement>
           <FormElement>
             <CalendarContainer

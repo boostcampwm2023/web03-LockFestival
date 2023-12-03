@@ -25,7 +25,7 @@ const useRoomInfoSettingForm = () => {
     currentMembers,
     recruitmentCompleted,
     appointmentCompleted,
-    contents,
+    recruitmentContent,
   } = currentRoomInfo;
 
   const themeData = { themeId, posterImageUrl, branchName, themeName };
@@ -33,7 +33,7 @@ const useRoomInfoSettingForm = () => {
   const [date, setDate] = useState<Value>(new Date(appointmentDate));
   const [memberCount, setMemberCount] = useState<string>(recruitmentMembers.toString());
   const [theme, setTheme] = useState<Theme | undefined>(themeData);
-  const [newContents, setNewContents] = useInput(contents);
+  const [contents, setContents] = useInput(recruitmentContent);
   const [isReservation, setIsReservation] = useState<boolean>(appointmentCompleted);
   const [isRecruitment, setIsRecruitment] = useState<boolean>(recruitmentCompleted);
 
@@ -43,13 +43,13 @@ const useRoomInfoSettingForm = () => {
 
   const checkValidate = () => {
     //TODO: 예외처리 및 안내 문구 추가
-    if (!theme || !newContents || currentMembers > Number(memberCount)) {
+    if (!theme || !contents || currentMembers > Number(memberCount)) {
       return false;
     }
     //바뀐 정보가 없는 경우
     if (
       themeId === theme.themeId &&
-      contents === newContents &&
+      recruitmentContent === contents &&
       new Date(appointmentDate).toLocaleString() === date?.toLocaleString() &&
       isReservation === appointmentCompleted &&
       isRecruitment === recruitmentCompleted &&
@@ -70,8 +70,8 @@ const useRoomInfoSettingForm = () => {
     handleMemberCount,
     theme,
     setTheme,
-    newContents,
-    setNewContents,
+    contents,
+    setContents,
     isReservation,
     setIsReservation,
     isRecruitment,

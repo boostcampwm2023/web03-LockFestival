@@ -21,7 +21,7 @@ const RoomInfoPanel = ({ settingMode }: { settingMode: boolean }) => {
     regionName,
     themeName,
     posterImageUrl,
-    contents,
+    recruitmentContent,
     // appointmentDate,
     recruitmentMembers,
     currentMembers,
@@ -62,7 +62,7 @@ const RoomInfoPanel = ({ settingMode }: { settingMode: boolean }) => {
         <Label isBorder={true} width="10rem">
           <LabelText>모집내용</LabelText>
         </Label>
-        <RoomInfoContent>{contents}</RoomInfoContent>
+        <RoomInfoContent>{recruitmentContent}</RoomInfoContent>
       </RoomInfoWrapper>
       <RoomInfoWrapper>
         <Label isBorder={true} width="10rem">
