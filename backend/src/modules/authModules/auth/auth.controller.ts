@@ -26,7 +26,6 @@ export class AuthController {
     const naverUserData = await this.authService.getNaverUser(accessToken);
     const userData = await this.userService.login(naverUserData);
     return await this.authService.getAccessToken({
-      username: userData.email,
       nickname: userData.nickname,
     });
   }
