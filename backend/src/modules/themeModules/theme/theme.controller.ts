@@ -9,7 +9,8 @@ import { GenreDto } from '@theme/dtos/genre.dto';
 import { ThemeLocationResponseDto } from '@theme/dtos/theme.location.response.dto';
 import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
 import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
-
+import { ThemeSearchRequestDto } from '@theme/dtos/theme.serach.request.dto';
+import { ThemeSearchResponseDto } from '@theme/dtos/theme.search.response.dto';
 
 const DEFAULT_THEME_COUNT = 10;
 
@@ -130,7 +131,7 @@ export class ThemeController {
     description: '모집글 생성 시 검색한 테마 리스트를 10개 반환합니다',
   })
   @ApiQuery({
-    description: `검색어`,
+    description: '검색어',
     name: 'query',
     required: true,
   })
@@ -141,5 +142,21 @@ export class ThemeController {
   })
   async getSimpleThemes(@Query('query') query: string): Promise<ThemeSimpleSearchResponseDto[]> {
     return await this.themeService.getSimpleThemesBySearch(query);
+  }
+
+  @Get('/')
+  @ApiOperation({
+    summary: '검색에 따른 테마 리스트 반환',
+    description: '검색에 따른 테마리스트를 반환합니다.',
+  })
+  @ApiOkResponse({
+    status: 200,
+    description: '',
+    type: ThemeSearchResponseDto,
+  })
+  async getThemes(
+    @Query() themeSearchRequestDto: ThemeSearchRequestDto
+  ): Promise<ThemeSearchResponseDto> {
+    return await this.themeService.getThemesBySearch(themeSearchRequestDto);
   }
 }
