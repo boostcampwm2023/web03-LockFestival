@@ -1,9 +1,7 @@
 version: '3'
 services:
-  web:
+  backend:
     image: ${DOCKER_BACK_REPO}/${DOCKER_BACK_TAG}
-    ports:
-      - '3000:3000'
     environment:
       - DATABASE_HOST=${DATABASE_HOST}
       - DATABASE_DATABASE=${DATABASE_DATABASE}
@@ -20,7 +18,20 @@ services:
       - NODE_ENV=${NODE_ENV}
       - PORT=${PORT}
       - FRONTEND_BASE_URL=${FRONTEND_BASE_URL}
+    expose:
+      - 3000
   redis:
     image: 'redis:6.0.9-alpine'
+    expose:
+      - 6379
+  
+  frontend:
+    image: ${DOCKER_REPO}:latest
     ports:
-      - '6379:6379'
+      - 80:80
+      - 443:443
+
+    volumes:
+    - ./conf/conf.d:/etc/nginx/conf.d
+    - /etc/letsencrypt/live/lockfestival.com/fullchain.pem:/etc/ssl/cert.pem
+    - /etc/letsencrypt/live/lockfestival.com/privkey.pem:/etc/ssl/key.pem
