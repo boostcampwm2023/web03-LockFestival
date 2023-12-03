@@ -43,8 +43,7 @@ const useSocketConnection = (roomId: string) => {
         }
       );
 
-      await waitForEvent('roomInfo');
-      await waitForEvent('userListInfo');
+      await Promise.all([waitForEvent('roomInfo'), waitForEvent('userListInfo')]);
 
       setConnecting(false);
     } catch (error) {
@@ -58,13 +57,11 @@ const useSocketConnection = (roomId: string) => {
   };
 
   useEffect(() => {
-    if (!socket) {
-      setSocket(
-        io(`${SOCKET_URL}`, {
-          reconnectionDelayMax: 10000,
-        })
-      );
-    }
+    setSocket(
+      io(`${SOCKET_URL}`, {
+        reconnectionDelayMax: 10000,
+      })
+    );
 
     return () => {
       socket?.disconnect();
