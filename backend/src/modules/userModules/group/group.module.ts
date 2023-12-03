@@ -21,6 +21,6 @@ import { ChatModule } from '@chat/chat.module';
   ],
   controllers: [GroupController],
   providers: [GroupService, GroupRepository],
-  exports: [GroupRepository],
+  exports: [GroupRepository, GroupService],
 })
 export class GroupModule {}
