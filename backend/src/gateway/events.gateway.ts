@@ -8,14 +8,15 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { ChatService } from '@src/modules/userModules/chat/chat.service';
+import { ChatService } from '@chat/chat.service';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { Logger } from '@nestjs/common';
-import { PayloadDto } from '@src/modules/authModules/auth/dtos/payload.dto';
+import { PayloadDto } from '@auth/dtos/payload.dto';
 import { ConfigService } from '@nestjs/config';
-import { ChatMessageRequestDto } from '@src/modules/userModules/chat/dtos/chat.message.request.dto';
+import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
 import { ChatType } from '@src/enum/chat.type';
+import { GroupService } from '@group/group.service';
 
 @WebSocketGateway({
   cors: {
@@ -32,7 +33,8 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   constructor(
     private readonly chatService: ChatService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly groupService: GroupService
   ) {
     this.socketsInrooms = {};
   }
@@ -64,21 +66,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     await client.join(roomId);
 
-    //TODO 진짜로 고치기
-    client.emit('roomInfo', {
-      brandName: '마스터키',
-      branchName: '강남점',
-      regionName: '서울 강남', //CONCAT 필요
-      themeName: '테마',
-      themeId: 11, //시간표 불러올 때 사용
-      posterImageUrl: '',
-      contents: 'contents',
-      appointmentDate: new Date(),
-      recruitmentMembers: 4,
-      currentMembers: 3,
-      recruitmentCompleted: false,
-      appointmentCompleted: false,
-    });
+    client.emit('roomInfo', this.groupService.getGroupInfo(Number(roomId)));
 
     client.emit('chatLog', prevMessages);
     client.emit('userListInfo', chatUsers);
@@ -108,7 +96,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     @MessageBody('message') message: string,
     @ConnectedSocket() client: Socket
   ): Promise<string> {
-    console.log(message);
+    this.logger.log(message);
     const roomId = this.exportGroupId(client);
     const userId = this.socketsInrooms[roomId][client.id];
 

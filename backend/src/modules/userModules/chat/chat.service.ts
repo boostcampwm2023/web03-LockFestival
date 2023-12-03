@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ChatRepository } from '@chat/chat.repository';
 import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
 import { ChatUnreadDto } from '@chat/dtos/chat.unread.dto';
@@ -8,6 +8,7 @@ import { ChatMessageResponseDto } from '@chat/dtos/chat.mesage.response.dto';
 
 @Injectable()
 export class ChatService {
+  private readonly logger = new Logger(ChatService.name);
   constructor(private readonly chatRepository: ChatRepository) {}
 
   async validateRoomAndGetChatUserList(roomId: string, nickname: string) {
@@ -57,13 +58,16 @@ export class ChatService {
   }
 
   async validateLeader(roomId: string, userId: string) {
+    this.logger.log(`roomId: ${roomId}, userId: ${userId}`);
     return await this.chatRepository.validateLeaderByRoomId(roomId, userId);
   }
 
   async createMessageByChat(chatMessageDto: ChatMessageRequestDto): Promise<ChatMessageDto> {
+    this.logger.log(chatMessageDto);
     return await this.chatRepository.createMessageByChat(chatMessageDto);
   }
   async findMessagesByLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageResponseDto> {
+    this.logger.log(chatUnreadDto);
     const messages: ChatMessageDto[] =
       await this.chatRepository.findMessagesByStartLogId(chatUnreadDto);
     return new ChatMessageResponseDto(chatUnreadDto.startLogId, messages);
