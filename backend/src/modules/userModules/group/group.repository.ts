@@ -160,11 +160,6 @@ export class GroupRepository extends Repository<Group> {
   }
 
   async getGroupInfo(groupId: number): Promise<GroupInfoResponseDto> {
-    const queryRunner = this.dataSource.createQueryRunner();
-    const group: Group = await queryRunner.manager.findOneBy(Group, { id: groupId });
-    if (!group) {
-      throw new HttpException('해당 그룹은 존재하지 않습니다', HttpStatus.BAD_REQUEST);
-    }
     try {
       const qb = await this.dataSource
         .createQueryBuilder(Group, 'group')
