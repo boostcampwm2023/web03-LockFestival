@@ -29,6 +29,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   server: Server;
 
   socketsInrooms;
+  socketToRoomId;
 
   constructor(
     private readonly chatService: ChatService,
@@ -37,6 +38,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     private readonly groupService: GroupService
   ) {
     this.socketsInrooms = {};
+    this.socketToRoomId = {};
   }
 
   exportGroupId(client: Socket) {
@@ -63,6 +65,8 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     this.socketsInrooms[roomId][client.id] = chatUsers.find((user) => {
       return user.nickname === payload.nickname;
     }).userId;
+
+    this.socketToRoomId[client.id] = roomId;
 
     await client.join(roomId);
 
@@ -118,8 +122,13 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     this.logger.log('connect ' + client.id);
   }
 
-  handleDisconnect(client: Socket) {
-    client.leave(client.id);
+  async handleDisconnect(client: Socket) {
+    const roomId = this.socketToRoomId[client.id];
+    const userId = this.socketsInrooms[roomId][client.id];
+
+    delete this.socketsInrooms[roomId][client.id];
+    delete this.socketToRoomId[client.id];
+    await this.chatService.updateLastChatLogId(roomId, userId);
     this.logger.log('by' + client.id);
   }
   afterInit(server: Server) {
