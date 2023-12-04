@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, {Document} from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { ChatType } from '@src/enum/chat.type';
 import { ChatUser } from '@chat/entities/chat.user.schema';
 
