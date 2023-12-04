@@ -1,11 +1,13 @@
-import { ChatMessageDto } from './chat.message.dto';
+import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
 
 export class ChatMessageResponseDto {
   messages: ChatMessageDto[];
-  startLogId: string;
+  cursorLogId: string;
+  direction: number;
 
-  constructor(startLogId: string, messages: ChatMessageDto[]) {
+  constructor(cursorLogId: string, messages: ChatMessageDto[], direction: number) {
     this.messages = messages;
-    this.startLogId = startLogId;
+    this.cursorLogId = cursorLogId;
+    this.direction = direction;
   }
 }

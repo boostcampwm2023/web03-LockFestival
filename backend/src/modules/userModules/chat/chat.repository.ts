@@ -73,11 +73,16 @@ export class ChatRepository {
       options['limit'] = chatUnreadDto.count;
     }
 
+    const directionOptions =
+      chatUnreadDto.direction === 1
+        ? { $gte: chatUnreadDto.cursorLogId }
+        : { $lt: chatUnreadDto.cursorLogId };
+
     return (
       await this.roomModel.findOne({ group_id: chatUnreadDto.roomId }).populate({
         path: 'chat_list',
         model: 'ChatMessage',
-        match: { _id: { $gt: chatUnreadDto.startLogId } },
+        match: { _id: directionOptions },
         options,
       })
     ).chat_list.map((message) => {

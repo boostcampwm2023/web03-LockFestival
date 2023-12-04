@@ -11,12 +11,13 @@ import {
 import { ChatService } from '@chat/chat.service';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
-import { Logger } from '@nestjs/common';
+import { Logger, ParseIntPipe } from '@nestjs/common';
 import { PayloadDto } from '@auth/dtos/payload.dto';
 import { ConfigService } from '@nestjs/config';
 import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
 import { ChatType } from '@src/enum/chat.type';
 import { GroupService } from '@group/group.service';
+import { ChatMessageDto } from '@src/modules/userModules/chat/dtos/chat.message.dto';
 
 @WebSocketGateway({
   cors: {
@@ -80,15 +81,16 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
   @SubscribeMessage('chatLog')
   async chatLog(
-    @MessageBody('last_log_id') startLogId: string,
-    @MessageBody('count') count: number,
+    @MessageBody('cursorLogId') cursorLogId: string,
+    @MessageBody('count', ParseIntPipe) count: number,
+    @MessageBody('direction') direction: -1 | 1 = -1,
     @ConnectedSocket() client: Socket
   ): Promise<string> {
     const roomId = this.exportGroupId(client);
     const chatMessageResponseDto = await this.chatService.findMessagesByLogId({
       roomId,
-      startLogId,
-      direction: -1,
+      cursorLogId,
+      direction,
       count,
     });
     client.emit('chatLog', chatMessageResponseDto);
@@ -112,7 +114,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       new Date()
     );
 
-    const messageObject = await this.chatService.createMessageByChat(request);
+    const messageObject: ChatMessageDto = await this.chatService.createMessageByChat(request);
     client.to(roomId).emit('chat', messageObject);
     return 'ok';
   }
