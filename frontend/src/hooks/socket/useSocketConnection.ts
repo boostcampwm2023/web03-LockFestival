@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { SOCKET_URL } from '@config/server';
-import { RoomInfo, UserInfo } from 'types/chat';
 import { roomInfoAtom, userListInfoAtom } from '@store/chatRoom';
 import { useSetRecoilState } from 'recoil';
 import { userDataTransformer } from '@utils/chatDataUtils';
+import SocketEvent from 'types/socketEvent';
 
 const useSocketConnection = (roomId: string) => {
   const [connecting, setConnecting] = useState(true);
@@ -14,13 +14,19 @@ const useSocketConnection = (roomId: string) => {
   const setRoomInfo = useSetRecoilState(roomInfoAtom);
   const setUserListInfo = useSetRecoilState(userListInfoAtom);
 
-  const waitForEvent = (eventName: string): Promise<RoomInfo | UserInfo[]> => {
+  const waitForEvent = (eventName: keyof SocketEvent): Promise<any> => {
     return new Promise((resolve) => {
       socket?.on(eventName, (data) => {
-        if (eventName === 'roomInfo') {
-          setRoomInfo(data);
-        } else if (eventName === 'userListInfo') {
-          setUserListInfo(userDataTransformer(data));
+        switch (eventName) {
+          case 'roomInfo':
+            setRoomInfo(data);
+            break;
+          case 'userListInfo':
+            setUserListInfo(userDataTransformer(data));
+            break;
+          case 'chatLog':
+            console.log(data);
+            break;
         }
 
         resolve(data);
@@ -43,7 +49,11 @@ const useSocketConnection = (roomId: string) => {
         }
       );
 
-      await Promise.all([waitForEvent('roomInfo'), waitForEvent('userListInfo')]);
+      await Promise.all([
+        waitForEvent('roomInfo'),
+        waitForEvent('userListInfo'),
+        waitForEvent('chatLog'),
+      ]);
 
       setConnecting(false);
     } catch (error) {
@@ -57,14 +67,14 @@ const useSocketConnection = (roomId: string) => {
   };
 
   useEffect(() => {
-    setSocket(
-      io(`${SOCKET_URL}`, {
-        reconnectionDelayMax: 10000,
-      })
-    );
+    const disSocket = io(`${SOCKET_URL}`, {
+      reconnectionDelayMax: 10000,
+    });
+
+    setSocket(disSocket);
 
     return () => {
-      socket?.disconnect();
+      disSocket.disconnect();
       setRoomInfo(undefined);
       setUserListInfo(undefined);
     };
