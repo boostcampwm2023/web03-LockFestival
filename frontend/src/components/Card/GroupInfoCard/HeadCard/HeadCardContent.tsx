@@ -113,8 +113,9 @@ const HeadCardContent = ({
         <ButtonContainer>
           <DetailButton onClick={handleClickFlipButton}>상세보기</DetailButton>
           <Button
-            isEnter={checkRoomState()}
+            canEnter={checkRoomState()}
             onClick={() => handleNavigate(groupDetail.isEnter, groupDetail.groupId)}
+            disabled={!checkRoomState()}
           >
             입장하기
           </Button>
@@ -181,11 +182,11 @@ const ButtonContainer = styled.div([
   `,
 ]);
 
-const Button = styled.button<{ isEnter?: boolean }>(({ isEnter }) => [
+const Button = styled.button<{ canEnter: boolean }>(({ canEnter }) => [
   tw`text-white bg-transparent font-pretendard`,
   css`
-    cursor: ${isEnter ? 'pointer' : 'not-allowed'};
-    color: ${!isEnter && '#525252'};
+    cursor: ${canEnter ? 'pointer' : 'not-allowed'};
+    color: ${!canEnter && '#525252'};
     &:hover {
       text-decoration: underline;
       text-underline-position: under;
