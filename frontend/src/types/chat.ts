@@ -18,7 +18,7 @@ export interface UserInfo {
   nickname: string;
   isLeader: boolean;
   isLeave: boolean;
-  lastReadChatId: string;
+  lastChatLogId: string;
   isMe: boolean;
 }
 
