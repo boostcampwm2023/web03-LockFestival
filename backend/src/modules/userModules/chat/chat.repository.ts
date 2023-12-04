@@ -66,7 +66,7 @@ export class ChatRepository {
   }
   async findMessagesByStartLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageDto[]> {
     const options = {
-      sort: { _id: 1 },
+      sort: { _id: chatUnreadDto.direction },
     };
 
     if (chatUnreadDto?.count > 0) {
@@ -78,7 +78,7 @@ export class ChatRepository {
         ? { $gte: chatUnreadDto.cursorLogId }
         : { $lt: chatUnreadDto.cursorLogId };
 
-    return (
+    const chatMessageDtos = (
       await this.roomModel.findOne({ group_id: chatUnreadDto.roomId }).populate({
         path: 'chat_list',
         model: 'ChatMessage',
@@ -88,6 +88,8 @@ export class ChatRepository {
     ).chat_list.map((message) => {
       return new ChatMessageDto(message);
     });
+
+    return chatUnreadDto.direction === 1 ? chatMessageDtos : chatMessageDtos.reverse();
   }
 
   async findUserListWithLeavedUserByRoomId(roomId: string): Promise<ChatUserInfoDto[]> {
