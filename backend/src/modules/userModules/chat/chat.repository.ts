@@ -180,7 +180,7 @@ export class ChatRepository {
       },
       {
         $set: {
-          last_chat_log_id: lastChatLogId,
+          last_chat_log_id: new mongoose.Types.ObjectId(lastChatLogId),
         },
       }
     );
