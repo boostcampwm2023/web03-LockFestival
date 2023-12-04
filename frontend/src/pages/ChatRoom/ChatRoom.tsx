@@ -9,7 +9,7 @@ import ChatRoomContainer from './components/ChatRoomContainer';
 
 const ChatRoom = () => {
   const roomId = useParams<{ roomId: string }>().roomId as string;
-  const { connecting, sendChat } = useSocket(roomId);
+  const { connecting, sendChat, getPastChat } = useSocket(roomId);
 
   return connecting ? (
     <Loading>
@@ -19,7 +19,12 @@ const ChatRoom = () => {
     <ErrorBoundary fallbackRender={(fallbackProps) => <ErrorFallBack {...fallbackProps} />}>
       <ChatRoomInfoValidator>
         <HostIdentification>
-          <ChatRoomContainer settingMode roomId={roomId} sendChat={sendChat} />
+          <ChatRoomContainer
+            settingMode
+            roomId={roomId}
+            sendChat={sendChat}
+            getPastChat={getPastChat}
+          />
         </HostIdentification>
       </ChatRoomInfoValidator>
     </ErrorBoundary>

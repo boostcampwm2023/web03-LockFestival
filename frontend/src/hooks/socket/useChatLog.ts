@@ -19,6 +19,7 @@ const useChatLog = (roomId: string, receiveChat: ServerChatLog | null) => {
         time,
       });
       setChatLog((prev) => ({ ...prev, [roomId]: currentRoomChatting }));
+      console.log(chatLog);
     }
   }, [receiveChat]);
 };
