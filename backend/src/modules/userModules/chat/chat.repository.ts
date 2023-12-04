@@ -162,7 +162,7 @@ export class ChatRepository {
     );
   }
   async findLastChatLogIdByRoomId(roomId: string) {
-    const roomInfo = await this.roomModel.findOne({ id: roomId });
+    const roomInfo = await this.roomModel.findOne({ group_id: roomId });
     if (!roomInfo) {
       throw new Error('방 정보를 찾을 수 없습니다.');
     }
@@ -173,7 +173,7 @@ export class ChatRepository {
     await this.chatUserModel.updateOne(
       {
         _id: {
-          $eq: { userId },
+          $eq: { _id: userId },
         },
       },
       {
