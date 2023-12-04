@@ -7,6 +7,7 @@ import { HeadCardProps } from './HeadCard';
 import { FaRegUser } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import fetchEnterRoom from '@apis/fetchEnterRoom';
+import { isAxiosError } from 'axios';
 
 const HeadCardContent = ({
   themeDetail,
@@ -17,6 +18,7 @@ const HeadCardContent = ({
 
   const handleNavigate = async (isEnter: boolean, groudId: number) => {
     if (isEnter) {
+      navigate(`/chat-room/${groudId}`);
       return;
     }
 
@@ -24,9 +26,20 @@ const HeadCardContent = ({
       await fetchEnterRoom(groudId);
       navigate(`/chat-room/${groudId}`);
     } catch (error) {
-      alert('입장에 실패했습니다.');
-      console.log(error);
+      if (isAxiosError(error)) {
+        alert(error.response?.data.message);
+      }
     }
+  };
+
+  const checkRoomState = () => {
+    if (groupDetail.isEnter) {
+      return true;
+    }
+    if (groupDetail.currentMembers < groupDetail.recruitmentMembers) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -98,9 +111,9 @@ const HeadCardContent = ({
           <TitleText>{groupDetail.recruitmentContent}</TitleText>
         </ThemeInfo>
         <ButtonContainer>
-          <Button onClick={handleClickFlipButton}>상세보기</Button>
+          <DetailButton onClick={handleClickFlipButton}>상세보기</DetailButton>
           <Button
-            isEnter={groupDetail.isEnter}
+            isEnter={checkRoomState()}
             onClick={() => handleNavigate(groupDetail.isEnter, groupDetail.groupId)}
           >
             입장하기
@@ -171,8 +184,18 @@ const ButtonContainer = styled.div([
 const Button = styled.button<{ isEnter?: boolean }>(({ isEnter }) => [
   tw`text-white bg-transparent font-pretendard`,
   css`
-    cursor: ${isEnter ? 'not-allowed' : 'pointer'};
-    color: ${isEnter && '#525252'};
+    cursor: ${isEnter ? 'pointer' : 'not-allowed'};
+    color: ${!isEnter && '#525252'};
+    &:hover {
+      text-decoration: underline;
+      text-underline-position: under;
+    }
+  `,
+]);
+
+const DetailButton = styled.button([
+  tw`text-white bg-transparent font-pretendard`,
+  css`
     &:hover {
       text-decoration: underline;
       text-underline-position: under;
