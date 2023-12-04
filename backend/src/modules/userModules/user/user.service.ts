@@ -35,7 +35,7 @@ export class UserService {
 
   async login(data: UserNaverDto): Promise<User> {
     try {
-      const userData = await this.userRepository.findUserByEmail(data.email);
+      const userData = await this.userRepository.findUserByEmail(data.id);
       if (!userData) {
         let nickname: string = this.generateRandomString();
         while (!(await this.checkUsableNickname(nickname))) {
