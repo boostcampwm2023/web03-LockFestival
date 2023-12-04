@@ -3,12 +3,14 @@ import { HeadCardProps } from '../HeadCard/HeadCard';
 import Label from '@components/Label/Label';
 import { useNavigate } from 'react-router-dom';
 import fetchEnterRoom from '@apis/fetchEnterRoom';
+import { isAxiosError } from 'axios';
 
 const TailCard = ({ leader, themeDetail, groupDetail, handleClickFlipButton }: HeadCardProps) => {
   const navigate = useNavigate();
 
   const handleNavigate = async (isEnter: boolean, groudId: number) => {
     if (isEnter) {
+      navigate(`/chat-room/${groudId}`);
       return;
     }
 
@@ -16,9 +18,20 @@ const TailCard = ({ leader, themeDetail, groupDetail, handleClickFlipButton }: H
       await fetchEnterRoom(groudId);
       navigate(`/chat-room/${groudId}`);
     } catch (error) {
-      alert('입장에 실패했습니다.');
-      console.log(error);
+      if (isAxiosError(error)) {
+        alert(error.response?.data.message);
+      }
     }
+  };
+
+  const checkRoomState = () => {
+    if (groupDetail.isEnter) {
+      return true;
+    }
+    if (groupDetail.currentMembers < groupDetail.recruitmentMembers) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -58,10 +71,11 @@ const TailCard = ({ leader, themeDetail, groupDetail, handleClickFlipButton }: H
         </List>
       </ThemeInfo>
       <ButtonContainer>
-        <Button onClick={handleClickFlipButton}>돌아가기</Button>
+        <DetailButton onClick={handleClickFlipButton}>돌아가기</DetailButton>
         <Button
-          isEnter={groupDetail.isEnter}
+          canEnter={checkRoomState()}
           onClick={() => handleNavigate(groupDetail.isEnter, groupDetail.groupId)}
+          disabled={!checkRoomState()}
         >
           입장하기
         </Button>
@@ -115,11 +129,11 @@ const LabelText = styled.div([
   `,
 ]);
 
-const Button = styled.button<{ isEnter?: boolean }>(({ isEnter }) => [
+const Button = styled.button<{ canEnter: boolean }>(({ canEnter }) => [
   tw`text-white bg-transparent font-pretendard`,
   css`
-    cursor: ${isEnter ? 'not-allowed' : 'pointer'};
-    color: ${isEnter && '#525252'};
+    cursor: ${canEnter ? 'pointer' : 'not-allowed'};
+    color: ${!canEnter && '#525252'};
     &:hover {
       text-decoration: underline;
       text-underline-position: under;
@@ -127,6 +141,15 @@ const Button = styled.button<{ isEnter?: boolean }>(({ isEnter }) => [
   `,
 ]);
 
+const DetailButton = styled.button([
+  tw`text-white bg-transparent font-pretendard`,
+  css`
+    &:hover {
+      text-decoration: underline;
+      text-underline-position: under;
+    }
+  `,
+]);
 const Text = styled.span([tw`font-pretendard`, tw`mobile:(text-m)`]);
 
 export default TailCard;
