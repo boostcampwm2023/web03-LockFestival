@@ -118,8 +118,11 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     this.logger.log('connect ' + client.id);
   }
 
-  handleDisconnect(client: Socket) {
-    client.leave(client.id);
+  async handleDisconnect(client: Socket) {
+    const roomId = this.exportGroupId(client);
+    const userId = this.socketsInrooms[roomId][client.id];
+    await this.chatService.updateLastChatLogId(roomId, userId);
+    await client.leave(client.id);
     this.logger.log('by' + client.id);
   }
   afterInit(server: Server) {

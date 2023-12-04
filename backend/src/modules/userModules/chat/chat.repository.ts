@@ -161,6 +161,28 @@ export class ChatRepository {
       }
     );
   }
+  async findLastChatLogIdByRoomId(roomId: string) {
+    const roomInfo = await this.roomModel.findOne({ id: roomId });
+    if (!roomInfo) {
+      throw new Error('방 정보를 찾을 수 없습니다.');
+    }
+    return roomInfo.last_chat.toString();
+  }
+
+  async updateLastChatLogId(userId: string, lastChatLogId: string) {
+    await this.chatUserModel.updateOne(
+      {
+        _id: {
+          $eq: { userId },
+        },
+      },
+      {
+        $set: {
+          last_chat_log_id: lastChatLogId,
+        },
+      }
+    );
+  }
 
   async addUserInRoom(
     groupId: number,

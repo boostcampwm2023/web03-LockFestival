@@ -66,6 +66,10 @@ export class ChatService {
     this.logger.log(chatMessageDto);
     return await this.chatRepository.createMessageByChat(chatMessageDto);
   }
+  async updateLastChatLogId(roomId: string, userId: string) {
+    const lastChatLogId = await this.chatRepository.findLastChatLogIdByRoomId(roomId);
+    await this.chatRepository.updateLastChatLogId(userId, lastChatLogId);
+  }
   async findMessagesByLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageResponseDto> {
     this.logger.log(chatUnreadDto);
     const messages: ChatMessageDto[] =
