@@ -17,7 +17,7 @@ import { ConfigService } from '@nestjs/config';
 import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
 import { ChatType } from '@src/enum/chat.type';
 import { GroupService } from '@group/group.service';
-import { ChatMessageDto } from '@src/modules/userModules/chat/dtos/chat.message.dto';
+import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
 
 @WebSocketGateway({
   cors: {
