@@ -1,9 +1,8 @@
 export class UserNaverDto {
   id: string;
-  gender: string;
-  email: string;
-  mobile: string;
-  mobile_e164: string;
-  name: string;
-  birthyear: string;
+  profileImageUrl: string;
+  constructor({ id, profile_image }) {
+    this.id = id;
+    this.profileImageUrl = profile_image;
+  }
 }

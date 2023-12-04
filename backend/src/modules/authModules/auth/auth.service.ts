@@ -58,13 +58,15 @@ export class AuthService {
 
   async getNaverUser(accessNaverToken: string): Promise<UserNaverDto> {
     try {
-      return (
-        await this.httpService.axiosRef.post(
-          'https://openapi.naver.com/v1/nid/me',
-          {},
-          { headers: { Authorization: `Bearer ${accessNaverToken}` } }
-        )
-      ).data.response;
+      return new UserNaverDto(
+        (
+          await this.httpService.axiosRef.post(
+            'https://openapi.naver.com/v1/nid/me',
+            {},
+            { headers: { Authorization: `Bearer ${accessNaverToken}` } }
+          )
+        ).data.response
+      );
     } catch (error) {
       throw new HttpException('Failed to get Naver user data.', HttpStatus.INTERNAL_SERVER_ERROR);
     }

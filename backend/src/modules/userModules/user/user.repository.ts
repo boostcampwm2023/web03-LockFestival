@@ -26,6 +26,7 @@ export class UserRepository extends Repository<User> {
       gender: Gender.F,
       email: data.id,
       nickname: nickname,
+      profileImageUrl: data.profileImageUrl,
       phoneNumber: '010-0000-0000',
       name: '이름',
       birthYear: 1998,
