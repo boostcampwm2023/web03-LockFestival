@@ -24,7 +24,7 @@ export class ChatService {
 
     const countMap: object = chatUsers
       .filter((user: ChatUserInfoDto) => {
-        return !user.isMe;
+        return !user.isMe && !!user.lastChatLogId;
       })
       .map(({ lastChatLogId }) => {
         return lastChatLogId;
@@ -48,7 +48,7 @@ export class ChatService {
     await this.chatRepository.updateRead(meUser.userId);
 
     const prevMessages: ChatMessageResponseDto = await this.findMessagesByLogId({
-      startLogId: meUser.lastChatLogId,
+      cursorLogId: meUser.lastChatLogId,
       count: 0,
       direction: 1,
       roomId,
@@ -74,6 +74,6 @@ export class ChatService {
     this.logger.log(chatUnreadDto);
     const messages: ChatMessageDto[] =
       await this.chatRepository.findMessagesByStartLogId(chatUnreadDto);
-    return new ChatMessageResponseDto(chatUnreadDto.startLogId, messages);
+    return new ChatMessageResponseDto(chatUnreadDto.cursorLogId, messages, chatUnreadDto.direction);
   }
 }
