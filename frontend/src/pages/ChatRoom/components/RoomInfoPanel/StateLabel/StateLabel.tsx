@@ -1,8 +1,5 @@
 import Label from '@components/Label/Label';
 import { styled, css } from 'twin.macro';
-import { FaRegCircleCheck } from 'react-icons/fa6';
-import { FaRegCircleXmark } from 'react-icons/fa6';
-
 interface StateLabelProps {
   text: string;
   state: boolean;
@@ -10,10 +7,10 @@ interface StateLabelProps {
 
 const StateLabel = ({ text, state }: StateLabelProps) => {
   return (
-    <Label isBorder={true} backgroundColor={state ? 'green-light' : 'green-dark'} width="10rem">
+    <Label isBorder={true} backgroundColor={state ? 'green-dark' : 'green-light'} width="10rem">
       <LabelText>
         {text}
-        {state ? <FaRegCircleCheck /> : <FaRegCircleXmark />}
+        {state ? '완료' : '중'}
       </LabelText>
     </Label>
   );
