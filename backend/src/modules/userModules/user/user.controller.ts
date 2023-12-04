@@ -89,7 +89,6 @@ export class UserController {
 
     const { token } = await this.authService.getAccessToken({
       nickname: updatedUser.nickname,
-      username: updatedUser.email,
     });
 
     return new UserInfoResponseDto(
