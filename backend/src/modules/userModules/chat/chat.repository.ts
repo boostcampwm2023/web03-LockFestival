@@ -66,7 +66,7 @@ export class ChatRepository {
   }
   async findMessagesByStartLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageDto[]> {
     const options = {
-      sort: { _id: chatUnreadDto.direction },
+      sort: { _id: 1 },
     };
 
     if (chatUnreadDto?.count > 0) {
