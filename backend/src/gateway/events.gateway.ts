@@ -129,7 +129,6 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     delete this.socketsInrooms[roomId][client.id];
     delete this.socketToRoomId[client.id];
     await this.chatService.updateLastChatLogId(roomId, userId);
-    await client.leave(client.id);
     this.logger.log('by' + client.id);
   }
   afterInit(server: Server) {
