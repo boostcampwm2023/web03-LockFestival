@@ -79,10 +79,6 @@ export class ChatRepository {
         model: 'ChatMessage',
         match: { _id: { $gt: chatUnreadDto.startLogId } },
         options,
-        populate: {
-          path: 'sender',
-          model: 'ChatUser',
-        },
       })
     ).chat_list.map((message) => {
       return new ChatMessageDto(message);
