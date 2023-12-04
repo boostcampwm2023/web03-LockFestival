@@ -6,14 +6,15 @@ import RoomInfoPanel from './RoomInfoPanel/RoomInfoPanel';
 interface Props {
   roomId: string;
   sendChat: (message: string) => void;
+  settingMode: boolean;
 }
 
-const ChatRoomContainer = ({ roomId, sendChat }: Props) => {
+const ChatRoomContainer = ({ roomId, sendChat, settingMode }: Props) => {
   return (
     <Container>
-      <UserListPanel />
+      <UserListPanel settingMode={settingMode} />
       <ChatPanel roomId={roomId} sendChat={sendChat} />
-      <RoomInfoPanel />
+      <RoomInfoPanel settingMode={settingMode} />
     </Container>
   );
 };

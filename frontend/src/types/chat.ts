@@ -29,7 +29,7 @@ export interface RoomInfo {
   themeName: string;
   themeId: number; //시간표 불러올 때 사용
   posterImageUrl: string;
-  contents: string;
+  recruitmentContent: string;
   appointmentDate: Date;
   recruitmentMembers: number;
   currentMembers: number;

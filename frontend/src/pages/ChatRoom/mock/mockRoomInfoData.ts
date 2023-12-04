@@ -7,7 +7,7 @@ export const mockRoomInfo: RoomInfo = {
   themeName: '더맨',
   themeId: 12,
   posterImageUrl: 'https://www.master-key.co.kr/upload/room/195_img1.gif',
-  contents: '크리스마스에 더맨 탈출하러 갈사람 모집합니다~',
+  recruitmentContent: '크리스마스에 더맨 탈출하러 갈사람 모집합니다~',
   appointmentDate: new Date('2023-12-25'),
   recruitmentMembers: 8,
   currentMembers: 5,

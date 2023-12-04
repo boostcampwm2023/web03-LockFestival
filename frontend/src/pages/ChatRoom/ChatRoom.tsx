@@ -19,7 +19,7 @@ const ChatRoom = () => {
     <ErrorBoundary fallbackRender={(fallbackProps) => <ErrorFallBack {...fallbackProps} />}>
       <ChatRoomInfoValidator>
         <HostIdentification>
-          <ChatRoomContainer roomId={roomId} sendChat={sendChat} />
+          <ChatRoomContainer settingMode roomId={roomId} sendChat={sendChat} />
         </HostIdentification>
       </ChatRoomInfoValidator>
     </ErrorBoundary>

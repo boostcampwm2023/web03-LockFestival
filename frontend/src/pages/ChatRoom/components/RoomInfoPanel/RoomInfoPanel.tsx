@@ -6,14 +6,14 @@ import StateLabel from './StateLabel/StateLabel';
 import { FaGear } from 'react-icons/fa6';
 import useModal from '@hooks/useModal';
 import Modal from '@components/Modal/Modal';
-import MakeGroupModal from '@components/Modal/MakeGroupModal/MakeGroupModal';
+import RoomSettingModal from './RoomSettingModal/RoomSettingModal';
 import { useRecoilValue } from 'recoil';
 import { roomInfoAtom } from '@store/chatRoom';
 import { getStringByDate } from '@utils/dateUtil';
 
-const RoomInfoPanel = () => {
+const RoomInfoPanel = ({ settingMode }: { settingMode: boolean }) => {
   const { openModal, closeModal } = useModal();
-  const isLeader = true;
+
   const roomInfo = useRecoilValue(roomInfoAtom);
   const {
     brandName,
@@ -21,7 +21,7 @@ const RoomInfoPanel = () => {
     regionName,
     themeName,
     posterImageUrl,
-    contents,
+    recruitmentContent,
     // appointmentDate,
     recruitmentMembers,
     currentMembers,
@@ -31,15 +31,15 @@ const RoomInfoPanel = () => {
 
   return (
     <Layout>
-      {isLeader ? (
+      {settingMode ? (
         <SettingButton>
           <Button
             isIcon={true}
             onClick={() =>
               openModal(Modal, {
-                children: <MakeGroupModal onClose={() => closeModal(Modal)} />,
+                children: <RoomSettingModal onClose={() => closeModal(Modal)} />,
                 onClose: () => closeModal(Modal),
-                closeOnExternalClick: false,
+                closeOnExternalClick: true,
               })
             }
           >
@@ -62,7 +62,7 @@ const RoomInfoPanel = () => {
         <Label isBorder={true} width="10rem">
           <LabelText>모집내용</LabelText>
         </Label>
-        <RoomInfoContent>{contents}</RoomInfoContent>
+        <RoomInfoContent>{recruitmentContent}</RoomInfoContent>
       </RoomInfoWrapper>
       <RoomInfoWrapper>
         <Label isBorder={true} width="10rem">
