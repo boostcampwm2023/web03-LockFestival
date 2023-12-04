@@ -1,5 +1,5 @@
 import mongoose, { Model } from 'mongoose';
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ChatUser } from '@chat/entities/chat.user.schema';
 import { ChatMessage } from '@chat/entities/chat.message.schema';
@@ -233,5 +233,23 @@ export class ChatRepository {
         },
       }
     );
+  }
+
+  async validateRoomAndGetChatUser(roomId: string, nickname: string): Promise<ChatUser> {
+    const res = await this.roomModel
+      .findOne({ group_id: roomId }, { user_list: true, last_chat: true, _id: false })
+      .populate({
+        path: 'user_list',
+        model: 'ChatUser',
+        match: { user_nickname: nickname },
+      });
+
+    const user: ChatUser = res.user_list[0];
+
+    if (!user) {
+      throw new HttpException('유저가 방에 없습니다.', HttpStatus.BAD_REQUEST);
+    }
+
+    return user;
   }
 }
