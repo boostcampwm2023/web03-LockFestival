@@ -151,11 +151,9 @@ export class ChatRepository {
   }
 
   async updateRead(userId: string) {
-    this.chatUserModel.updateOne(
+    await this.chatUserModel.updateOne(
       {
-        _id: {
-          $eq: { userId },
-        },
+        _id: userId,
       },
       {
         $unset: {
@@ -164,6 +162,7 @@ export class ChatRepository {
       }
     );
   }
+
   async findLastChatLogIdByRoomId(roomId: string) {
     const roomInfo = await this.roomModel.findOne({ group_id: roomId });
     if (!roomInfo) {
