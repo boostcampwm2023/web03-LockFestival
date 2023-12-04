@@ -1,4 +1,4 @@
-export class UsersRoomsResponseDto {
+export class UsersRoomsGroupDto {
   themeId: number;
   themeName: string;
   posterImageUrl: string;
