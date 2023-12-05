@@ -1,5 +1,11 @@
 export type TotalChatLog = Record<string, Map<string, ChatLog>>;
 
+export interface ServerChatLogList {
+  cursorLogId: string;
+  direction: 1 | -1;
+  messages: Array<ServerChatLog>;
+}
+
 export interface ServerChatLog extends ChatLog {
   chatId: string;
 }
@@ -14,7 +20,7 @@ export type UserInfoObject = Map<string, Omit<UserInfo, 'userId'>>;
 
 export interface UserInfo {
   userId: string;
-  profileImg: string | null;
+  profileImg: string;
   nickname: string;
   isLeader: boolean;
   isLeave: boolean;
