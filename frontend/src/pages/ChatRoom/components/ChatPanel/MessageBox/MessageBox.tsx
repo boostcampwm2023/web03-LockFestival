@@ -1,9 +1,8 @@
 import tw, { styled, css } from 'twin.macro';
-import { ChatLog, UserInfo, UserInfoObject } from 'types/chat';
+import { ChatLog } from 'types/chat';
 import { userListInfoAtom } from '@store/chatRoom';
 import { useRecoilValue } from 'recoil';
 import { getStringByDate, getTimeByDate } from '@utils/dateUtil';
-import { useCallback } from 'react';
 
 const MessageBox = ({ message, userId, type, time }: ChatLog) => {
   const userData = useRecoilValue(userListInfoAtom);
@@ -16,7 +15,6 @@ const MessageBox = ({ message, userId, type, time }: ChatLog) => {
   const { nickname, isMe, profileImg } = myData;
 
   // 같은 년 월 일, 시각 분, 사용자가 같으면 하나의 nickname만
-  const checkValidate = useCallback(() => {}, [message]);
 
   return (
     <Layout type={type} isMe={isMe}>

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { ServerChatLog, ServerChatLogList } from 'types/chat';
 import useSocketConnection from './useSocketConnection';
 import useChatLog from './useChatLog';
-import { useSetRecoilState } from 'recoil';
 
 const useSocket = (roomId: string) => {
   const { socket, connecting } = useSocketConnection(roomId);

@@ -1,4 +1,4 @@
-import { ChatLog, ServerChatLog, ServerChatLogList, TotalChatLog } from 'types/chat';
+import { ChatLog, ServerChatLog, ServerChatLogList } from 'types/chat';
 import { useRecoilState } from 'recoil';
 import { chatLogAtom } from '@store/chatRoom';
 import { chatLogDataTransformer } from '@utils/chatDataUtils';
