@@ -46,6 +46,12 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     return [...client.rooms.values()][0];
   }
 
+  hasAnotherSession(roomId: string, userId: string) {
+    return Object.values(this.socketsInRooms[roomId]).find((sessionUserId) => {
+      return sessionUserId === userId;
+    });
+  }
+
   //myPage 입장
   @SubscribeMessage('join')
   async join(
@@ -63,9 +69,9 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       this.socketsInRooms[roomId] = {};
     }
 
-    const hasAnotherSession = Object.values(this.socketsInRooms[roomId]).find((userId) => {
-      return userId === meUser.userId;
-    });
+    if (!this.hasAnotherSession(roomId, meUser.userId)) {
+      this.server.to(roomId).emit('unread', unreadCountMap);
+    }
 
     this.socketsInRooms[roomId][client.id] = meUser.userId;
 
@@ -77,9 +83,6 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     client.emit('chatLog', prevMessages);
     client.emit('userListInfo', chatUsers);
-    if (!hasAnotherSession) {
-      this.server.to(roomId).emit('unread', unreadCountMap);
-    }
     return 'ok';
   }
 
@@ -139,11 +142,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     delete this.socketsInRooms[roomId][client.id];
     delete this.socketToRoomId[client.id];
 
-    const hasAnotherSession = Object.values(this.socketsInRooms[roomId]).find((sessionUserId) => {
-      return sessionUserId === userId;
-    });
-
-    if (!hasAnotherSession) {
+    if (!this.hasAnotherSession(roomId, userId)) {
       await this.chatService.updateLastChatLogId(roomId, userId);
       this.server.to(roomId).emit('unread', await this.chatService.getUnreadCount(roomId));
     }
