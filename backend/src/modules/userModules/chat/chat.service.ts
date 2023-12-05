@@ -70,6 +70,9 @@ export class ChatService {
   }
   async updateLastChatLogId(roomId: string, userId: string) {
     const lastChatLogId = await this.chatRepository.findLastChatLogIdByRoomId(roomId);
+    if (!lastChatLogId) {
+      return;
+    }
     await this.chatRepository.updateLastChatLogId(userId, lastChatLogId);
   }
   async findMessagesByLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageResponseDto> {
