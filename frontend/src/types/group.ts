@@ -1,10 +1,20 @@
+export interface FetchGroupData {
+  _meta: {
+    restCount: number;
+    nextCursor: number;
+  };
+  data: Array<GroupProps>;
+}
+
 export interface GroupProps {
-  groupId: string;
+  themeId: number;
+  themeName: string;
   posterImageUrl: string;
   branchName: string;
-  themeName: string;
-  contents: string;
-  lastChat: string;
-  lastChatTime: Date;
-  haveNewMessage: boolean;
+  groupId: number;
+  recruitmentContent: string;
+  lastChatMessage: string;
+  lastChatTime: string;
+  hasNewChat: boolean;
+  newChatCount: number;
 }
