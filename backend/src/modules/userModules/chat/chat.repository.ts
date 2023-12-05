@@ -1,5 +1,5 @@
 import mongoose, { Model } from 'mongoose';
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ChatUser } from '@chat/entities/chat.user.schema';
 import { ChatMessage } from '@chat/entities/chat.message.schema';
@@ -66,7 +66,7 @@ export class ChatRepository {
   }
   async findMessagesByStartLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageDto[]> {
     const options = {
-      sort: { _id: 1 },
+      sort: { _id: chatUnreadDto.direction },
     };
 
     if (chatUnreadDto?.count > 0) {
@@ -78,7 +78,7 @@ export class ChatRepository {
         ? { $gte: chatUnreadDto.cursorLogId }
         : { $lt: chatUnreadDto.cursorLogId };
 
-    return (
+    const chatMessageDtos = (
       await this.roomModel.findOne({ group_id: chatUnreadDto.roomId }).populate({
         path: 'chat_list',
         model: 'ChatMessage',
@@ -88,6 +88,8 @@ export class ChatRepository {
     ).chat_list.map((message) => {
       return new ChatMessageDto(message);
     });
+
+    return chatUnreadDto.direction === 1 ? chatMessageDtos : chatMessageDtos.reverse();
   }
 
   async findUserListWithLeavedUserByRoomId(roomId: string): Promise<ChatUserInfoDto[]> {
@@ -149,11 +151,9 @@ export class ChatRepository {
   }
 
   async updateRead(userId: string) {
-    this.chatUserModel.updateOne(
+    await this.chatUserModel.updateOne(
       {
-        _id: {
-          $eq: { userId },
-        },
+        _id: userId,
       },
       {
         $unset: {
@@ -162,12 +162,52 @@ export class ChatRepository {
       }
     );
   }
+
   async findLastChatLogIdByRoomId(roomId: string) {
     const roomInfo = await this.roomModel.findOne({ group_id: roomId });
     if (!roomInfo) {
       throw new Error('방 정보를 찾을 수 없습니다.');
     }
+    if (!roomInfo.last_chat) {
+      return false;
+    }
     return roomInfo.last_chat.toString();
+  }
+
+  async findLastChatByRoomId(roomId: string): Promise<ChatMessage> {
+    return (
+      await this.roomModel.findOne({ group_id: roomId }, { last_chat: 1, _id: 0 }).populate({
+        path: 'last_chat',
+        model: 'ChatMessage',
+        select: { _id: 1, chat_message: 1, chat_date: 1 },
+      })
+    ).last_chat;
+  }
+
+  async countChatInRoomBetweenLogIds(
+    roomId: string,
+    startId: string,
+    endId: string
+  ): Promise<number> {
+    const [minId, maxId] = startId < endId ? [startId, endId] : [endId, startId];
+
+    const res = await this.roomModel.findOne(
+      {
+        group_id: roomId,
+        chat_list: {
+          $elemMatch: {
+            $gt: minId,
+            $lte: maxId,
+          },
+        },
+      },
+      { chat_list: 1, _id: 0 }
+    );
+    if (!res) {
+      return 0;
+    }
+
+    return res.chat_list.length;
   }
 
   async updateLastChatLogId(userId: string, lastChatLogId: string) {
@@ -179,7 +219,7 @@ export class ChatRepository {
       },
       {
         $set: {
-          last_chat_log_id: lastChatLogId,
+          last_chat_log_id: new mongoose.Types.ObjectId(lastChatLogId),
         },
       }
     );
@@ -232,6 +272,24 @@ export class ChatRepository {
         },
       }
     );
+  }
+
+  async validateRoomAndGetChatUser(roomId: string, nickname: string): Promise<ChatUser> {
+    const res = await this.roomModel
+      .findOne({ group_id: roomId }, { user_list: true, last_chat: true, _id: false })
+      .populate({
+        path: 'user_list',
+        model: 'ChatUser',
+        match: { user_nickname: nickname },
+      });
+
+    const user: ChatUser = res.user_list[0];
+
+    if (!user) {
+      throw new HttpException('유저가 방에 없습니다.', HttpStatus.BAD_REQUEST);
+    }
+
+    return user;
   }
 
   async updateUserInfoOnLeave(roomId: string, nickname: string) {

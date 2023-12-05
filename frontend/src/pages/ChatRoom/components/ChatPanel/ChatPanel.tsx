@@ -7,16 +7,32 @@ import { useRecoilValue } from 'recoil';
 import { chatLogAtom } from 'store/chatRoom';
 import { ChatLog } from 'types/chat';
 import MessageBox from './MessageBox/MessageBox';
+import { useEffect, useRef, useState } from 'react';
+import useIntersectionObserverSocket from '@hooks/useIntersectionObserverSocket';
 
 interface ChatPanelProps {
   roomId: string;
   sendChat: (message: string) => void;
+  getPastChat: (cursorId: string) => void;
 }
 
-const ChatPanel = ({ roomId, sendChat }: ChatPanelProps) => {
+const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
+  const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
+
+  const targetRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const lastScrollRef = useRef<HTMLDivElement>(null);
+
+  const [isScrollToTop, setIsScrollToTop] = useState<boolean>(false);
+
+  useIntersectionObserverSocket({
+    eventHandler: getPastChat,
+    targetRef,
+    roomId,
+  });
+
   const navigate = useNavigate();
   const [inputValue, handleValue, resetValue] = useInput('');
-  const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -30,8 +46,35 @@ const ChatPanel = ({ roomId, sendChat }: ChatPanelProps) => {
   };
 
   const handleSubmit = () => {
+    if (inputValue === '') {
+      return;
+    }
+    if (lastScrollRef.current) {
+      lastScrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+
     sendChat(inputValue);
     resetValue();
+  };
+
+  useEffect(() => {
+    if (lastScrollRef.current && !isScrollToTop) {
+      lastScrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [chatLogData]);
+
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const target1 = scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
+      const target2 = scrollRef.current.scrollTop;
+
+      if (Math.abs(target1 - target2) < 20) {
+        setIsScrollToTop(false);
+        return;
+      }
+
+      setIsScrollToTop(true);
+    }
   };
 
   return (
@@ -47,17 +90,22 @@ const ChatPanel = ({ roomId, sendChat }: ChatPanelProps) => {
           <FaRightFromBracket />
         </Button>
       </ButtonWrapper>
-      <ChatDisplayContainer>
+      <ChatDisplayContainer ref={scrollRef} onScroll={() => handleScroll()}>
+        {chatLogData && <div ref={targetRef} />}
         {chatLogData &&
-          Array.from(chatLogData).map(([logId, chat]) => (
-            <MessageBox
-              key={logId}
-              message={chat.message}
-              userId={chat.userId}
-              type={chat.type}
-              time={chat.time}
-            />
-          ))}
+          Array.from(chatLogData).map(([logId, chat]) => {
+            return (
+              <MessageBox
+                key={logId}
+                logId={logId}
+                message={chat.message}
+                userId={chat.userId}
+                type={chat.type}
+                time={chat.time}
+              />
+            );
+          })}
+        <div ref={lastScrollRef}></div>
       </ChatDisplayContainer>
       <InputChatPanel
         value={inputValue}
@@ -99,9 +147,22 @@ const ButtonWrapper = styled.div([
 ]);
 
 const ChatDisplayContainer = styled.div([
-  tw`w-[100%] h-[100%] bg-white rounded-[2rem] font-pretendard text-l p-4`,
+  tw`w-[100%] h-[100%] bg-white rounded-[1rem] font-pretendard text-l pt-4 pb-4 pl-4 pr-2`,
   css`
     overflow-y: scroll;
+
+    ::-webkit-scrollbar {
+      width: 1rem;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #d2dad0;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: #222222;
+      border-radius: 10px;
+      box-shadow: inset 0px 0px 5px white;
+    }
   `,
 ]);
 

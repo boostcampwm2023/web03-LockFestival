@@ -155,6 +155,8 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     delete this.socketsInrooms[roomId][client.id];
     delete this.socketToRoomId[client.id];
     await this.chatService.updateLastChatLogId(roomId, userId);
+
+    await this.server.to(roomId).emit('unread', await this.chatService.getUnreadCount(roomId));
   }
   afterInit(server: Server) {
     this.logger.log('Initialized!');

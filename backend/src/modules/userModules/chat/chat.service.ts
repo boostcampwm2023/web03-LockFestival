@@ -5,37 +5,13 @@ import { ChatUnreadDto } from '@chat/dtos/chat.unread.dto';
 import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
 import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 import { ChatMessageResponseDto } from '@chat/dtos/chat.mesage.response.dto';
+import { ChatUser } from '@chat/entities/chat.user.schema';
+import { EnteredChatMessageResponseDto } from '@chat/dtos/chat.entered.response.dto';
 
 @Injectable()
 export class ChatService {
   private readonly logger = new Logger(ChatService.name);
   constructor(private readonly chatRepository: ChatRepository) {}
-
-  private unreadCount(chatUsers: ChatUserInfoDto[]) {
-    const countMap: object = chatUsers
-      .filter((user: ChatUserInfoDto) => {
-        return !user.isMe && !!user.lastChatLogId && !user.isLeave;
-      })
-      .map(({ lastChatLogId }) => {
-        return lastChatLogId;
-      })
-      .reduce((acc, cur) => {
-        acc[cur] = acc[cur] ? acc[cur] + 1 : 1;
-        return acc;
-      }, {});
-
-    let count: number = 0;
-    const unreadCountMap = Object.entries(countMap)
-      .sort(([key1], [key2]) => {
-        return key1.localeCompare(key2);
-      })
-      .reduce((acc, [key, value]) => {
-        count += value;
-        acc[count] = key;
-        return acc;
-      }, {});
-    return unreadCountMap;
-  }
 
   async validateRoomAndGetChatUserList(roomId: string, nickname: string) {
     const chatUsers: ChatUserInfoDto[] = (
@@ -48,7 +24,12 @@ export class ChatService {
       return isMe;
     });
 
-    const unreadCountMap = this.unreadCount(chatUsers);
+    const unreadCountMap = this.makeUnreadCountMap(
+      chatUsers.filter(({ isMe }) => {
+        return !isMe;
+      })
+    );
+
     await this.chatRepository.updateRead(meUser.userId);
 
     const prevMessages: ChatMessageResponseDto = await this.findMessagesByLogId({
@@ -59,6 +40,37 @@ export class ChatService {
     });
 
     return { prevMessages, unreadCountMap, chatUsers };
+  }
+
+  async getUnreadCount(roomId: string) {
+    const chatUsers: ChatUserInfoDto[] = await this.chatRepository.findUserListByRoomId(roomId);
+
+    return this.makeUnreadCountMap(chatUsers);
+  }
+
+  private makeUnreadCountMap(chatUsers: ChatUserInfoDto[]) {
+    const countMap: { [k: string]: number } = chatUsers
+      .filter((user: ChatUserInfoDto) => {
+        return !!user.lastChatLogId;
+      })
+      .map(({ lastChatLogId }) => {
+        return lastChatLogId;
+      })
+      .reduce((acc, cur) => {
+        acc[cur] = acc[cur] ? acc[cur] + 1 : 1;
+        return acc;
+      }, {});
+
+    let count: number = 0;
+    return Object.entries(countMap)
+      .sort(([key1], [key2]) => {
+        return key1.localeCompare(key2);
+      })
+      .reduce((acc, [key, value]) => {
+        count += value;
+        acc[count] = key;
+        return acc;
+      }, {});
   }
 
   async validateLeader(roomId: string, userId: string) {
@@ -72,6 +84,9 @@ export class ChatService {
   }
   async updateLastChatLogId(roomId: string, userId: string) {
     const lastChatLogId = await this.chatRepository.findLastChatLogIdByRoomId(roomId);
+    if (!lastChatLogId) {
+      return;
+    }
     await this.chatRepository.updateLastChatLogId(userId, lastChatLogId);
   }
   async findMessagesByLogId(chatUnreadDto: ChatUnreadDto): Promise<ChatMessageResponseDto> {
@@ -79,6 +94,22 @@ export class ChatService {
     const messages: ChatMessageDto[] =
       await this.chatRepository.findMessagesByStartLogId(chatUnreadDto);
     return new ChatMessageResponseDto(chatUnreadDto.cursorLogId, messages, chatUnreadDto.direction);
+  }
+
+  async findUnreadMessagesByRoomIdAndNickname(
+    roomId: string,
+    nickname: string
+  ): Promise<EnteredChatMessageResponseDto> {
+    const chatUser: ChatUser = await this.chatRepository.validateRoomAndGetChatUser(
+      roomId,
+      nickname
+    );
+
+    const messages: ChatMessageDto[] = await this.chatRepository.findMessagesByStartLogId(
+      new ChatUnreadDto(roomId, chatUser.last_chat_log_id, 1, 0)
+    );
+
+    return new EnteredChatMessageResponseDto(chatUser.last_chat_log_id, messages);
   }
   async createMessageByEvent(roomId: string, nickname: string): Promise<ChatMessageDto> {
     return await this.chatRepository.createMessageByEvent(roomId, nickname);

@@ -11,8 +11,13 @@ import { Genre } from '@theme/entities/genre.entity';
 import { UserInfoRequestDto } from '@user/dtos/userInfo.request.dto';
 import { ThemeRepository } from '@theme/theme.repository';
 import { GenreRepository } from '@theme/genre.repository';
-import { UsersRoomsResponseDto } from '@user/dtos/users.rooms.response.dto';
+import { UsersRoomsGroupDto } from '@user/dtos/users.rooms.group.dto';
 import { ChatRepository } from '@chat/chat.repository';
+import { UsersRoomsDetailsDto } from '@user/dtos/uesrs.rooms.details.dto';
+import { ChatMessage } from '@chat/entities/chat.message.schema';
+import { ChatUser } from '@chat/entities/chat.user.schema';
+import { GroupsPaginationCursorDto } from '@group/dtos/group.pagination.cursor.dto';
+import { UsersRoomsResponseDto } from '@user/dtos/users.rooms.response.dto';
 
 @Injectable()
 export class UserService {
@@ -99,7 +104,55 @@ export class UserService {
     return result;
   }
 
-  async getGroupsByNickname(nickname: string): Promise<UsersRoomsResponseDto[]> {
-    return await this.userGroupRepository.findGroupsByNickname(nickname);
+  async getGroupsByNickname(
+    nickname: string,
+    paginationDto: GroupsPaginationCursorDto
+  ): Promise<any> {
+    const { count, dtos: usersRoomsDtos } = await this.userGroupRepository.findGroupsByNickname(
+      nickname,
+      paginationDto
+    );
+
+    const usersRoomsDetailsDtos: UsersRoomsDetailsDto[] = await Promise.all(
+      usersRoomsDtos.map(async (userRoom: UsersRoomsGroupDto): Promise<UsersRoomsDetailsDto> => {
+        const roomId: string = String(userRoom.groupId);
+
+        const lastChat: ChatMessage = await this.chatRepository.findLastChatByRoomId(roomId);
+        const userInRoom: ChatUser = await this.chatRepository.validateRoomAndGetChatUser(
+          roomId,
+          nickname
+        );
+
+        if (!userInRoom.last_chat_log_id) {
+          return new UsersRoomsDetailsDto({
+            ...userRoom,
+            lastChatMessage: lastChat.chat_message,
+            lastChatTime: lastChat.chat_date,
+            hasNewChat: false,
+            newChatCount: 0,
+          });
+        }
+
+        const unreadCount: number = await this.chatRepository.countChatInRoomBetweenLogIds(
+          roomId,
+          userInRoom.last_chat_log_id,
+          lastChat._id
+        );
+
+        return new UsersRoomsDetailsDto({
+          ...userRoom,
+          lastChatMessage: lastChat.chat_message,
+          lastChatTime: lastChat.chat_date,
+          hasNewChat: userInRoom.last_chat_log_id.toString() !== lastChat._id.toString(),
+          newChatCount: unreadCount,
+        });
+      })
+    );
+
+    const restCount: number = Math.max(count - paginationDto.count, 0);
+    const nextCursor: number | undefined =
+      restCount > 0 ? usersRoomsDetailsDtos[usersRoomsDetailsDtos.length - 1].groupId : undefined;
+
+    return new UsersRoomsResponseDto(restCount, nextCursor, usersRoomsDetailsDtos);
   }
 }

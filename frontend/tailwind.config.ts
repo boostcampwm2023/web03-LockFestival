@@ -109,6 +109,7 @@ export default {
         'green-dark': '#1F371D',
         'red-dark': '#BE3144',
         'white': '#F2F2F2',
+        'orange': '#e3651d',
       },
     },
   },

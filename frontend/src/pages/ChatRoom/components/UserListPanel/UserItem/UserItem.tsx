@@ -9,7 +9,7 @@ const UserItem = ({
   profileImg,
   isLeader,
   isMe,
-  lastReadChatId,
+  lastChatLogId,
 }: Omit<UserInfo, 'isLeave' | 'userId'>) => {
   return (
     <UserItemWrapper>
