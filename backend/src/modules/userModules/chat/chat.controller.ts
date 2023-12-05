@@ -2,7 +2,7 @@ import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { ChatService } from '@chat/chat.service';
 import { TokenAuthGuard } from '@auth/auth.guard';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
-import { EnteredChatMessageRequestDto } from '@chat/dtos/chat.entered.response.dto';
+import { EnteredChatMessageResponseDto } from '@chat/dtos/chat.entered.response.dto';
 
 @Controller('chat')
 export class ChatController {
@@ -20,7 +20,7 @@ export class ChatController {
   async getUnreadChatListByGroupId(
     @Req() { user },
     @Param('groupId') groupId: number
-  ): Promise<EnteredChatMessageRequestDto> {
+  ): Promise<EnteredChatMessageResponseDto> {
     return await this.chatService.findUnreadMessagesByRoomIdAndNickname(
       String(groupId),
       user.nickname

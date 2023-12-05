@@ -1,7 +1,7 @@
 import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class EnteredChatMessageRequestDto {
+export class EnteredChatMessageResponseDto {
   @ApiProperty({
     type: [ChatMessageDto],
   })

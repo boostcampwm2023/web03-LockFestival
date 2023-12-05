@@ -6,7 +6,7 @@ import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
 import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 import { ChatMessageResponseDto } from '@chat/dtos/chat.mesage.response.dto';
 import { ChatUser } from '@chat/entities/chat.user.schema';
-import { EnteredChatMessageRequestDto } from '@chat/dtos/chat.entered.response.dto';
+import { EnteredChatMessageResponseDto } from '@chat/dtos/chat.entered.response.dto';
 
 @Injectable()
 export class ChatService {
@@ -82,7 +82,7 @@ export class ChatService {
   async findUnreadMessagesByRoomIdAndNickname(
     roomId: string,
     nickname: string
-  ): Promise<EnteredChatMessageRequestDto> {
+  ): Promise<EnteredChatMessageResponseDto> {
     const chatUser: ChatUser = await this.chatRepository.validateRoomAndGetChatUser(
       roomId,
       nickname
@@ -92,6 +92,6 @@ export class ChatService {
       new ChatUnreadDto(roomId, chatUser.last_chat_log_id, 1, 0)
     );
 
-    return new EnteredChatMessageRequestDto(chatUser.last_chat_log_id, messages);
+    return new EnteredChatMessageResponseDto(chatUser.last_chat_log_id, messages);
   }
 }
