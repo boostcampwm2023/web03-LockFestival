@@ -120,9 +120,10 @@ export class ChatService {
 
   async getUpdatedUserListInfoOnLeave(roomId: string) {
     const chatUsers = await this.chatRepository.findUserListByRoomId(roomId);
-    const unreadCountMap = this.unreadCount(chatUsers);
+    const unreadCountMap = this.makeUnreadCountMap(chatUsers);
     return { chatUsers, unreadCountMap };
   }
+
   async deleteRoomByLeader(roomId: string) {
     await this.chatRepository.deleteRoomByLeader(roomId);
   }
