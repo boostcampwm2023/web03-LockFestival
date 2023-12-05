@@ -3,6 +3,8 @@ import { DataSource, Repository } from 'typeorm';
 import { UserGroup } from '@user/entities/userGroup.entity';
 import { User } from '@user/entities/user.entity';
 import { UsersRoomsGroupDto } from '@user/dtos/users.rooms.group.dto';
+import { GroupsPaginationCursorDto } from '@group/dtos/group.pagination.cursor.dto';
+import { convertSortToSymbol } from '@enum/sort.enum';
 
 @Injectable()
 export class UserGroupRepository extends Repository<UserGroup> {
@@ -24,8 +26,11 @@ export class UserGroupRepository extends Repository<UserGroup> {
       .getRawMany();
   }
 
-  async findGroupsByNickname(nickname: string) {
-    const rawDatas = await this.dataSource
+  async findGroupsByNickname(
+    nickname: string,
+    paginationDto: GroupsPaginationCursorDto
+  ): Promise<{ count: number; dtos: UsersRoomsGroupDto[] }> {
+    const qb = this.dataSource
       .createQueryBuilder()
       .select([
         'theme.id as themeId',
@@ -47,12 +52,27 @@ export class UserGroupRepository extends Repository<UserGroup> {
       })
       .innerJoin('user_group.group', 'group')
       .innerJoin('group.theme', 'theme')
-      .innerJoin('theme.branch', 'branch')
-      .orderBy('user_group.created_at', 'DESC')
-      .getRawMany();
+      .innerJoin('theme.branch', 'branch');
 
-    return rawDatas.map((data) => {
-      return new UsersRoomsGroupDto(data);
-    });
+    if (paginationDto.cursorGroupId) {
+      const symbol: string = convertSortToSymbol(paginationDto.isDesc);
+      qb.andWhere(`group.id ${symbol} :cursorId`, {
+        cursorId: paginationDto.cursorGroupId,
+      });
+    }
+
+    qb.orderBy('group.id', paginationDto.isDesc);
+
+    const [count, dtos] = await Promise.all([
+      qb.getCount(),
+      qb.limit(paginationDto.count).getRawMany(),
+    ]);
+
+    return {
+      count,
+      dtos: dtos.map((data) => {
+        return new UsersRoomsGroupDto(data);
+      }),
+    };
   }
 }

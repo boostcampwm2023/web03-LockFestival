@@ -1,12 +1,13 @@
 import {
   Body,
   Controller,
-  Param,
   Get,
-  Req,
-  UseGuards,
+  Param,
   Patch,
+  Query,
+  Req,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import { TokenAuthGuard } from '@auth/auth.guard';
 import { UserService } from '@user/user.service';
@@ -22,8 +23,9 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { UsersRoomsGroupDto } from '@user/dtos/users.rooms.group.dto';
 import { UserInfoResponseDto } from '@user/dtos/userInfo.response.dto';
+import { GroupsPaginationCursorDto } from '@group/dtos/group.pagination.cursor.dto';
+import { UsersRoomsResponseDto } from '@user/dtos/users.rooms.response.dto';
 
 @ApiTags('users')
 @Controller('users')
@@ -108,10 +110,13 @@ export class UserController {
   @ApiOkResponse({
     status: 200,
     description: '',
-    type: [UsersRoomsGroupDto],
+    type: UsersRoomsResponseDto,
   })
   @ApiBearerAuth('Authorization')
-  async findGroupsByNickname(@Req() { user }): Promise<UsersRoomsGroupDto[]> {
-    return await this.userService.getGroupsByNickname(user.nickname);
+  async findGroupsByNickname(
+    @Req() { user },
+    @Query() paginationCursorDto: GroupsPaginationCursorDto
+  ): Promise<UsersRoomsResponseDto> {
+    return await this.userService.getGroupsByNickname(user.nickname, paginationCursorDto);
   }
 }
