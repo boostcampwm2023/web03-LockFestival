@@ -15,8 +15,3 @@ export const userListInfoAtom = atom<UserInfoObject | undefined>({
   key: 'userListInfoAtom',
   default: undefined,
 });
-
-export const cursorLogIdAtom = atom<string>({
-  key: 'cursorLogIdAtom',
-  default: '',
-});

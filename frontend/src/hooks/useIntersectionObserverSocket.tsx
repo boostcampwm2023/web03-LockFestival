@@ -1,20 +1,29 @@
-import { cursorLogIdAtom } from '@store/chatRoom';
+import { chatLogAtom } from '@store/chatRoom';
 import { RefObject, useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 
 interface IntersectionObserverProps {
   targetRef: RefObject<HTMLElement>;
   eventHandler: (cursorId: string) => void;
+  roomId: string;
 }
 
-const useIntersectionObserverSocket = ({ targetRef, eventHandler }: IntersectionObserverProps) => {
+const useIntersectionObserverSocket = ({
+  targetRef,
+  eventHandler,
+  roomId,
+}: IntersectionObserverProps) => {
   const observerRef = useRef<IntersectionObserver>();
-  const cursorIdValue = useRecoilValue(cursorLogIdAtom);
+  const chatLog = useRecoilValue(chatLogAtom);
+  const firstChatId = chatLog[roomId]?.entries()?.next()?.value[0];
+
   const cursorRef = useRef<string>('');
 
   useEffect(() => {
-    cursorRef.current = cursorIdValue;
-  }, [cursorIdValue]);
+    if (firstChatId) {
+      cursorRef.current = firstChatId;
+    }
+  }, [firstChatId]);
 
   const checkIntersection: IntersectionObserverCallback = (
     entries: IntersectionObserverEntry[]
@@ -29,7 +38,7 @@ const useIntersectionObserverSocket = ({ targetRef, eventHandler }: Intersection
       observerRef.current = new IntersectionObserver(checkIntersection, {
         root: null,
         rootMargin: '0px',
-        threshold: 0.8,
+        threshold: 0.9,
       });
 
       observerRef.current.observe(targetRef.current);
