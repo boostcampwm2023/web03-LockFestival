@@ -22,7 +22,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { UsersRoomsResponseDto } from '@user/dtos/users.rooms.response.dto';
+import { UsersRoomsGroupDto } from '@user/dtos/users.rooms.group.dto';
 import { UserInfoResponseDto } from '@user/dtos/userInfo.response.dto';
 
 @ApiTags('users')
@@ -108,10 +108,10 @@ export class UserController {
   @ApiOkResponse({
     status: 200,
     description: '',
-    type: [UsersRoomsResponseDto],
+    type: [UsersRoomsGroupDto],
   })
   @ApiBearerAuth('Authorization')
-  async findGroupsByNickname(@Req() { user }): Promise<UsersRoomsResponseDto[]> {
+  async findGroupsByNickname(@Req() { user }): Promise<UsersRoomsGroupDto[]> {
     return await this.userService.getGroupsByNickname(user.nickname);
   }
 }
