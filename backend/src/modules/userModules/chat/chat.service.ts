@@ -24,28 +24,11 @@ export class ChatService {
       return isMe;
     });
 
-    const countMap: object = chatUsers
-      .filter((user: ChatUserInfoDto) => {
-        return !user.isMe && !!user.lastChatLogId;
+    const unreadCountMap = this.makeUnreadCountMap(
+      chatUsers.filter(({ isMe }) => {
+        return !isMe;
       })
-      .map(({ lastChatLogId }) => {
-        return lastChatLogId;
-      })
-      .reduce((acc, cur) => {
-        acc[cur] = acc[cur] ? acc[cur] + 1 : 1;
-        return acc;
-      }, {});
-
-    let count: number = 0;
-    const unreadCountMap = Object.entries(countMap)
-      .sort(([key1], [key2]) => {
-        return key1.localeCompare(key2);
-      })
-      .reduce((acc, [key, value]) => {
-        count += value;
-        acc[count] = key;
-        return acc;
-      }, {});
+    );
 
     await this.chatRepository.updateRead(meUser.userId);
 
@@ -57,6 +40,37 @@ export class ChatService {
     });
 
     return { prevMessages, unreadCountMap, chatUsers };
+  }
+
+  async getUnreadCount(roomId: string) {
+    const chatUsers: ChatUserInfoDto[] = await this.chatRepository.findUserListByRoomId(roomId);
+
+    return this.makeUnreadCountMap(chatUsers);
+  }
+
+  private makeUnreadCountMap(chatUsers: ChatUserInfoDto[]) {
+    const countMap: { [k: string]: number } = chatUsers
+      .filter((user: ChatUserInfoDto) => {
+        return !!user.lastChatLogId;
+      })
+      .map(({ lastChatLogId }) => {
+        return lastChatLogId;
+      })
+      .reduce((acc, cur) => {
+        acc[cur] = acc[cur] ? acc[cur] + 1 : 1;
+        return acc;
+      }, {});
+
+    let count: number = 0;
+    return Object.entries(countMap)
+      .sort(([key1], [key2]) => {
+        return key1.localeCompare(key2);
+      })
+      .reduce((acc, [key, value]) => {
+        count += value;
+        acc[count] = key;
+        return acc;
+      }, {});
   }
 
   async validateLeader(roomId: string, userId: string) {
