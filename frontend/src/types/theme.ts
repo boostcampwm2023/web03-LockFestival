@@ -4,7 +4,9 @@ export interface SimpleThemeCardData {
   posterImageUrl: string;
 }
 
-export interface ThemeDetailsData extends SimpleThemeCardData {
+export type ThemeDetailsData = SimpleThemeCardData & ThemeExtraData;
+
+export interface ThemeExtraData {
   brandBranchName: string;
   realGenre: string;
   difficulty: string;
