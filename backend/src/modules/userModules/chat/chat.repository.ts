@@ -174,6 +174,42 @@ export class ChatRepository {
     return roomInfo.last_chat.toString();
   }
 
+  async findLastChatByRoomId(roomId: string): Promise<ChatMessage> {
+    return (
+      await this.roomModel.findOne({ group_id: roomId }, { last_chat: 1, _id: 0 }).populate({
+        path: 'last_chat',
+        model: 'ChatMessage',
+        select: { _id: 1, chat_message: 1, chat_date: 1 },
+      })
+    ).last_chat;
+  }
+
+  async countChatInRoomBetweenLogIds(
+    roomId: string,
+    startId: string,
+    endId: string
+  ): Promise<number> {
+    const [minId, maxId] = startId < endId ? [startId, endId] : [endId, startId];
+
+    const res = await this.roomModel.findOne(
+      {
+        group_id: roomId,
+        chat_list: {
+          $elemMatch: {
+            $gt: minId,
+            $lte: maxId,
+          },
+        },
+      },
+      { chat_list: 1, _id: 0 }
+    );
+    if (!res) {
+      return 0;
+    }
+
+    return res.chat_list.length;
+  }
+
   async updateLastChatLogId(userId: string, lastChatLogId: string) {
     await this.chatUserModel.updateOne(
       {
