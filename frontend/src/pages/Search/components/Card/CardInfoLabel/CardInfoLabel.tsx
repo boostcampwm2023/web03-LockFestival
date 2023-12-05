@@ -3,13 +3,13 @@ import tw, { styled, css } from 'twin.macro';
 
 interface Props {
   labelName: string;
-  labelContent: string;
+  labelContent: JSX.Element;
 }
 
-const CardInfo = ({ labelName, labelContent }: Props) => {
+const CardInfoLabel = ({ labelName, labelContent }: Props) => {
   return (
     <LabelWrapper>
-      <Label isBorder={false} size="l" width="8rem">
+      <Label isBorder={false} size="l" width="10rem">
         <Text>{labelName}</Text>
       </Label>
       <LabelContent>{labelContent}</LabelContent>
@@ -17,7 +17,7 @@ const CardInfo = ({ labelName, labelContent }: Props) => {
   );
 };
 
-export default CardInfo;
+export default CardInfoLabel;
 
 const LabelWrapper = styled.div([
   css`
