@@ -4,41 +4,35 @@ import { FaRightFromBracket } from 'react-icons/fa6';
 import useInput from '@hooks/useInput';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { chatLogAtom, cursorLogIdAtom } from 'store/chatRoom';
+import { chatLogAtom } from 'store/chatRoom';
 import { ChatLog } from 'types/chat';
 import MessageBox from './MessageBox/MessageBox';
 import { useEffect, useRef, useState } from 'react';
-import useIntersectionObserver from '@hooks/useIntersectionObserver';
+import useIntersectionObserverSocket from '@hooks/useIntersectionObserverSocket';
 
 interface ChatPanelProps {
   roomId: string;
   sendChat: (message: string) => void;
-  getPastChat: () => void;
+  getPastChat: (cursorId: string) => void;
 }
 
 const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
-  const navigate = useNavigate();
-  const [inputValue, handleValue, resetValue] = useInput('');
   const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
-  const cursorLogId = useRecoilValue(cursorLogIdAtom);
 
   const targetRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isScrollToTop, setIsScrollToTop] = useState<boolean>(false);
-
   const lastScrollRef = useRef<HTMLDivElement>(null);
 
-  const checkIsExistLogId = () => {
-    console.log('event');
-    if (cursorLogId) {
-      getPastChat();
-    }
-  };
+  const [isScrollToTop, setIsScrollToTop] = useState<boolean>(false);
 
-  useIntersectionObserver({
-    eventHandler: checkIsExistLogId,
+  useIntersectionObserverSocket({
+    eventHandler: getPastChat,
     targetRef,
+    roomId,
   });
+
+  const navigate = useNavigate();
+  const [inputValue, handleValue, resetValue] = useInput('');
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -90,18 +84,19 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
         </Button>
       </ButtonWrapper>
       <ChatDisplayContainer ref={scrollRef} onScroll={() => handleScroll()}>
-        <div ref={targetRef} />
-
+        {chatLogData && <div ref={targetRef} />}
         {chatLogData &&
-          Array.from(chatLogData).map(([logId, chat]) => (
-            <MessageBox
-              key={logId}
-              message={chat.message}
-              userId={chat.userId}
-              type={chat.type}
-              time={chat.time}
-            />
-          ))}
+          Array.from(chatLogData).map(([logId, chat]) => {
+            return (
+              <MessageBox
+                key={logId}
+                message={chat.message}
+                userId={chat.userId}
+                type={chat.type}
+                time={chat.time}
+              />
+            );
+          })}
         <div ref={lastScrollRef}></div>
       </ChatDisplayContainer>
       <InputChatPanel
