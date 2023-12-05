@@ -168,6 +168,9 @@ export class ChatRepository {
     if (!roomInfo) {
       throw new Error('방 정보를 찾을 수 없습니다.');
     }
+    if (!roomInfo.last_chat) {
+      return false;
+    }
     return roomInfo.last_chat.toString();
   }
 
