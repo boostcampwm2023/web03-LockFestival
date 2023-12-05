@@ -29,7 +29,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   @WebSocketServer()
   server: Server;
 
-  socketsInrooms;
+  socketsInRooms;
   socketToRoomId;
 
   constructor(
@@ -38,7 +38,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     private readonly configService: ConfigService,
     private readonly groupService: GroupService
   ) {
-    this.socketsInrooms = {};
+    this.socketsInRooms = {};
     this.socketToRoomId = {};
   }
 
@@ -56,16 +56,18 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     const payload: PayloadDto = await this.jwtService.verify(authorization, {
       secret: this.configService.get<string>('JWT_ACCESS_TOKEN_SECRET'),
     });
-    const { prevMessages, unreadCountMap, chatUsers } =
+    const { prevMessages, unreadCountMap, chatUsers, meUser } =
       await this.chatService.validateRoomAndGetChatUserList(roomId, payload.nickname);
 
-    if (!this.socketsInrooms[roomId]) {
-      this.socketsInrooms[roomId] = {};
+    if (!this.socketsInRooms[roomId]) {
+      this.socketsInRooms[roomId] = {};
     }
 
-    this.socketsInrooms[roomId][client.id] = chatUsers.find((user) => {
-      return user.nickname === payload.nickname;
-    }).userId;
+    const hasAnotherSession = Object.values(this.socketsInRooms[roomId]).find((userId) => {
+      return userId === meUser.userId;
+    });
+
+    this.socketsInRooms[roomId][client.id] = meUser.userId;
 
     this.socketToRoomId[client.id] = roomId;
 
@@ -75,7 +77,9 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     client.emit('chatLog', prevMessages);
     client.emit('userListInfo', chatUsers);
-    this.server.to(roomId).emit('unread', unreadCountMap);
+    if (!hasAnotherSession) {
+      this.server.to(roomId).emit('unread', unreadCountMap);
+    }
     return 'ok';
   }
 
@@ -104,7 +108,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   ): Promise<string> {
     this.logger.log(message);
     const roomId = this.exportGroupId(client);
-    const userId = this.socketsInrooms[roomId][client.id];
+    const userId = this.socketsInRooms[roomId][client.id];
 
     const request = new ChatMessageRequestDto(
       message,
@@ -130,13 +134,19 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     if (!roomId) {
       return;
     }
-    const userId = this.socketsInrooms[roomId][client.id];
+    const userId = this.socketsInRooms[roomId][client.id];
 
-    delete this.socketsInrooms[roomId][client.id];
+    delete this.socketsInRooms[roomId][client.id];
     delete this.socketToRoomId[client.id];
-    await this.chatService.updateLastChatLogId(roomId, userId);
 
-    await this.server.to(roomId).emit('unread', await this.chatService.getUnreadCount(roomId));
+    const hasAnotherSession = Object.values(this.socketsInRooms[roomId]).find((sessionUserId) => {
+      return sessionUserId === userId;
+    });
+
+    if (!hasAnotherSession) {
+      await this.chatService.updateLastChatLogId(roomId, userId);
+      this.server.to(roomId).emit('unread', await this.chatService.getUnreadCount(roomId));
+    }
   }
   afterInit(server: Server) {
     this.logger.log('Initialized!');
