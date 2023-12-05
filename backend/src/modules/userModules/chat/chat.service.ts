@@ -24,7 +24,11 @@ export class ChatService {
       return isMe;
     });
 
-    const unreadCountMap = this.makeUnreadCountMap(chatUsers);
+    const unreadCountMap = this.makeUnreadCountMap(
+      chatUsers.filter(({ isMe }) => {
+        return !isMe;
+      })
+    );
 
     await this.chatRepository.updateRead(meUser.userId);
 
