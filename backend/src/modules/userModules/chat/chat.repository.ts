@@ -233,4 +233,69 @@ export class ChatRepository {
       }
     );
   }
+
+  async updateUserInfoOnLeave(roomId: string, nickname: string) {
+    const {
+      user_list: [{ _id: userId }],
+    } = await this.roomModel.findOne({ group_id: roomId }, { chat_list: false }).populate({
+      path: 'user_list',
+      model: 'ChatUser',
+      match: { user_nickname: nickname },
+      select: '_id',
+    });
+    await this.chatUserModel.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          is_leave: true,
+        },
+      }
+    );
+  }
+
+  async deleteRoomByLeader(roomId: string) {
+    const room = await this.roomModel.findOne({ group_id: roomId });
+
+    if (!room) {
+      throw new Error('방 정보를 찾을 수 없습니다.');
+    }
+
+    const userIds = room.user_list.map((user) => {
+      return user._id;
+    });
+    const messageIds = room.chat_list.map((message) => {
+      return message._id;
+    });
+
+    await Promise.all([
+      this.roomModel.deleteOne({ group_id: roomId }).exec(),
+      this.chatUserModel.deleteMany({ _id: { $in: userIds } }).exec(),
+      this.chatMessageModel.deleteMany({ _id: { $in: messageIds } }).exec(),
+    ]);
+  }
+  async createMessageByEvent(groupId: string, nickname: string): Promise<ChatMessageDto> {
+    const message = await this.chatMessageModel.create({
+      chat_message: `${nickname}님이 나가셨습니다.`,
+      type: ChatType.out,
+      chat_date: new Date(),
+    });
+
+    await this.roomModel
+      .updateOne(
+        {
+          group_id: groupId,
+        },
+        {
+          $push: {
+            chat_list: message._id,
+          },
+          $set: {
+            last_chat: message._id,
+          },
+        }
+      )
+      .exec();
+
+    return new ChatMessageDto(message);
+  }
 }

@@ -11,20 +11,10 @@ export class ChatService {
   private readonly logger = new Logger(ChatService.name);
   constructor(private readonly chatRepository: ChatRepository) {}
 
-  async validateRoomAndGetChatUserList(roomId: string, nickname: string) {
-    const chatUsers: ChatUserInfoDto[] = (
-      await this.chatRepository.validateRoomAndGetChatUserList(roomId, nickname)
-    ).map((chatUser: ChatUserInfoDto) => {
-      return chatUser.updateIsMe(chatUser.nickname === nickname);
-    });
-
-    const meUser: ChatUserInfoDto = chatUsers.find(({ isMe }) => {
-      return isMe;
-    });
-
+  private unreadCount(chatUsers: ChatUserInfoDto[]) {
     const countMap: object = chatUsers
       .filter((user: ChatUserInfoDto) => {
-        return !user.isMe && !!user.lastChatLogId;
+        return !user.isMe && !!user.lastChatLogId && !user.isLeave;
       })
       .map(({ lastChatLogId }) => {
         return lastChatLogId;
@@ -44,7 +34,21 @@ export class ChatService {
         acc[count] = key;
         return acc;
       }, {});
+    return unreadCountMap;
+  }
 
+  async validateRoomAndGetChatUserList(roomId: string, nickname: string) {
+    const chatUsers: ChatUserInfoDto[] = (
+      await this.chatRepository.validateRoomAndGetChatUserList(roomId, nickname)
+    ).map((chatUser: ChatUserInfoDto) => {
+      return chatUser.updateIsMe(chatUser.nickname === nickname);
+    });
+
+    const meUser: ChatUserInfoDto = chatUsers.find(({ isMe }) => {
+      return isMe;
+    });
+
+    const unreadCountMap = this.unreadCount(chatUsers);
     await this.chatRepository.updateRead(meUser.userId);
 
     const prevMessages: ChatMessageResponseDto = await this.findMessagesByLogId({
@@ -75,5 +79,20 @@ export class ChatService {
     const messages: ChatMessageDto[] =
       await this.chatRepository.findMessagesByStartLogId(chatUnreadDto);
     return new ChatMessageResponseDto(chatUnreadDto.cursorLogId, messages, chatUnreadDto.direction);
+  }
+  async createMessageByEvent(roomId: string, nickname: string): Promise<ChatMessageDto> {
+    return await this.chatRepository.createMessageByEvent(roomId, nickname);
+  }
+  async updateUserInfoOnLeave(roomId: string, nickname: string) {
+    await this.chatRepository.updateUserInfoOnLeave(roomId, nickname);
+  }
+
+  async getUpdatedUserListInfoOnLeave(roomId: string) {
+    const chatUsers = await this.chatRepository.findUserListByRoomId(roomId);
+    const unreadCountMap = this.unreadCount(chatUsers);
+    return { chatUsers, unreadCountMap };
+  }
+  async deleteRoomByLeader(roomId: string) {
+    await this.chatRepository.deleteRoomByLeader(roomId);
   }
 }
