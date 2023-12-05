@@ -46,6 +46,10 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   };
 
   const handleSubmit = () => {
+    if (inputValue === '') {
+      return;
+    }
+
     sendChat(inputValue);
     resetValue();
   };
@@ -139,9 +143,22 @@ const ButtonWrapper = styled.div([
 ]);
 
 const ChatDisplayContainer = styled.div([
-  tw`w-[100%] h-[100%] bg-white rounded-[2rem] font-pretendard text-l p-4`,
+  tw`w-[100%] h-[100%] bg-white rounded-[1rem] font-pretendard text-l pt-4 pb-4 pl-4 pr-2`,
   css`
     overflow-y: scroll;
+
+    ::-webkit-scrollbar {
+      width: 1rem;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #d2dad0;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: #222222;
+      border-radius: 10px;
+      box-shadow: inset 0px 0px 5px white;
+    }
   `,
 ]);
 
