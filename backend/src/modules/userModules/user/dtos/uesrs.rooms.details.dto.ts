@@ -1,6 +1,6 @@
 import { UsersRoomsGroupDto } from '@user/dtos/users.rooms.group.dto';
 
-export class UsersRoomsResponseDto extends UsersRoomsGroupDto {
+export class UsersRoomsDetailsDto extends UsersRoomsGroupDto {
   lastChatMessage: string;
   lastChatTime: Date;
   hasNewChat: boolean;
