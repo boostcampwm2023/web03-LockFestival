@@ -11,7 +11,7 @@ import {
 import { ChatService } from '@chat/chat.service';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
-import { Logger, ParseIntPipe } from '@nestjs/common';
+import { Logger, ParseIntPipe, Injectable } from '@nestjs/common';
 import { PayloadDto } from '@auth/dtos/payload.dto';
 import { ConfigService } from '@nestjs/config';
 import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
@@ -24,6 +24,7 @@ import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
     origin: '*',
   },
 })
+@Injectable()
 export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   private logger: Logger = new Logger('EventsGateway');
   @WebSocketServer()
@@ -97,6 +98,25 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     return 'ok';
   }
 
+  async leave(roomId: string, nickname: string, isLeader: boolean) {
+    if (isLeader) {
+      await this.chatService.deleteRoomByLeader(roomId);
+      return;
+    }
+    await this.chatService.updateUserInfoOnLeave(roomId, nickname);
+    const { unreadCountMap, chatUsers } =
+      await this.chatService.getUpdatedUserListInfoOnLeave(roomId);
+    const messageObject: ChatMessageDto = await this.chatService.createMessageByEvent(
+      roomId,
+      nickname
+    );
+    const groupInfo = await this.groupService.getGroupInfo(Number(roomId));
+    this.server.to(roomId).emit('roomInfo', groupInfo);
+    this.server.to(roomId).emit('unread', unreadCountMap);
+    this.server.to(roomId).emit('userListInfo', chatUsers);
+    this.server.to(roomId).emit('chat', messageObject);
+  }
+
   @SubscribeMessage('chat')
   async handleEvent(
     @MessageBody('message') message: string,
@@ -125,13 +145,16 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   }
 
   async handleDisconnect(client: Socket) {
+    this.logger.log('by' + client.id);
     const roomId = this.socketToRoomId[client.id];
+    if (!roomId) {
+      return;
+    }
     const userId = this.socketsInrooms[roomId][client.id];
 
     delete this.socketsInrooms[roomId][client.id];
     delete this.socketToRoomId[client.id];
     await this.chatService.updateLastChatLogId(roomId, userId);
-    this.logger.log('by' + client.id);
   }
   afterInit(server: Server) {
     this.logger.log('Initialized!');
