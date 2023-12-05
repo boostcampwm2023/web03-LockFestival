@@ -7,13 +7,14 @@ interface Props {
   roomId: string;
   sendChat: (message: string) => void;
   settingMode: boolean;
+  getPastChat: (cursorId: string) => void;
 }
 
-const ChatRoomContainer = ({ roomId, sendChat, settingMode }: Props) => {
+const ChatRoomContainer = ({ roomId, sendChat, settingMode, getPastChat }: Props) => {
   return (
     <Container>
       <UserListPanel settingMode={settingMode} />
-      <ChatPanel roomId={roomId} sendChat={sendChat} />
+      <ChatPanel roomId={roomId} sendChat={sendChat} getPastChat={getPastChat} />
       <RoomInfoPanel settingMode={settingMode} />
     </Container>
   );

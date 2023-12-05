@@ -25,12 +25,12 @@ const UserListPanel = ({ settingMode }: { settingMode: boolean }) => {
     <Layout>
       <UserListWrapper>
         {Array.from(userListInfo).map(([userId, userData]) => {
-          const { nickname, profileImg, isLeader, isLeave, isMe, lastReadChatId } = userData;
+          const { nickname, profileImg, isLeader, isLeave, isMe, lastChatLogId } = userData;
           if (!isLeave) {
             return (
               <UserItemWrapper key={userId}>
                 <UserItem
-                  lastReadChatId={lastReadChatId}
+                  lastChatLogId={lastChatLogId}
                   nickname={nickname}
                   profileImg={profileImg}
                   isLeader={isLeader}

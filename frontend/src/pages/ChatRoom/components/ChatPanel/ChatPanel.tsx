@@ -7,16 +7,32 @@ import { useRecoilValue } from 'recoil';
 import { chatLogAtom } from 'store/chatRoom';
 import { ChatLog } from 'types/chat';
 import MessageBox from './MessageBox/MessageBox';
+import { useEffect, useRef, useState } from 'react';
+import useIntersectionObserverSocket from '@hooks/useIntersectionObserverSocket';
 
 interface ChatPanelProps {
   roomId: string;
   sendChat: (message: string) => void;
+  getPastChat: (cursorId: string) => void;
 }
 
-const ChatPanel = ({ roomId, sendChat }: ChatPanelProps) => {
+const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
+  const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
+
+  const targetRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const lastScrollRef = useRef<HTMLDivElement>(null);
+
+  const [isScrollToTop, setIsScrollToTop] = useState<boolean>(false);
+
+  useIntersectionObserverSocket({
+    eventHandler: getPastChat,
+    targetRef,
+    roomId,
+  });
+
   const navigate = useNavigate();
   const [inputValue, handleValue, resetValue] = useInput('');
-  const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -34,6 +50,26 @@ const ChatPanel = ({ roomId, sendChat }: ChatPanelProps) => {
     resetValue();
   };
 
+  useEffect(() => {
+    if (lastScrollRef.current && !isScrollToTop) {
+      lastScrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [chatLogData]);
+
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const target1 = scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
+      const target2 = scrollRef.current.scrollTop;
+
+      if (Math.abs(target1 - target2) < 20) {
+        setIsScrollToTop(false);
+        return;
+      }
+
+      setIsScrollToTop(true);
+    }
+  };
+
   return (
     <Layout>
       <ButtonWrapper>
@@ -47,17 +83,21 @@ const ChatPanel = ({ roomId, sendChat }: ChatPanelProps) => {
           <FaRightFromBracket />
         </Button>
       </ButtonWrapper>
-      <ChatDisplayContainer>
+      <ChatDisplayContainer ref={scrollRef} onScroll={() => handleScroll()}>
+        {chatLogData && <div ref={targetRef} />}
         {chatLogData &&
-          Array.from(chatLogData).map(([logId, chat]) => (
-            <MessageBox
-              key={logId}
-              message={chat.message}
-              userId={chat.userId}
-              type={chat.type}
-              time={chat.time}
-            />
-          ))}
+          Array.from(chatLogData).map(([logId, chat]) => {
+            return (
+              <MessageBox
+                key={logId}
+                message={chat.message}
+                userId={chat.userId}
+                type={chat.type}
+                time={chat.time}
+              />
+            );
+          })}
+        <div ref={lastScrollRef}></div>
       </ChatDisplayContainer>
       <InputChatPanel
         value={inputValue}

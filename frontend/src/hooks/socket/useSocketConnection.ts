@@ -7,29 +7,25 @@ import { userDataTransformer } from '@utils/chatDataUtils';
 import SocketEvent from 'types/socketEvent';
 
 const useSocketConnection = (roomId: string) => {
-  const [connecting, setConnecting] = useState(true);
-
-  const [socket, setSocket] = useState<Socket | null>(null);
   const accessToken = localStorage.getItem('accessToken');
+
+  const [connecting, setConnecting] = useState(true);
+  const [socket, setSocket] = useState<Socket | null>(null);
+
   const setRoomInfo = useSetRecoilState(roomInfoAtom);
   const setUserListInfo = useSetRecoilState(userListInfoAtom);
 
-  const waitForEvent = (eventName: keyof SocketEvent): Promise<any> => {
+  const waitForEvent = (eventName: keyof SocketEvent) => {
     return new Promise((resolve) => {
       socket?.on(eventName, (data) => {
-        switch (eventName) {
-          case 'roomInfo':
-            setRoomInfo(data);
-            break;
-          case 'userListInfo':
-            setUserListInfo(userDataTransformer(data));
-            break;
-          case 'chatLog':
-            console.log(data);
-            break;
+        if (eventName === 'roomInfo') {
+          setRoomInfo(data);
+          resolve(data);
         }
-
-        resolve(data);
+        if (eventName === 'userListInfo') {
+          setUserListInfo(userDataTransformer(data));
+          resolve(data);
+        }
       });
     });
   };
@@ -44,17 +40,12 @@ const useSocketConnection = (roomId: string) => {
         },
         (res: any) => {
           if (res === 'ok') {
-            console.log('방에 접속 성공');
+            // console.log('방에 접속 성공');
           }
         }
       );
 
-      await Promise.all([
-        waitForEvent('roomInfo'),
-        waitForEvent('userListInfo'),
-        waitForEvent('chatLog'),
-      ]);
-
+      await Promise.all([waitForEvent('roomInfo'), waitForEvent('userListInfo')]);
       setConnecting(false);
     } catch (error) {
       console.error(error);

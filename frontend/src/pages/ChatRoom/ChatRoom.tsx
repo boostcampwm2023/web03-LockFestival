@@ -9,17 +9,26 @@ import ChatRoomContainer from './components/ChatRoomContainer';
 
 const ChatRoom = () => {
   const roomId = useParams<{ roomId: string }>().roomId as string;
-  const { connecting, sendChat } = useSocket(roomId);
+  const { connecting, sendChat, getPastChat } = useSocket(roomId);
 
-  return connecting ? (
-    <Loading>
-      <h1>채팅방 정보를 불러오는 중</h1>
-    </Loading>
-  ) : (
+  if (connecting) {
+    return (
+      <Loading>
+        <h1>채팅방 정보를 불러오는 중</h1>
+      </Loading>
+    );
+  }
+
+  return (
     <ErrorBoundary fallbackRender={(fallbackProps) => <ErrorFallBack {...fallbackProps} />}>
       <ChatRoomInfoValidator>
         <HostIdentification>
-          <ChatRoomContainer settingMode roomId={roomId} sendChat={sendChat} />
+          <ChatRoomContainer
+            settingMode
+            roomId={roomId}
+            sendChat={sendChat}
+            getPastChat={getPastChat}
+          />
         </HostIdentification>
       </ChatRoomInfoValidator>
     </ErrorBoundary>
