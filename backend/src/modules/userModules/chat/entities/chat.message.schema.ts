@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { ChatType } from '@src/enum/chat.type';
 import { ChatUser } from '@chat/entities/chat.user.schema';
 
 @Schema({ versionKey: false })
-export class ChatMessage {
+export class ChatMessage extends Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: ChatUser.name })
   sender: ChatUser;
 
