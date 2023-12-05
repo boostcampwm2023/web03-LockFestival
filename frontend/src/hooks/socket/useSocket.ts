@@ -1,17 +1,29 @@
 import { useState, useEffect } from 'react';
-import { ServerChatLog } from 'types/chat';
+import { ServerChatLog, ServerChatLogList } from 'types/chat';
 import useSocketConnection from './useSocketConnection';
 import useChatLog from './useChatLog';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { chatLogAtom, cursorLogIdAtom } from '@store/chatRoom';
-import { chatLogDataTransformer } from '@utils/chatDataUtils';
+import { useSetRecoilState } from 'recoil';
 
 const useSocket = (roomId: string) => {
   const { socket, connecting } = useSocketConnection(roomId);
+
   const [receiveChat, setReceiveChat] = useState<ServerChatLog | null>(null);
-  const [chatLog, setChatLog] = useRecoilState(chatLogAtom);
-  const [cursorLogId, setCursorLogId] = useRecoilState(cursorLogIdAtom);
-  useChatLog(roomId, receiveChat);
+
+  const [receivePastChat, setReceivePastChat] = useState<ServerChatLogList | null>(null);
+
+  const { addPresentChat, addPastChats, addFutureChats } = useChatLog(roomId);
+
+  const sendChat = (message: string) => {
+    socket?.emit('chat', { message });
+  };
+
+  const getPastChat = (cursorId: string) => {
+    socket?.emit('chatLog', {
+      cursorLogId: cursorId,
+      count: 50,
+      directrion: -1,
+    });
+  };
 
   useEffect(() => {
     if (socket) {
@@ -20,43 +32,27 @@ const useSocket = (roomId: string) => {
         setReceiveChat({ message, userId, type, time, chatId });
       });
 
-      // socket?.on('chatLog', (data: any) => {
-      //   setCursorLogId(data.messages[0].chatId);
-
-      //   localStorage.setItem('last', data.messages[0].chatId);
-
-      //   const tmpMessage = chatLogDataTransformer(data.messages);
-
-      //   let changeMap: any;
-
-      //   console.log(chatLog[roomId]);
-
-      //   if (data.direction === 1) {
-      //     changeMap = chatLog[roomId]
-      //       ? new Map([...chatLog[roomId], ...tmpMessage])
-      //       : new Map([...tmpMessage]);
-      //   } else {
-      //     changeMap = chatLog[roomId]
-      //       ? new Map([...tmpMessage, ...chatLog[roomId]])
-      //       : new Map([...tmpMessage]);
-      //   }
-
-      //   setChatLog((prev) => ({ ...prev, [roomId]: changeMap }));
-      // });
+      socket.on('chatLog', (res: ServerChatLogList) => {
+        setReceivePastChat(res);
+      });
     }
   }, [socket]);
 
-  const sendChat = (message: string) => {
-    socket?.emit('chat', { message }, (res: any) => {});
-  };
+  useEffect(() => {
+    addPresentChat(receiveChat);
+  }, [receiveChat]);
 
-  const getPastChat = () => {
-    const a = localStorage.getItem('last');
+  useEffect(() => {
+    if (!receivePastChat) {
+      return;
+    }
 
-    socket?.emit('chatLog', { cursorLogId: a, count: 50, direction: -1 }, (data: any) => {
-      console.log('emit할때', a);
-    });
-  };
+    if (receivePastChat.direction === 1) {
+      addFutureChats(receivePastChat);
+      return;
+    }
+    addPastChats(receivePastChat);
+  }, [receivePastChat]);
 
   return { sendChat, connecting, getPastChat };
 };

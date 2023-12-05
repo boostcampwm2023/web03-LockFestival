@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { SOCKET_URL } from '@config/server';
-import { chatLogAtom, cursorLogIdAtom, roomInfoAtom, userListInfoAtom } from '@store/chatRoom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { userDataTransformer, chatLogDataTransformer } from '@utils/chatDataUtils';
+import { roomInfoAtom, userListInfoAtom } from '@store/chatRoom';
+import { useSetRecoilState } from 'recoil';
+import { userDataTransformer } from '@utils/chatDataUtils';
 import SocketEvent from 'types/socketEvent';
 
 const useSocketConnection = (roomId: string) => {
+  const accessToken = localStorage.getItem('accessToken');
+
   const [connecting, setConnecting] = useState(true);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const accessToken = localStorage.getItem('accessToken');
+
   const setRoomInfo = useSetRecoilState(roomInfoAtom);
   const setUserListInfo = useSetRecoilState(userListInfoAtom);
-  const setCursorLogId = useSetRecoilState(cursorLogIdAtom);
-  const [chatLog, setChatLog] = useRecoilState(chatLogAtom);
 
   const waitForEvent = (eventName: keyof SocketEvent) => {
     return new Promise((resolve) => {
@@ -26,45 +26,9 @@ const useSocketConnection = (roomId: string) => {
           setUserListInfo(userDataTransformer(data));
           resolve(data);
         }
-
-        if (eventName === 'chatLog') {
-          console.log(data);
-
-          localStorage.setItem('last', data.messages[0].chatId);
-
-          setCursorLogId(data.messages[0].chatId);
-
-          const tmpMessage = chatLogDataTransformer(data.messages);
-
-          let changeMap: any;
-
-          if (data.direction === 1) {
-            changeMap = chatLog[roomId]
-              ? new Map([...chatLog[roomId], ...tmpMessage])
-              : new Map([...tmpMessage]);
-            console.log(roomId, chatLog, chatLog[roomId], tmpMessage);
-          } else {
-            changeMap = new Map([...tmpMessage]);
-
-            changeMap = chatLog[roomId]
-              ? new Map([...tmpMessage, ...chatLog[roomId]])
-              : new Map([...tmpMessage]);
-            console.log(roomId, chatLog, chatLog[roomId], tmpMessage);
-          }
-          console.log(changeMap);
-          setChatLog((prev) => ({
-            ...prev,
-            [roomId]: new Map([...changeMap]),
-          }));
-          resolve(data);
-        }
       });
     });
   };
-
-  useEffect(() => {
-    console.log(chatLog);
-  }, [chatLog]);
 
   const handleConnect = async () => {
     try {
@@ -76,17 +40,12 @@ const useSocketConnection = (roomId: string) => {
         },
         (res: any) => {
           if (res === 'ok') {
-            console.log('방에 접속 성공');
+            // console.log('방에 접속 성공');
           }
         }
       );
 
-      await Promise.all([
-        waitForEvent('roomInfo'),
-        waitForEvent('userListInfo'),
-        waitForEvent('chatLog'),
-      ]);
-
+      await Promise.all([waitForEvent('roomInfo'), waitForEvent('userListInfo')]);
       setConnecting(false);
     } catch (error) {
       console.error(error);
@@ -109,7 +68,6 @@ const useSocketConnection = (roomId: string) => {
       disSocket.disconnect();
       setRoomInfo(undefined);
       setUserListInfo(undefined);
-      setChatLog({});
     };
   }, []);
 
