@@ -49,6 +49,9 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     if (inputValue === '') {
       return;
     }
+    if (lastScrollRef.current) {
+      lastScrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
 
     sendChat(inputValue);
     resetValue();
@@ -94,6 +97,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
             return (
               <MessageBox
                 key={logId}
+                logId={logId}
                 message={chat.message}
                 userId={chat.userId}
                 type={chat.type}

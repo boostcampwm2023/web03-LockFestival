@@ -15,3 +15,8 @@ export const userListInfoAtom = atom<UserInfoObject | undefined>({
   key: 'userListInfoAtom',
   default: undefined,
 });
+
+export const chatUnreadAtom = atom<Map<string, string>>({
+  key: 'chatUnreadAtom',
+  default: new Map(),
+});

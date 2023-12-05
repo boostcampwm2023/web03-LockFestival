@@ -7,9 +7,10 @@ interface BoxProps {
   profileImg: string;
   message: string;
   time: Date;
+  unreadCount: number | undefined;
 }
 
-const OtherChatBox = ({ message, time, profileImg, nickname }: BoxProps) => {
+const OtherChatBox = ({ message, time, profileImg, nickname, unreadCount }: BoxProps) => {
   return (
     <Container>
       <ProfileContainer>
@@ -22,7 +23,10 @@ const OtherChatBox = ({ message, time, profileImg, nickname }: BoxProps) => {
       </ProfileContainer>
       <TextContainer>
         <MessageContent>{message}</MessageContent>
-        <DateContent>{getTimeByDate(new Date(time))}</DateContent>
+        <RestContent>
+          {unreadCount !== 0 && <UnreadContent>{unreadCount}</UnreadContent>}
+          <DateContent>{getTimeByDate(new Date(time))}</DateContent>
+        </RestContent>
       </TextContainer>
     </Container>
   );
@@ -64,19 +68,22 @@ const TextContainer = styled.div([
   `,
 ]);
 
-const DateContent = styled.div([
-  tw`text-xs pb-[0.2rem]`,
-  css`
-    height: inherit;
-  `,
-]);
-
 const MessageContent = styled.div([
   tw`border border-gray border-solid rounded-[1.2rem] px-2 py-1`,
   css`
     max-width: 25rem;
     width: fit-content;
     word-break: break-all;
+  `,
+]);
+
+const RestContent = styled.div([tw`text-xs`]);
+
+const UnreadContent = styled.div([tw`text-orange`]);
+
+const DateContent = styled.div([
+  css`
+    height: inherit;
   `,
 ]);
 
