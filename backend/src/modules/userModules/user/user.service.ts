@@ -119,8 +119,8 @@ export class UserService {
 
         const lastChat: ChatMessage = await this.chatRepository.findLastChatByRoomId(roomId);
         const userInRoom: ChatUser = await this.chatRepository.validateRoomAndGetChatUser(
-          String(userRoom.groupId),
-          String(nickname)
+          roomId,
+          nickname
         );
 
         if (!userInRoom.last_chat_log_id) {
