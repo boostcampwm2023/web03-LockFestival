@@ -1,4 +1,4 @@
-import tw, { styled, css } from 'twin.macro';
+import { styled, css } from 'twin.macro';
 import { ChatLog } from 'types/chat';
 import { userListInfoAtom } from '@store/chatRoom';
 import { useRecoilValue } from 'recoil';
