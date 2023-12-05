@@ -125,13 +125,16 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   }
 
   async handleDisconnect(client: Socket) {
+    this.logger.log('by' + client.id);
     const roomId = this.socketToRoomId[client.id];
+    if (!roomId) {
+      return;
+    }
     const userId = this.socketsInrooms[roomId][client.id];
 
     delete this.socketsInrooms[roomId][client.id];
     delete this.socketToRoomId[client.id];
     await this.chatService.updateLastChatLogId(roomId, userId);
-    this.logger.log('by' + client.id);
   }
   afterInit(server: Server) {
     this.logger.log('Initialized!');
