@@ -4,13 +4,17 @@ import tw, { css, styled } from 'twin.macro';
 interface BoxProps {
   message: string;
   time: Date;
+  unreadCount: number | undefined;
 }
 
-const MyChatBox = ({ message, time }: BoxProps) => {
+const MyChatBox = ({ message, time, unreadCount }: BoxProps) => {
   return (
     <Container>
       <TextContainer>
-        <DateContent>{getTimeByDate(new Date(time))}</DateContent>
+        <RestContent>
+          {unreadCount !== 0 && <UnreadContent>{unreadCount}</UnreadContent>}
+          <DateContent>{getTimeByDate(new Date(time))}</DateContent>
+        </RestContent>
         <MessageContent>{message}</MessageContent>
       </TextContainer>
     </Container>
@@ -48,6 +52,15 @@ const MessageContent = styled.div([
     max-width: 25rem;
     width: fit-content;
     word-break: break-all;
+  `,
+]);
+
+const RestContent = styled.div([tw`text-xs`]);
+
+const UnreadContent = styled.div([
+  tw`text-orange`,
+  css`
+    text-align: right;
   `,
 ]);
 
