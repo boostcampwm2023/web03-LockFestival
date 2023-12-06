@@ -5,15 +5,16 @@ interface BoxProps {
   message: string;
   time: Date;
   unreadCount: number | undefined;
+  isLastChat: boolean;
 }
 
-const MyChatBox = ({ message, time, unreadCount }: BoxProps) => {
+const MyChatBox = ({ message, time, unreadCount, isLastChat }: BoxProps) => {
   return (
     <Container>
       <TextContainer>
         <RestContent>
           {unreadCount !== 0 && <UnreadContent>{unreadCount}</UnreadContent>}
-          <DateContent>{getTimeByDate(new Date(time))}</DateContent>
+          {isLastChat && <DateContent>{getTimeByDate(new Date(time))}</DateContent>}
         </RestContent>
         <MessageContent>{message}</MessageContent>
       </TextContainer>

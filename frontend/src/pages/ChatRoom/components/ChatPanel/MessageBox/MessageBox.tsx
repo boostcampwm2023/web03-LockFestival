@@ -8,9 +8,11 @@ import SystemChatBox from './BoxType/SystemChatBox';
 import { useMemo } from 'react';
 interface Props extends ChatLog {
   logId: string;
+  isFirstChat: boolean;
+  isLastChat: boolean;
 }
 
-const MessageBox = ({ logId, message, userId, type, time }: Props) => {
+const MessageBox = ({ logId, message, userId, type, time, isFirstChat, isLastChat }: Props) => {
   const chatUnread = useRecoilValue(chatUnreadAtom);
   const userData = useRecoilValue(userListInfoAtom);
   const myData = userData?.get(userId) || {
@@ -50,7 +52,12 @@ const MessageBox = ({ logId, message, userId, type, time }: Props) => {
     <Layout type={type} isMe={isMe}>
       {type !== 'message' && <SystemChatBox message={message} />}
       {type === 'message' && isMe && (
-        <MyChatBox message={message} time={time} unreadCount={unreadCount} />
+        <MyChatBox
+          message={message}
+          time={time}
+          unreadCount={unreadCount}
+          isLastChat={isLastChat}
+        />
       )}
       {type === 'message' && !isMe && (
         <OtherChatBox
@@ -59,6 +66,8 @@ const MessageBox = ({ logId, message, userId, type, time }: Props) => {
           nickname={nickname}
           profileImg={profileImg}
           unreadCount={unreadCount}
+          isFirstChat={isFirstChat}
+          isLastChat={isLastChat}
         />
       )}
     </Layout>

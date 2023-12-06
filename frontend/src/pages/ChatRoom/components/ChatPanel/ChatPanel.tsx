@@ -7,8 +7,14 @@ import { useRecoilValue } from 'recoil';
 import { chatLogAtom } from 'store/chatRoom';
 import { ChatLog } from 'types/chat';
 import MessageBox from './MessageBox/MessageBox';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import useIntersectionObserverSocket from '@hooks/useIntersectionObserverSocket';
+import { getStringByDate } from '@utils/dateUtil';
+import {
+  checkIsFirstChatFromUser,
+  checkIsFirstChatToday,
+  checkIsLastChatFromUser,
+} from '@utils/chatMessageUtil';
 
 interface ChatPanelProps {
   roomId: string;
@@ -77,6 +83,10 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     }
   };
 
+  const chatArrayFromChatLogData = useMemo(() => {
+    return Array.from(chatLogData);
+  }, [chatLogData]);
+
   return (
     <Layout>
       <ButtonWrapper>
@@ -91,18 +101,30 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
         </Button>
       </ButtonWrapper>
       <ChatDisplayContainer ref={scrollRef} onScroll={() => handleScroll()}>
-        {chatLogData && <div ref={targetRef} />}
-        {chatLogData &&
-          Array.from(chatLogData).map(([logId, chat]) => {
+        {chatArrayFromChatLogData && <div ref={targetRef} />}
+        {chatArrayFromChatLogData &&
+          chatArrayFromChatLogData.map(([logId, chat], index) => {
             return (
-              <MessageBox
-                key={logId}
-                logId={logId}
-                message={chat.message}
-                userId={chat.userId}
-                type={chat.type}
-                time={chat.time}
-              />
+              <>
+                {!checkIsFirstChatToday(index, chatArrayFromChatLogData) && (
+                  <DateDisplayWrapper>
+                    <HorizontalLine />
+                    <DateDisplay>{getStringByDate(new Date(chat.time))}</DateDisplay>
+                    <HorizontalLine />
+                  </DateDisplayWrapper>
+                )}
+
+                <MessageBox
+                  key={logId}
+                  logId={logId}
+                  message={chat.message}
+                  userId={chat.userId}
+                  type={chat.type}
+                  time={chat.time}
+                  isFirstChat={checkIsFirstChatFromUser(index, chatArrayFromChatLogData)}
+                  isLastChat={checkIsLastChatFromUser(index, chatArrayFromChatLogData)}
+                />
+              </>
             );
           })}
         <div ref={lastScrollRef}></div>
@@ -184,3 +206,22 @@ const SendButtonWrapper = styled.div([
     right: 3rem;
   `,
 ]);
+
+const DateDisplayWrapper = styled.div([
+  css`
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  `,
+]);
+
+const HorizontalLine = styled.div([
+  css`
+    display: flex;
+    flex: 1;
+    height: 1px;
+    background-color: black;
+  `,
+]);
+
+const DateDisplay = styled.div([]);
