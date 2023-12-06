@@ -28,12 +28,10 @@ const checkIsFirstChatFromUser = (
   const targetUser = targetData.userId;
   const targetTime = getTimeByDate(new Date(targetData.time));
 
-  // 특정 유저의 채팅이 해당 시각에 첫 번째 채팅이면
   if (prevTime !== targetTime) {
     return true;
   }
 
-  // 같은 시각이지만 사용자가 다르면
   if (prevUser !== targetUser) {
     return true;
   }
@@ -41,4 +39,33 @@ const checkIsFirstChatFromUser = (
   return false;
 };
 
-export { checkIsFirstChatToday, checkIsFirstChatFromUser };
+// 시각 표시 여부
+const checkIsLastChatFromUser = (
+  targetIndex: number,
+  chatLogData: [string, ChatLog][]
+): boolean => {
+  if (targetIndex === chatLogData.length - 1) {
+    return true;
+  }
+
+  const targetData = chatLogData[targetIndex][1];
+  const nextData = chatLogData[targetIndex + 1][1];
+
+  const targetTime = getTimeByDate(new Date(targetData.time));
+  const nextTime = getTimeByDate(new Date(nextData.time));
+
+  const targetUser = targetData.userId;
+  const nextUser = nextData.userId;
+
+  if (targetTime !== nextTime) {
+    return true;
+  }
+
+  if (targetUser !== nextUser) {
+    return true;
+  }
+
+  return false;
+};
+
+export { checkIsFirstChatToday, checkIsFirstChatFromUser, checkIsLastChatFromUser };
