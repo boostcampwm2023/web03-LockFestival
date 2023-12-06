@@ -57,7 +57,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
       return;
     }
     if (lastScrollRef.current) {
-      lastScrollRef.current.scrollIntoView({ behavior: 'smooth' });
+      lastScrollRef.current.scrollIntoView(true);
     }
 
     sendChat(inputValue);
@@ -65,26 +65,26 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   };
 
   useEffect(() => {
-    if (lastScrollRef.current && !isScrollToTop) {
-      lastScrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (lastScrollRef && lastScrollRef.current && !isScrollToTop) {
+      lastScrollRef?.current.scrollIntoView(true);
     }
-    if (prevScrollHeight && scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current?.scrollHeight - prevScrollHeight;
+    if (scrollRef.current && scrollRef.current.scrollTop < 10 && prevScrollHeight) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight - prevScrollHeight;
       return setPrevScrollHeight(null);
     }
   }, [chatLogData]);
 
   const handleScroll = () => {
     if (scrollRef.current) {
-      const target1 = scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
+      const target1 = scrollRef.current.scrollHeight - scrollRef.current.clientHeight; //최대 스크롤 값
       const target2 = scrollRef.current.scrollTop;
 
-      if (Math.abs(target1 - target2) < 20) {
+      if (target2 >= target1) {
         setIsScrollToTop(false);
         return;
       }
 
-      if (target2 < 20) {
+      if (target2 < 10) {
         setPrevScrollHeight(scrollRef.current?.scrollHeight);
       }
 
@@ -93,7 +93,9 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   };
 
   const chatArrayFromChatLogData = useMemo(() => {
-    return Array.from(chatLogData);
+    if (chatLogData) {
+      return Array.from(chatLogData);
+    }
   }, [chatLogData]);
 
   return (
@@ -110,7 +112,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
         </Button>
       </ButtonWrapper>
       <ChatDisplayContainer ref={scrollRef} onScroll={() => handleScroll()}>
-        {chatArrayFromChatLogData && <div ref={targetRef} />}
+        <div ref={targetRef} />
         {chatArrayFromChatLogData &&
           chatArrayFromChatLogData.map(([logId, chat], index) => {
             return (
@@ -138,6 +140,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
           })}
         <div ref={lastScrollRef}></div>
       </ChatDisplayContainer>
+
       <InputChatPanel
         value={inputValue}
         onChange={handleValue}
@@ -192,7 +195,6 @@ const ChatDisplayContainer = styled.div([
     ::-webkit-scrollbar-track {
       background-color: #222222;
       border-radius: 10px;
-      box-shadow: inset 0px 0px 5px white;
     }
   `,
 ]);

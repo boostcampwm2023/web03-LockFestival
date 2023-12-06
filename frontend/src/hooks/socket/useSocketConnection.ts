@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { SOCKET_URL } from '@config/server';
-import { roomInfoAtom, userListInfoAtom } from '@store/chatRoom';
+import { chatUnreadAtom, roomInfoAtom, userListInfoAtom } from '@store/chatRoom';
 import { useSetRecoilState } from 'recoil';
 import { userDataTransformer } from '@utils/chatDataUtils';
 import SocketEvent from 'types/socketEvent';
@@ -14,6 +14,7 @@ const useSocketConnection = (roomId: string) => {
 
   const setRoomInfo = useSetRecoilState(roomInfoAtom);
   const setUserListInfo = useSetRecoilState(userListInfoAtom);
+  const setChatUnread = useSetRecoilState(chatUnreadAtom);
 
   const waitForEvent = (eventName: keyof SocketEvent) => {
     return new Promise((resolve) => {
@@ -68,6 +69,7 @@ const useSocketConnection = (roomId: string) => {
       disSocket.disconnect();
       setRoomInfo(undefined);
       setUserListInfo(undefined);
+      setChatUnread(new Map());
     };
   }, []);
 
