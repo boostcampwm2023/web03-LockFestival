@@ -8,9 +8,14 @@ import Button from '@components/Button/Button';
 import useModal from '@hooks/useModal';
 import Modal from '@components/Modal/Modal';
 import MakeGroupModal from '@components/Modal/MakeGroupModal/MakeGroupModal';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@store/userAtom';
+import LoginModal from '@components/LoginModal/LoginModal';
 
 const RecruitmentLayout = () => {
   const targetRef = useRef<HTMLDivElement>(null);
+
+  const user = useRecoilValue(userAtom);
 
   const { openModal, closeModal } = useModal();
 
@@ -21,19 +26,31 @@ const RecruitmentLayout = () => {
     targetRef,
   });
 
+  const checkIsLogin = () => {
+    if (!user.nickname) {
+      openModal(Modal, {
+        children: (
+          <LoginModal
+            onClose={() => closeModal(Modal)}
+            explainText="로그인 이후 모집글을 작성할 수 있어요!"
+          />
+        ),
+        onClose: () => closeModal(Modal),
+        closeOnExternalClick: true,
+      });
+      return;
+    }
+
+    openModal(Modal, {
+      children: <MakeGroupModal onClose={() => closeModal(Modal)} />,
+      onClose: () => closeModal(Modal),
+      closeOnExternalClick: false,
+    });
+  };
+
   return (
     <Container>
-      <AddButton
-        isIcon={false}
-        size="l"
-        onClick={() =>
-          openModal(Modal, {
-            children: <MakeGroupModal onClose={() => closeModal(Modal)} />,
-            onClose: () => closeModal(Modal),
-            closeOnExternalClick: false,
-          })
-        }
-      >
+      <AddButton isIcon={false} size="l" onClick={checkIsLogin}>
         <>
           모집글 작성하기
           <FaPlus color="white" />
