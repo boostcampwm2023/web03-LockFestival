@@ -31,7 +31,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   @WebSocketServer()
   server: Server;
 
-  socketsInRooms: { [roomId: string]: { [socketId: string]: string } };
+  socketsInRooms: { [roomId: string]: { [socketId: string]: any } };
   socketToRoomId: { [socketId: string]: string };
 
   constructor(
@@ -49,8 +49,8 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   }
 
   hasAnotherSession(roomId: string, userId: string) {
-    return Object.values(this.socketsInRooms[roomId]).find((sessionUserId) => {
-      return sessionUserId === userId;
+    return Object.values(this.socketsInRooms[roomId]).find((session) => {
+      return session.userId === userId;
     });
   }
 
@@ -77,7 +77,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       this.server.to(roomId).emit('unread', unreadCountMap);
     }
 
-    this.socketsInRooms[roomId][client.id] = meUser.userId;
+    this.socketsInRooms[roomId][client.id] = { userId: meUser.userId, socket: client };
 
     this.socketToRoomId[client.id] = roomId;
 
@@ -130,7 +130,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   ): Promise<string> {
     this.logger.log(message);
     const roomId = this.exportGroupId(client);
-    const userId = this.socketsInRooms[roomId][client.id];
+    const userId = this.socketsInRooms[roomId][client.id].userId;
 
     const request = new ChatMessageRequestDto(
       message,
@@ -160,7 +160,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     if (!roomId) {
       return;
     }
-    const userId = this.socketsInRooms[roomId][client.id];
+    const userId = this.socketsInRooms[roomId][client.id].userId;
 
     delete this.socketsInRooms[roomId][client.id];
     delete this.socketToRoomId[client.id];
