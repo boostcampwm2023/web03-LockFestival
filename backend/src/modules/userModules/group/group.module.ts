@@ -7,6 +7,7 @@ import { GroupRepository } from '@group/group.repository';
 import { UserModule } from '@user/user.module';
 import { ThemeModule } from '@theme/theme.module';
 import { ChatModule } from '@chat/chat.module';
+import { EventsModule } from '@src/gateway/events.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ChatModule } from '@chat/chat.module';
     forwardRef(() => {
       return ChatModule;
     }),
+    EventsModule,
   ],
   controllers: [GroupController],
   providers: [GroupService, GroupRepository],
