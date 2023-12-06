@@ -8,7 +8,7 @@ import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { ThemeLocationResponseDto } from '@theme/dtos/theme.location.response.dto';
 import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
-import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
+import { ThemeBranchThemesDetailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 import { ThemeSearchRequestDto } from '@theme/dtos/theme.serach.request.dto';
 import { ThemeSearchResponseDto } from '@theme/dtos/theme.search.response.dto';
 
@@ -21,18 +21,18 @@ export class ThemeService {
     private readonly genreRepository: GenreRepository
   ) {}
 
-  public async getThemeDetailsById(themeId: number): Promise<ThemeBranchThemesDeatailsResponseDto> {
-    const [themeDeatailsResponseDto, sameBranchThemesDto] = await Promise.all([
+  public async getThemeDetailsById(themeId: number): Promise<ThemeBranchThemesDetailsResponseDto> {
+    const [themeDetailsResponseDto, sameBranchThemesDto] = await Promise.all([
       this.themeRepository.getThemeDetailsById(themeId),
       this.themeRepository.getSameBranchThemesById(themeId),
     ]);
 
-    if (!themeDeatailsResponseDto) {
+    if (!themeDetailsResponseDto) {
       throw new NotFoundException('Theme not found : themeId = ' + themeId.toString());
     }
 
-    themeDeatailsResponseDto.otherThemes = sameBranchThemesDto;
-    return themeDeatailsResponseDto;
+    themeDetailsResponseDto.otherThemes = sameBranchThemesDto;
+    return themeDetailsResponseDto;
   }
 
   public async getRandomGenresThemes(
