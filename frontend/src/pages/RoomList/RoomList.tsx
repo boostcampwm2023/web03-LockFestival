@@ -15,13 +15,4 @@ const RoomList = () => {
   );
 };
 
-const Error = styled.div([
-  tw`font-pretendard text-white text-xl h-[40rem]`,
-  css`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  `,
-]);
-
 export default RoomList;
