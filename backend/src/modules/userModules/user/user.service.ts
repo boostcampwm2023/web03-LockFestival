@@ -118,6 +118,17 @@ export class UserService {
         const roomId: string = String(userRoom.groupId);
 
         const lastChat: ChatMessage = await this.chatRepository.findLastChatByRoomId(roomId);
+
+        if (!lastChat) {
+          return new UsersRoomsDetailsDto({
+            ...userRoom,
+            lastChatMessage: '',
+            lastChatTime: '',
+            hasNewChat: false,
+            newChatCount: 0,
+          });
+        }
+
         const userInRoom: ChatUser = await this.chatRepository.validateRoomAndGetChatUser(
           roomId,
           nickname

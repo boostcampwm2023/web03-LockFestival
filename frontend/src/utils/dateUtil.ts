@@ -24,4 +24,26 @@ const getTimeByDate = (inputDate: Date) => {
   return `${hours}시 ${minutes}분`;
 };
 
-export { getStringByDate, getTimeByDate };
+/**
+ * 입력한 날짜가 오늘인지 확인하는 함수
+ * @param targetDate
+ *  @returns boolean
+ */
+const isTodayByDate = (targetDate: Date): boolean => {
+  if (targetDate.toDateString() === new Date().toDateString()) {
+    return true;
+  }
+
+  return false;
+};
+
+// 입력한 두 날짜가 같은 날짜인지
+const checkDateIsSameDate = (firstDate: Date, secondDate: Date): boolean => {
+  if (firstDate.toDateString() === secondDate.toDateString()) {
+    return true;
+  }
+
+  return false;
+};
+
+export { getStringByDate, getTimeByDate, isTodayByDate, checkDateIsSameDate };

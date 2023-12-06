@@ -9,14 +9,19 @@ import ReservationContainer from './FormElement/ReservationContainer';
 import MemberCountContainer from './FormElement/MemberCountContainer';
 import SelectThemeForm from './FormElement/SelectThemeForm';
 
-import useCreateRecruitmentForm from '@hooks/useCreateRecruitmentForm';
+import useCreateRecruitmentForm, { Theme } from '@hooks/useCreateRecruitmentForm';
 
 import createRecruitment from '@apis/createRecruitment';
 
 import Button from '@components/Button/Button';
 import { FaXmark } from 'react-icons/fa6';
 
-const MakeGroupModal = ({ onClose }: { onClose: () => void }) => {
+interface Props {
+  selectedTheme?: Theme;
+  onClose: () => void;
+}
+
+const MakeGroupModal = ({ selectedTheme, onClose }: Props) => {
   const navigate = useNavigate();
 
   const {
@@ -33,7 +38,7 @@ const MakeGroupModal = ({ onClose }: { onClose: () => void }) => {
     isReservation,
     setIsReservation,
     checkValidate,
-  } = useCreateRecruitmentForm();
+  } = useCreateRecruitmentForm({ selectedTheme });
 
   const handleCreateRoom = async () => {
     if (!checkValidate) {

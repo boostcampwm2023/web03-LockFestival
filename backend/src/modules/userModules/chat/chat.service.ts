@@ -39,7 +39,7 @@ export class ChatService {
       roomId,
     });
 
-    return { prevMessages, unreadCountMap, chatUsers };
+    return { prevMessages, unreadCountMap, chatUsers, meUser };
   }
 
   async getUnreadCount(roomId: string) {

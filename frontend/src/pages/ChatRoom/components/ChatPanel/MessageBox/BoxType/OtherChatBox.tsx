@@ -8,24 +8,37 @@ interface BoxProps {
   message: string;
   time: Date;
   unreadCount: number | undefined;
+  isFirstChat: boolean;
+  isLastChat: boolean;
 }
 
-const OtherChatBox = ({ message, time, profileImg, nickname, unreadCount }: BoxProps) => {
+const OtherChatBox = ({
+  message,
+  time,
+  profileImg,
+  nickname,
+  unreadCount,
+  isFirstChat,
+  isLastChat,
+}: BoxProps) => {
   return (
     <Container>
-      <ProfileContainer>
-        {profileImg ? (
-          <ProfileImg src={profileImg} alt="profileImg" />
-        ) : (
-          <FaCircleUser size="30" color="gray" />
-        )}
-        <ProfileText>{nickname}</ProfileText>
-      </ProfileContainer>
+      {isFirstChat && (
+        <ProfileContainer>
+          {profileImg ? (
+            <ProfileImg src={profileImg} alt="profileImg" />
+          ) : (
+            <FaCircleUser size="30" color="gray" />
+          )}
+          <ProfileText>{nickname}</ProfileText>
+        </ProfileContainer>
+      )}
+
       <TextContainer>
         <MessageContent>{message}</MessageContent>
         <RestContent>
           {unreadCount !== 0 && <UnreadContent>{unreadCount}</UnreadContent>}
-          <DateContent>{getTimeByDate(new Date(time))}</DateContent>
+          {isLastChat && <DateContent>{getTimeByDate(new Date(time))}</DateContent>}
         </RestContent>
       </TextContainer>
     </Container>
