@@ -119,7 +119,7 @@ export class GroupController {
   })
   @ApiBearerAuth('Authorization')
   async exitGroup(@Param('groupId', ParseIntPipe) groupId: number, @Req() { user }) {
-    const leaderFlag = await this.groupService.leaveGroup(groupId, user.nickname);
+    const leaderFlag = await this.groupService.deleteGroupOnOut(groupId, user.nickname);
     await this.eventsGateway.leave(String(groupId), user.nickname, leaderFlag);
   }
 }
