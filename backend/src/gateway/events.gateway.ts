@@ -70,6 +70,8 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       this.socketsInRooms[roomId] = {};
     }
 
+    await client.join(roomId);
+
     if (!this.hasAnotherSession(roomId, meUser.userId)) {
       this.server.to(roomId).emit('unread', unreadCountMap);
     }
@@ -77,8 +79,6 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     this.socketsInRooms[roomId][client.id] = meUser.userId;
 
     this.socketToRoomId[client.id] = roomId;
-
-    await client.join(roomId);
 
     client.emit('roomInfo', await this.groupService.getGroupInfo(Number(roomId)));
 
