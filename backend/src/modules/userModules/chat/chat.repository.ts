@@ -293,18 +293,17 @@ export class ChatRepository {
 
     return user;
   }
+  async getNicknameByChatUserId(chatUserId: string) {
+    const chatUser = await this.chatUserModel.findOne({ _id: chatUserId });
+    if (!chatUser) {
+      throw new HttpException('유저가 방에 없습니다.', HttpStatus.BAD_REQUEST);
+    }
+    return chatUser.user_nickname;
+  }
 
-  async updateUserInfoOnLeave(roomId: string, nickname: string) {
-    const {
-      user_list: [{ _id: userId }],
-    } = await this.roomModel.findOne({ group_id: roomId }, { chat_list: false }).populate({
-      path: 'user_list',
-      model: 'ChatUser',
-      match: { user_nickname: nickname },
-      select: '_id',
-    });
+  async updateUserInfoOnLeave(chatUserId: string) {
     await this.chatUserModel.updateOne(
-      { _id: userId },
+      { _id: chatUserId },
       {
         $set: {
           is_leave: true,
@@ -336,10 +335,17 @@ export class ChatRepository {
       this.chatMessageModel.deleteMany({ _id: { $in: messageIds } }).exec(),
     ]);
   }
-  async createOutMessageByLeaveEvent(groupId: string, nickname: string): Promise<ChatMessageDto> {
+  async createMessageByLeaveEvent(
+    groupId: string,
+    nickname: string,
+    chatType: ChatType
+  ): Promise<ChatMessageDto> {
     const message = await this.chatMessageModel.create({
-      chat_message: `${nickname}님이 나가셨습니다.`,
-      type: ChatType.out,
+      chat_message:
+        chatType === ChatType.out
+          ? `${nickname}님이 나가셨습니다.`
+          : `${nickname}님을 내보냈습니다.`,
+      type: chatType,
       chat_date: new Date(),
     });
 

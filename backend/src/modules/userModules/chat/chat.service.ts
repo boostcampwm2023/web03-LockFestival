@@ -7,6 +7,8 @@ import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 import { ChatMessageResponseDto } from '@chat/dtos/chat.mesage.response.dto';
 import { ChatUser } from '@chat/entities/chat.user.schema';
 import { EnteredChatMessageResponseDto } from '@chat/dtos/chat.entered.response.dto';
+import { ChatLeaveRoomResponseDto } from '@chat/dtos/chat.leave.response.dto';
+import { ChatLeaveRoomDto } from '@chat/dtos/chat.leave.dto';
 
 @Injectable()
 export class ChatService {
@@ -111,14 +113,28 @@ export class ChatService {
 
     return new EnteredChatMessageResponseDto(chatUser.last_chat_log_id, messages);
   }
-  async leaveChatRoom(roomId: string, nickname: string) {
-    await this.chatRepository.updateUserInfoOnLeave(roomId, nickname);
-    const message = await this.chatRepository.createOutMessageByLeaveEvent(roomId, nickname);
-    const chatUsers = await this.chatRepository.findUserListByRoomId(roomId);
+
+  async getNicknameByChatUserId(chatUserId: string): Promise<string> {
+    return await this.chatRepository.getNicknameByChatUserId(chatUserId);
+  }
+
+  async getChatUserIdByNicknameAndRoomId(roomId: string, nickname: string): Promise<ChatUser> {
+    return await this.chatRepository.validateRoomAndGetChatUser(roomId, nickname);
+  }
+
+  async leaveChatRoom(dto: ChatLeaveRoomDto): Promise<ChatLeaveRoomResponseDto> {
+    await this.chatRepository.updateUserInfoOnLeave(dto.userChatId);
+    const message = await this.chatRepository.createMessageByLeaveEvent(
+      dto.roomId,
+      dto.nickname,
+      dto.chatType
+    );
+    const chatUsers = await this.chatRepository.findUserListByRoomId(dto.roomId);
     const unreadCountMap = this.makeUnreadCountMap(chatUsers);
     return { chatUsers, unreadCountMap, message };
   }
-  async deleteRoomByLeader(roomId: string) {
+
+  async deleteRoomByLeader(roomId: string): Promise<void> {
     await this.chatRepository.deleteRoomByLeader(roomId);
   }
 }
