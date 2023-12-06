@@ -68,23 +68,23 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     if (lastScrollRef.current && !isScrollToTop) {
       lastScrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-    if (isScrollToTop && prevScrollHeight && scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current?.scrollHeight - prevScrollHeight;
+    if (scrollRef.current && scrollRef.current.scrollTop < 10 && prevScrollHeight) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight - prevScrollHeight;
       return setPrevScrollHeight(null);
     }
   }, [chatLogData]);
 
   const handleScroll = () => {
     if (scrollRef.current) {
-      const target1 = scrollRef.current.scrollHeight - scrollRef.current.clientHeight;
+      const target1 = scrollRef.current.scrollHeight - scrollRef.current.clientHeight; //최대 스크롤 값
       const target2 = scrollRef.current.scrollTop;
 
-      if (Math.abs(target1 - target2) < 20) {
+      if (target2 >= target1) {
         setIsScrollToTop(false);
         return;
       }
 
-      if (target2 < 5) {
+      if (target2 < 10) {
         setPrevScrollHeight(scrollRef.current?.scrollHeight);
       }
 
