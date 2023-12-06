@@ -1,5 +1,5 @@
-import deleteGroupByGroupId from '@apis/deleteGroupByGroupId';
 import Button from '@components/Button/Button';
+import useLeaveRoomMutation from '@hooks/mutation/useLeaveRoomMutation';
 import { useNavigate } from 'react-router-dom';
 import tw, { styled, css } from 'twin.macro';
 import { GroupProps } from 'types/group';
@@ -7,11 +7,13 @@ import { GroupProps } from 'types/group';
 const RoomFooter = ({ groupId }: Pick<GroupProps, 'groupId'>) => {
   const navigate = useNavigate();
 
-  const handleLeaveRoom = async () => {
+  const { mutate } = useLeaveRoomMutation(groupId);
+
+  const handleLeaveRoom = () => {
     if (!window.confirm('정말로 방을 나가시겠습니까?\n나간 이후 복구할 수 없습니다.')) {
       return;
     }
-    await deleteGroupByGroupId(groupId);
+    mutate(groupId);
   };
 
   return (
