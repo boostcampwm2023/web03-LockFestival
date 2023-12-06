@@ -1,21 +1,25 @@
-import { ModalProps } from 'types/modal';
 import NaverLogin from '@components/LoginModal/NaverLogin/NaverLogin';
 import tw, { css, styled } from 'twin.macro';
 import ModalCloseButton from '@components/Button/ModalCloseButton';
 
-function LoginModal(onClose: ModalProps['onClose']) {
+interface Props {
+  onClose: () => void;
+  explainText?: string;
+}
+
+function LoginModal({ onClose, explainText }: Props) {
   return (
     <Layout>
       <ModalCloseButton onClose={onClose} />
+
       <BottomWrapper>
+        {explainText && <ChildrenText>{explainText}</ChildrenText>}
         Lock Festival 로그인
         <NaverLogin />
       </BottomWrapper>
     </Layout>
   );
 }
-
-export default LoginModal;
 
 const Layout = styled.div([tw`p-6`]);
 
@@ -30,3 +34,11 @@ const BottomWrapper = styled.div([
     align-items: center;
   `,
 ]);
+
+const ChildrenText = styled.div([
+  css`
+    text-align: center;
+  `,
+]);
+
+export default LoginModal;
