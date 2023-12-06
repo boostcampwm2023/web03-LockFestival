@@ -153,6 +153,14 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     const chatUsers: ChatUserInfoDto[] =
       await this.chatService.getUserInfoListWithLeavedByRoomId(roomId);
 
+    const unreadCountMap = this.chatService.makeUnreadCountMap(
+      chatUsers.filter(({ isLeave }) => {
+        return !isLeave;
+      })
+    );
+
+    this.server.to(roomId).emit('unread', unreadCountMap);
+
     this.sendChangeUserListInfoMessage(roomId, chatUsers);
   }
 

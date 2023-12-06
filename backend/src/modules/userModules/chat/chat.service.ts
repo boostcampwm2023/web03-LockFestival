@@ -48,7 +48,7 @@ export class ChatService {
     return this.makeUnreadCountMap(chatUsers);
   }
 
-  private makeUnreadCountMap(chatUsers: ChatUserInfoDto[]) {
+  makeUnreadCountMap(chatUsers: ChatUserInfoDto[]) {
     const countMap: { [k: string]: number } = chatUsers
       .filter((user: ChatUserInfoDto) => {
         return !!user.lastChatLogId;
