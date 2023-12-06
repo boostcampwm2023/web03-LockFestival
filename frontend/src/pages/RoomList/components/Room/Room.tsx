@@ -7,24 +7,26 @@ import RoomContent from './RoomContent';
 import RoomFooter from './RoomFooter';
 
 const Room = ({
-  groupId,
+  themeId,
+  themeName,
   posterImageUrl,
   branchName,
-  themeName,
-  contents,
-  lastChat,
+  groupId,
+  recruitmentContent,
+  lastChatMessage,
   lastChatTime,
-  haveNewMessage,
+  hasNewChat,
+  newChatCount,
 }: GroupProps) => {
   return (
     <Container>
       <Wrapper>
         <RoomHeader posterImageUrl={posterImageUrl} branchName={branchName} themeName={themeName} />
         <RoomContent
-          contents={contents}
-          lastChat={lastChat}
+          recruitmentContent={recruitmentContent}
+          lastChatMessage={lastChatMessage}
           lastChatTime={lastChatTime}
-          haveNewMessage={haveNewMessage}
+          hasNewChat={hasNewChat}
         />
       </Wrapper>
       <RoomFooter groupId={groupId} />
