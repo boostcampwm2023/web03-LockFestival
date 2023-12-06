@@ -29,8 +29,8 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   @WebSocketServer()
   server: Server;
 
-  socketsInrooms;
-  socketToRoomId;
+  socketsInrooms: { [roomId: string]: { [socketId: string]: string } };
+  socketToRoomId: { [socketId: string]: string };
 
   constructor(
     private readonly chatService: ChatService,
@@ -136,7 +136,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     delete this.socketToRoomId[client.id];
     await this.chatService.updateLastChatLogId(roomId, userId);
 
-    await this.server.to(roomId).emit('unread', await this.chatService.getUnreadCount(roomId));
+    this.server.to(roomId).emit('unread', await this.chatService.getUnreadCount(roomId));
   }
   afterInit(server: Server) {
     this.logger.log('Initialized!');
