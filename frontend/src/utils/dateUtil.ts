@@ -37,4 +37,13 @@ const isTodayByDate = (targetDate: Date): boolean => {
   return false;
 };
 
-export { getStringByDate, getTimeByDate, isTodayByDate };
+// 입력한 두 날짜가 같은 날짜인지
+const checkDateIsSameDate = (firstDate: Date, secondDate: Date): boolean => {
+  if (firstDate.toDateString() === secondDate.toDateString()) {
+    return true;
+  }
+
+  return false;
+};
+
+export { getStringByDate, getTimeByDate, isTodayByDate, checkDateIsSameDate };
