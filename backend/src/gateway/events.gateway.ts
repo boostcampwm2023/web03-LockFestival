@@ -48,7 +48,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   }
 
   hasAnotherSession(roomId: string, userId: string) {
-    return Object.values(this.socketsInRooms[roomId]).find((sessionUserId) => {
+    return !!Object.values(this.socketsInRooms[roomId]).find((sessionUserId) => {
       return sessionUserId === userId;
     });
   }
