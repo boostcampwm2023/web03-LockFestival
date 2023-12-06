@@ -295,16 +295,22 @@ export class ChatRepository {
   }
 
   async updateUserInfoOnLeave(roomId: string, nickname: string) {
-    const {
-      user_list: [{ _id: userId }],
-    } = await this.roomModel.findOne({ group_id: roomId }, { chat_list: false }).populate({
-      path: 'user_list',
-      model: 'ChatUser',
-      match: { user_nickname: nickname },
-      select: '_id',
+    const idList: string[] = (
+      await this.roomModel.findOne({ group_id: roomId }, { chat_list: false }).populate({
+        path: 'user_list',
+        model: 'ChatUser',
+        match: { user_nickname: nickname },
+        select: '_id',
+      })
+    ).user_list.map(({ _id }) => {
+      return _id.toString();
     });
-    await this.chatUserModel.updateOne(
-      { _id: userId },
+    await this.chatUserModel.updateMany(
+      {
+        _id: {
+          $in: idList,
+        },
+      },
       {
         $set: {
           is_leave: true,
