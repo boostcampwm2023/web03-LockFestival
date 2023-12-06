@@ -187,7 +187,6 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   async handleDisconnect(client: Socket) {
     this.logger.log('by' + client.id);
     const roomId = this.socketToRoomId[client.id];
-    console.log('disconnect', roomId, client.id);
     if (!roomId) {
       return;
     }
