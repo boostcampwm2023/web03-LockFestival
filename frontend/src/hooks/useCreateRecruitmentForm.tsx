@@ -9,13 +9,13 @@ export interface Theme {
   themeName: string;
 }
 
-const useCreateRecruitmentForm = () => {
+const useCreateRecruitmentForm = ({ selectedTheme }: { selectedTheme?: Theme }) => {
   const [isClickCalendar, setIsClickCalendar] = useState<boolean>(false);
   const [date, setDate] = useState<Value>(new Date());
 
   const [memberCount, setMemberCount] = useState<string>('2');
 
-  const [theme, setTheme] = useState<Theme>();
+  const [theme, setTheme] = useState<Theme | undefined>(selectedTheme || undefined);
 
   const [contents, setContents] = useInput('');
 
