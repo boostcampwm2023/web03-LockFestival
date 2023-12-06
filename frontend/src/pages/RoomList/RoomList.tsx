@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import tw, { css, styled } from 'twin.macro';
 import RoomListLayout from './components/RoomListLayout';
 import CommonError from '@pages/Error/CommonError';
 
