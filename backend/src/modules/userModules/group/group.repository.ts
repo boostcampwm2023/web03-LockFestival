@@ -217,10 +217,16 @@ export class GroupRepository extends Repository<Group> {
       const { recruitmentCompleted, currentMembers, leader } = group;
 
       if (recruitmentCompleted) {
-        throw new HttpException('모집이 완료되었습니다.', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          '모집 완료 상태의 그룹은 나갈 수 없습니다.',
+          HttpStatus.BAD_REQUEST
+        );
       }
       if (nickname === leader.nickname && currentMembers >= 2) {
-        throw new HttpException('멤버 수가 2명 이상입니다.', HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          '방장은 다른 멤버가 있으면 나갈 수 없습니다.',
+          HttpStatus.BAD_REQUEST
+        );
       }
       await queryRunner.manager
         .createQueryBuilder(UserGroup, 'user_group')

@@ -103,10 +103,8 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       await this.chatService.deleteRoomByLeader(roomId);
       return;
     }
-    await this.chatService.updateUserInfoOnLeave(roomId, nickname);
-    const { unreadCountMap, chatUsers } =
-      await this.chatService.getUpdatedUserListInfoOnLeave(roomId);
-    const messageObject: ChatMessageDto = await this.chatService.createMessageByEvent(
+
+    const { unreadCountMap, chatUsers, message } = await this.chatService.leaveChatRoom(
       roomId,
       nickname
     );
@@ -114,7 +112,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     this.server.to(roomId).emit('roomInfo', groupInfo);
     this.server.to(roomId).emit('unread', unreadCountMap);
     this.server.to(roomId).emit('userListInfo', chatUsers);
-    this.server.to(roomId).emit('chat', messageObject);
+    this.server.to(roomId).emit('chat', message);
   }
 
   @SubscribeMessage('chat')
@@ -155,7 +153,6 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     delete this.socketsInrooms[roomId][client.id];
     delete this.socketToRoomId[client.id];
     await this.chatService.updateLastChatLogId(roomId, userId);
-
     await this.server.to(roomId).emit('unread', await this.chatService.getUnreadCount(roomId));
   }
   afterInit(server: Server) {

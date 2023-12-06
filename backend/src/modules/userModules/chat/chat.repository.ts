@@ -307,6 +307,9 @@ export class ChatRepository {
         $set: {
           is_leave: true,
         },
+        $unset: {
+          last_chat_log_id: true,
+        },
       }
     );
   }
@@ -331,7 +334,7 @@ export class ChatRepository {
       this.chatMessageModel.deleteMany({ _id: { $in: messageIds } }).exec(),
     ]);
   }
-  async createMessageByEvent(groupId: string, nickname: string): Promise<ChatMessageDto> {
+  async createOutMessageByLeaveEvent(groupId: string, nickname: string): Promise<ChatMessageDto> {
     const message = await this.chatMessageModel.create({
       chat_message: `${nickname}님이 나가셨습니다.`,
       type: ChatType.out,

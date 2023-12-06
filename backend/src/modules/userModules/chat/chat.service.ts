@@ -111,19 +111,13 @@ export class ChatService {
 
     return new EnteredChatMessageResponseDto(chatUser.last_chat_log_id, messages);
   }
-  async createMessageByEvent(roomId: string, nickname: string): Promise<ChatMessageDto> {
-    return await this.chatRepository.createMessageByEvent(roomId, nickname);
-  }
-  async updateUserInfoOnLeave(roomId: string, nickname: string) {
+  async leaveChatRoom(roomId: string, nickname: string) {
     await this.chatRepository.updateUserInfoOnLeave(roomId, nickname);
-  }
-
-  async getUpdatedUserListInfoOnLeave(roomId: string) {
+    const message = await this.chatRepository.createOutMessageByLeaveEvent(roomId, nickname);
     const chatUsers = await this.chatRepository.findUserListByRoomId(roomId);
     const unreadCountMap = this.makeUnreadCountMap(chatUsers);
-    return { chatUsers, unreadCountMap };
+    return { chatUsers, unreadCountMap, message };
   }
-
   async deleteRoomByLeader(roomId: string) {
     await this.chatRepository.deleteRoomByLeader(roomId);
   }
