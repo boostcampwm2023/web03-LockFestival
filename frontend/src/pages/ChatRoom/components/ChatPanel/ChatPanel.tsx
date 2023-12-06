@@ -234,10 +234,3 @@ const HorizontalLine = styled.div([
 ]);
 
 const DateDisplay = styled.div([]);
-
-const ChatVirtualizedContainer = styled.div([
-  css`
-    width: 100%;
-    height: 20rem;
-  `,
-]);
