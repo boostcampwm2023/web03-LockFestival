@@ -93,7 +93,9 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   };
 
   const chatArrayFromChatLogData = useMemo(() => {
-    return Array.from(chatLogData) || [];
+    if (chatLogData) {
+      return Array.from(chatLogData);
+    }
   }, [chatLogData]);
 
   return (
@@ -110,7 +112,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
         </Button>
       </ButtonWrapper>
       <ChatDisplayContainer ref={scrollRef} onScroll={() => handleScroll()}>
-        {chatArrayFromChatLogData && <div ref={targetRef} />}
+        <div ref={targetRef} />
         {chatArrayFromChatLogData &&
           chatArrayFromChatLogData.map(([logId, chat], index) => {
             return (
