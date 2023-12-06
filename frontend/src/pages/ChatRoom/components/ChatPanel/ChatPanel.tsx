@@ -30,6 +30,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   const lastScrollRef = useRef<HTMLDivElement>(null);
 
   const [isScrollToTop, setIsScrollToTop] = useState<boolean>(false);
+  const [prevScrollHeight, setPrevScrollHeight] = useState<number | null>(null);
 
   useIntersectionObserverSocket({
     eventHandler: getPastChat,
@@ -67,6 +68,10 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     if (lastScrollRef.current && !isScrollToTop) {
       lastScrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
+    if (prevScrollHeight && scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current?.scrollHeight - prevScrollHeight;
+      return setPrevScrollHeight(null);
+    }
   }, [chatLogData]);
 
   const handleScroll = () => {
@@ -77,6 +82,10 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
       if (Math.abs(target1 - target2) < 20) {
         setIsScrollToTop(false);
         return;
+      }
+
+      if (target2 < 20) {
+        setPrevScrollHeight(scrollRef.current?.scrollHeight);
       }
 
       setIsScrollToTop(true);
