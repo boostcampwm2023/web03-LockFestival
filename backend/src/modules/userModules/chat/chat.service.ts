@@ -78,6 +78,11 @@ export class ChatService {
     return await this.chatRepository.validateLeaderByRoomId(roomId, userId);
   }
 
+  async getUserInfoListWithLeavedByRoomId(roomId: string): Promise<ChatUserInfoDto[]> {
+    this.logger.log(`roomId: ${roomId}`);
+    return await this.chatRepository.findUserListWithLeavedUserByRoomId(roomId);
+  }
+
   async createMessageByChat(chatMessageDto: ChatMessageRequestDto): Promise<ChatMessageDto> {
     this.logger.log(chatMessageDto);
     return await this.chatRepository.createMessageByChat(chatMessageDto);
@@ -114,7 +119,7 @@ export class ChatService {
   async leaveChatRoom(roomId: string, nickname: string) {
     await this.chatRepository.updateUserInfoOnLeave(roomId, nickname);
     const message = await this.chatRepository.createOutMessageByLeaveEvent(roomId, nickname);
-    const chatUsers = await this.chatRepository.findUserListByRoomId(roomId);
+    const chatUsers = await this.chatRepository.findUserListWithLeavedUserByRoomId(roomId);
     const unreadCountMap = this.makeUnreadCountMap(chatUsers);
     return { chatUsers, unreadCountMap, message };
   }

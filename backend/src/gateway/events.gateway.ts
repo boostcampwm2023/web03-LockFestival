@@ -18,6 +18,7 @@ import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
 import { ChatType } from '@src/enum/chat.type';
 import { GroupService } from '@group/group.service';
 import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
+import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 
 @Injectable()
 @WebSocketGateway({
@@ -145,8 +146,25 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     return 'ok';
   }
 
-  sendBroadcastMessage(roomId: string, chatMessageDto: ChatMessageDto) {
+  async sendChangeUserBroadcastMessage(roomId: string, chatMessageDto: ChatMessageDto) {
     this.server.to(roomId).emit('chat', chatMessageDto);
+    this.server.to(roomId).emit('roomInfo', await this.groupService.getGroupInfo(Number(roomId)));
+
+    const chatUsers: ChatUserInfoDto[] =
+      await this.chatService.getUserInfoListWithLeavedByRoomId(roomId);
+
+    this.sendChangeUserListInfoMessage(roomId, chatUsers);
+  }
+
+  sendChangeUserListInfoMessage(roomId: string, chatUsers: ChatUserInfoDto[]) {
+    Object.values(this.socketsInRooms[roomId]).forEach((session) => {
+      session.socket.emit(
+        'userListInfo',
+        chatUsers.map((chatUser: ChatUserInfoDto) => {
+          return chatUser.updateIsMe(!chatUser.isLeave && chatUser.userId === session.userId);
+        })
+      );
+    });
   }
 
   handleConnection(client: Socket, ...args: any[]) {
