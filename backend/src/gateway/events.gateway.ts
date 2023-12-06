@@ -11,7 +11,7 @@ import {
 import { ChatService } from '@chat/chat.service';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
-import { Logger, ParseIntPipe } from '@nestjs/common';
+import { Injectable, Logger, ParseIntPipe } from '@nestjs/common';
 import { PayloadDto } from '@auth/dtos/payload.dto';
 import { ConfigService } from '@nestjs/config';
 import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
@@ -19,6 +19,7 @@ import { ChatType } from '@src/enum/chat.type';
 import { GroupService } from '@group/group.service';
 import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
 
+@Injectable()
 @WebSocketGateway({
   cors: {
     origin: '*',
@@ -117,6 +118,10 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     const messageObject: ChatMessageDto = await this.chatService.createMessageByChat(request);
     client.to(roomId).emit('chat', messageObject);
     return 'ok';
+  }
+
+  sendBroadcastMessage(roomId: string, chatMessageDto: ChatMessageDto) {
+    this.server.to(roomId).emit('chat', chatMessageDto);
   }
 
   handleConnection(client: Socket, ...args: any[]) {
