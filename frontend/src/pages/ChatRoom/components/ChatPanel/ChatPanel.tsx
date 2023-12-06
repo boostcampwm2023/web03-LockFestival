@@ -57,7 +57,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
       return;
     }
     if (lastScrollRef.current) {
-      lastScrollRef.current.scrollIntoView({ behavior: 'smooth' });
+      lastScrollRef.current.scrollIntoView(true);
     }
 
     sendChat(inputValue);
@@ -65,8 +65,8 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   };
 
   useEffect(() => {
-    if (lastScrollRef.current && !isScrollToTop) {
-      lastScrollRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (lastScrollRef && lastScrollRef.current && !isScrollToTop) {
+      lastScrollRef?.current.scrollIntoView(true);
     }
     if (scrollRef.current && scrollRef.current.scrollTop < 10 && prevScrollHeight) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight - prevScrollHeight;
@@ -195,7 +195,6 @@ const ChatDisplayContainer = styled.div([
     ::-webkit-scrollbar-track {
       background-color: #222222;
       border-radius: 10px;
-      box-shadow: inset 0px 0px 5px white;
     }
   `,
 ]);
