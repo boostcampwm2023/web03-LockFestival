@@ -28,6 +28,7 @@ import { GroupRequestDto } from '@group/dtos/group.create.dto';
 import { GroupFindOptionsDto } from '@group/dtos/group.findoptions.request.dto';
 import { GroupsResponseDto } from '@group/dtos/groups.response.dto';
 import { EventsGateway } from '@src/gateway/events.gateway';
+import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
 
 @ApiTags('groups')
 @Controller('groups')
@@ -99,8 +100,11 @@ export class GroupController {
     groupId: number,
     @Res() res
   ): Promise<boolean> {
-    await this.groupService.enterGroup(user.nickname, groupId);
-    return res.status(HttpStatus.OK).json({ success: true, message: 'Group created successfully' });
+    const inMessage: ChatMessageDto = await this.groupService.enterGroup(user.nickname, groupId);
+    this.eventsGateway.sendBroadcastMessage(String(groupId), inMessage);
+    return res
+      .status(HttpStatus.OK)
+      .json({ success: true, message: 'Successfully entered the group!' });
   }
 
   @Delete(':groupId')

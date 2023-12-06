@@ -231,14 +231,14 @@ export class ChatRepository {
     nickname: string,
     profileImageUrl: string,
     isLeader: boolean = false
-  ): Promise<void> {
-    const inChat = await this.chatMessageModel.create({
+  ): Promise<ChatMessageDto> {
+    const inChat: ChatMessage = await this.chatMessageModel.create({
       chat_message: `${nickname}님이 입장하셨습니다.`,
       chat_date: new Date(),
       type: ChatType.in,
     });
 
-    const chatUser = await this.chatUserModel.create({
+    const chatUser: ChatUser = await this.chatUserModel.create({
       user_id: userId,
       user_nickname: nickname,
       user_profile_url: profileImageUrl,
@@ -261,6 +261,8 @@ export class ChatRepository {
         }
       )
       .exec();
+
+    return new ChatMessageDto(inChat);
   }
 
   async updateUserNickname(originNickname: string, nickname: string) {
