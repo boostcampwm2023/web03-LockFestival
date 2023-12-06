@@ -11,13 +11,14 @@ import {
 import { ChatService } from '@chat/chat.service';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
-import { Logger, ParseIntPipe, Injectable } from '@nestjs/common';
+import { Logger, ParseIntPipe, Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PayloadDto } from '@auth/dtos/payload.dto';
 import { ConfigService } from '@nestjs/config';
 import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
-import { ChatType } from '@src/enum/chat.type';
+import { ChatType } from '@enum/chat.type';
 import { GroupService } from '@group/group.service';
 import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
+import { ChatLeaveRoomDto } from '@chat/dtos/chat.leave.dto';
 
 @Injectable()
 @WebSocketGateway({
@@ -54,7 +55,6 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     });
   }
 
-  //myPage 입장
   @SubscribeMessage('join')
   async join(
     @MessageBody('roomId') roomId: string,
@@ -111,16 +111,46 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       await this.chatService.deleteRoomByLeader(roomId);
       return;
     }
-
+    const chatUser = await this.chatService.getChatUserIdByNicknameAndRoomId(roomId, nickname);
     const { unreadCountMap, chatUsers, message } = await this.chatService.leaveChatRoom(
-      roomId,
-      nickname
+      new ChatLeaveRoomDto(roomId, nickname, chatUser._id, ChatType.out)
     );
     const groupInfo = await this.groupService.getGroupInfo(Number(roomId));
     this.server.to(roomId).emit('roomInfo', groupInfo);
     this.server.to(roomId).emit('unread', unreadCountMap);
     this.server.to(roomId).emit('userListInfo', chatUsers);
     this.server.to(roomId).emit('chat', message);
+  }
+
+  @SubscribeMessage('kick')
+  async handleKick(@MessageBody('userId') kickUserId: string, @ConnectedSocket() client: Socket) {
+    const roomId = this.socketToRoomId[client.id];
+
+    const nickname = await this.chatService.getNicknameByChatUserId(kickUserId);
+    await this.groupService.deleteGroupOnKick(Number(roomId), nickname);
+    const { unreadCountMap, chatUsers, message } = await this.chatService.leaveChatRoom(
+      new ChatLeaveRoomDto(roomId, nickname, kickUserId, ChatType.kick)
+    );
+    const groupInfo = await this.groupService.getGroupInfo(Number(roomId));
+
+    const socketId = Object.keys(this.socketsInRooms[roomId]).find((clientId) => {
+      const sessionUserId = this.socketsInRooms[roomId][clientId];
+      return sessionUserId === kickUserId;
+    });
+
+    const kickSocket = this.server.sockets.sockets.get(socketId);
+
+    this.server.to(roomId).emit('roomInfo', groupInfo);
+    this.server.to(roomId).emit('unread', unreadCountMap);
+    this.server.to(roomId).emit('userListInfo', chatUsers);
+    this.server.to(roomId).emit('chat', message);
+
+    if (!kickSocket) {
+      return;
+    }
+    delete this.socketsInRooms[roomId][socketId];
+    delete this.socketToRoomId[socketId];
+    await this.handleDisconnect(kickSocket);
   }
 
   @SubscribeMessage('chat')
@@ -157,6 +187,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   async handleDisconnect(client: Socket) {
     this.logger.log('by' + client.id);
     const roomId = this.socketToRoomId[client.id];
+    console.log('disconnect', roomId, client.id);
     if (!roomId) {
       return;
     }
