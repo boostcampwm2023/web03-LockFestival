@@ -68,7 +68,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     if (lastScrollRef.current && !isScrollToTop) {
       lastScrollRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-    if (prevScrollHeight && scrollRef.current) {
+    if (isScrollToTop && prevScrollHeight && scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current?.scrollHeight - prevScrollHeight;
       return setPrevScrollHeight(null);
     }
@@ -84,7 +84,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
         return;
       }
 
-      if (target2 < 20) {
+      if (target2 < 5) {
         setPrevScrollHeight(scrollRef.current?.scrollHeight);
       }
 
@@ -93,7 +93,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   };
 
   const chatArrayFromChatLogData = useMemo(() => {
-    return Array.from(chatLogData);
+    return Array.from(chatLogData) || [];
   }, [chatLogData]);
 
   return (
@@ -138,6 +138,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
           })}
         <div ref={lastScrollRef}></div>
       </ChatDisplayContainer>
+
       <InputChatPanel
         value={inputValue}
         onChange={handleValue}
