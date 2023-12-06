@@ -120,7 +120,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     const groupInfo = await this.groupService.getGroupInfo(Number(roomId));
     this.server.to(roomId).emit('roomInfo', groupInfo);
     this.server.to(roomId).emit('unread', unreadCountMap);
-    this.server.to(roomId).emit('userListInfo', chatUsers);
+    this.sendChangeUserListInfoMessage(roomId, chatUsers);
     this.server.to(roomId).emit('chat', message);
   }
 
