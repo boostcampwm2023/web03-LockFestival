@@ -157,6 +157,9 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   }
 
   sendChangeUserListInfoMessage(roomId: string, chatUsers: ChatUserInfoDto[]) {
+    if (!this.socketsInRooms[roomId]) {
+      return;
+    }
     Object.values(this.socketsInRooms[roomId]).forEach((session) => {
       session.socket.emit(
         'userListInfo',
