@@ -187,4 +187,69 @@ export class GroupRepository extends Repository<Group> {
       throw new HttpException('Error getting group information', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+  async findGroupByGroupId(groupId: number) {
+    return await this.dataSource
+      .createQueryBuilder(Group, 'group')
+      .select([
+        'group.recruitment_completed as recruitmentCompleted',
+        'group.current_members as currentMembers',
+        'user.nickname as nickname',
+      ])
+      .where('group.id = :groupId', { groupId })
+      .innerJoin(User, 'user', 'group.leader_id = user.id')
+      .getRawOne();
+  }
+
+  async deleteGroupByNicknameAndGroupId(groupId: number, nickname: string) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    let leaderFlag = false;
+    try {
+      await queryRunner.startTransaction();
+      const group = await queryRunner.manager.findOne(Group, {
+        where: { id: groupId },
+        relations: ['leader'],
+      });
+
+      if (!group) {
+        throw new HttpException('해당 그룹은 존재하지 않습니다.', HttpStatus.BAD_REQUEST);
+      }
+
+      const { recruitmentCompleted, currentMembers, leader } = group;
+
+      if (recruitmentCompleted) {
+        throw new HttpException(
+          '모집 완료 상태의 그룹은 나갈 수 없습니다.',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+      if (nickname === leader.nickname && currentMembers >= 2) {
+        throw new HttpException(
+          '방장은 다른 멤버가 있으면 나갈 수 없습니다.',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+      await queryRunner.manager
+        .createQueryBuilder(UserGroup, 'user_group')
+        .delete()
+        .where('user_group.group_id = :groupId', { groupId })
+        .andWhere('user_group.user_id IN (SELECT id FROM `user` WHERE nickname = :nickname)', {
+          nickname,
+        })
+        .execute();
+      if (nickname === leader.nickname) {
+        leaderFlag = true;
+        await queryRunner.manager.delete(Group, { id: groupId });
+      } else {
+        group.currentMembers -= 1;
+        await queryRunner.manager.save(group);
+      }
+      await queryRunner.commitTransaction();
+      return leaderFlag;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
 }

@@ -11,7 +11,7 @@ import {
 import { ChatService } from '@chat/chat.service';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
-import { Injectable, Logger, ParseIntPipe } from '@nestjs/common';
+import { Logger, ParseIntPipe, Injectable } from '@nestjs/common';
 import { PayloadDto } from '@auth/dtos/payload.dto';
 import { ConfigService } from '@nestjs/config';
 import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
@@ -25,6 +25,7 @@ import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
     origin: '*',
   },
 })
+@Injectable()
 export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   private logger: Logger = new Logger('EventsGateway');
   @WebSocketServer()
@@ -103,6 +104,23 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     });
     client.emit('chatLog', chatMessageResponseDto);
     return 'ok';
+  }
+
+  async leave(roomId: string, nickname: string, isLeader: boolean) {
+    if (isLeader) {
+      await this.chatService.deleteRoomByLeader(roomId);
+      return;
+    }
+
+    const { unreadCountMap, chatUsers, message } = await this.chatService.leaveChatRoom(
+      roomId,
+      nickname
+    );
+    const groupInfo = await this.groupService.getGroupInfo(Number(roomId));
+    this.server.to(roomId).emit('roomInfo', groupInfo);
+    this.server.to(roomId).emit('unread', unreadCountMap);
+    this.server.to(roomId).emit('userListInfo', chatUsers);
+    this.server.to(roomId).emit('chat', message);
   }
 
   @SubscribeMessage('chat')

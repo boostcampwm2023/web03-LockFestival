@@ -9,6 +9,7 @@ import {
   Query,
   Req,
   Res,
+  Delete,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -104,5 +105,21 @@ export class GroupController {
     return res
       .status(HttpStatus.OK)
       .json({ success: true, message: 'Successfully entered the group!' });
+  }
+
+  @Delete(':groupId')
+  @UseGuards(TokenAuthGuard)
+  @ApiOperation({
+    summary: '해당 그룹에서 나가기 ',
+    description: '그룹과 채팅방을 삭제합니다.',
+  })
+  @ApiParam({
+    name: 'groupId',
+    description: '나가고자 하는 그룹의 groupId',
+  })
+  @ApiBearerAuth('Authorization')
+  async exitGroup(@Param('groupId', ParseIntPipe) groupId: number, @Req() { user }) {
+    const leaderFlag = await this.groupService.leaveGroup(groupId, user.nickname);
+    await this.eventsGateway.leave(String(groupId), user.nickname, leaderFlag);
   }
 }
