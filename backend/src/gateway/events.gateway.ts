@@ -113,15 +113,8 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       return;
     }
 
-    const { unreadCountMap, chatUsers, message } = await this.chatService.leaveChatRoom(
-      roomId,
-      nickname
-    );
-    const groupInfo = await this.groupService.getGroupInfo(Number(roomId));
-    this.server.to(roomId).emit('roomInfo', groupInfo);
-    this.server.to(roomId).emit('unread', unreadCountMap);
-    this.sendChangeUserListInfoMessage(roomId, chatUsers);
-    this.server.to(roomId).emit('chat', message);
+    const message: ChatMessageDto = await this.chatService.leaveChatRoom(roomId, nickname);
+    await this.sendChangeUserBroadcastMessage(roomId, message);
   }
 
   @SubscribeMessage('chat')

@@ -119,13 +119,7 @@ export class ChatService {
   async leaveChatRoom(roomId: string, nickname: string) {
     await this.chatRepository.updateUserInfoOnLeave(roomId, nickname);
     const message = await this.chatRepository.createOutMessageByLeaveEvent(roomId, nickname);
-    const chatUsers = await this.chatRepository.findUserListWithLeavedUserByRoomId(roomId);
-    const unreadCountMap = this.makeUnreadCountMap(
-      chatUsers.filter(({ isLeave }) => {
-        return !isLeave;
-      })
-    );
-    return { chatUsers, unreadCountMap, message };
+    return message;
   }
   async deleteRoomByLeader(roomId: string) {
     await this.chatRepository.deleteRoomByLeader(roomId);
