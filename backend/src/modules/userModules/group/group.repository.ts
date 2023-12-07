@@ -280,20 +280,18 @@ export class GroupRepository extends Repository<Group> {
     }
   }
 
-  async editGroupInfo(groupEditDto: GroupEditDto): Promise<GroupInfoResponseDto> {
+  async editGroupInfo(groupEditDto: GroupEditDto): Promise<any> {
     const queryRunner = this.dataSource.createQueryRunner();
     try {
       await queryRunner.startTransaction();
-      const group = await queryRunner.manager.findOne(Group, {
-        where: { id: groupEditDto.groupId },
-        relations: ['leader', 'theme'],
-      });
-      const { theme, leader } = group;
-      if (leader.nickname !== groupEditDto.leaderNickname) {
+      const group = await this.dataSource
+        .createQueryBuilder(Group, 'group')
+        .select(['group.current_members as currentMembers', 'user.nickname as nickname'])
+        .where('group.id = :groupId', { groupId: groupEditDto.groupId })
+        .innerJoin(User, 'user', 'group.leader_id = user.id')
+        .getRawOne();
+      if (group.nickname !== groupEditDto.leaderNickname) {
         throw new HttpException('방장만 정보 수정이 가능합니다.', HttpStatus.BAD_REQUEST);
-      }
-      if (theme.id !== groupEditDto.themeId) {
-        throw new HttpException('테마는 변경할 수 없습니다.', HttpStatus.BAD_REQUEST);
       }
       if (group.currentMembers > groupEditDto.recruitmentMembers) {
         throw new HttpException(
