@@ -20,6 +20,7 @@ import { GroupService } from '@group/group.service';
 import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
 import { ChatLeaveRoomDto } from '@chat/dtos/chat.leave.dto';
 import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
+import { GroupEditDto } from '@group/dtos/group.edit.dto';
 
 @Injectable()
 @WebSocketGateway({
@@ -173,6 +174,23 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     const messageObject: ChatMessageDto = await this.chatService.createMessageByChat(request);
     client.to(roomId).emit('chat', messageObject);
     return 'ok';
+  }
+
+  @SubscribeMessage('roomInfo')
+  async handleRoomInfo(
+    @MessageBody('roomInfo') roomInfo: GroupEditDto,
+    @ConnectedSocket() client: Socket
+  ) {
+    const roomId = this.exportGroupId(client);
+    const userId = this.socketsInRooms[roomId][client.id];
+    const nickname = await this.chatService.getNicknameByChatUserId(userId);
+
+    const editedGroupInfo = await this.groupService.editGroupInfo({
+      ...roomInfo,
+      groupId: Number(roomId),
+      leaderNickname: nickname,
+    });
+    client.to(roomId).emit('roomInfo', editedGroupInfo);
   }
 
   async sendChangeUserBroadcastMessage(roomId: string, chatMessageDto: ChatMessageDto) {
