@@ -36,6 +36,7 @@ const MessageContent = styled.div([
   css`
     text-align: center;
     word-break: break-all;
+    white-space: pre-wrap;
   `,
 ]);
 

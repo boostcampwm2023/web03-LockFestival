@@ -87,6 +87,7 @@ const MessageContent = styled.div([
     max-width: 25rem;
     width: fit-content;
     word-break: break-all;
+    white-space: pre-wrap;
   `,
 ]);
 
