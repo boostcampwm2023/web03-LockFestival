@@ -217,4 +217,17 @@ export class ThemeRepository extends Repository<Theme> {
         .getRawMany(),
     ]);
   }
+
+  async getThemeNameBranchNameBrandNameByThemeId(themeId: number): Promise<Record<string, string>> {
+    return await this.dataSource
+      .createQueryBuilder()
+      .select('brand.brand_name as brandName')
+      .addSelect('branch.branch_name as branchName')
+      .addSelect('theme.name as themeName')
+      .from(Theme, 'theme')
+      .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
+      .innerJoin(Brand, 'brand', 'branch.brand_id = brand.id')
+      .where('theme.id = :themeId', { themeId })
+      .getRawOne();
+  }
 }
