@@ -13,8 +13,10 @@ const Search = () => {
   const targetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    refetch();
-  }, [query]);
+    if (query !== '') {
+      refetch();
+    }
+  }, [query, refetch]);
 
   useIntersectionObserver({
     eventHandler: fetchNextPage,
