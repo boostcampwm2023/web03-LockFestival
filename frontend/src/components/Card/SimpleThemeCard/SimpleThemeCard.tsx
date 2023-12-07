@@ -31,6 +31,7 @@ const SimpleThemeCard = ({ themeId, themeName, posterImageUrl }: SimpleThemeCard
 const CardContainer = styled.div([
   tw`font-pretendard text-white bg-gray`,
   tw`desktop:(text-s h-[28.4rem] w-[18.2rem] rounded-[2rem])`,
+  tw`tablet:(text-s h-[20.6rem] w-[14.2rem] rounded-[2rem])`,
   tw`mobile:(text-xs h-[20.3rem] w-[12.8rem] rounded-[1.4rem])`,
   css`
     display: flex;
@@ -44,6 +45,7 @@ const CardContainer = styled.div([
 const CardImg = styled.img([
   tw`mb-2 rounded-[1.5rem]`,
   tw`desktop:(w-[15.6rem] h-[23.6rem])`,
+  tw`tablet:(w-[12.6rem] h-[18.6rem])`,
   tw`mobile:(w-[10rem] h-[16rem])`,
 ]);
 const CardText = styled.span([

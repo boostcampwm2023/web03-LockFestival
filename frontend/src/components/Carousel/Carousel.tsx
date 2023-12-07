@@ -35,6 +35,7 @@ const Carousel = ({ children }: CarouselProps) => {
 const CarouselContainer = styled.div([
   tw`w-full bg-gray-light rounded-default`,
   tw`desktop:(max-w-[102.4rem] h-[32.4rem])`,
+  tw`tablet:(max-w-[78rem] h-[32.4rem])`,
   tw`mobile:(max-w-[43rem] h-[21.6rem])`,
   css`
     display: flex;

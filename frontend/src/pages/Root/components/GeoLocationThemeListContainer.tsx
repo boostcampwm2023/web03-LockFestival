@@ -49,6 +49,7 @@ const Text = styled.div([
     display: flex;
     align-items: center;
     justify-self: center;
+    align-self: flex-start;
   `,
 ]);
 
