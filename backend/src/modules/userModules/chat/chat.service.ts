@@ -22,8 +22,8 @@ export class ChatService {
       return chatUser.updateIsMe(chatUser.nickname === nickname);
     });
 
-    const meUser: ChatUserInfoDto = chatUsers.find(({ isMe }) => {
-      return isMe;
+    const meUser: ChatUserInfoDto = chatUsers.find(({ isMe, isLeave }) => {
+      return isMe && !isLeave;
     });
 
     const unreadCountMap = this.makeUnreadCountMap(
