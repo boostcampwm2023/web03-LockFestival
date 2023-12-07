@@ -49,7 +49,7 @@ const Search = () => {
 export default Search;
 
 const Layout = styled.div([
-  tw`w-full mx-auto mt-[4rem]`,
+  tw`w-full mx-auto mt-[4rem] pb-[4rem]`,
   css`
     display: flex;
     flex-direction: column;
@@ -59,7 +59,7 @@ const Layout = styled.div([
 ]);
 
 const CardList = styled.div([
-  tw`w-full desktop:(max-w-[97rem] pb-[10rem]) tablet:(flex-col) mobile:(flex-col min-w-[34rem] pb-[4rem])`,
+  tw`w-full desktop:(max-w-[97rem]) tablet:(flex-col) mobile:(flex-col min-w-[34rem])`,
   css`
     display: flex;
     flex-wrap: wrap;
