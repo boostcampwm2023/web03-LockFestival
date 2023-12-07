@@ -5,14 +5,22 @@ import { useRecoilValue } from 'recoil';
 import MyChatBox from './BoxType/MyChatBox';
 import OtherChatBox from './BoxType/OtherChatBox';
 import SystemChatBox from './BoxType/SystemChatBox';
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 interface Props extends ChatLog {
   logId: string;
   isFirstChat: boolean;
   isLastChat: boolean;
 }
 
-const MessageBox = ({ logId, message, userId, type, time, isFirstChat, isLastChat }: Props) => {
+const MessageBox = memo(function MessageBox({
+  logId,
+  message,
+  userId,
+  type,
+  time,
+  isFirstChat,
+  isLastChat,
+}: Props) {
   const chatUnread = useRecoilValue(chatUnreadAtom);
   const userData = useRecoilValue(userListInfoAtom);
   const myData = userData?.get(userId) || {
@@ -72,7 +80,7 @@ const MessageBox = ({ logId, message, userId, type, time, isFirstChat, isLastCha
       )}
     </Layout>
   );
-};
+});
 
 const Layout = styled.div<{ isMe: boolean; type: string }>(({ isMe, type }) => [
   css`
