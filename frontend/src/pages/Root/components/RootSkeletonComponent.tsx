@@ -42,7 +42,8 @@ const RootSkeletonComponent = () => {
 
 const CardListContainer = styled.div([
   tw`bg-gray-light rounded-default `,
-  tw`desktop:(px-4 h-[32.4rem])`,
+  tw`desktop:(px-4 h-[32.4rem] gap-[3.4rem])`,
+  tw`tablet:(px-4 h-[32.4rem])`,
   tw`mobile:(px-2  h-[21.6rem])`,
   css`
     display: flex;
@@ -69,6 +70,7 @@ const SkeletonLabel = styled.div([
     background: #f2f2f2;
     position: relative;
     overflow: hidden;
+    align-self: flex-start;
 
     &::before {
       content: '';
@@ -87,6 +89,7 @@ const SkeletonLabel = styled.div([
 const SkeletonCard = styled.div`
   ${tw`mb-2 rounded-[1.5rem] bg-gray`}
   ${tw`desktop:(w-[16.8rem] h-[26.4rem])`}
+  ${tw`tablet:(w-[14.2rem] h-[20.4rem])`}
   ${tw`mobile:(w-[10rem] h-[16rem])`}
   background: #222222;
   position: relative;
