@@ -23,8 +23,9 @@ const Search = () => {
 
   return (
     <Layout>
-      {query !== '' && (
+      {
         <>
+          <InfoText>{query === '' ? '전체 테마결과' : `'${query}'  검색 결과`}</InfoText>
           {isFetching && <TextInfo>검색 중...</TextInfo>}
           {data?.pages.map((page) => (
             <>
@@ -33,15 +34,15 @@ const Search = () => {
                   {page.data.map((theme: ThemeDetailsData) => (
                     <Card key={theme.themeId} theme={theme} />
                   ))}
-                  <div ref={targetRef} />
                 </CardList>
               ) : (
                 <TextInfo>찾는 테마가 없습니다.</TextInfo>
               )}
             </>
           ))}
+          <div ref={targetRef} />
         </>
-      )}
+      }
     </Layout>
   );
 };
@@ -57,6 +58,8 @@ const Layout = styled.div([
     align-items: center;
   `,
 ]);
+
+const InfoText = styled.div([tw`font-maplestory text-xl text-white mb-6 self-start ml-[12rem]`]);
 
 const CardList = styled.div([
   tw`w-full desktop:(max-w-[97rem]) tablet:(flex-col) mobile:(flex-col min-w-[34rem])`,
