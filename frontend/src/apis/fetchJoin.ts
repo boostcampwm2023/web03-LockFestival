@@ -1,13 +1,7 @@
 import userInstance from '@config/userInstance';
+import { JoinData } from 'types/profile';
 
-interface JoinData {
-  nickname: string;
-  profileImageUrl: string | null;
-  favoriteGenres: string[];
-  favoriteThemes: string[];
-}
-
-const fetchJoin = async (joinData: JoinData) => {
+const fetchJoin = async (joinData: JoinData | undefined) => {
   return (
     await userInstance({
       method: 'patch',
