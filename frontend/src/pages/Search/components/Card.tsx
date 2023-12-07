@@ -4,7 +4,7 @@ import HeadCard from './Card/HeadCard/HeadCard';
 import TailCard from './Card/TailCard/TailCard';
 import { useState } from 'react';
 
-const Card = ({ theme }: { theme: Omit<ThemeDetailsData, 'otherThemes'> }) => {
+const Card = ({ theme }: { theme: ThemeDetailsData }) => {
   const [isHead, setIsHead] = useState<boolean>(true);
 
   const {
@@ -57,13 +57,12 @@ const Card = ({ theme }: { theme: Omit<ThemeDetailsData, 'otherThemes'> }) => {
 export default Card;
 
 const Layout = styled.div<{ isHead: boolean }>(({ isHead }) => [
-  tw`w-[48%] text-white bg-gray-light rounded-default p-4`,
+  tw`text-white bg-gray-light rounded-default p-4 h-[26rem] desktop:(w-[49%]) tablet:(mx-auto max-w-[47.5rem]) mobile:(mx-auto w-[100%] h-[20.4rem])`,
   css`
     display: flex;
     gap: 1.6rem;
     position: relative;
     transition: transform 0.3s;
     transform: ${isHead ? 'perspective(50%) rotateY(0deg)' : 'perspective(50%) rotateY(180deg)'};
-    height: 28rem;
   `,
 ]);

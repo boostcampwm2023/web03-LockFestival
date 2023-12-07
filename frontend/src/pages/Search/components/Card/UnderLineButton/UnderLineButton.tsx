@@ -12,7 +12,7 @@ const UnderLineButton = ({ children, onClick }: ButtonProps) => {
 export default UnderLineButton;
 
 const UnderlineButton = styled.button([
-  tw`font-pretendard text-l text-white bg-transparent`,
+  tw`font-pretendard text-m text-white bg-transparent mobile:(text-s)`,
   css`
     cursor: pointer;
 

@@ -1,4 +1,4 @@
-import { styled, css } from 'twin.macro';
+import tw, { styled, css } from 'twin.macro';
 import { ThemeExtraData } from 'types/theme';
 import UnderLineButton from '../UnderLineButton/UnderLineButton';
 import CardInfoLabel from '../CardInfoLabel/CardInfoLabel';
@@ -50,10 +50,10 @@ const TailCard = ({
           <CardInfoLabel labelName="장르" labelContent={<>{realGenre}</>} />
           <CardInfoLabel labelName="난이도" labelContent={<>{difficulty}</>} />
         </CardInfoWrapper>
+        <ButtonWrapper>
+          <UnderLineButton children={<>상세보기</>} onClick={handleClickFlipButton} />
+        </ButtonWrapper>
       </CardInfoContainer>
-      <ButtonWrapper>
-        <UnderLineButton children={<>상세보기</>} onClick={handleClickFlipButton} />
-      </ButtonWrapper>
     </Layout>
   );
 };
@@ -66,24 +66,23 @@ const Layout = styled.div([
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1.5rem;
-    width: 100%;
   `,
+  tw`w-[47.5rem] gap-4 mobile:(w-[100%] gap-2)`,
 ]);
 
 const CardInfoContainer = styled.div([
   css`
     display: flex;
-    gap: 1.6rem;
   `,
+  tw`gap-4 mobile:(gap-2)`,
 ]);
 
 const CardInfoWrapper = styled.div([
   css`
     display: flex;
     flex-direction: column;
-    gap: 1.6rem;
   `,
+  tw`gap-4 mobile:(gap-2)`,
 ]);
 
 const ButtonWrapper = styled.div([
@@ -92,4 +91,5 @@ const ButtonWrapper = styled.div([
     right: 1.2rem;
     bottom: 1.2rem;
   `,
+  tw`right-[1.2rem] top-[1.2rem] mobile:(top-[0.8rem])`,
 ]);
