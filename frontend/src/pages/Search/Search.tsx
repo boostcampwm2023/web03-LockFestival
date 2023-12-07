@@ -13,9 +13,7 @@ const Search = () => {
   const targetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (query !== '') {
-      refetch();
-    }
+    refetch();
   }, [query, refetch]);
 
   useIntersectionObserver({
@@ -44,15 +42,17 @@ const Layout = styled.div([
   css`
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
   `,
 ]);
 
 const CardList = styled.div([
-  tw`desktop:(max-w-[102.4rem] pb-[10rem]) tablet:(flex-col) mobile:(flex-col min-w-[34rem] pb-[4rem])`,
+  tw`w-full desktop:(max-w-[102.4rem] pb-[10rem]) tablet:(flex-col) mobile:(flex-col min-w-[34rem] pb-[4rem])`,
   css`
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
+    width: 100%;
   `,
 ]);

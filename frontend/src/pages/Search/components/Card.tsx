@@ -57,7 +57,7 @@ const Card = ({ theme }: { theme: ThemeDetailsData }) => {
 export default Card;
 
 const Layout = styled.div<{ isHead: boolean }>(({ isHead }) => [
-  tw`text-white bg-gray-light rounded-default p-4 h-[26rem] desktop:(w-[47.5rem]) tablet:(mx-auto w-[47.5rem]) mobile:(mx-auto w-[100%] h-[20.4rem])`,
+  tw`text-white bg-gray-light rounded-default p-4 h-[26rem] desktop:(w-[47.5rem]) tablet:(mx-auto w-[47.5rem]) mobile:(mx-auto w-[90%] h-[20.4rem])`,
   css`
     display: flex;
     gap: 1.6rem;

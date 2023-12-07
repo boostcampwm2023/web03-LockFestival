@@ -72,6 +72,7 @@ const Layout = styled.div([
     display: flex;
     align-items: center;
     gap: 1.2rem;
+    width: 100%;
   `,
 ]);
 
@@ -93,8 +94,8 @@ const RightSection = styled.div([
 const ButtonWrapper = styled.div([
   css`
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     margin-top: 12%;
   `,
-  tw`w-[95%]`,
+  tw`w-[100%]`,
 ]);
