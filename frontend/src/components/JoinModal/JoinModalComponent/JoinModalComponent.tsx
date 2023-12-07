@@ -4,7 +4,7 @@ import { ModalProps } from 'types/modal';
 import useInput from '@hooks/useInput';
 import StepOneContent from './StepOneContent/StepOneContent';
 import StepTwoContent from './StepTwoContent/StepTwoContent';
-import useJoinMutation from '@hooks/mutation/useJoinMutations';
+import useJoinMutation from '@hooks/mutation/useJoinMutation';
 import { JoinData } from 'types/profile';
 interface JoinModalProps {
   onClose: ModalProps['onClose'];
@@ -17,7 +17,7 @@ function JoinModalComponent({ onClose }: JoinModalProps) {
   const [nameInput, setNameInput] = useInput('');
   const [selectGenre, setSelectGenre] = useState<Set<string>>(new Set());
   const [userData, setUserData] = useState<JoinData>();
-  const { mutate, status } = useJoinMutation(userData);
+  const { mutate } = useJoinMutation(userData);
 
   const selectGenreHandler = (idx: string) => {
     setSelectGenre((prevSet) => {
