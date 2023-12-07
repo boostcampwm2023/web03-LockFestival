@@ -9,7 +9,7 @@ import useIntersectionObserver from '@hooks/useIntersectionObserver';
 const Search = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('query') || '';
-  const { data, fetchNextPage, refetch } = useSearchThemeInfiniteQuery(query);
+  const { data, fetchNextPage, isFetching, refetch } = useSearchThemeInfiniteQuery(query);
   const targetRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -23,14 +23,24 @@ const Search = () => {
 
   return (
     <Layout>
-      <CardList>
-        {data?.pages.map((page) => {
-          return page.data.map((theme: ThemeDetailsData) => (
-            <Card key={theme.themeId} theme={theme} />
-          ));
-        })}
-        <div ref={targetRef} />
-      </CardList>
+      {query !== '' && (
+        <>
+          {isFetching && <TextInfo>검색 중...</TextInfo>}
+          {data?.pages.map((page) => (
+            <>
+              {page.data.length > 0 ? (
+                <CardList>
+                  {page.data.map((theme: ThemeDetailsData) => (
+                    <Card key={theme.themeId} theme={theme} />
+                  ))}
+                </CardList>
+              ) : (
+                <TextInfo>찾는 테마가 없습니다.</TextInfo>
+              )}
+            </>
+          ))}
+        </>
+      )}
     </Layout>
   );
 };
@@ -48,11 +58,14 @@ const Layout = styled.div([
 ]);
 
 const CardList = styled.div([
-  tw`w-full desktop:(max-w-[102.4rem] pb-[10rem]) tablet:(flex-col) mobile:(flex-col min-w-[34rem] pb-[4rem])`,
+  tw`w-full desktop:(max-w-[97rem] pb-[10rem]) tablet:(flex-col) mobile:(flex-col min-w-[34rem] pb-[4rem])`,
   css`
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     gap: 1.5rem;
     width: 100%;
   `,
 ]);
+
+const TextInfo = styled.div([tw`font-pretendard text-l text-white mx-auto`]);
