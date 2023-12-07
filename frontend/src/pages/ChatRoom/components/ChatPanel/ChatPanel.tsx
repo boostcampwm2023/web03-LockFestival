@@ -69,7 +69,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
 
   useEffect(() => {
     if (!isScrollToTop) {
-      lastScrollRef?.current?.scrollIntoView({ block: 'end', behavior: 'auto' });
+      lastScrollRef?.current?.scrollIntoView({ block: 'start', behavior: 'auto' });
     }
     if (scrollRef.current && scrollRef.current.scrollTop < 10 && prevScrollHeight) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight - prevScrollHeight;
