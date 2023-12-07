@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ThemeDeatailsWithoutBrandBranchDto } from '@theme/dtos/theme.detail.without.brandbranch.dto';
+import { ThemeDetailsWithoutBrandBranchDto } from '@theme/dtos/theme.detail.without.brandbranch.dto';
 
-export class ThemeDeatailsWithBranchNameResponseDto extends ThemeDeatailsWithoutBrandBranchDto {
+export class ThemeDetailsWithBranchNameResponseDto extends ThemeDetailsWithoutBrandBranchDto {
   @ApiProperty({ example: '넥스트에디션' })
   branchName: string;
 
-  constructor(options: Partial<ThemeDeatailsWithBranchNameResponseDto>) {
+  constructor(options: Partial<ThemeDetailsWithBranchNameResponseDto>) {
     super(options);
     this.branchName = options.branchName;
   }
