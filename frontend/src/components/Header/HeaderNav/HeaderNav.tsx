@@ -1,14 +1,12 @@
 import tw, { css, styled } from 'twin.macro';
-import { useState } from 'react';
 import { NavMenu } from 'types/navMenu';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 const HeaderNav = () => {
   const navigate = useNavigate();
-  const [selectedItem, setSelectedItem] = useState<NavMenu>('');
+  const location = useLocation();
 
   const handleSelectedItem = (item: NavMenu) => {
-    setSelectedItem(item);
-    navigate(`/${item}`);
+    navigate(`${item}`);
   };
 
   return (
@@ -16,18 +14,18 @@ const HeaderNav = () => {
       <HeaderLogo
         src="/assets/images/logo/Big-Dark.png"
         alt="logo"
-        onClick={() => handleSelectedItem('')}
+        onClick={() => handleSelectedItem('/')}
       />
       <NavContainer>
         <NavItem
-          onClick={() => handleSelectedItem('recruitment')}
-          isSelected={selectedItem === 'recruitment'}
+          onClick={() => handleSelectedItem('/recruitment')}
+          isSelected={location.pathname === '/recruitment'}
         >
           탈출러 모집
         </NavItem>
         <NavItem
-          onClick={() => handleSelectedItem('room-list')}
-          isSelected={selectedItem === 'room-list'}
+          onClick={() => handleSelectedItem('/room-list')}
+          isSelected={location.pathname === '/room-list'}
         >
           그룹 채팅방
         </NavItem>
@@ -37,6 +35,7 @@ const HeaderNav = () => {
 };
 
 const Nav = styled.nav([
+  tw`text-l`,
   css`
     display: flex;
     align-items: center;
@@ -45,15 +44,17 @@ const Nav = styled.nav([
 
 const HeaderLogo = styled.img([
   tw`desktop:(w-[18rem] h-[3.6rem])`,
-  tw`mobile:(w-[18rem] h-[3.2rem])`,
+  tw`tablet:(w-[14rem] h-[3.2rem])`,
+  tw`mobile:(w-[10rem] h-[2.8rem])`,
   css`
     cursor: pointer;
   `,
 ]);
 
 const NavContainer = styled.ul([
-  tw`border border-white border-solid`,
-  tw`desktop:(w-[40rem] h-[3.6rem] mx-4 rounded-[4rem])`,
+  tw`border border-white border-solid rounded-[4rem]`,
+  tw`desktop:(w-[40rem] h-[3.6rem] mx-4)`,
+  tw`tablet:(w-[32rem] h-[3.2rem] mx-2)`,
   tw`mobile:(hidden)`,
   css`
     display: grid;
@@ -68,7 +69,8 @@ const NavItem = styled.li<{ isSelected: boolean }>(({ isSelected }) => [
   tw`
     h-full px-5
   `,
-  tw`desktop:(rounded-[4rem])`,
+  tw`rounded-[4rem]`,
+
   css`
     display: flex;
     align-items: center;
