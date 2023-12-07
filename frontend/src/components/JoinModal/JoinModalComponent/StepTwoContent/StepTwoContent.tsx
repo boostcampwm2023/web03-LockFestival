@@ -1,16 +1,15 @@
 import tw, { styled, css } from 'twin.macro';
 import Button from '@components/Button/Button';
 import { genreList } from '@constants/themeGenres';
-import { ModalProps } from 'types/modal';
 import ThemeButton from './ThemeButton/ThemeButton';
 
 interface StepTwoContentProps {
   selectGenre: Set<string>;
   setSelectGenre: (genre: string) => void;
-  onClose: ModalProps['onClose'];
+  joinHandler: () => void;
 }
 
-function StepTwoContent({ selectGenre, setSelectGenre, onClose }: StepTwoContentProps) {
+function StepTwoContent({ selectGenre, setSelectGenre, joinHandler }: StepTwoContentProps) {
   const NOT_SELECT = 0;
 
   return (
@@ -29,7 +28,7 @@ function StepTwoContent({ selectGenre, setSelectGenre, onClose }: StepTwoContent
         </ThemeButtonsContainer>
       </TopWrapper>
       <ButtonWrapper>
-        <Button isIcon={false} onClick={onClose} disabled={selectGenre.size === NOT_SELECT}>
+        <Button isIcon={false} onClick={joinHandler} disabled={selectGenre.size === NOT_SELECT}>
           <>완료</>
         </Button>
       </ButtonWrapper>
