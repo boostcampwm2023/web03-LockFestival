@@ -1,4 +1,4 @@
-import tw, { styled } from 'twin.macro';
+import tw, { css, styled } from 'twin.macro';
 import Header from './Header/Header';
 import { Outlet } from 'react-router-dom';
 import Modals from './Modals/Modals';
@@ -15,7 +15,7 @@ const Layout = () => {
   );
 };
 
-const Container = styled.div([tw`bg-gray-dark h-auto w-full min-h-screen`]);
+const Container = styled.div([tw`bg-gray-dark h-auto w-full min-h-screen mobile:(min-w-[34rem])`]);
 
 const Main = styled.main([]);
 
