@@ -1,4 +1,4 @@
-import tw, { css, styled } from 'twin.macro';
+import tw, { styled } from 'twin.macro';
 import Header from './Header/Header';
 import { Outlet } from 'react-router-dom';
 import Modals from './Modals/Modals';
