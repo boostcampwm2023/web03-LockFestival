@@ -4,7 +4,7 @@ import UnderLineButton from '../UnderLineButton/UnderLineButton';
 import CardInfoLabel from '../CardInfoLabel/CardInfoLabel';
 import { useNavigate } from 'react-router-dom';
 
-interface Props extends Omit<ThemeExtraData, 'otherThemes'> {
+interface Props extends ThemeExtraData {
   handleClickFlipButton: () => void;
 }
 
