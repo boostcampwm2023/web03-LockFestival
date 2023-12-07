@@ -20,6 +20,8 @@ const Card = ({ theme }: { theme: ThemeDetailsData }) => {
     website,
     phone,
     address,
+    smallRegion,
+    bigRegion,
   } = theme;
 
   const handleClickFlipButton = () => {
@@ -34,6 +36,8 @@ const Card = ({ theme }: { theme: ThemeDetailsData }) => {
           themeName={themeName}
           posterImageUrl={posterImageUrl}
           brandBranchName={brandBranchName}
+          smallRegion={smallRegion}
+          bigRegion={bigRegion}
           handleClickFlipButton={handleClickFlipButton}
         />
       ) : (

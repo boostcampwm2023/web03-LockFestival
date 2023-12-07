@@ -11,6 +11,8 @@ interface Props {
   posterImageUrl: string;
   brandBranchName: string;
   themeName: string;
+  smallRegion: string | undefined;
+  bigRegion: string | undefined;
   handleClickFlipButton: () => void;
 }
 
@@ -19,13 +21,17 @@ const HeadCard = ({
   posterImageUrl,
   brandBranchName,
   themeName,
+  smallRegion,
+  bigRegion,
   handleClickFlipButton,
 }: Props) => {
   const navigate = useNavigate();
   const { openModal, closeModal } = useModal();
 
   const handleGoRecruitment = () => {
-    navigate('/recruitment');
+    navigate(
+      `/recruitment?smallRegion=${smallRegion}&bigRegion=${bigRegion}&themeName=${themeName}`
+    );
   };
 
   const handleCreateRoom = () => {
