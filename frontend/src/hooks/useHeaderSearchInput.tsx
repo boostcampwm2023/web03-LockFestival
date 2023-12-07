@@ -23,15 +23,22 @@ const useHeaderSearchInput = () => {
   };
 
   useEffect(() => {
+    if (realInputQuery === '' && !isClickSearchButton) {
+      return;
+    }
+
+    if (realInputQuery === '') {
+      navigate(urlBeforeSearch);
+      return;
+    }
+
     if (debounceQuery === '') {
       navigate(urlBeforeSearch);
       resetQuery();
       return;
     }
-    if (debounceQuery !== '') {
-      navigate(`/search?query=${debounceQuery}`);
-      return;
-    }
+
+    navigate(`/search?query=${debounceQuery}`);
   }, [debounceQuery]);
 
   return {
