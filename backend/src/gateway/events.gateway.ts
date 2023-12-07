@@ -32,7 +32,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   @WebSocketServer()
   server: Server;
 
-  socketsInRooms: { [roomId: string]: { [socketId: string]: any } };
+  socketsInRooms: { [roomId: string]: { [socketId: string]: string } };
   socketToRoomId: { [socketId: string]: string };
 
   constructor(
@@ -50,8 +50,8 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   }
 
   hasAnotherSession(roomId: string, userId: string) {
-    return Object.values(this.socketsInRooms[roomId]).find((session) => {
-      return session.userId === userId;
+    return Object.values(this.socketsInRooms[roomId]).find((sessionUserId: string) => {
+      return sessionUserId === userId;
     });
   }
 
@@ -78,7 +78,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       this.server.to(roomId).emit('unread', unreadCountMap);
     }
 
-    this.socketsInRooms[roomId][client.id] = { userId: meUser.userId, socket: client };
+    this.socketsInRooms[roomId][client.id] = meUser.userId;
 
     this.socketToRoomId[client.id] = roomId;
 
@@ -124,7 +124,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   ): Promise<string> {
     this.logger.log(message);
     const roomId = this.exportGroupId(client);
-    const userId = this.socketsInRooms[roomId][client.id].userId;
+    const userId = this.socketsInRooms[roomId][client.id];
 
     const request = new ChatMessageRequestDto(
       message,
@@ -161,11 +161,11 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     if (!this.socketsInRooms[roomId]) {
       return;
     }
-    Object.values(this.socketsInRooms[roomId]).forEach((session) => {
-      session.socket.emit(
+    Object.entries(this.socketsInRooms[roomId]).forEach(([socketId, sessionUserId]) => {
+      this.server.sockets.sockets.get(socketId).emit(
         'userListInfo',
         chatUsers.map((chatUser: ChatUserInfoDto) => {
-          return chatUser.updateIsMe(!chatUser.isLeave && chatUser.userId === session.userId);
+          return chatUser.updateIsMe(!chatUser.isLeave && chatUser.userId === sessionUserId);
         })
       );
     });
@@ -182,7 +182,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     if (!roomId) {
       return;
     }
-    const userId = this.socketsInRooms[roomId][client.id].userId;
+    const userId = this.socketsInRooms[roomId][client.id];
 
     delete this.socketsInRooms[roomId][client.id];
     delete this.socketToRoomId[client.id];
