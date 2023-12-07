@@ -1,12 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ModalProps } from 'types/modal';
 
 import useInput from '@hooks/useInput';
 import StepOneContent from './StepOneContent/StepOneContent';
 import StepTwoContent from './StepTwoContent/StepTwoContent';
-import fetchJoin from '@apis/fetchJoin';
-import useProfileQuery from '@hooks/useProfileQuery';
-
+import useJoinMutation from '@hooks/mutation/useJoinMutations';
+import { JoinData } from 'types/profile';
 interface JoinModalProps {
   onClose: ModalProps['onClose'];
 }
@@ -17,7 +16,9 @@ function JoinModalComponent({ onClose }: JoinModalProps) {
   const [step, setStep] = useState<number>(STEP1);
   const [nameInput, setNameInput] = useInput('');
   const [selectGenre, setSelectGenre] = useState<Set<string>>(new Set());
-  const { refetch } = useProfileQuery();
+  const [userData, setUserData] = useState<JoinData>();
+  const { mutate, status } = useJoinMutation(userData);
+
   const selectGenreHandler = (idx: string) => {
     setSelectGenre((prevSet) => {
       const newSet = new Set(prevSet);
@@ -30,22 +31,21 @@ function JoinModalComponent({ onClose }: JoinModalProps) {
     });
   };
 
-  const joinHandler = async () => {
-    const userData = {
+  useEffect(() => {
+    if (userData) {
+      mutate();
+      onClose();
+    }
+  }, [userData]);
+
+  const joinHandler = () => {
+    const totalUserData = {
       nickname: nameInput,
       profileImageUrl: null,
       favoriteGenres: Array.from(selectGenre),
       favoriteThemes: [],
     };
-
-    try {
-      const { token } = await fetchJoin(userData);
-      localStorage.setItem('accessToken', token);
-      onClose();
-      refetch();
-    } catch (error) {
-      alert('서버에러');
-    }
+    setUserData(totalUserData);
   };
 
   const nextStep = () => {
@@ -61,7 +61,7 @@ function JoinModalComponent({ onClose }: JoinModalProps) {
         <StepTwoContent
           selectGenre={selectGenre}
           setSelectGenre={selectGenreHandler}
-          onClose={joinHandler}
+          joinHandler={joinHandler}
         />
       )}
     </>
