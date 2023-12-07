@@ -21,12 +21,14 @@ const HeaderContainer = styled.header([
 ]);
 
 const HeaderInnerContainer = styled.div([
-  tw`desktop:(mx-4 h-[6rem])`,
-  tw`mobile:(mx-2 h-[5rem])`,
+  tw`desktop:(h-[6rem])`,
+  tw`tablet:(h-[6rem])`,
+  tw`mobile:(h-[5rem])`,
   css`
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
+    width: 100%;
   `,
 ]);
 

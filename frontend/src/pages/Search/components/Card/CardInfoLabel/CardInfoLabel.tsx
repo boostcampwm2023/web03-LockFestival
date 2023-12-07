@@ -9,7 +9,7 @@ interface Props {
 const CardInfoLabel = ({ labelName, labelContent }: Props) => {
   return (
     <LabelWrapper>
-      <Label isBorder={false} size="l" width="10rem">
+      <Label isBorder={false} size="m" width="9rem">
         <Text>{labelName}</Text>
       </Label>
       <LabelContent>{labelContent}</LabelContent>
@@ -23,15 +23,17 @@ const LabelWrapper = styled.div([
   css`
     display: flex;
     gap: 1.2rem;
+    width: 100%;
   `,
 ]);
 
 const Text = styled.div([tw`m-auto`]);
 
 const LabelContent = styled.div([
-  tw`font-pretendard text-l text-white`,
+  tw`font-pretendard text-m text-white mobile:(text-s)`,
   css`
     display: flex;
+    flex: 1;
     align-items: center;
   `,
 ]);

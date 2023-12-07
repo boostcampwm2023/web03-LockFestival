@@ -16,5 +16,7 @@ export interface ThemeExtraData {
   phone: string;
   address: string;
   website: string;
-  otherThemes: SimpleThemeCardData[];
+  bigRegion?: string;
+  smallRegion?: string;
+  otherThemes?: SimpleThemeCardData[];
 }

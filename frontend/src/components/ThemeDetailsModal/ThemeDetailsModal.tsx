@@ -74,7 +74,7 @@ function ThemeDetailsModal({ themeId, onClose }: ThemeDetailsModalProps) {
             <BottomWrapper>
               <HeadWrapper>{data.brandBranchName}의 다른 테마</HeadWrapper>
               <OtherThemeList>
-                {data.otherThemes.map((theme) => {
+                {data.otherThemes?.map((theme) => {
                   const { themeId, posterImageUrl, themeName } = theme;
                   return (
                     <ThemeCard

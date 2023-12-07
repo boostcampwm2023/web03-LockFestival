@@ -44,7 +44,7 @@ const HeadCard = ({
   };
 
   return (
-    <>
+    <Layout>
       <LeftSection>
         <ThemeImg src={posterImageUrl} alt="테마_이미지" />
       </LeftSection>
@@ -61,28 +61,41 @@ const HeadCard = ({
           <UnderLineButton children={<>상세보기</>} onClick={handleClickFlipButton} />
         </ButtonWrapper>
       </RightSection>
-    </>
+    </Layout>
   );
 };
 
 export default HeadCard;
 
-const LeftSection = styled.div([tw`w-[40%] bg-gray-dark rounded-default p-3`]);
-const ThemeImg = styled.img([tw`w-[100%] rounded-default`]);
+const Layout = styled.div([
+  css`
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    width: 100%;
+  `,
+]);
+
+const LeftSection = styled.div([
+  tw`w-[26rem] h-[100%] bg-gray-dark rounded-default p-3 mobile:(w-[20rem] p-2.5)`,
+]);
+const ThemeImg = styled.img([tw`w-[100%] h-[100%] rounded-default`]);
 const RightSection = styled.div([
   css`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1.6rem;
     padding-top: 14%;
+    width: 100%;
   `,
+  tw`gap-4 pt-[14%] mobile:(gap-2 pt-[10%])`,
 ]);
 
 const ButtonWrapper = styled.div([
   css`
     display: flex;
-    gap: 1.6rem;
-    margin-top: 15%;
+    justify-content: space-around;
+    margin-top: 12%;
   `,
+  tw`w-[100%]`,
 ]);
