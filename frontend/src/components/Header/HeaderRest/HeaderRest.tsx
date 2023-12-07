@@ -22,7 +22,7 @@ const HeaderRest = () => {
   const [profileData, setProfileData] = useRecoilState<Profile>(userAtom);
 
   const {
-    searchInput,
+    realInputQuery,
     handleSearchInput,
     isClickSearchButton,
     handleBlur,
@@ -68,7 +68,7 @@ const HeaderRest = () => {
               <FaSistrix />
             </Button>
             <SearchInput
-              value={searchInput}
+              value={realInputQuery}
               onChange={handleSearchInput}
               onBlur={handleBlur}
               autoFocus
