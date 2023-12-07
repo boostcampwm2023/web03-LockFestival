@@ -86,6 +86,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     client.emit('chatLog', prevMessages);
     client.emit('userListInfo', chatUsers);
+
     return 'ok';
   }
 
@@ -113,14 +114,11 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       return;
     }
     const chatUser = await this.chatService.getChatUserIdByNicknameAndRoomId(roomId, nickname);
-    const { unreadCountMap, chatUsers, message } = await this.chatService.leaveChatRoom(
+    const message = await this.chatService.leaveChatRoom(
       new ChatLeaveRoomDto(roomId, nickname, chatUser._id, ChatType.out)
     );
-    const groupInfo = await this.groupService.getGroupInfo(Number(roomId));
-    this.server.to(roomId).emit('roomInfo', groupInfo);
-    this.server.to(roomId).emit('unread', unreadCountMap);
-    this.server.to(roomId).emit('userListInfo', chatUsers);
-    this.server.to(roomId).emit('chat', message);
+
+    await this.sendChangeUserBroadcastMessage(roomId, message);
   }
 
   @SubscribeMessage('kick')
@@ -129,10 +127,9 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     const nickname = await this.chatService.getNicknameByChatUserId(kickUserId);
     await this.groupService.deleteGroupOnKick(Number(roomId), nickname);
-    const { unreadCountMap, chatUsers, message } = await this.chatService.leaveChatRoom(
+    const message = await this.chatService.leaveChatRoom(
       new ChatLeaveRoomDto(roomId, nickname, kickUserId, ChatType.kick)
     );
-    const groupInfo = await this.groupService.getGroupInfo(Number(roomId));
 
     const socketId = Object.keys(this.socketsInRooms[roomId]).find((clientId) => {
       const sessionUserId = this.socketsInRooms[roomId][clientId];
@@ -141,17 +138,14 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     const kickSocket = this.server.sockets.sockets.get(socketId);
 
-    this.server.to(roomId).emit('roomInfo', groupInfo);
-    this.server.to(roomId).emit('unread', unreadCountMap);
-    this.server.to(roomId).emit('userListInfo', chatUsers);
-    this.server.to(roomId).emit('chat', message);
-
-    if (!kickSocket) {
-      return;
+    if (!!kickSocket) {
+      kickSocket.emit('kick', { message: '방장에 의해 강퇴당하셨습니다.' });
+      await kickSocket.leave(roomId);
     }
-    delete this.socketsInRooms[roomId][socketId];
-    delete this.socketToRoomId[socketId];
-    await this.handleDisconnect(kickSocket);
+
+    await this.sendChangeUserBroadcastMessage(roomId, message);
+
+    kickSocket.disconnect(true);
   }
 
   @SubscribeMessage('chat')

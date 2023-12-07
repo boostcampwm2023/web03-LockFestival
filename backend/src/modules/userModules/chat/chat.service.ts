@@ -7,7 +7,6 @@ import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 import { ChatMessageResponseDto } from '@chat/dtos/chat.mesage.response.dto';
 import { ChatUser } from '@chat/entities/chat.user.schema';
 import { EnteredChatMessageResponseDto } from '@chat/dtos/chat.entered.response.dto';
-import { ChatLeaveRoomResponseDto } from '@chat/dtos/chat.leave.response.dto';
 import { ChatLeaveRoomDto } from '@chat/dtos/chat.leave.dto';
 
 @Injectable()
@@ -127,16 +126,14 @@ export class ChatService {
     return await this.chatRepository.validateRoomAndGetChatUser(roomId, nickname);
   }
 
-  async leaveChatRoom(dto: ChatLeaveRoomDto): Promise<ChatLeaveRoomResponseDto> {
+  async leaveChatRoom(dto: ChatLeaveRoomDto): Promise<ChatMessageDto> {
     await this.chatRepository.updateUserInfoOnLeave(dto.userChatId);
-    const message = await this.chatRepository.createMessageByLeaveEvent(
+    const message: ChatMessageDto = await this.chatRepository.createMessageByLeaveEvent(
       dto.roomId,
       dto.nickname,
       dto.chatType
     );
-    const chatUsers = await this.chatRepository.findUserListByRoomId(dto.roomId);
-    const unreadCountMap = this.makeUnreadCountMap(chatUsers);
-    return { chatUsers, unreadCountMap, message };
+    return message;
   }
 
   async deleteRoomByLeader(roomId: string): Promise<void> {
