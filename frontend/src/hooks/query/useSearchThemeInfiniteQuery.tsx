@@ -9,6 +9,7 @@ const useSearchThemeInfiniteQuery = (query: string) => {
     getNextPageParam: (lastPage) => {
       return lastPage._meta.nextPage;
     },
+    enabled: query !== '',
   });
 
   return { data, fetchNextPage, hasNextPage, error, isFetching, refetch };
