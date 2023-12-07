@@ -4,6 +4,7 @@ import fetchThemesByRandomGenres from '@apis/fetchThemesByRandomGenres';
 import fetchThemeDetails from '@apis/fetchThemeDetails';
 import fetchRoomList from '@apis/fetchRoomList';
 import fetchUserProfile from '@apis/fetchUserProfile';
+import fetchThemesByPage from './../apis/fetchThemesByPage';
 
 const QUERY_MANAGEMENT = {
   geolocation: {
@@ -29,6 +30,10 @@ const QUERY_MANAGEMENT = {
   profile: {
     key: 'profile',
     fn: fetchUserProfile,
+  },
+  themeSearchResult: {
+    key: 'themeSearchResult',
+    fn: fetchThemesByPage,
   },
 };
 
