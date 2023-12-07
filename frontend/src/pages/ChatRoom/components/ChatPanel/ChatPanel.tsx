@@ -8,13 +8,14 @@ import { chatLogAtom } from 'store/chatRoom';
 import { ChatLog } from 'types/chat';
 import MessageBox from './MessageBox/MessageBox';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import useIntersectionObserverSocket from '@hooks/useIntersectionObserverSocket';
+import useIntersectionObserverSocket from '@hooks/intersectionObserver/useIntersectionObserverSocket';
 import { getStringByDate } from '@utils/dateUtil';
 import {
   checkIsFirstChatFromUser,
   checkIsFirstChatToday,
   checkIsLastChatFromUser,
 } from '@utils/chatMessageUtil';
+import useIsScrollTopObserver from '@hooks/intersectionObserver/useIsScrollTopObserver';
 
 interface ChatPanelProps {
   roomId: string;
@@ -38,6 +39,11 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     roomId,
   });
 
+  useIsScrollTopObserver({
+    eventHandler: setIsScrollToTop,
+    targetRef: lastScrollRef,
+  });
+
   const navigate = useNavigate();
   const [inputValue, handleValue, resetValue] = useInput('');
 
@@ -56,17 +62,14 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     if (inputValue === '') {
       return;
     }
-    if (lastScrollRef.current) {
-      lastScrollRef.current.scrollIntoView(true);
-    }
-
+    setIsScrollToTop(false);
     sendChat(inputValue);
     resetValue();
   };
 
   useEffect(() => {
-    if (lastScrollRef && lastScrollRef.current && !isScrollToTop) {
-      lastScrollRef?.current.scrollIntoView(true);
+    if (!isScrollToTop) {
+      lastScrollRef?.current?.scrollIntoView({ block: 'end', behavior: 'auto' });
     }
     if (scrollRef.current && scrollRef.current.scrollTop < 10 && prevScrollHeight) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight - prevScrollHeight;
@@ -75,20 +78,12 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   }, [chatLogData]);
 
   const handleScroll = () => {
-    if (scrollRef.current) {
-      const target1 = scrollRef.current.scrollHeight - scrollRef.current.clientHeight; //최대 스크롤 값
-      const target2 = scrollRef.current.scrollTop;
+    if (!scrollRef || !scrollRef.current) {
+      return;
+    }
 
-      if (target2 >= target1) {
-        setIsScrollToTop(false);
-        return;
-      }
-
-      if (target2 < 10) {
-        setPrevScrollHeight(scrollRef.current?.scrollHeight);
-      }
-
-      setIsScrollToTop(true);
+    if (scrollRef.current.scrollTop < 10) {
+      setPrevScrollHeight(scrollRef.current?.scrollHeight);
     }
   };
 
