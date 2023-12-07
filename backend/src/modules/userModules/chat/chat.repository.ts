@@ -154,6 +154,7 @@ export class ChatRepository {
     await this.chatUserModel.updateOne(
       {
         _id: userId,
+        is_leave: false,
       },
       {
         $unset: {
@@ -213,9 +214,8 @@ export class ChatRepository {
   async updateLastChatLogId(userId: string, lastChatLogId: string) {
     await this.chatUserModel.updateOne(
       {
-        _id: {
-          $eq: { _id: userId },
-        },
+        _id: userId,
+        is_leave: false,
       },
       {
         $set: {
@@ -282,7 +282,7 @@ export class ChatRepository {
       .populate({
         path: 'user_list',
         model: 'ChatUser',
-        match: { user_nickname: nickname },
+        match: { user_nickname: nickname, is_leave: false },
       });
 
     const user: ChatUser = res.user_list[0];
@@ -300,7 +300,7 @@ export class ChatRepository {
     } = await this.roomModel.findOne({ group_id: roomId }, { chat_list: false }).populate({
       path: 'user_list',
       model: 'ChatUser',
-      match: { user_nickname: nickname },
+      match: { user_nickname: nickname, is_leave: false },
       select: '_id',
     });
     await this.chatUserModel.updateOne(

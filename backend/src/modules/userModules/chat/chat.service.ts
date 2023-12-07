@@ -48,7 +48,7 @@ export class ChatService {
     return this.makeUnreadCountMap(chatUsers);
   }
 
-  private makeUnreadCountMap(chatUsers: ChatUserInfoDto[]) {
+  makeUnreadCountMap(chatUsers: ChatUserInfoDto[]) {
     const countMap: { [k: string]: number } = chatUsers
       .filter((user: ChatUserInfoDto) => {
         return !!user.lastChatLogId;
@@ -76,6 +76,11 @@ export class ChatService {
   async validateLeader(roomId: string, userId: string) {
     this.logger.log(`roomId: ${roomId}, userId: ${userId}`);
     return await this.chatRepository.validateLeaderByRoomId(roomId, userId);
+  }
+
+  async getUserInfoListWithLeavedByRoomId(roomId: string): Promise<ChatUserInfoDto[]> {
+    this.logger.log(`roomId: ${roomId}`);
+    return await this.chatRepository.findUserListWithLeavedUserByRoomId(roomId);
   }
 
   async createMessageByChat(chatMessageDto: ChatMessageRequestDto): Promise<ChatMessageDto> {
@@ -114,9 +119,7 @@ export class ChatService {
   async leaveChatRoom(roomId: string, nickname: string) {
     await this.chatRepository.updateUserInfoOnLeave(roomId, nickname);
     const message = await this.chatRepository.createOutMessageByLeaveEvent(roomId, nickname);
-    const chatUsers = await this.chatRepository.findUserListByRoomId(roomId);
-    const unreadCountMap = this.makeUnreadCountMap(chatUsers);
-    return { chatUsers, unreadCountMap, message };
+    return message;
   }
   async deleteRoomByLeader(roomId: string) {
     await this.chatRepository.deleteRoomByLeader(roomId);
