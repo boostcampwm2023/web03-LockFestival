@@ -22,7 +22,7 @@ const RoomInfoPanel = ({ settingMode }: { settingMode: boolean }) => {
     themeName,
     posterImageUrl,
     recruitmentContent,
-    // appointmentDate,
+    appointmentDate,
     recruitmentMembers,
     currentMembers,
     recruitmentCompleted,
@@ -68,12 +68,7 @@ const RoomInfoPanel = ({ settingMode }: { settingMode: boolean }) => {
         <Label isBorder={true} width="10rem">
           <LabelText>날짜</LabelText>
         </Label>
-        <RoomInfoContent>
-          {
-            //TODO: 현재 방정보가 Mock데이터 여서 이후에 appointmentDate로 변경
-            getStringByDate(new Date())
-          }
-        </RoomInfoContent>
+        <RoomInfoContent>{getStringByDate(new Date(appointmentDate))}</RoomInfoContent>
       </RoomInfoWrapper>
       <RoomInfoWrapper>
         <Label isBorder={true} width="10rem">
