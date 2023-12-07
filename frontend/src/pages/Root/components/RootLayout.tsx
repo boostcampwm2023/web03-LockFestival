@@ -1,12 +1,16 @@
 import tw, { styled, css } from 'twin.macro';
 import RandomThemeListContainer from './RandomThemeListContainer';
 import GeoLocationThemeListContainer from './GeoLocationThemeListContainer';
+import { Suspense } from 'react';
+import RootSkeletonComponent from './RootSkeletonComponent';
 
 const RootLayout = () => {
   return (
     <Container>
-      <RandomThemeListContainer />
-      <GeoLocationThemeListContainer />
+      <Suspense fallback={<RootSkeletonComponent />}>
+        <RandomThemeListContainer />
+        <GeoLocationThemeListContainer />
+      </Suspense>
     </Container>
   );
 };
