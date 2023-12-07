@@ -101,7 +101,7 @@ export class GroupController {
     @Res() res
   ): Promise<boolean> {
     const inMessage: ChatMessageDto = await this.groupService.enterGroup(user.nickname, groupId);
-    this.eventsGateway.sendBroadcastMessage(String(groupId), inMessage);
+    await this.eventsGateway.sendChangeUserBroadcastMessage(String(groupId), inMessage);
     return res
       .status(HttpStatus.OK)
       .json({ success: true, message: 'Successfully entered the group!' });

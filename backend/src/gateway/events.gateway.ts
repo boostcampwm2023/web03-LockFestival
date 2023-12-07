@@ -19,6 +19,7 @@ import { ChatType } from '@enum/chat.type';
 import { GroupService } from '@group/group.service';
 import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
 import { ChatLeaveRoomDto } from '@chat/dtos/chat.leave.dto';
+import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 
 @Injectable()
 @WebSocketGateway({
@@ -50,7 +51,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   }
 
   hasAnotherSession(roomId: string, userId: string) {
-    return Object.values(this.socketsInRooms[roomId]).find((sessionUserId) => {
+    return Object.values(this.socketsInRooms[roomId]).find((sessionUserId: string) => {
       return sessionUserId === userId;
     });
   }
@@ -175,8 +176,36 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     return 'ok';
   }
 
-  sendBroadcastMessage(roomId: string, chatMessageDto: ChatMessageDto) {
+  async sendChangeUserBroadcastMessage(roomId: string, chatMessageDto: ChatMessageDto) {
     this.server.to(roomId).emit('chat', chatMessageDto);
+    this.server.to(roomId).emit('roomInfo', await this.groupService.getGroupInfo(Number(roomId)));
+
+    const chatUsers: ChatUserInfoDto[] =
+      await this.chatService.getUserInfoListWithLeavedByRoomId(roomId);
+
+    const unreadCountMap = this.chatService.makeUnreadCountMap(
+      chatUsers.filter(({ isLeave }) => {
+        return !isLeave;
+      })
+    );
+
+    this.server.to(roomId).emit('unread', unreadCountMap);
+
+    this.sendChangeUserListInfoMessage(roomId, chatUsers);
+  }
+
+  sendChangeUserListInfoMessage(roomId: string, chatUsers: ChatUserInfoDto[]) {
+    if (!this.socketsInRooms[roomId]) {
+      return;
+    }
+    Object.entries(this.socketsInRooms[roomId]).forEach(([socketId, sessionUserId]) => {
+      this.server.sockets.sockets.get(socketId).emit(
+        'userListInfo',
+        chatUsers.map((chatUser: ChatUserInfoDto) => {
+          return chatUser.updateIsMe(!chatUser.isLeave && chatUser.userId === sessionUserId);
+        })
+      );
+    });
   }
 
   handleConnection(client: Socket, ...args: any[]) {

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ThemeDeatailsWithoutBrandBranchDto {
+export class ThemeDetailsWithoutBrandBranchDto {
   @ApiProperty({ example: 'SOUL CHASER - 실종' })
   themeName: string;
   @ApiProperty({ example: '야외' })
@@ -36,7 +36,7 @@ export class ThemeDeatailsWithoutBrandBranchDto {
     phone,
     address,
     website,
-  }: Partial<ThemeDeatailsWithoutBrandBranchDto>) {
+  }: Partial<ThemeDetailsWithoutBrandBranchDto>) {
     this.themeName = themeName;
     this.realGenre = realGenre;
     this.themeId = themeId;

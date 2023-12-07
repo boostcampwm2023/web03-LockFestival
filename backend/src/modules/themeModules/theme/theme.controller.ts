@@ -8,7 +8,7 @@ import { GenreService } from '@theme/genre.service';
 import { GenreDto } from '@theme/dtos/genre.dto';
 import { ThemeLocationResponseDto } from '@theme/dtos/theme.location.response.dto';
 import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
-import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
+import { ThemeBranchThemesDetailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 import { ThemeSearchRequestDto } from '@theme/dtos/theme.serach.request.dto';
 import { ThemeSearchResponseDto } from '@theme/dtos/theme.search.response.dto';
 
@@ -30,11 +30,11 @@ export class ThemeController {
   @ApiOkResponse({
     status: 200,
     description: '',
-    type: ThemeBranchThemesDeatailsResponseDto,
+    type: ThemeBranchThemesDetailsResponseDto,
   })
   async getThemeDetails(
     @Param('themeId', ParseIntPipe) themeId: number
-  ): Promise<ThemeBranchThemesDeatailsResponseDto> {
+  ): Promise<ThemeBranchThemesDetailsResponseDto> {
     return await this.themeService.getThemeDetailsById(themeId);
   }
 

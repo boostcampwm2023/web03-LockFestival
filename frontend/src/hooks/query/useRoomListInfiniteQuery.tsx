@@ -9,6 +9,7 @@ const useRoomListInfiniteQuery = () => {
     getNextPageParam: (lastPage) => {
       return lastPage._meta.nextCursor;
     },
+    throwOnError: true,
   });
 
   return { data, fetchNextPage, hasNextPage, error, isFetching };

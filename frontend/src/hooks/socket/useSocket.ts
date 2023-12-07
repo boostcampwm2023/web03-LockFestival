@@ -58,7 +58,9 @@ const useSocket = (roomId: string) => {
       addFutureChats(receivePastChat);
       return;
     }
-    addPastChats(receivePastChat);
+    if (receivePastChat) {
+      addPastChats(receivePastChat);
+    }
   }, [receivePastChat]);
 
   return { sendChat, connecting, getPastChat };

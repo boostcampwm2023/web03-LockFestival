@@ -6,7 +6,7 @@ import { Theme } from '@theme/entities/theme.entity';
 import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.response.dto';
-import { ThemeBranchThemesDeatailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
+import { ThemeBranchThemesDetailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 import { ThemeSearchRequestDto } from '@theme/dtos/theme.serach.request.dto';
 
 const KM = 1000;
@@ -17,8 +17,8 @@ export class ThemeRepository extends Repository<Theme> {
     super(Theme, dataSource.createEntityManager());
   }
 
-  async getThemeDetailsById(themeId: number): Promise<ThemeBranchThemesDeatailsResponseDto> {
-    const themeDetailsResponseDto: ThemeBranchThemesDeatailsResponseDto = await this.dataSource
+  async getThemeDetailsById(themeId: number): Promise<ThemeBranchThemesDetailsResponseDto> {
+    const themeDetailsResponseDto: ThemeBranchThemesDetailsResponseDto = await this.dataSource
       .createQueryBuilder()
       .select([
         'theme.name as themeName',
@@ -29,6 +29,8 @@ export class ThemeRepository extends Repository<Theme> {
         'theme.min_member as minMember',
         'theme.max_member as maxMember',
         'theme.time_limit as playTime',
+        'branch.big_region as bigRegion',
+        'branch.small_region as smallRegion',
         'branch.website as website',
         'branch.phone_number as phone',
         'branch.address as address',
@@ -182,6 +184,8 @@ export class ThemeRepository extends Repository<Theme> {
         'theme.min_member as minMember',
         'theme.max_member as maxMember',
         'theme.time_limit as playTime',
+        'branch.big_region as bigRegion',
+        'branch.small_region as smallRegion',
         'branch.website as website',
         'branch.phone_number as phone',
         'branch.address as address',

@@ -33,7 +33,7 @@ const HeaderRest = () => {
     localStorage.setItem('lastVisited', location.pathname);
 
     openModal(Modal, {
-      children: LoginModal(() => closeModal(Modal)),
+      children: <LoginModal onClose={() => closeModal(Modal)} />,
       onClose: () => closeModal(Modal),
       closeOnExternalClick: true,
     });
