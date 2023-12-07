@@ -123,7 +123,7 @@ export class ChatService {
   }
 
   async getChatUserIdByNicknameAndRoomId(roomId: string, nickname: string): Promise<ChatUser> {
-    return await this.chatRepository.validateRoomAndGetChatUser(roomId, nickname);
+    return (await this.chatRepository.validateRoomAndGetChatUser(roomId, nickname))._id;
   }
 
   async leaveChatRoom(dto: ChatLeaveRoomDto): Promise<ChatMessageDto> {

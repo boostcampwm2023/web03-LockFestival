@@ -113,9 +113,9 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       await this.chatService.deleteRoomByLeader(roomId);
       return;
     }
-    const chatUser = await this.chatService.getChatUserIdByNicknameAndRoomId(roomId, nickname);
+    const chatUserId = await this.chatService.getChatUserIdByNicknameAndRoomId(roomId, nickname);
     const message = await this.chatService.leaveChatRoom(
-      new ChatLeaveRoomDto(roomId, nickname, chatUser._id, ChatType.out)
+      new ChatLeaveRoomDto(roomId, nickname, chatUserId, ChatType.out)
     );
 
     await this.sendChangeUserBroadcastMessage(roomId, message);
