@@ -10,6 +10,7 @@ import Root from '@pages/Root/Root';
 import Search from '@pages/Search/Search';
 import ChatRoom from '@pages/ChatRoom/ChatRoom';
 import RoomList from '@pages/RoomList/RoomList';
+import Error404 from '@pages/Error/Error404';
 
 const CustomRouter = () => {
   return (
@@ -24,6 +25,7 @@ const CustomRouter = () => {
           <Route path="/search" element={<Search />}></Route>
           <Route path="/chat-room/:roomId" element={<ChatRoom />}></Route>
           <Route path="/room-list" element={<RoomList />}></Route>
+          <Route path="/*" element={<Error404 />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
