@@ -66,7 +66,9 @@ function ThemeDetailsModal({ themeId, onClose }: ThemeDetailsModalProps) {
                   width="10rem"
                   onClick={() => {
                     onClose();
-                    navigate('/recruitment');
+                    navigate(
+                      `/recruitment?smallRegion=${data.smallRegion}&bigRegion=${data.bigRegion}&themeName=${data.themeName}`
+                    );
                   }}
                 >
                   <Text>모집바로가기</Text>
