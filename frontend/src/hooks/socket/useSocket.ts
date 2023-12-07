@@ -28,6 +28,12 @@ const useSocket = (roomId: string) => {
     });
   };
 
+  const kickUser = (userId: string) => {
+    socket?.emit('kick', {
+      userId,
+    });
+  };
+
   useEffect(() => {
     if (socket) {
       socket.on('chat', (res: ServerChatLog) => {
@@ -63,7 +69,7 @@ const useSocket = (roomId: string) => {
     }
   }, [receivePastChat]);
 
-  return { sendChat, connecting, getPastChat };
+  return { sendChat, connecting, getPastChat, kickUser };
 };
 
 export default useSocket;
