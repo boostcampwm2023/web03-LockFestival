@@ -1,6 +1,6 @@
 import GroupInfoCard from '@components/Card/GroupInfoCard/GroupInfoCard';
 import useRecruitmentListInfiniteQuery from '@hooks/query/useRecruitmentListInfiniteQuery';
-import useIntersectionObserver from '@hooks/useIntersectionObserver';
+import useIntersectionObserver from '@hooks/intersectionObserver/useIntersectionObserver';
 import { useRef } from 'react';
 import tw, { css, styled } from 'twin.macro';
 import { FaPlus } from 'react-icons/fa6';

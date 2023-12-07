@@ -4,7 +4,7 @@ import useSearchThemeInfiniteQuery from '@hooks/query/useSearchThemeInfiniteQuer
 import Card from './components/Card';
 import { ThemeDetailsData } from 'types/theme';
 import { useEffect, useRef } from 'react';
-import useIntersectionObserver from '@hooks/useIntersectionObserver';
+import useIntersectionObserver from '@hooks/intersectionObserver/useIntersectionObserver';
 
 const Search = () => {
   const [searchParams] = useSearchParams();

@@ -1,7 +1,7 @@
 import tw, { styled, css } from 'twin.macro';
 import Room from './Room/Room';
 import { useRef } from 'react';
-import useIntersectionObserver from '@hooks/useIntersectionObserver';
+import useIntersectionObserver from '@hooks/intersectionObserver/useIntersectionObserver';
 import useRoomListInfiniteQuery from '@hooks/query/useRoomListInfiniteQuery';
 
 const RoomListLayout = () => {
