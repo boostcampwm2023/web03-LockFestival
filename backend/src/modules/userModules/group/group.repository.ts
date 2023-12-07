@@ -200,7 +200,7 @@ export class GroupRepository extends Repository<Group> {
       .getRawOne();
   }
 
-  async deleteGroupByNicknameAndGroupId(groupId: number, nickname: string) {
+  async deleteGroupOnOut(groupId: number, nickname: string) {
     const queryRunner = this.dataSource.createQueryRunner();
     let leaderFlag = false;
     try {
@@ -245,6 +245,32 @@ export class GroupRepository extends Repository<Group> {
       }
       await queryRunner.commitTransaction();
       return leaderFlag;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async deleteGroupOnKick(groupId: number, nickname: string) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    try {
+      await queryRunner.startTransaction();
+      const group = await queryRunner.manager.findOne(Group, {
+        where: { id: groupId },
+      });
+      await queryRunner.manager
+        .createQueryBuilder(UserGroup, 'user_group')
+        .delete()
+        .where('user_group.group_id = :groupId', { groupId })
+        .andWhere('user_group.user_id IN (SELECT id FROM `user` WHERE nickname = :nickname)', {
+          nickname,
+        })
+        .execute();
+      group.currentMembers -= 1;
+      await queryRunner.manager.save(group);
+      await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw error;

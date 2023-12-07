@@ -11,13 +11,14 @@ import {
 import { ChatService } from '@chat/chat.service';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
-import { Logger, ParseIntPipe, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger, ParseIntPipe } from '@nestjs/common';
 import { PayloadDto } from '@auth/dtos/payload.dto';
 import { ConfigService } from '@nestjs/config';
 import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
-import { ChatType } from '@src/enum/chat.type';
+import { ChatType } from '@enum/chat.type';
 import { GroupService } from '@group/group.service';
 import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
+import { ChatLeaveRoomDto } from '@chat/dtos/chat.leave.dto';
 import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 
 @Injectable()
@@ -55,7 +56,6 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     });
   }
 
-  //myPage 입장
   @SubscribeMessage('join')
   async join(
     @MessageBody('roomId') roomId: string,
@@ -86,6 +86,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     client.emit('chatLog', prevMessages);
     client.emit('userListInfo', chatUsers);
+
     return 'ok';
   }
 
@@ -112,9 +113,44 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       await this.chatService.deleteRoomByLeader(roomId);
       return;
     }
+    const chatUserId = await this.chatService.getChatUserIdByNicknameAndRoomId(roomId, nickname);
+    const message = await this.chatService.leaveChatRoom(
+      new ChatLeaveRoomDto(roomId, nickname, chatUserId, ChatType.out)
+    );
 
-    const message: ChatMessageDto = await this.chatService.leaveChatRoom(roomId, nickname);
     await this.sendChangeUserBroadcastMessage(roomId, message);
+  }
+
+  @SubscribeMessage('kick')
+  async handleKick(@MessageBody('userId') kickUserId: string, @ConnectedSocket() client: Socket) {
+    const roomId = this.socketToRoomId[client.id];
+    const userId = this.socketsInRooms[roomId][client.id];
+
+    if (!(await this.chatService.validateLeader(roomId, userId))) {
+      throw new HttpException('강퇴는 방장만 가능합니다.', HttpStatus.UNAUTHORIZED);
+    }
+
+    const nickname = await this.chatService.getNicknameByChatUserId(kickUserId);
+    await this.groupService.deleteGroupOnKick(Number(roomId), nickname);
+    const message = await this.chatService.leaveChatRoom(
+      new ChatLeaveRoomDto(roomId, nickname, kickUserId, ChatType.kick)
+    );
+
+    const socketId = Object.keys(this.socketsInRooms[roomId]).find((clientId) => {
+      const sessionUserId = this.socketsInRooms[roomId][clientId];
+      return sessionUserId === kickUserId;
+    });
+
+    const kickSocket = this.server.sockets.sockets.get(socketId);
+
+    if (!!kickSocket) {
+      kickSocket.emit('kick', { message: '방장에 의해 강퇴당하셨습니다.' });
+      await kickSocket.leave(roomId);
+    }
+
+    await this.sendChangeUserBroadcastMessage(roomId, message);
+
+    kickSocket.disconnect(true);
   }
 
   @SubscribeMessage('chat')

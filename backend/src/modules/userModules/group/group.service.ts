@@ -91,7 +91,10 @@ export class GroupService {
   async getGroupInfo(groupId: number): Promise<GroupInfoResponseDto> {
     return await this.groupRepository.getGroupInfo(groupId);
   }
-  async leaveGroup(groupId: number, nickname: string) {
-    return await this.groupRepository.deleteGroupByNicknameAndGroupId(groupId, nickname);
+  async deleteGroupOnOut(groupId: number, nickname: string) {
+    return await this.groupRepository.deleteGroupOnOut(groupId, nickname);
+  }
+  async deleteGroupOnKick(groupId: number, nickname: string) {
+    return await this.groupRepository.deleteGroupOnKick(groupId, nickname);
   }
 }

@@ -7,6 +7,7 @@ import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 import { ChatMessageResponseDto } from '@chat/dtos/chat.mesage.response.dto';
 import { ChatUser } from '@chat/entities/chat.user.schema';
 import { EnteredChatMessageResponseDto } from '@chat/dtos/chat.entered.response.dto';
+import { ChatLeaveRoomDto } from '@chat/dtos/chat.leave.dto';
 
 @Injectable()
 export class ChatService {
@@ -20,8 +21,8 @@ export class ChatService {
       return chatUser.updateIsMe(chatUser.nickname === nickname);
     });
 
-    const meUser: ChatUserInfoDto = chatUsers.find(({ isMe }) => {
-      return isMe;
+    const meUser: ChatUserInfoDto = chatUsers.find(({ isMe, isLeave }) => {
+      return isMe && !isLeave;
     });
 
     const unreadCountMap = this.makeUnreadCountMap(
@@ -73,7 +74,7 @@ export class ChatService {
       }, {});
   }
 
-  async validateLeader(roomId: string, userId: string) {
+  async validateLeader(roomId: string, userId: string): Promise<boolean> {
     this.logger.log(`roomId: ${roomId}, userId: ${userId}`);
     return await this.chatRepository.validateLeaderByRoomId(roomId, userId);
   }
@@ -116,12 +117,26 @@ export class ChatService {
 
     return new EnteredChatMessageResponseDto(chatUser.last_chat_log_id, messages);
   }
-  async leaveChatRoom(roomId: string, nickname: string) {
-    await this.chatRepository.updateUserInfoOnLeave(roomId, nickname);
-    const message = await this.chatRepository.createOutMessageByLeaveEvent(roomId, nickname);
+
+  async getNicknameByChatUserId(chatUserId: string): Promise<string> {
+    return await this.chatRepository.getNicknameByChatUserId(chatUserId);
+  }
+
+  async getChatUserIdByNicknameAndRoomId(roomId: string, nickname: string): Promise<ChatUser> {
+    return (await this.chatRepository.validateRoomAndGetChatUser(roomId, nickname))._id;
+  }
+
+  async leaveChatRoom(dto: ChatLeaveRoomDto): Promise<ChatMessageDto> {
+    await this.chatRepository.updateUserInfoOnLeave(dto.userChatId);
+    const message: ChatMessageDto = await this.chatRepository.createMessageByLeaveEvent(
+      dto.roomId,
+      dto.nickname,
+      dto.chatType
+    );
     return message;
   }
-  async deleteRoomByLeader(roomId: string) {
+
+  async deleteRoomByLeader(roomId: string): Promise<void> {
     await this.chatRepository.deleteRoomByLeader(roomId);
   }
 }
