@@ -1,7 +1,6 @@
 import tw, { styled, css } from 'twin.macro';
 import Button from '@components/Button/Button';
 import { genreList } from '@constants/themeGenres';
-import { ModalProps } from 'types/modal';
 import ThemeButton from './ThemeButton/ThemeButton';
 
 interface StepTwoContentProps {
