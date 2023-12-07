@@ -22,7 +22,7 @@
       "@config/*": ["./src/config/*"],
       "@utils/*": ["./src/utils/*"],
       "@enum/*": ["./src/enum/*"],
-      "@moudles/*": ["./src/modules/*"],
+      "@modules/*": ["./src/modules/*"],
       "@auth/*": ["./src/modules/authModules/auth/*"],
       "@user/*": ["./src/modules/userModules/user/*"],
       "@group/*": ["./src/modules/userModules/group/*"],
@@ -31,7 +31,8 @@
       "@theme/*": ["./src/modules/themeModules/theme/*"],
       "@branch/*": ["./src/modules/themeModules/branch/*"],
       "@diary/*": ["./src/modules/diaryModules/diary/*"],
-      "@comment/*": ["./src/modules/diaryModules/comment/*"]
+      "@comment/*": ["./src/modules/diaryModules/comment/*"],
+      "@crawler/*": ["./src/crawler/*"]
     }
   }
 }
