@@ -1,12 +1,16 @@
 import tw, { styled, css } from 'twin.macro';
 import RandomThemeListContainer from './RandomThemeListContainer';
 import GeoLocationThemeListContainer from './GeoLocationThemeListContainer';
+import { Suspense } from 'react';
+import RootSkeletonComponent from './RootSkeletonComponent';
 
 const RootLayout = () => {
   return (
     <Container>
-      <RandomThemeListContainer />
-      <GeoLocationThemeListContainer />
+      <Suspense fallback={<RootSkeletonComponent />}>
+        <RandomThemeListContainer />
+        <GeoLocationThemeListContainer />
+      </Suspense>
     </Container>
   );
 };
@@ -14,9 +18,12 @@ const RootLayout = () => {
 const Container = styled.div([
   tw`w-full mx-auto mt-[4rem]`,
   tw`desktop:(max-w-[102.4rem] pb-[10rem])`,
+  tw`tablet:(max-w-[78rem])`,
+  tw`mobile:(max-w-[80%])`,
   css`
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1.5rem;
   `,
 ]);

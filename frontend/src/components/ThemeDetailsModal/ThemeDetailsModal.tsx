@@ -53,21 +53,23 @@ function ThemeDetailsModal({ themeId, onClose }: ThemeDetailsModalProps) {
                 <Button
                   isIcon={false}
                   size="m"
+                  width="10rem"
                   onClick={() => {
                     window.open(data.website);
                   }}
                 >
-                  <>예약바로가기</>
+                  <Text>예약바로가기</Text>
                 </Button>
                 <Button
                   isIcon={false}
                   size="m"
+                  width="10rem"
                   onClick={() => {
                     onClose();
                     navigate('/recruitment');
                   }}
                 >
-                  <>모집바로가기</>
+                  <Text>모집바로가기</Text>
                 </Button>
               </ButtonWrapper>
             </MainWrapper>
@@ -114,7 +116,7 @@ const DetailModalContainer = styled.div([
     display: flex;
     flex-direction: column;
   `,
-  tw`p-6 bg-gray-light rounded-default`,
+  tw`p-6 bg-gray-light rounded-default w-[75rem] tablet:(w-[60rem] p-4) mobile:(w-[34rem] p-2)`,
 ]);
 
 const HeadWrapper = styled.div([
@@ -130,13 +132,13 @@ const HeadWrapper = styled.div([
 const MainWrapper = styled.div([
   css`
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     margin-bottom: 1.6rem;
   `,
 ]);
 
 const MainThemePosterBox = styled.div([
-  tw`bg-gray-dark rounded-[2rem]`,
+  tw`bg-gray-dark rounded-[2rem] mobile:(hidden)`,
   css`
     width: 18.5rem;
     height: 27.2rem;
@@ -156,6 +158,7 @@ const InfoWrapper = styled.div([
   css`
     display: flex;
     flex-direction: column;
+    flex: 1;
     gap: 0.8rem;
   `,
   tw`ml-4`,
@@ -176,6 +179,7 @@ const BottomWrapper = styled.div([
     display: flex;
     flex-direction: column;
   `,
+  tw`mobile:(hidden)`,
 ]);
 
 const OtherThemeList = styled.div([
@@ -185,3 +189,5 @@ const OtherThemeList = styled.div([
     gap: 1.2rem;
   `,
 ]);
+
+const Text = styled.div([tw`mx-auto`]);

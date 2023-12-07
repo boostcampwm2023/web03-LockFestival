@@ -7,13 +7,6 @@ export const carouselConfig = {
   initialSlide: 0,
   responsive: [
     {
-      breakpoint: 1480,
-      settings: {
-        slidesToShow: 6,
-        slidesToScroll: 5,
-      },
-    },
-    {
       breakpoint: 1024,
       settings: {
         slidesToShow: 5,
