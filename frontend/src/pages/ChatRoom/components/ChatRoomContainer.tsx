@@ -8,12 +8,13 @@ interface Props {
   sendChat: (message: string) => void;
   settingMode: boolean;
   getPastChat: (cursorId: string) => void;
+  kickUser: (userId: string) => void;
 }
 
-const ChatRoomContainer = ({ roomId, sendChat, settingMode, getPastChat }: Props) => {
+const ChatRoomContainer = ({ roomId, sendChat, settingMode, getPastChat, kickUser }: Props) => {
   return (
     <Container>
-      <UserListPanel settingMode={settingMode} />
+      <UserListPanel roomId={roomId} settingMode={settingMode} kickUser={kickUser} />
       <ChatPanel roomId={roomId} sendChat={sendChat} getPastChat={getPastChat} />
       <RoomInfoPanel settingMode={settingMode} />
     </Container>

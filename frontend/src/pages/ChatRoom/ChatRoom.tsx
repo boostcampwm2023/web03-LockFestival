@@ -9,7 +9,7 @@ import ChatRoomContainer from './components/ChatRoomContainer';
 
 const ChatRoom = () => {
   const roomId = useParams<{ roomId: string }>().roomId as string;
-  const { connecting, sendChat, getPastChat } = useSocket(roomId);
+  const { connecting, sendChat, getPastChat, kickUser } = useSocket(roomId);
 
   if (connecting) {
     return (
@@ -28,6 +28,7 @@ const ChatRoom = () => {
             roomId={roomId}
             sendChat={sendChat}
             getPastChat={getPastChat}
+            kickUser={kickUser}
           />
         </HostIdentification>
       </ChatRoomInfoValidator>
