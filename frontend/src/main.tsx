@@ -16,7 +16,7 @@ async function deferRender() {
 }
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: false } },
+  defaultOptions: { queries: { retry: false, staleTime: 0, gcTime: 0 } },
 });
 
 deferRender().then(() => {
