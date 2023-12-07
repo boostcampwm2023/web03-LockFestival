@@ -74,7 +74,7 @@ export class ChatService {
       }, {});
   }
 
-  async validateLeader(roomId: string, userId: string) {
+  async validateLeader(roomId: string, userId: string): Promise<boolean> {
     this.logger.log(`roomId: ${roomId}, userId: ${userId}`);
     return await this.chatRepository.validateLeaderByRoomId(roomId, userId);
   }

@@ -11,7 +11,7 @@ import {
 import { ChatService } from '@chat/chat.service';
 import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
-import { Logger, ParseIntPipe, Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger, ParseIntPipe } from '@nestjs/common';
 import { PayloadDto } from '@auth/dtos/payload.dto';
 import { ConfigService } from '@nestjs/config';
 import { ChatMessageRequestDto } from '@chat/dtos/chat.message.request.dto';
@@ -124,6 +124,11 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   @SubscribeMessage('kick')
   async handleKick(@MessageBody('userId') kickUserId: string, @ConnectedSocket() client: Socket) {
     const roomId = this.socketToRoomId[client.id];
+    const userId = this.socketsInRooms[roomId][client.id];
+
+    if (!(await this.chatService.validateLeader(roomId, userId))) {
+      throw new HttpException('강퇴는 방장만 가능합니다.', HttpStatus.UNAUTHORIZED);
+    }
 
     const nickname = await this.chatService.getNicknameByChatUserId(kickUserId);
     await this.groupService.deleteGroupOnKick(Number(roomId), nickname);
