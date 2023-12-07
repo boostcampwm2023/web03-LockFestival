@@ -33,6 +33,7 @@ const Search = () => {
                   {page.data.map((theme: ThemeDetailsData) => (
                     <Card key={theme.themeId} theme={theme} />
                   ))}
+                  <div ref={targetRef} />
                 </CardList>
               ) : (
                 <TextInfo>찾는 테마가 없습니다.</TextInfo>
