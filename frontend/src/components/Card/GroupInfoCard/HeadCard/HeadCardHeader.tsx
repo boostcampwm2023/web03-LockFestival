@@ -1,14 +1,16 @@
 import tw, { styled, css } from 'twin.macro';
 import { FaRegUser } from 'react-icons/fa6';
 import { FaLock } from 'react-icons/fa6';
+import EnterDisplay from '../EnterDisplay/EnterDisplay';
 
 interface Props {
   profileImageUrl: string;
   nickname: string;
   hasPassword: boolean;
+  isEnter: boolean;
 }
 
-const HeadCardHeader = ({ profileImageUrl, nickname, hasPassword }: Props) => {
+const HeadCardHeader = ({ profileImageUrl, nickname, hasPassword, isEnter }: Props) => {
   return (
     <Header>
       <UserContainer>
@@ -21,6 +23,7 @@ const HeadCardHeader = ({ profileImageUrl, nickname, hasPassword }: Props) => {
         )}
         <Text>{nickname}</Text>
       </UserContainer>
+      {isEnter && <EnterDisplay />}
       {hasPassword && <FaLock size={16} />}
     </Header>
   );

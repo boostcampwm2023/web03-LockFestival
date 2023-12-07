@@ -14,6 +14,7 @@ const HeadCard = ({ leader, themeDetail, groupDetail, handleClickFlipButton }: H
         nickname={leader.nickname}
         profileImageUrl={leader.profileImageUrl}
         hasPassword={groupDetail.hasPassword}
+        isEnter={groupDetail.isEnter}
       />
       <HeadCardContent
         themeDetail={themeDetail}
