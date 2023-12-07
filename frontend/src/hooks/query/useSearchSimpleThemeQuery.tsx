@@ -5,6 +5,7 @@ const useSearchSimpleThemeQuery = (value: string) => {
     queryKey: ['qwe', value],
     queryFn: () => fetchThemeByName(value),
     staleTime: 60 * 60 * 3600,
+    gcTime: 60 * 60 * 3600,
     enabled: value !== '',
   });
 
