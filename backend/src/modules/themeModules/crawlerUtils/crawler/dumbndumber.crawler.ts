@@ -2,9 +2,7 @@ import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { AbstractCrawler } from '@crawlerUtils/abstractCrawler';
 import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
-import { Injectable } from '@nestjs/common';
 
-@Injectable()
 export class DumbNDumberCrawler extends AbstractCrawler {
   BASE_URL = 'http://www.dumbndumber.kr';
   zizumMap = {
@@ -76,7 +74,6 @@ export class DumbNDumberCrawler extends AbstractCrawler {
     try {
       const baseUrl = shopId === 3 ? `http://www.dumbndumber-sm.kr` : this.BASE_URL;
       const requestUrl = `${baseUrl}/reservation.html?k_shopno=${shopId}&rdate=${date}&prdno=${themeId}`;
-      console.log(requestUrl);
       const res = await axios({
         method: 'post',
         url: requestUrl,

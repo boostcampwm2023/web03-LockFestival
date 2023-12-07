@@ -2,9 +2,7 @@ import * as cheerio from 'cheerio';
 import { AbstractCrawler } from '@crawlerUtils/abstractCrawler';
 import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
 import axios from 'axios';
-import { Injectable } from '@nestjs/common';
 
-@Injectable()
 export class GoldenKeyCrawler extends AbstractCrawler {
   BASE_URL = 'http://xn--jj0b998aq3cptw.com/layout/res/home.php';
   zizumMap = {
