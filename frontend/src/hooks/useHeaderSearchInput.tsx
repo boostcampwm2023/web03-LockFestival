@@ -41,6 +41,13 @@ const useHeaderSearchInput = () => {
     navigate(`/search?query=${debounceQuery}`);
   }, [debounceQuery]);
 
+  useEffect(() => {
+    if (location.pathname !== '/search') {
+      setIsClickSearchButton(false);
+      resetQuery();
+    }
+  }, [location.pathname]);
+
   return {
     realInputQuery,
     handleSearchInput,
