@@ -1,42 +1,38 @@
 import * as cheerio from 'cheerio';
-import { CrawlerAbstract } from '@src/crawler/service/crawler.abstract';
-import { TimeTableDto } from '@src/crawler/dtos/timetable.response.dto';
-import axios from 'axios/index';
-import https from 'https';
+import { AbstractCrawler } from '@crawlerUtils/abstractCrawler';
+import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
+import axios from 'axios';
+import { Agent } from 'https';
 
-export class MasterkeyCrawler extends CrawlerAbstract {
-  constructor() {
-    super();
-    this.BASE_URL = 'https://www.master-key.co.kr';
-    this.zizumMap = {
-      '궁동직영점': 1,
-      '해운대 블루오션스테이션': 40,
-      '부평점': 36,
-      '플레이포인트랩강남점': 35,
-      '프라임신촌퍼플릭': 32,
-      '노원점': 31,
-      '동탄프라임': 30,
-      '강남프라임': 29,
-      '건대로데오': 28,
-      '평택점': 27,
-      '건대점': 26,
-      '프라임청주점': 24,
-      '화정점': 23,
-      '잠실점': 21,
-      '홍대상수점': 20,
-      '부산서면점': 19,
-      '천안신부점': 18,
-      '강남점': 16,
-      '대구동성로로데오점': 14,
-      '안양점': 13,
-      '익산점': 12,
-      '홍대점': 11,
-      '전주고사점': 8,
-      '천안두정점': 7,
-      '은행직영점': 2,
-    };
-    this.themeMap = undefined;
-  }
+export class MasterKeyCrawler extends AbstractCrawler {
+  BASE_URL = 'https://www.master-key.co.kr';
+  zizumMap = {
+    '궁동직영점': 1,
+    '해운대 블루오션스테이션': 40,
+    '부평점': 36,
+    '플레이포인트랩강남점': 35,
+    '프라임신촌퍼플릭': 32,
+    '노원점': 31,
+    '동탄프라임': 30,
+    '강남프라임': 29,
+    '건대로데오': 28,
+    '평택점': 27,
+    '건대점': 26,
+    '프라임청주점': 24,
+    '화정점': 23,
+    '잠실점': 21,
+    '홍대상수점': 20,
+    '부산서면점': 19,
+    '천안신부점': 18,
+    '강남점': 16,
+    '대구동성로로데오점': 14,
+    '안양점': 13,
+    '익산점': 12,
+    '홍대점': 11,
+    '전주고사점': 8,
+    '천안두정점': 7,
+    '은행직영점': 2,
+  };
 
   async getTimeTableByTheme({
     shop: shopId,
@@ -45,7 +41,7 @@ export class MasterkeyCrawler extends CrawlerAbstract {
   }: {
     shop: string;
     theme: string;
-    date: Date;
+    date: string;
   }): Promise<TimeTableDto[]> {
     const shop = this.zizumMap[shopId];
     const data = await this.getInfoByData({ shop, date });
@@ -75,7 +71,7 @@ export class MasterkeyCrawler extends CrawlerAbstract {
   private async getInfoByData({ shop, date }) {
     const axiosInstance = axios.create({
       baseURL: this.BASE_URL,
-      httpsAgent: new https.Agent({
+      httpsAgent: new Agent({
         rejectUnauthorized: false,
       }),
     });
@@ -96,3 +92,8 @@ export class MasterkeyCrawler extends CrawlerAbstract {
     }
   }
 }
+
+export const MasterKeyCrawlerMetadata = {
+  brandName: '마스터키',
+  crawlerClass: MasterKeyCrawler,
+};

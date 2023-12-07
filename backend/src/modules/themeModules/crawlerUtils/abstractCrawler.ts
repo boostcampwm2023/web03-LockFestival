@@ -1,6 +1,6 @@
-import { TimeTableDto } from '@src/crawler/dtos/timetable.response.dto';
+import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
 
-export abstract class CrawlerAbstract {
+export abstract class AbstractCrawler {
   BASE_URL: string;
   zizumMap;
   themeMap;
@@ -11,6 +11,6 @@ export abstract class CrawlerAbstract {
   }: {
     shop: string;
     theme: string;
-    date: Date;
+    date: string;
   }): Promise<TimeTableDto[]>;
 }

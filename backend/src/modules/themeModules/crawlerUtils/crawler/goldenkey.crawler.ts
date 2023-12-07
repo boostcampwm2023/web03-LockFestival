@@ -1,21 +1,19 @@
 import * as cheerio from 'cheerio';
-import { CrawlerAbstract } from '@src/crawler/service/crawler.abstract';
-import { TimeTableDto } from '@src/crawler/dtos/timetable.response.dto';
-import axios from 'axios/index';
+import { AbstractCrawler } from '@crawlerUtils/abstractCrawler';
+import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
+import axios from 'axios';
+import { Injectable } from '@nestjs/common';
 
-export class GoldenkeyCrawler extends CrawlerAbstract {
-  constructor() {
-    super();
-    this.BASE_URL = 'http://xn--jj0b998aq3cptw.com/layout/res/home.php';
-    this.zizumMap = {
-      '대구동성로점': 1,
-      '대구동성로2호점': 11,
-      '강남점(타임스퀘어)': 5,
-      '강남점(플라워로드)': 6,
-      '건대점': 7,
-    };
-    this.themeMap = undefined;
-  }
+@Injectable()
+export class GoldenKeyCrawler extends AbstractCrawler {
+  BASE_URL = 'http://xn--jj0b998aq3cptw.com/layout/res/home.php';
+  zizumMap = {
+    '대구동성로점': 1,
+    '대구동성로2호점': 11,
+    '강남점(타임스퀘어)': 5,
+    '강남점(플라워로드)': 6,
+    '건대점': 7,
+  };
 
   async getTimeTableByTheme({
     shop,
@@ -24,7 +22,7 @@ export class GoldenkeyCrawler extends CrawlerAbstract {
   }: {
     shop: string;
     theme: string;
-    date: Date;
+    date: string;
   }): Promise<TimeTableDto[]> {
     const shopId = this.zizumMap[shop];
     const data = await this.getInfoByData({ shop: shopId, date });
@@ -65,3 +63,8 @@ export class GoldenkeyCrawler extends CrawlerAbstract {
     }
   }
 }
+
+export const GoldenKeyCrawlerMetadata = {
+  brandName: '황금열쇠',
+  crawlerClass: GoldenKeyCrawler,
+};

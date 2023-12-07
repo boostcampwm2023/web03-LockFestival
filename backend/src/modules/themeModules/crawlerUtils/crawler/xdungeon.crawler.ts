@@ -1,23 +1,19 @@
 import * as cheerio from 'cheerio';
-import { CrawlerAbstract } from '@src/crawler/service/crawler.abstract';
-import { TimeTableDto } from '@src/crawler/dtos/timetable.response.dto';
-import axios from 'axios/index';
+import { AbstractCrawler } from '@crawlerUtils/abstractCrawler';
+import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
+import axios from 'axios';
 
-export class XdungeonCrawler extends CrawlerAbstract {
-  constructor() {
-    super();
-    this.BASE_URL = 'https://www.seoul-escape.com';
-    this.zizumMap = {
-      홍대던전: 3,
-      던전101: 1,
-      홍대던전Ⅲ: 5,
-      강남던전: 2,
-      강남던전Ⅱ: 4,
-      던전루나: 6,
-      서면던전: 7,
-    };
-    this.themeMap = undefined;
-  }
+export class XDungeonCrawler extends AbstractCrawler {
+  BASE_URL = 'https://www.seoul-escape.com';
+  zizumMap = {
+    홍대던전: 3,
+    던전101: 1,
+    홍대던전Ⅲ: 5,
+    강남던전: 2,
+    강남던전Ⅱ: 4,
+    던전루나: 6,
+    서면던전: 7,
+  };
 
   async getTimeTableByTheme({
     shop,
@@ -26,7 +22,7 @@ export class XdungeonCrawler extends CrawlerAbstract {
   }: {
     shop: string;
     theme: string;
-    date: Date;
+    date: string;
   }): Promise<TimeTableDto[]> {
     const shopId = this.zizumMap[shop];
     const data = await this.getInfoByData({ shopId, date });
@@ -68,3 +64,8 @@ export class XdungeonCrawler extends CrawlerAbstract {
     }
   }
 }
+
+export const XDungeonCrawlerMetadata = {
+  brandName: '비트포비아 던전',
+  crawlerClass: XDungeonCrawler,
+};

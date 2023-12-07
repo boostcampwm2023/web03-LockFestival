@@ -1,22 +1,21 @@
-import { CrawlerAbstract } from '@src/crawler/service/crawler.abstract';
-import { TimeTableDto } from '@src/crawler/dtos/timetable.response.dto';
+import { AbstractCrawler } from '@crawlerUtils/abstractCrawler';
+import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
 
-export class NexteditionCrawler extends CrawlerAbstract {
-  constructor() {
-    super();
-    this.BASE_URL = 'https://www.nextedition.co.kr';
-    this.zizumMap = {
-      '건대점': 4,
-      '강남점': 7,
-      '건대2호점': 8,
-      '강남3호점': 12,
-      '강남5호점': 18,
-      '신림점': 15,
-      '잠실점': 19,
-      '건대 보네르관': 20,
-    };
-    this.themeMap = undefined;
-  }
+export class NextEditionCrawler extends AbstractCrawler {
+  BASE_URL = 'https://www.nextedition.co.kr';
+  zizumMap = {
+    '건대점': 4,
+    '부천점': 5,
+    '부평점': 6,
+    '강남점': 7,
+    '건대2호점': 8,
+    '분당서현점': 11,
+    '강남3호점': 12,
+    '강남5호점': 18,
+    '신림점': 15,
+    '잠실점': 19,
+    '건대 보네르관': 20,
+  };
 
   async getTimeTableByTheme({
     shop,
@@ -25,7 +24,7 @@ export class NexteditionCrawler extends CrawlerAbstract {
   }: {
     shop: string;
     theme: string;
-    date: Date;
+    date: string;
   }): Promise<TimeTableDto[]> {
     const shopId = this.zizumMap[shop];
     const timeTableMap = await this.getInfoByData({ shop: shopId, date });
@@ -66,3 +65,8 @@ export class NexteditionCrawler extends CrawlerAbstract {
     }
   }
 }
+
+export const NextEditionCrawlerMetadata = {
+  brandName: '넥스트에디션',
+  crawlerClass: NextEditionCrawler,
+};
