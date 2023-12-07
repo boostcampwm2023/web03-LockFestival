@@ -11,33 +11,19 @@ const useHeaderSearchInput = () => {
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setRealInputQuery(e);
-    if (realInputQuery === '') {
+
+    if (realInputQuery === '' && location.pathname !== '/search') {
       setUrlBeforeSearch(location.pathname);
     }
   };
 
   const handleBlur = () => {
-    if (realInputQuery === '') {
+    if (debounceQuery === '') {
       setIsClickSearchButton(false);
     }
   };
 
   useEffect(() => {
-    if (realInputQuery === '' && !isClickSearchButton) {
-      return;
-    }
-
-    if (realInputQuery === '') {
-      navigate(urlBeforeSearch);
-      return;
-    }
-
-    if (debounceQuery === '') {
-      navigate(urlBeforeSearch);
-      resetQuery();
-      return;
-    }
-
     navigate(`/search?query=${debounceQuery}`);
   }, [debounceQuery]);
 
@@ -47,6 +33,13 @@ const useHeaderSearchInput = () => {
       resetQuery();
     }
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (debounceQuery === '' && !isClickSearchButton) {
+      navigate(urlBeforeSearch);
+      resetQuery();
+    }
+  }, [isClickSearchButton]);
 
   return {
     realInputQuery,
