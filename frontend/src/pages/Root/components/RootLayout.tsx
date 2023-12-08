@@ -3,10 +3,14 @@ import RandomThemeListContainer from './RandomThemeListContainer';
 import GeoLocationThemeListContainer from './GeoLocationThemeListContainer';
 import { Suspense } from 'react';
 import RootSkeletonComponent from './RootSkeletonComponent';
+import { Helmet } from 'react-helmet-async';
 
 const RootLayout = () => {
   return (
     <Container>
+      <Helmet>
+        <title>Lock Festival 메인페이지</title>
+      </Helmet>
       <Suspense fallback={<RootSkeletonComponent />}>
         <RandomThemeListContainer />
         <GeoLocationThemeListContainer />
