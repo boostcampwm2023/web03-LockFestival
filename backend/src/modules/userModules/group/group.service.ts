@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { GroupRepository } from '@group/group.repository';
+import { GroupEditDto } from '@group/dtos/group.edit.dto';
 import { GroupRequestDto } from '@group/dtos/group.create.dto';
 import { ThemeRepository } from '@theme/theme.repository';
 import { GroupFindOptionsDto } from '@group/dtos/group.findoptions.request.dto';
@@ -96,5 +97,8 @@ export class GroupService {
   }
   async deleteGroupOnKick(groupId: number, nickname: string) {
     return await this.groupRepository.deleteGroupOnKick(groupId, nickname);
+  }
+  async editGroupInfo(groupEditDto: GroupEditDto): Promise<GroupInfoResponseDto> {
+    return await this.groupRepository.editGroupInfo(groupEditDto);
   }
 }

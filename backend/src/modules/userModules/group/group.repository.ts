@@ -10,6 +10,7 @@ import { Theme } from '@theme/entities/theme.entity';
 import { Branch } from '@branch/entities/branch.entity';
 import { Brand } from '@brand/entities/brand.entity';
 import { GroupInfoResponseDto } from '@group/dtos/group.info.response.dto';
+import { GroupEditDto } from '@group/dtos/group.edit.dto';
 
 @Injectable()
 export class GroupRepository extends Repository<Group> {
@@ -271,6 +272,71 @@ export class GroupRepository extends Repository<Group> {
       group.currentMembers -= 1;
       await queryRunner.manager.save(group);
       await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
+
+  async editGroupInfo(groupEditDto: GroupEditDto): Promise<any> {
+    const queryRunner = this.dataSource.createQueryRunner();
+    try {
+      await queryRunner.startTransaction();
+      const group = await this.dataSource
+        .createQueryBuilder(Group, 'group')
+        .select(['group.current_members as currentMembers', 'user.nickname as nickname'])
+        .where('group.id = :groupId', { groupId: groupEditDto.groupId })
+        .innerJoin(User, 'user', 'group.leader_id = user.id')
+        .getRawOne();
+      if (group.nickname !== groupEditDto.leaderNickname) {
+        throw new HttpException('방장만 정보 수정이 가능합니다.', HttpStatus.BAD_REQUEST);
+      }
+      if (group.currentMembers > groupEditDto.recruitmentMembers) {
+        throw new HttpException(
+          '모집된 인원 수가 수정하려는 새로운 인원 수보다 많아 수정할 수 없습니다.',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+
+      await queryRunner.manager
+        .createQueryBuilder(Group, 'group')
+        .update()
+        .set({
+          recruitmentMembers: groupEditDto.recruitmentMembers,
+          recruitmentContent: groupEditDto.recruitmentContent,
+          recruitmentCompleted: groupEditDto.recruitmentCompleted,
+          appointmentDate: groupEditDto.appointmentDate,
+          appointmentCompleted: groupEditDto.appointmentCompleted,
+        })
+        .where('group.id = :groupId', { groupId: groupEditDto.groupId })
+        .execute();
+
+      const editedGroupInfo = queryRunner.manager
+        .createQueryBuilder(Group, 'group')
+        .select([
+          'brand.brandName as brandName',
+          'branch.branchName as branchName',
+          "CONCAT(branch.big_region, ' ', branch.small_region) AS regionName",
+          'theme.name as themeName',
+          'theme.id as themeId',
+          'theme.poster_image_url as posterImageUrl',
+          'group.recruitment_content as recruitmentContent',
+          'group.appointment_date as appointmentDate',
+          'group.recruitment_members as recruitmentMembers',
+          'group.current_members as currentMembers',
+          'group.recruitment_completed as recruitmentCompleted',
+          'group.appointment_completed as appointmentCompleted',
+        ])
+        .where('group.id = :groupId', { groupId: groupEditDto.groupId })
+        .innerJoin(Theme, 'theme', 'group.theme_id = theme.id')
+        .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
+        .innerJoin(Brand, 'brand', 'branch.brand_id = brand.id')
+        .getRawOne();
+
+      await queryRunner.commitTransaction();
+      return editedGroupInfo;
     } catch (error) {
       await queryRunner.rollbackTransaction();
       throw error;
