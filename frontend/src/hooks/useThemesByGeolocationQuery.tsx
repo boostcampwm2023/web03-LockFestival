@@ -10,7 +10,7 @@ const useThemesByGeolocationQuery = () => {
   const { geolocation } = useGeolocation();
 
   const { data, refetch } = useQuery({
-    queryKey: [QUERY_MANAGEMENT['geolocation'].key],
+    queryKey: [QUERY_MANAGEMENT['geolocation'].key, geolocation.latitude, geolocation.longitude],
     queryFn: () => QUERY_MANAGEMENT['geolocation'].fn({ geolocation }),
     enabled: false,
   });
