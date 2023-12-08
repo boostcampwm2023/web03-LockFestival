@@ -10,6 +10,7 @@ import RoomSettingModal from './RoomSettingModal/RoomSettingModal';
 import { useRecoilValue } from 'recoil';
 import { roomInfoAtom } from '@store/chatRoom';
 import { getStringByDate } from '@utils/dateUtil';
+import TimeTable from './TimeTable/TimeTable';
 
 const RoomInfoPanel = ({ settingMode }: { settingMode: boolean }) => {
   const { openModal, closeModal } = useModal();
@@ -22,76 +23,75 @@ const RoomInfoPanel = ({ settingMode }: { settingMode: boolean }) => {
     themeName,
     posterImageUrl,
     recruitmentContent,
-    // appointmentDate,
+    appointmentDate,
     recruitmentMembers,
     currentMembers,
     recruitmentCompleted,
     appointmentCompleted,
+    themeId,
   } = roomInfo as RoomInfo;
 
   return (
     <Layout>
-      {settingMode ? (
-        <SettingButton>
-          <Button
-            isIcon={true}
-            onClick={() =>
-              openModal(Modal, {
-                children: <RoomSettingModal onClose={() => closeModal(Modal)} />,
-                onClose: () => closeModal(Modal),
-                closeOnExternalClick: true,
-              })
-            }
-          >
-            <FaGear />
-          </Button>
-        </SettingButton>
-      ) : (
-        ''
-      )}
-      <HeadContainer>
-        <ThemePoster src={posterImageUrl} alt="테마_포스터" />
-        <ThemeInfoWrapper>
-          <ThemeInfo>{regionName}</ThemeInfo>
-          <ThemeInfo>{brandName}</ThemeInfo>
-          <ThemeInfo>{branchName}</ThemeInfo>
-          <ThemeInfo>{themeName}</ThemeInfo>
-        </ThemeInfoWrapper>
-      </HeadContainer>
-      <RoomInfoWrapper>
-        <Label isBorder={true} width="10rem">
-          <LabelText>모집내용</LabelText>
-        </Label>
-        <RoomInfoContent>{recruitmentContent}</RoomInfoContent>
-      </RoomInfoWrapper>
-      <RoomInfoWrapper>
-        <Label isBorder={true} width="10rem">
-          <LabelText>날짜</LabelText>
-        </Label>
-        <RoomInfoContent>
-          {
-            //TODO: 현재 방정보가 Mock데이터 여서 이후에 appointmentDate로 변경
-            getStringByDate(new Date())
-          }
-        </RoomInfoContent>
-      </RoomInfoWrapper>
-      <RoomInfoWrapper>
-        <Label isBorder={true} width="10rem">
-          <LabelText>인원</LabelText>
-        </Label>
-        <RoomInfoContent>
-          {currentMembers}명/{recruitmentMembers}명
-        </RoomInfoContent>
-      </RoomInfoWrapper>
-      <RoomInfoWrapper>
-        <Label isBorder={true} width="10rem">
-          <LabelText>상태</LabelText>
-        </Label>
-        <RoomInfoContent>
-          <StateLabel text="예약" state={appointmentCompleted} />
-          <StateLabel text="모집" state={recruitmentCompleted} />
-        </RoomInfoContent>
-      </RoomInfoWrapper>
+      <RoomInfoTopContainer>
+        {settingMode ? (
+          <SettingButton>
+            <Button
+              isIcon={true}
+              onClick={() =>
+                openModal(Modal, {
+                  children: <RoomSettingModal onClose={() => closeModal(Modal)} />,
+                  onClose: () => closeModal(Modal),
+                  closeOnExternalClick: true,
+                })
+              }
+            >
+              <FaGear />
+            </Button>
+          </SettingButton>
+        ) : (
+          ''
+        )}
+        <HeadContainer>
+          <ThemePoster src={posterImageUrl} alt="테마_포스터" />
+          <ThemeInfoWrapper>
+            <ThemeInfo>{regionName}</ThemeInfo>
+            <ThemeInfo>{brandName}</ThemeInfo>
+            <ThemeInfo>{branchName}</ThemeInfo>
+            <ThemeInfo>{themeName}</ThemeInfo>
+          </ThemeInfoWrapper>
+        </HeadContainer>
+        <RoomInfoWrapper>
+          <Label isBorder={true} width="10rem">
+            <LabelText>모집내용</LabelText>
+          </Label>
+          <RoomInfoContent>{recruitmentContent}</RoomInfoContent>
+        </RoomInfoWrapper>
+        <RoomInfoWrapper>
+          <Label isBorder={true} width="10rem">
+            <LabelText>날짜</LabelText>
+          </Label>
+          <RoomInfoContent>{getStringByDate(new Date(appointmentDate))}</RoomInfoContent>
+        </RoomInfoWrapper>
+        <RoomInfoWrapper>
+          <Label isBorder={true} width="10rem">
+            <LabelText>인원</LabelText>
+          </Label>
+          <RoomInfoContent>
+            {currentMembers}명/{recruitmentMembers}명
+          </RoomInfoContent>
+        </RoomInfoWrapper>
+        <RoomInfoWrapper>
+          <Label isBorder={true} width="10rem">
+            <LabelText>상태</LabelText>
+          </Label>
+          <RoomInfoContent>
+            <StateLabel text="예약" state={appointmentCompleted} />
+            <StateLabel text="모집" state={recruitmentCompleted} />
+          </RoomInfoContent>
+        </RoomInfoWrapper>
+      </RoomInfoTopContainer>
+      <TimeTable themeId={themeId} />
     </Layout>
   );
 };
@@ -102,12 +102,20 @@ const Layout = styled.div([
   css`
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    justify-content: space-between;
     width: 34rem;
     height: 100vh;
     padding: 2rem;
   `,
   tw`bg-gray-light rounded-[2rem] h-[calc(90vh - 6rem)]`,
+]);
+
+const RoomInfoTopContainer = styled.div([
+  css`
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  `,
 ]);
 
 const SettingButton = styled.div([

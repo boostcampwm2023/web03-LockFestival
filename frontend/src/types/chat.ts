@@ -47,3 +47,8 @@ export type RoomThemeType = Pick<
   RoomInfo,
   'brandName' | 'branchName' | 'themeName' | 'posterImageUrl' | 'themeId'
 >;
+
+export interface TimeTable {
+  time: string;
+  possible: boolean;
+}
