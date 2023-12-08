@@ -5,19 +5,33 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { userListInfoAtom } from '@store/chatRoom';
 import { UserInfoObject } from 'types/chat';
+import useLeaveRoomMutation from '@hooks/mutation/useLeaveRoomMutation';
 
-const UserListPanel = ({ settingMode }: { settingMode: boolean }) => {
+interface Props {
+  roomId: string;
+  settingMode: boolean;
+  kickUser: (userId: string) => void;
+}
+
+const UserListPanel = ({ roomId, settingMode, kickUser }: Props) => {
   const userListInfo = useRecoilValue(userListInfoAtom) as UserInfoObject;
   const navigate = useNavigate();
+  const { mutate } = useLeaveRoomMutation(Number(roomId));
+
   const handlerLeaveRoom = () => {
-    //TODO: emit leave
-    navigate('/group-chat');
+    if (!window.confirm('정말로 방을 나가시겠습니까?\n나간 이후 복구할 수 없습니다.')) {
+      return;
+    }
+    mutate(Number(roomId));
+    navigate('/room-list');
   };
 
   const handleUserKick = (e: React.MouseEvent) => {
-    if (e.target) {
-      //TODO: emit kick
-      console.log((e.currentTarget as HTMLButtonElement).dataset.userId);
+    const button = e.currentTarget as HTMLButtonElement;
+    const userId = button?.dataset.userId;
+
+    if (button && userId) {
+      kickUser(userId);
     }
   };
 

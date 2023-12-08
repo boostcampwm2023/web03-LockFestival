@@ -4,6 +4,7 @@ import useSocketConnection from './useSocketConnection';
 import useChatLog from './useChatLog';
 import { useSetRecoilState } from 'recoil';
 import { chatUnreadAtom } from '@store/chatRoom';
+import { useNavigate } from 'react-router-dom';
 
 const useSocket = (roomId: string) => {
   const { socket, connecting } = useSocketConnection(roomId);
@@ -16,6 +17,8 @@ const useSocket = (roomId: string) => {
 
   const setChatUnreadAtom = useSetRecoilState(chatUnreadAtom);
 
+  const navigate = useNavigate();
+
   const sendChat = (message: string) => {
     socket?.emit('chat', { message });
   };
@@ -25,6 +28,12 @@ const useSocket = (roomId: string) => {
       cursorLogId: cursorId,
       count: 50,
       directrion: -1,
+    });
+  };
+
+  const kickUser = (userId: string) => {
+    socket?.emit('kick', {
+      userId,
     });
   };
 
@@ -41,6 +50,11 @@ const useSocket = (roomId: string) => {
 
       socket.on('unread', (res: Record<string, string>) => {
         setChatUnreadAtom(new Map(Object.entries(res)));
+      });
+
+      socket.on('kick', (res) => {
+        alert(res.message);
+        navigate('/room-list');
       });
     }
   }, [socket]);
@@ -63,7 +77,7 @@ const useSocket = (roomId: string) => {
     }
   }, [receivePastChat]);
 
-  return { sendChat, connecting, getPastChat };
+  return { sendChat, connecting, getPastChat, kickUser };
 };
 
 export default useSocket;
