@@ -3,8 +3,12 @@ import Room from './Room/Room';
 import { useRef } from 'react';
 import useIntersectionObserver from '@hooks/intersectionObserver/useIntersectionObserver';
 import useRoomListInfiniteQuery from '@hooks/query/useRoomListInfiniteQuery';
+import Button from '@components/Button/Button';
+import { useNavigate } from 'react-router-dom';
 
 const RoomListLayout = () => {
+  const navigate = useNavigate();
+
   const targetRef = useRef<HTMLDivElement>(null);
 
   const { data, fetchNextPage, hasNextPage, isFetching } = useRoomListInfiniteQuery();
@@ -21,9 +25,25 @@ const RoomListLayout = () => {
           return <Room {...room} key={room.groupId} />;
         });
       })}
-      <div ref={targetRef}></div>
       {isFetching && <TextContainer>그룹 채팅방 목록을 불러오는 중...</TextContainer>}
-      {data && !hasNextPage && <TextContainer>마지막 채팅방입니다!</TextContainer>}
+      {data?.pages[0]?.data?.length === 0 && (
+        <NotFoundText>
+          <div>참여중인 채팅방이 없습니다!</div>
+          <br />
+          <Button
+            isIcon={false}
+            font="maplestory"
+            size="l-bold"
+            onClick={() => navigate('/recruitment')}
+          >
+            <>참여하러 가기</>
+          </Button>
+        </NotFoundText>
+      )}
+      {data?.pages[0]?.data?.length && !hasNextPage && (
+        <TextContainer>마지막 채팅방입니다!</TextContainer>
+      )}
+      <div ref={targetRef}></div>
     </Container>
   );
 };
@@ -44,6 +64,17 @@ const TextContainer = styled.div([
     display: flex;
     align-items: center;
     justify-content: center;
+  `,
+]);
+
+const NotFoundText = styled.div([
+  tw`w-full mx-auto text-white text-l pt-4 max-w-[102.4rem] font-pretendard`,
+  css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
   `,
 ]);
 

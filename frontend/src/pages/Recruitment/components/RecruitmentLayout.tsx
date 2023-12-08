@@ -62,10 +62,15 @@ const RecruitmentLayout = () => {
             return <GroupInfoCard {...list} key={list.groupDetail.groupId} />;
           });
         })}
-        <div ref={targetRef}></div>
       </RecruitList>
       {isFetching && <TextContainer>모집글을 불러오는중 ...</TextContainer>}
-      {data && !hasNextPage && <TextContainer>마지막 모집글입니다!</TextContainer>}
+      {data?.pages[0]?.data?.length === 0 && (
+        <TextContainer>모집글이 하나도 없어요. ㅁ_ㅁ</TextContainer>
+      )}
+      {data?.pages[0]?.data?.length && !hasNextPage && (
+        <TextContainer>마지막 모집글입니다!</TextContainer>
+      )}
+      <div ref={targetRef}></div>
     </Container>
   );
 };
