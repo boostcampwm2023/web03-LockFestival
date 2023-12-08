@@ -13,7 +13,7 @@ async function deferRender() {
     return;
   }
 
-  // await initMockAPI();
+  await initMockAPI();
 }
 
 const queryClient = new QueryClient({
@@ -22,16 +22,16 @@ const queryClient = new QueryClient({
 
 deferRender().then(() => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
-    // <React.StrictMode>
-    <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools initialIsOpen={false} />
-        <HelmetProvider>
-          <GlobalStyle />
-          <App />
-        </HelmetProvider>
-      </QueryClientProvider>
-    </RecoilRoot>
-    // </React.StrictMode>
+    <React.StrictMode>
+      <RecoilRoot>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <HelmetProvider>
+            <GlobalStyle />
+            <App />
+          </HelmetProvider>
+        </QueryClientProvider>
+      </RecoilRoot>
+    </React.StrictMode>
   );
 });
