@@ -6,15 +6,10 @@ const useHeaderSearchInput = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { debounceQuery, realInputQuery, setRealInputQuery, resetQuery } = useDebounceInput(200);
-  const [urlBeforeSearch, setUrlBeforeSearch] = useState<string>(location.pathname);
   const [isClickSearchButton, setIsClickSearchButton] = useState<boolean>(false);
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setRealInputQuery(e);
-
-    if (realInputQuery === '' && location.pathname !== '/search') {
-      setUrlBeforeSearch(location.pathname);
-    }
   };
 
   const handleBlur = () => {
@@ -24,20 +19,25 @@ const useHeaderSearchInput = () => {
   };
 
   useEffect(() => {
-    navigate(`/search?query=${debounceQuery}`);
+    if (debounceQuery !== '') {
+      navigate(`/search?query=${debounceQuery}`);
+    }
+    if (debounceQuery === '' && isClickSearchButton) {
+      navigate(`/search?query=${debounceQuery}`);
+    }
   }, [debounceQuery]);
 
   useEffect(() => {
     if (location.pathname !== '/search') {
       setIsClickSearchButton(false);
       resetQuery();
+      localStorage.setItem('lastVisited', location.pathname);
     }
   }, [location.pathname]);
 
   useEffect(() => {
-    if (debounceQuery === '' && !isClickSearchButton) {
-      navigate(urlBeforeSearch);
-      resetQuery();
+    if (isClickSearchButton && location.pathname !== 'search') {
+      navigate('/search');
     }
   }, [isClickSearchButton]);
 
