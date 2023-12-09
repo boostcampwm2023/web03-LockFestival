@@ -289,6 +289,7 @@ export class GroupRepository extends Repository<Group> {
         .select(['group.current_members as currentMembers', 'user.nickname as nickname'])
         .where('group.id = :groupId', { groupId: groupEditDto.groupId })
         .innerJoin(User, 'user', 'group.leader_id = user.id')
+
         .getRawOne();
       if (group.nickname !== groupEditDto.leaderNickname) {
         throw new HttpException('방장만 정보 수정이 가능합니다.', HttpStatus.BAD_REQUEST);
@@ -301,14 +302,15 @@ export class GroupRepository extends Repository<Group> {
       }
 
       await queryRunner.manager
-        .createQueryBuilder(Group, 'group')
-        .update()
+        .createQueryBuilder()
+        .update(Group)
         .set({
           recruitmentMembers: groupEditDto.recruitmentMembers,
           recruitmentContent: groupEditDto.recruitmentContent,
           recruitmentCompleted: groupEditDto.recruitmentCompleted,
           appointmentDate: groupEditDto.appointmentDate,
           appointmentCompleted: groupEditDto.appointmentCompleted,
+          theme: { id: groupEditDto.themeId },
         })
         .where('group.id = :groupId', { groupId: groupEditDto.groupId })
         .execute();
