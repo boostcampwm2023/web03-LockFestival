@@ -24,7 +24,7 @@ const TimeTable = ({ themeId }: { themeId: number }) => {
           onChange={setDate}
           formatDay={(_, date) => date.toLocaleDateString('ko-KR', { day: '2-digit' }).slice(0, -1)}
           value={date}
-          minDate={new Date()}
+          minDate={today}
           maxDate={oneWeekLater}
           minDetail="month"
           maxDetail="month"
