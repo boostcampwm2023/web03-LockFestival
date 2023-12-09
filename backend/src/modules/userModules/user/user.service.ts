@@ -42,9 +42,9 @@ export class UserService {
     try {
       const userData = await this.userRepository.findUserByEmail(data.id);
       if (!userData) {
-        let nickname: string = this.generateRandomString();
+        let nickname: string = this.generateRandomNumber();
         while (!(await this.checkUsableNickname(nickname))) {
-          nickname = this.generateRandomString();
+          nickname = this.generateRandomNumber();
         }
 
         return await this.userRepository.createUserByNaver(data, nickname);
@@ -102,6 +102,22 @@ export class UserService {
     }
 
     return result;
+  }
+
+  private generateRandomNumber(length: number = 8): string {
+    const prefix: string = '방탈러';
+    const targetNumberLength: number = length - prefix.length;
+
+    const numLength = Math.floor(Math.random() * targetNumberLength) + 1;
+    const characters: string = '0123456789';
+
+    let randomNumberString: string = '';
+    for (let i: number = 0; i < numLength; i++) {
+      const randomIndex: number = Math.floor(Math.random() * characters.length);
+      randomNumberString += characters.charAt(randomIndex);
+    }
+
+    return prefix + randomNumberString;
   }
 
   async getGroupsByNickname(
