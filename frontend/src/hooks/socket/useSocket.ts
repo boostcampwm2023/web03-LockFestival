@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ServerChatLog, ServerChatLogList } from 'types/chat';
+import { ChangeRoomData, ServerChatLog, ServerChatLogList } from 'types/chat';
 import useSocketConnection from './useSocketConnection';
 import useChatLog from './useChatLog';
 import { useSetRecoilState } from 'recoil';
@@ -35,6 +35,10 @@ const useSocket = (roomId: string) => {
     socket?.emit('kick', {
       userId,
     });
+  };
+
+  const changeRoom = (afterRoomInfo: Record<string, ChangeRoomData>) => {
+    socket?.emit('roomInfo', afterRoomInfo);
   };
 
   useEffect(() => {
@@ -77,7 +81,7 @@ const useSocket = (roomId: string) => {
     }
   }, [receivePastChat]);
 
-  return { sendChat, connecting, getPastChat, kickUser };
+  return { sendChat, connecting, getPastChat, kickUser, changeRoom };
 };
 
 export default useSocket;
