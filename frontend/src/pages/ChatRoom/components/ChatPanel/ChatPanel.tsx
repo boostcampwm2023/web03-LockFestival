@@ -16,6 +16,7 @@ import {
   checkIsLastChatFromUser,
 } from '@utils/chatMessageUtil';
 import useIsScrollTopObserver from '@hooks/intersectionObserver/useIsScrollTopObserver';
+import { useVirtualizer } from '@tanstack/react-virtual';
 
 interface ChatPanelProps {
   roomId: string;
@@ -25,9 +26,9 @@ interface ChatPanelProps {
 
 const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
-
+  const navigate = useNavigate();
   const targetRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const parentRef = useRef<HTMLDivElement>(null);
   const lastScrollRef = useRef<HTMLDivElement>(null);
 
   const [isScrollToTop, setIsScrollToTop] = useState<boolean>(false);
@@ -44,7 +45,6 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     targetRef: lastScrollRef,
   });
 
-  const navigate = useNavigate();
   const [inputValue, handleValue, resetValue] = useInput('');
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -71,19 +71,19 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     if (!isScrollToTop) {
       lastScrollRef?.current?.scrollIntoView({ block: 'start', behavior: 'auto' });
     }
-    if (scrollRef.current && scrollRef.current.scrollTop < 10 && prevScrollHeight) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight - prevScrollHeight;
+    if (parentRef.current && parentRef.current.scrollTop < 10 && prevScrollHeight) {
+      parentRef.current.scrollTop = parentRef.current.scrollHeight - prevScrollHeight;
       return setPrevScrollHeight(null);
     }
   }, [chatLogData]);
 
   const handleScroll = () => {
-    if (!scrollRef || !scrollRef.current) {
+    if (!parentRef || !parentRef.current) {
       return;
     }
 
-    if (scrollRef.current.scrollTop < 10) {
-      setPrevScrollHeight(scrollRef.current?.scrollHeight);
+    if (parentRef.current.scrollTop < 10) {
+      setPrevScrollHeight(parentRef.current?.scrollHeight);
     }
   };
 
@@ -92,6 +92,15 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
       return Array.from(chatLogData);
     }
   }, [chatLogData]);
+
+  const virtualizer = useVirtualizer({
+    count: chatArrayFromChatLogData?.length || 0,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 200,
+    overscan: 10,
+  });
+
+  const items = virtualizer.getVirtualItems();
 
   return (
     <Layout>
@@ -106,36 +115,57 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
           <FaRightFromBracket />
         </Button>
       </ButtonWrapper>
-      <ChatDisplayContainer ref={scrollRef} onScroll={() => handleScroll()}>
-        <div ref={targetRef} />
-        {chatArrayFromChatLogData &&
-          chatArrayFromChatLogData.map(([logId, chat], index) => {
-            return (
-              <>
-                {!checkIsFirstChatToday(index, chatArrayFromChatLogData) && (
-                  <DateDisplayWrapper>
-                    <HorizontalLine />
-                    <DateDisplay>{getStringByDate(new Date(chat.time))}</DateDisplay>
-                    <HorizontalLine />
-                  </DateDisplayWrapper>
-                )}
 
-                <MessageBox
-                  key={logId}
-                  logId={logId}
-                  message={chat.message}
-                  userId={chat.userId}
-                  type={chat.type}
-                  time={chat.time}
-                  isFirstChat={checkIsFirstChatFromUser(index, chatArrayFromChatLogData)}
-                  isLastChat={checkIsLastChatFromUser(index, chatArrayFromChatLogData)}
-                />
-              </>
-            );
-          })}
+      <ChatDisplayContainer ref={parentRef} onScroll={() => handleScroll()}>
+        <div ref={targetRef} />
+        <div
+          style={{
+            height: virtualizer.getTotalSize(),
+            width: '100%',
+            position: 'relative',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              transform: `translateY(${items[0]?.start ?? 0}px)`,
+            }}
+          >
+            {chatArrayFromChatLogData &&
+              virtualizer.getVirtualItems().map((virtualRow) => {
+                const index = virtualRow.index;
+                const logId = chatArrayFromChatLogData[index][0];
+                const { message, userId, type, time } = chatArrayFromChatLogData[index][1];
+
+                return (
+                  <div key={index} ref={virtualizer.measureElement} data-index={index}>
+                    {!checkIsFirstChatToday(index, chatArrayFromChatLogData) && (
+                      <DateDisplayWrapper>
+                        <HorizontalLine />
+                        <DateDisplay>{getStringByDate(new Date(time))}</DateDisplay>
+                        <HorizontalLine />
+                      </DateDisplayWrapper>
+                    )}
+                    <MessageBox
+                      key={logId}
+                      logId={logId}
+                      message={message}
+                      userId={userId}
+                      type={type}
+                      time={time}
+                      isFirstChat={checkIsFirstChatFromUser(index, chatArrayFromChatLogData)}
+                      isLastChat={checkIsLastChatFromUser(index, chatArrayFromChatLogData)}
+                    />
+                  </div>
+                );
+              })}
+          </div>
+        </div>
         <div ref={lastScrollRef}></div>
       </ChatDisplayContainer>
-
       <InputChatPanel
         value={inputValue}
         onChange={handleValue}
@@ -178,6 +208,7 @@ const ButtonWrapper = styled.div([
 const ChatDisplayContainer = styled.div([
   tw`w-[100%] h-[100%] bg-white rounded-[1rem] font-pretendard text-l pt-4 pb-4 pl-4 pr-2`,
   css`
+    contain: strict;
     overflow-y: scroll;
 
     ::-webkit-scrollbar {
