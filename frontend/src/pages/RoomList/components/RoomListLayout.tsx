@@ -59,7 +59,7 @@ const Container = styled.div([
 ]);
 
 const TextContainer = styled.div([
-  tw`w-full mx-auto text-white text-l pt-4 max-w-[102.4rem] border-t border-white border-solid`,
+  tw`w-full mx-auto text-white text-l pt-4 max-w-[102.4rem] border-t border-white border-solid font-pretendard`,
   css`
     display: flex;
     align-items: center;
