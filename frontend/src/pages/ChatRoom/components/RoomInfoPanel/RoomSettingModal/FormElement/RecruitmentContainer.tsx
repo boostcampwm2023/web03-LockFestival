@@ -13,10 +13,10 @@ const RecruitmentContainer = ({ isRecruitment, setIsRecruitment }: Props) => {
         <Text>모집 여부</Text>
       </Label>
       <Button isSelected={!!isRecruitment} onClick={() => setIsRecruitment(true)}>
-        모집 완료
+        모집완료
       </Button>
       <Button isSelected={!isRecruitment} onClick={() => setIsRecruitment(false)}>
-        모집 중
+        모집중
       </Button>
     </>
   );
