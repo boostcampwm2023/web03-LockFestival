@@ -12,7 +12,7 @@ const TimeTable = ({ themeId }: { themeId: number }) => {
   const [date, setDate] = useState<Value>(today);
   const oneWeekLater = new Date(today);
   oneWeekLater.setDate(today.getDate() + 7);
-  const { data, isSuccess, isLoading, isError } = useTimeTableQuery(themeId, date);
+  const { data, isLoading } = useTimeTableQuery(themeId, date);
 
   return (
     <Container>
