@@ -34,7 +34,7 @@ const Auth = () => {
     handleLogin();
   }, []);
 
-  return <div>네이버 로그인 중...</div>;
+  return <div></div>;
 };
 
 export default Auth;
