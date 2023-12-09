@@ -107,6 +107,7 @@ const Layout = styled.div([
     width: 34rem;
     height: 100vh;
     padding: 2rem;
+    gap: 1.6rem;
   `,
   tw`bg-gray-light rounded-[2rem] h-[calc(90vh - 6rem)]`,
 ]);
@@ -115,7 +116,7 @@ const RoomInfoTopContainer = styled.div([
   css`
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.2rem;
   `,
 ]);
 
@@ -128,12 +129,13 @@ const SettingButton = styled.div([
 ]);
 
 const HeadContainer = styled.div([
-  tw`w-[27rem] h-[14.2rem] bg-gray rounded-[2rem]`,
+  tw`w-[full] h-[14.2rem] bg-gray rounded-[2rem]`,
   css`
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 2rem;
+    gap: 1.2rem;
   `,
 ]);
 
@@ -142,7 +144,7 @@ const ThemePoster = styled.img([tw`w-[10rem] h-[10.7rem] rounded-[2rem]`]);
 const ThemeInfoWrapper = styled.div([
   css`
     display: flex;
-    width: 12rem;
+    flex: 1;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -150,7 +152,12 @@ const ThemeInfoWrapper = styled.div([
   `,
 ]);
 
-const ThemeInfo = styled.div([tw`font-pretendard text-m text-white`]);
+const ThemeInfo = styled.div([
+  tw`font-pretendard text-m text-white`,
+  css`
+    text-align: center;
+  `,
+]);
 
 const RoomInfoWrapper = styled.div([
   css`

@@ -5,6 +5,8 @@ import fetchThemeDetails from '@apis/fetchThemeDetails';
 import fetchRoomList from '@apis/fetchRoomList';
 import fetchUserProfile from '@apis/fetchUserProfile';
 import fetchThemesByPage from './../apis/fetchThemesByPage';
+import fetchThemeTimeTable from '@apis/fetchThemeTimeTable';
+import { Value } from 'react-calendar/dist/cjs/shared/types';
 
 const QUERY_MANAGEMENT = {
   geolocation: {
@@ -34,6 +36,10 @@ const QUERY_MANAGEMENT = {
   themeSearchResult: {
     key: 'themeSearchResult',
     fn: fetchThemesByPage,
+  },
+  themeTimeTable: {
+    key: 'themeTimeTable',
+    fn: (themeId: number, date: Value) => fetchThemeTimeTable(themeId, date),
   },
 };
 
