@@ -43,10 +43,14 @@ export interface RoomInfo {
   appointmentCompleted: boolean;
 }
 
-export type RoomThemeType = Pick<
-  RoomInfo,
-  'brandName' | 'branchName' | 'themeName' | 'posterImageUrl' | 'themeId'
->;
+export type ChangeRoomData = {
+  themeId: string;
+  recruitmentContent: string;
+  recruitmentCompleted: boolean;
+  appointmentCompleted: boolean;
+  appointmentDate: Date;
+  recruitmentMembers: number;
+};
 
 export interface TimeTable {
   time: string;
