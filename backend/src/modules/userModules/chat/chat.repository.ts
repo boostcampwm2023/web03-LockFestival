@@ -164,13 +164,13 @@ export class ChatRepository {
     );
   }
 
-  async findLastChatLogIdByRoomId(roomId: string) {
+  async findLastChatLogIdByRoomId(roomId: string): Promise<string> {
     const roomInfo = await this.roomModel.findOne({ group_id: roomId });
     if (!roomInfo) {
       throw new Error('방 정보를 찾을 수 없습니다.');
     }
     if (!roomInfo.last_chat) {
-      return false;
+      return undefined;
     }
     return roomInfo.last_chat.toString();
   }
