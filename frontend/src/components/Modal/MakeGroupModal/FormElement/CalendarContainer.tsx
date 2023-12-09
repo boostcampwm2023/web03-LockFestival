@@ -28,6 +28,9 @@ const CalendarContainer = ({ isClickCalendar, setIsClickCalendar, date, setDate 
             value={date}
             onClickDay={() => setIsClickCalendar(false)}
             minDate={new Date()}
+            formatDay={(_, date) =>
+              date.toLocaleDateString('ko-KR', { day: '2-digit' }).slice(0, -1)
+            }
           />
         </CalendarWrapper>
       )}
