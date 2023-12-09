@@ -12,11 +12,11 @@ const ReservationContainer = ({ isReservation, setIsReservation }: Props) => {
       <Label isBorder={false} font="maplestory" size="l" width="12rem">
         <Text>예약 여부</Text>
       </Label>
-      <Button isSelected={isReservation === true} onClick={() => setIsReservation(true)}>
-        예약 O
+      <Button isSelected={!!isReservation} onClick={() => setIsReservation(true)}>
+        예약완료
       </Button>
-      <Button isSelected={isReservation === false} onClick={() => setIsReservation(false)}>
-        예약 X
+      <Button isSelected={!isReservation} onClick={() => setIsReservation(false)}>
+        예약중
       </Button>
     </>
   );

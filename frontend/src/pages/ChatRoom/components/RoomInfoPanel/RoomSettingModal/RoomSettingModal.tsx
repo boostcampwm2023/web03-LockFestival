@@ -13,6 +13,7 @@ import {
 } from '@components/Modal/MakeGroupModal/FormElement';
 import useRoomInfoSettingForm from '@hooks/useRoomInfoSettingForm';
 import RecruitmentContainer from './FormElement/RecruitmentContainer';
+import { ChangeRoomData } from 'types/chat';
 
 export interface Theme {
   themeId: number;
@@ -22,9 +23,10 @@ export interface Theme {
 }
 interface Props {
   onClose: ModalProps['onClose'];
+  changeRoom: (afterRoomInfo: Record<string, ChangeRoomData>) => void;
 }
 
-const RoomSettingModal = ({ onClose }: Props) => {
+const RoomSettingModal = ({ onClose, changeRoom }: Props) => {
   const {
     isClickCalendar,
     setIsClickCalendar,
@@ -43,27 +45,25 @@ const RoomSettingModal = ({ onClose }: Props) => {
     setIsRecruitment,
   } = useRoomInfoSettingForm();
 
-  const handleCreateRoom = () => {
+  const handleChangeRoom = () => {
     if (!checkValidate) {
       return;
     }
 
-    try {
-      //emit roomInfo 방정보 변경 요청
-      /*
-      {
-        themeId,
-        contents : newContents,
-        appointmentDate : date,
-        recruitmentMembers : memberCount,
-        recruitmentCompleted : isRecruitment,
-        appointmentCompleted : isReservation
-      }
-      */
-      onClose();
-    } catch (error) {
-      // console.log(error);
-    }
+    const afterRoomInfo: Record<string, ChangeRoomData> = {
+      roomInfo: {
+        themeId: theme?.themeId,
+        recruitmentContent: contents,
+        appointmentDate: new Date(date as Date),
+        recruitmentMembers: Number(memberCount),
+        recruitmentCompleted: isRecruitment,
+        appointmentCompleted: isReservation,
+      },
+    };
+
+    changeRoom(afterRoomInfo);
+
+    onClose();
   };
 
   if (!setTheme) {
@@ -108,7 +108,7 @@ const RoomSettingModal = ({ onClose }: Props) => {
         <SelectThemeForm theme={theme} />
       </Contents>
       <ButtonWrapper>
-        <Button onClick={handleCreateRoom} isIcon={false} size="l" disabled={!checkValidate()}>
+        <Button onClick={handleChangeRoom} isIcon={false} size="l" disabled={!checkValidate()}>
           <>변경하기</>
         </Button>
       </ButtonWrapper>

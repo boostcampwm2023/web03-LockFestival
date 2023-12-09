@@ -12,11 +12,11 @@ const RecruitmentContainer = ({ isRecruitment, setIsRecruitment }: Props) => {
       <Label isBorder={false} font="maplestory" size="l" width="12rem">
         <Text>모집 여부</Text>
       </Label>
-      <Button isSelected={isRecruitment === true} onClick={() => setIsRecruitment(true)}>
-        모집 완료
+      <Button isSelected={!!isRecruitment} onClick={() => setIsRecruitment(true)}>
+        모집완료
       </Button>
-      <Button isSelected={isRecruitment === false} onClick={() => setIsRecruitment(false)}>
-        모집 중
+      <Button isSelected={!isRecruitment} onClick={() => setIsRecruitment(false)}>
+        모집중
       </Button>
     </>
   );

@@ -1,7 +1,7 @@
 import tw, { styled, css } from 'twin.macro';
 import Button from '@components/Button/Button';
 import Label from '@components/Label/Label';
-import { RoomInfo } from 'types/chat';
+import { ChangeRoomData, RoomInfo } from 'types/chat';
 import StateLabel from './StateLabel/StateLabel';
 import { FaGear } from 'react-icons/fa6';
 import useModal from '@hooks/useModal';
@@ -12,9 +12,13 @@ import { roomInfoAtom } from '@store/chatRoom';
 import { getStringByDate } from '@utils/dateUtil';
 import TimeTable from './TimeTable/TimeTable';
 
-const RoomInfoPanel = ({ settingMode }: { settingMode: boolean }) => {
-  const { openModal, closeModal } = useModal();
+interface Props {
+  settingMode: boolean;
+  changeRoom: (afterRoomInfo: Record<string, ChangeRoomData>) => void;
+}
 
+const RoomInfoPanel = ({ settingMode, changeRoom }: Props) => {
+  const { openModal, closeModal } = useModal();
   const roomInfo = useRecoilValue(roomInfoAtom);
   const {
     brandName,
@@ -31,26 +35,23 @@ const RoomInfoPanel = ({ settingMode }: { settingMode: boolean }) => {
     themeId,
   } = roomInfo as RoomInfo;
 
+  const handleSettingButton = () => {
+    openModal(Modal, {
+      children: <RoomSettingModal changeRoom={changeRoom} onClose={() => closeModal(Modal)} />,
+      onClose: () => closeModal(Modal),
+      closeOnExternalClick: true,
+    });
+  };
+
   return (
     <Layout>
       <RoomInfoTopContainer>
-        {settingMode ? (
+        {settingMode && (
           <SettingButton>
-            <Button
-              isIcon={true}
-              onClick={() =>
-                openModal(Modal, {
-                  children: <RoomSettingModal onClose={() => closeModal(Modal)} />,
-                  onClose: () => closeModal(Modal),
-                  closeOnExternalClick: true,
-                })
-              }
-            >
+            <Button isIcon={true} onClick={handleSettingButton}>
               <FaGear />
             </Button>
           </SettingButton>
-        ) : (
-          ''
         )}
         <HeadContainer>
           <ThemePoster src={posterImageUrl} alt="테마_포스터" />

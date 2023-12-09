@@ -2,6 +2,7 @@ import tw, { styled, css } from 'twin.macro';
 import UserListPanel from './UserListPanel/UserListPanel';
 import ChatPanel from './ChatPanel/ChatPanel';
 import RoomInfoPanel from './RoomInfoPanel/RoomInfoPanel';
+import { ChangeRoomData } from 'types/chat';
 
 interface Props {
   roomId: string;
@@ -9,14 +10,22 @@ interface Props {
   settingMode: boolean;
   getPastChat: (cursorId: string) => void;
   kickUser: (userId: string) => void;
+  changeRoom: (afterRoomInfo: Record<string, ChangeRoomData>) => void;
 }
 
-const ChatRoomContainer = ({ roomId, sendChat, settingMode, getPastChat, kickUser }: Props) => {
+const ChatRoomContainer = ({
+  roomId,
+  sendChat,
+  settingMode,
+  getPastChat,
+  kickUser,
+  changeRoom,
+}: Props) => {
   return (
     <Container>
       <UserListPanel roomId={roomId} settingMode={settingMode} kickUser={kickUser} />
       <ChatPanel roomId={roomId} sendChat={sendChat} getPastChat={getPastChat} />
-      <RoomInfoPanel settingMode={settingMode} />
+      <RoomInfoPanel settingMode={settingMode} changeRoom={changeRoom} />
     </Container>
   );
 };
