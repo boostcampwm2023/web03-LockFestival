@@ -136,38 +136,28 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
           >
             {chatArrayFromChatLogData &&
               virtualizer.getVirtualItems().map((virtualRow) => {
+                const index = virtualRow.index;
+                const logId = chatArrayFromChatLogData[index][0];
+                const { message, userId, type, time } = chatArrayFromChatLogData[index][1];
+
                 return (
-                  <div
-                    key={virtualRow.index}
-                    ref={virtualizer.measureElement}
-                    data-index={virtualRow.index}
-                  >
-                    {!checkIsFirstChatToday(virtualRow.index, chatArrayFromChatLogData) && (
+                  <div key={index} ref={virtualizer.measureElement} data-index={index}>
+                    {!checkIsFirstChatToday(index, chatArrayFromChatLogData) && (
                       <DateDisplayWrapper>
                         <HorizontalLine />
-                        <DateDisplay>
-                          {getStringByDate(
-                            new Date(chatArrayFromChatLogData[virtualRow.index][1].time)
-                          )}
-                        </DateDisplay>
+                        <DateDisplay>{getStringByDate(new Date(time))}</DateDisplay>
                         <HorizontalLine />
                       </DateDisplayWrapper>
                     )}
                     <MessageBox
-                      key={chatArrayFromChatLogData[virtualRow.index][0]}
-                      logId={chatArrayFromChatLogData[virtualRow.index][0]}
-                      message={chatArrayFromChatLogData[virtualRow.index][1].message}
-                      userId={chatArrayFromChatLogData[virtualRow.index][1].userId}
-                      type={chatArrayFromChatLogData[virtualRow.index][1].type}
-                      time={chatArrayFromChatLogData[virtualRow.index][1].time}
-                      isFirstChat={checkIsFirstChatFromUser(
-                        virtualRow.index,
-                        chatArrayFromChatLogData
-                      )}
-                      isLastChat={checkIsLastChatFromUser(
-                        virtualRow.index,
-                        chatArrayFromChatLogData
-                      )}
+                      key={logId}
+                      logId={logId}
+                      message={message}
+                      userId={userId}
+                      type={type}
+                      time={time}
+                      isFirstChat={checkIsFirstChatFromUser(index, chatArrayFromChatLogData)}
+                      isLastChat={checkIsLastChatFromUser(index, chatArrayFromChatLogData)}
                     />
                   </div>
                 );
