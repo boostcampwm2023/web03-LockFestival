@@ -6,7 +6,7 @@ const useHeaderSearchInput = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { debounceQuery, realInputQuery, setRealInputQuery, resetQuery } = useDebounceInput(200);
-  const [urlBeforeSearch, setUrlBeforeSearch] = useState<string>('/');
+  const [urlBeforeSearch, setUrlBeforeSearch] = useState<string>(location.pathname);
   const [isClickSearchButton, setIsClickSearchButton] = useState<boolean>(false);
 
   const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
