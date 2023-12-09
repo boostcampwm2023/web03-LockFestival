@@ -3,6 +3,7 @@ import QUERY_MANAGEMENT from '@constants/queryManagement';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { JoinData } from 'types/profile';
+import { toast } from 'react-toastify';
 
 const useJoinMutation = (joinData: JoinData | undefined) => {
   const queryClient = useQueryClient();
@@ -17,7 +18,7 @@ const useJoinMutation = (joinData: JoinData | undefined) => {
     },
     onError: (error) => {
       if (isAxiosError(error)) {
-        alert(error.response?.data.message);
+        toast.error(error.response?.data.message);
       }
     },
   });

@@ -5,6 +5,7 @@ import useChatLog from './useChatLog';
 import { useSetRecoilState } from 'recoil';
 import { chatUnreadAtom } from '@store/chatRoom';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const useSocket = (roomId: string) => {
   const { socket, connecting } = useSocketConnection(roomId);
@@ -57,7 +58,7 @@ const useSocket = (roomId: string) => {
       });
 
       socket.on('kick', (res) => {
-        alert(res.message);
+        toast.info('방장에 의해 강퇴당하셨습니다!');
         navigate('/room-list');
       });
     }
