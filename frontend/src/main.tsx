@@ -6,6 +6,7 @@ import GlobalStyle from './styles/GlobalStyles.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RecoilRoot } from 'recoil';
+import { HelmetProvider } from 'react-helmet-async';
 
 async function deferRender() {
   if (!import.meta.env.DEV) {
@@ -25,8 +26,10 @@ deferRender().then(() => {
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
           <ReactQueryDevtools initialIsOpen={false} />
-          <GlobalStyle />
-          <App />
+          <HelmetProvider>
+            <GlobalStyle />
+            <App />
+          </HelmetProvider>
         </QueryClientProvider>
       </RecoilRoot>
     </React.StrictMode>
