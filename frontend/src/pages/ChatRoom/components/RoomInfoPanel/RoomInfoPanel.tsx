@@ -102,10 +102,10 @@ const Layout = styled.div([
   css`
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     width: 34rem;
     height: 100vh;
     padding: 2rem;
+    gap: 1.6rem;
   `,
   tw`bg-gray-light rounded-[2rem] h-[calc(90vh - 6rem)]`,
 ]);
@@ -114,7 +114,7 @@ const RoomInfoTopContainer = styled.div([
   css`
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.2rem;
   `,
 ]);
 
