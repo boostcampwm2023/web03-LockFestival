@@ -32,9 +32,7 @@ const Search = () => {
             <Button
               isIcon={false}
               onClick={() => {
-                if (lastVisited !== null) {
-                  navigate(lastVisited);
-                }
+                lastVisited && navigate(lastVisited);
               }}
             >
               <>이전 페이지로 돌아가기</>
