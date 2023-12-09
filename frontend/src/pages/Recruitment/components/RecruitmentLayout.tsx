@@ -50,12 +50,6 @@ const RecruitmentLayout = () => {
 
   return (
     <Container>
-      <AddButton isIcon={false} size="l" onClick={checkIsLogin}>
-        <>
-          모집글 작성하기
-          <FaPlus color="white" />
-        </>
-      </AddButton>
       <RecruitList>
         {data?.pages.map((page) => {
           return page.data.map((list) => {
@@ -63,6 +57,14 @@ const RecruitmentLayout = () => {
           });
         })}
       </RecruitList>
+      <ButtonPosition>
+        <AddButton isIcon={false} size="l" onClick={checkIsLogin}>
+          <>
+            모집글 작성하기
+            <FaPlus color="white" />
+          </>
+        </AddButton>
+      </ButtonPosition>
       {isFetching && <TextContainer>모집글을 불러오는중 ...</TextContainer>}
       {data?.pages[0]?.data?.length === 0 && (
         <TextContainer>모집글이 하나도 없어요. ㅁ_ㅁ</TextContainer>
@@ -89,7 +91,7 @@ const RecruitList = styled.div([
 ]);
 
 const TextContainer = styled.div([
-  tw`w-full mx-auto text-white text-l pt-4 max-w-[102.4rem] border-t border-white border-solid`,
+  tw`w-full mx-auto text-white text-l pt-4 max-w-[102.4rem] border-t border-white border-solid font-pretendard`,
   css`
     display: flex;
     align-items: center;
@@ -97,11 +99,20 @@ const TextContainer = styled.div([
   `,
 ]);
 
+const ButtonPosition = styled.div([
+  tw`mx-auto w-4/5 py-[2rem] px-4`,
+  tw`desktop:(w-[102.4rem])`,
+  css`
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  `,
+]);
+
 const AddButton = styled(Button)([
   css`
     position: fixed;
     bottom: 1rem;
-    right: 1rem;
     z-index: 3;
   `,
 ]);

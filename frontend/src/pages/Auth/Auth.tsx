@@ -4,6 +4,7 @@ import fetchLogin from '@apis/fetchLogin';
 import { useSetRecoilState } from 'recoil';
 import userAtom from 'store/userAtom';
 import fetchUserProfile from '@apis/fetchUserProfile';
+import { toast } from 'react-toastify';
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Auth = () => {
 
       navigate(localStorage.getItem('lastVisited') || '/');
     } catch (error) {
-      alert('서버 에러 발생!!');
+      toast.error('서버 에러 발생!!');
     }
   };
 
