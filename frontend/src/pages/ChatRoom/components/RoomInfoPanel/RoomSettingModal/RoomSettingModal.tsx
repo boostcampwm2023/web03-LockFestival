@@ -52,7 +52,7 @@ const RoomSettingModal = ({ onClose, changeRoom }: Props) => {
 
     const afterRoomInfo: Record<string, ChangeRoomData> = {
       roomInfo: {
-        themeId: theme?.themeId.toString() as string,
+        themeId: theme?.themeId,
         recruitmentContent: contents,
         appointmentDate: new Date(date as Date),
         recruitmentMembers: Number(memberCount),

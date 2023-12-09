@@ -44,7 +44,7 @@ export interface RoomInfo {
 }
 
 export type ChangeRoomData = {
-  themeId: string;
+  themeId: number | undefined;
   recruitmentContent: string;
   recruitmentCompleted: boolean;
   appointmentCompleted: boolean;
