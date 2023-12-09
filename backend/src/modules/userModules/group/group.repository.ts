@@ -301,14 +301,15 @@ export class GroupRepository extends Repository<Group> {
       }
 
       await queryRunner.manager
-        .createQueryBuilder(Group, 'group')
-        .update()
+        .createQueryBuilder()
+        .update(Group)
         .set({
           recruitmentMembers: groupEditDto.recruitmentMembers,
           recruitmentContent: groupEditDto.recruitmentContent,
           recruitmentCompleted: groupEditDto.recruitmentCompleted,
           appointmentDate: groupEditDto.appointmentDate,
           appointmentCompleted: groupEditDto.appointmentCompleted,
+          theme: { id: groupEditDto.themeId },
         })
         .where('group.id = :groupId', { groupId: groupEditDto.groupId })
         .execute();
