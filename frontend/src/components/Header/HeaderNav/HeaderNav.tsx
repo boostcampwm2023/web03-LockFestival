@@ -21,13 +21,13 @@ const HeaderNav = () => {
           onClick={() => handleSelectedItem('/recruitment')}
           isSelected={location.pathname === '/recruitment'}
         >
-          탈출러 모집
+          모집 리스트
         </NavItem>
         <NavItem
           onClick={() => handleSelectedItem('/room-list')}
           isSelected={location.pathname === '/room-list'}
         >
-          그룹 채팅방
+          나의 채팅방
         </NavItem>
       </NavContainer>
     </Nav>
