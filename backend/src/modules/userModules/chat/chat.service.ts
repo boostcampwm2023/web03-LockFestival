@@ -34,7 +34,8 @@ export class ChatService {
     await this.chatRepository.updateRead(meUser.userId);
 
     const prevMessages: ChatMessageResponseDto = await this.findMessagesByLogId({
-      cursorLogId: meUser.lastChatLogId,
+      cursorLogId:
+        meUser.lastChatLogId || (await this.chatRepository.findLastChatLogIdByRoomId(roomId)),
       count: 0,
       direction: 1,
       roomId,
