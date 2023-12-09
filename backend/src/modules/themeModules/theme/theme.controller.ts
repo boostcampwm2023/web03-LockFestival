@@ -11,6 +11,7 @@ import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.re
 import { ThemeBranchThemesDetailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 import { ThemeSearchRequestDto } from '@theme/dtos/theme.serach.request.dto';
 import { ThemeSearchResponseDto } from '@theme/dtos/theme.search.response.dto';
+import { DateRequestDto } from '@theme/dtos/date.request.dto';
 
 const DEFAULT_THEME_COUNT = 10;
 
@@ -158,5 +159,22 @@ export class ThemeController {
     @Query() themeSearchRequestDto: ThemeSearchRequestDto
   ): Promise<ThemeSearchResponseDto> {
     return await this.themeService.getThemesBySearch(themeSearchRequestDto);
+  }
+
+  @Get('/:themeId/timetable')
+  @ApiOperation({
+    summary: '테마 시간표를 반환',
+    description: '입력받은 테마 id와 날짜로 시간표를 검색하여 반환합니다.',
+  })
+  @ApiQuery({
+    name: 'date',
+    type: Date,
+    example: new Date(),
+  })
+  async getTimeTable(
+    @Param('themeId', ParseIntPipe) themeId: number,
+    @Query() { date }: DateRequestDto
+  ) {
+    return await this.themeService.getTimeTable(themeId, date);
   }
 }

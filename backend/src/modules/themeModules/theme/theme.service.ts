@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ThemeRepository } from '@theme/theme.repository';
 import { GenreRepository } from '@theme/genre.repository';
@@ -11,14 +11,17 @@ import { ThemeSimpleSearchResponseDto } from '@theme/dtos/theme.simple.search.re
 import { ThemeBranchThemesDetailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 import { ThemeSearchRequestDto } from '@theme/dtos/theme.serach.request.dto';
 import { ThemeSearchResponseDto } from '@theme/dtos/theme.search.response.dto';
+import { CrawlerFactory } from '@modules/themeModules/crawlerUtils/crawler.factory';
 
 @Injectable()
 export class ThemeService {
+  private logger: Logger = new Logger('ThemeService');
   constructor(
     @InjectRepository(ThemeRepository)
     private readonly themeRepository: ThemeRepository,
     @InjectRepository(GenreRepository)
-    private readonly genreRepository: GenreRepository
+    private readonly genreRepository: GenreRepository,
+    private readonly crawlerFactory: CrawlerFactory
   ) {}
 
   public async getThemeDetailsById(themeId: number): Promise<ThemeBranchThemesDetailsResponseDto> {
@@ -88,5 +91,24 @@ export class ThemeService {
       restCount > 0 ? themeSearchRequestDto.page + 1 : undefined,
       themes
     );
+  }
+
+  public async getTimeTable(themeId: number, date: Date) {
+    const { themeName, branchName, brandName } =
+      await this.themeRepository.getThemeNameBranchNameBrandNameByThemeId(themeId);
+
+    this.logger.log(`crawler start brand: ${brandName} branch: ${branchName} theme: ${themeName}`);
+
+    //format : yyyy-mm-dd
+    const dateString =
+      date.getFullYear() +
+      `-` +
+      (date.getMonth() + 1 < 10 ? `0` + (date.getMonth() + 1) : date.getMonth() + 1) +
+      `-` +
+      (date.getDate() < 10 ? `0` + date.getDate() : date.getDate());
+
+    return await this.crawlerFactory
+      .getCrawler(brandName)
+      .getTimeTableByTheme({ shop: branchName, theme: themeName, date: dateString });
   }
 }
