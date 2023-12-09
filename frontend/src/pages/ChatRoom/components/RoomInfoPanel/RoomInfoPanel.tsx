@@ -102,6 +102,7 @@ const Layout = styled.div([
   css`
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     width: 34rem;
     height: 100vh;
     padding: 2rem;
@@ -149,7 +150,12 @@ const ThemeInfoWrapper = styled.div([
   `,
 ]);
 
-const ThemeInfo = styled.div([tw`font-pretendard text-m text-white`]);
+const ThemeInfo = styled.div([
+  tw`font-pretendard text-m text-white`,
+  css`
+    text-align: center;
+  `,
+]);
 
 const RoomInfoWrapper = styled.div([
   css`
