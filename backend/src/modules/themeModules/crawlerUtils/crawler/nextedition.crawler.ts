@@ -44,7 +44,7 @@ export class NextEditionCrawler extends AbstractCrawler {
 
       const roundMap = data.themes.reduce((prev, { title, rounds }) => {
         rounds.forEach(({ id, target_time }) => {
-          prev[id] = { target_time, title, possible: true };
+          prev[id] = { time: target_time, title, possible: true };
         });
         return prev;
       }, {});
@@ -53,15 +53,15 @@ export class NextEditionCrawler extends AbstractCrawler {
         roundMap[round_id].possible = false;
       });
 
-      const result = Object.values(roundMap).reduce((prev, { title, target_time, possible }) => {
+      const result = Object.values(roundMap).reduce((prev, { title, time, possible }) => {
         prev[title] = prev[title] || [];
-        prev[title].push({ target_time, possible });
+        prev[title].push({ time, possible });
         return prev;
       }, {});
 
       return result;
     } catch (error) {
-      return null;
+      return [];
     }
   }
 }
