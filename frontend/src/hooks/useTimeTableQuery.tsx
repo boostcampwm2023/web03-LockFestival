@@ -7,6 +7,7 @@ const useTimeTableQuery = (themeId: number, date: Value) => {
   const { data, isSuccess, isLoading, isError } = useQuery<TimeTable[]>({
     queryKey: [QUERY_MANAGEMENT['themeTimeTable'].key, themeId, date],
     queryFn: () => QUERY_MANAGEMENT['themeTimeTable'].fn(themeId, date),
+    retryDelay: 5000,
   });
 
   return { data, isSuccess, isLoading, isError };
