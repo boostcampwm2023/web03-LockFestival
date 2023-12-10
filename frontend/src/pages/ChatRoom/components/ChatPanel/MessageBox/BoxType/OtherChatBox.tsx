@@ -1,6 +1,7 @@
 import { getTimeByDate } from '@utils/dateUtil';
 import { FaCircleUser } from 'react-icons/fa6';
 import tw, { css, styled } from 'twin.macro';
+import { memo } from 'react';
 
 interface BoxProps {
   nickname: string;
@@ -12,7 +13,7 @@ interface BoxProps {
   isLastChat: boolean;
 }
 
-const OtherChatBox = ({
+const OtherChatBox = memo(function OtherChatBox({
   message,
   time,
   profileImg,
@@ -20,7 +21,7 @@ const OtherChatBox = ({
   unreadCount,
   isFirstChat,
   isLastChat,
-}: BoxProps) => {
+}: BoxProps) {
   return (
     <Container>
       {isFirstChat && (
@@ -43,7 +44,7 @@ const OtherChatBox = ({
       </TextContainer>
     </Container>
   );
-};
+});
 
 const Container = styled.div([
   tw`w-full my-2`,

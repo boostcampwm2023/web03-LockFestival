@@ -1,5 +1,6 @@
 import { getTimeByDate } from '@utils/dateUtil';
 import tw, { css, styled } from 'twin.macro';
+import { memo } from 'react';
 
 interface BoxProps {
   message: string;
@@ -8,7 +9,7 @@ interface BoxProps {
   isLastChat: boolean;
 }
 
-const MyChatBox = ({ message, time, unreadCount, isLastChat }: BoxProps) => {
+const MyChatBox = memo(function MyChatBox({ message, time, unreadCount, isLastChat }: BoxProps) {
   return (
     <Container>
       <TextContainer>
@@ -20,7 +21,7 @@ const MyChatBox = ({ message, time, unreadCount, isLastChat }: BoxProps) => {
       </TextContainer>
     </Container>
   );
-};
+});
 
 const Container = styled.div([
   tw`w-full my-2`,

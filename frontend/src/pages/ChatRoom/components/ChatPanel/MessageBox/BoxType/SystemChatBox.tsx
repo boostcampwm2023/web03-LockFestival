@@ -1,10 +1,11 @@
 import tw, { css, styled } from 'twin.macro';
+import { memo } from 'react';
 
 interface BoxProps {
   message: string;
 }
 
-const SystemChatBox = ({ message }: BoxProps) => {
+const SystemChatBox = memo(function SystemChatBox({ message }: BoxProps) {
   return (
     <Container>
       <TextContainer>
@@ -12,7 +13,7 @@ const SystemChatBox = ({ message }: BoxProps) => {
       </TextContainer>
     </Container>
   );
-};
+});
 
 const Container = styled.div([
   tw`w-full my-2`,
