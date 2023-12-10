@@ -4,7 +4,7 @@ import { FaRightFromBracket } from 'react-icons/fa6';
 import useInput from '@hooks/useInput';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { chatLogAtom, chatUnreadAtom } from 'store/chatRoom';
+import { chatLogAtom, chatUnreadAtom, userListInfoAtom } from 'store/chatRoom';
 import { ChatLog } from 'types/chat';
 import MessageBox from './MessageBox/MessageBox';
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
@@ -18,22 +18,28 @@ import {
 import useIsScrollTopObserver from '@hooks/intersectionObserver/useIsScrollTopObserver';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { throttle } from '@utils/throttle';
-
+import PopUpMessageBox from './PopUpMessageBox/PopUpMessageBox';
 interface ChatPanelProps {
   roomId: string;
   sendChat: (message: string) => void;
   getPastChat: (cursorId: string) => void;
 }
 
+interface UnreadState extends ChatLog {
+  isRead: boolean;
+  logId: string;
+}
+
 const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   const navigate = useNavigate();
   const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
+  const userListInfo = useRecoilValue(userListInfoAtom);
   const targetRef = useRef<HTMLDivElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
   const lastScrollRef = useRef<HTMLDivElement>(null);
-
   const [isScrollToTop, setIsScrollToTop] = useState<boolean>(false);
   const [prevScrollHeight, setPrevScrollHeight] = useState<number | null>(null);
+  const [lastUnreadChat, setLastUnreadChat] = useState<UnreadState>();
 
   useIntersectionObserverSocket({
     eventHandler: getPastChat,
@@ -68,15 +74,49 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     resetValue();
   };
 
+  const chatArrayFromChatLogData = useMemo(() => {
+    if (chatLogData) {
+      return Array.from(chatLogData);
+    }
+  }, [chatLogData]);
+
   useEffect(() => {
     if (!isScrollToTop) {
       lastScrollRef?.current?.scrollIntoView({ block: 'start', behavior: 'auto' });
+    } else {
+      const lastChat = chatArrayFromChatLogData?.at(-1);
+
+      if (!lastChat) {
+        return;
+      }
+
+      const [logId, chatData] = lastChat;
+
+      if (chatData.type !== 'message' || userListInfo?.get(chatData.userId)?.isMe) {
+        return;
+      }
+
+      if (!lastUnreadChat) {
+        setLastUnreadChat({ ...chatData, isRead: false, logId });
+        return;
+      }
+
+      if (lastUnreadChat.logId !== logId) {
+        setLastUnreadChat({ ...chatData, isRead: false, logId });
+      }
     }
+
     if (parentRef.current && parentRef.current.scrollTop < 10 && prevScrollHeight) {
       parentRef.current.scrollTop = parentRef.current.scrollHeight - prevScrollHeight;
       return setPrevScrollHeight(null);
     }
   }, [chatLogData]);
+
+  useEffect(() => {
+    if (!isScrollToTop && lastUnreadChat) {
+      setLastUnreadChat({ ...lastUnreadChat, isRead: true });
+    }
+  }, [isScrollToTop]);
 
   const handleScroll = throttle(() => {
     if (!parentRef || !parentRef.current) {
@@ -87,12 +127,6 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
       setPrevScrollHeight(parentRef.current?.scrollHeight);
     }
   }, 500);
-
-  const chatArrayFromChatLogData = useMemo(() => {
-    if (chatLogData) {
-      return Array.from(chatLogData);
-    }
-  }, [chatLogData]);
 
   const virtualizer = useVirtualizer({
     count: chatArrayFromChatLogData?.length || 0,
@@ -141,65 +175,75 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
         <Button
           isIcon={true}
           onClick={() => {
-            //TODO: emit leave
             navigate('/room-list');
           }}
         >
           <FaRightFromBracket />
         </Button>
       </ButtonWrapper>
-
-      <ChatDisplayContainer ref={parentRef} onScroll={() => handleScroll()}>
-        <div ref={targetRef} />
-        <div
-          style={{
-            height: virtualizer.getTotalSize(),
-            width: '100%',
-            position: 'relative',
-          }}
-        >
+      <ChatLayout>
+        <ChatDisplayContainer ref={parentRef} onScroll={() => handleScroll()}>
+          <div ref={targetRef} />
           <div
             style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
+              height: virtualizer.getTotalSize(),
               width: '100%',
-              transform: `translateY(${items[0]?.start ?? 0}px)`,
+              position: 'relative',
             }}
           >
-            {chatArrayFromChatLogData &&
-              virtualizer.getVirtualItems().map((virtualRow) => {
-                const index = virtualRow.index;
-                const logId = chatArrayFromChatLogData[index][0];
-                const { message, userId, type, time } = chatArrayFromChatLogData[index][1];
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                transform: `translateY(${items[0]?.start ?? 0}px)`,
+              }}
+            >
+              {chatArrayFromChatLogData &&
+                virtualizer.getVirtualItems().map((virtualRow) => {
+                  const index = virtualRow.index;
+                  const logId = chatArrayFromChatLogData[index][0];
+                  const { message, userId, type, time } = chatArrayFromChatLogData[index][1];
 
-                return (
-                  <div key={index} ref={virtualizer.measureElement} data-index={index}>
-                    {!checkIsFirstChatToday(index, chatArrayFromChatLogData) && (
-                      <DateDisplayWrapper>
-                        <HorizontalLine />
-                        <DateDisplay>{getStringByDate(new Date(time))}</DateDisplay>
-                        <HorizontalLine />
-                      </DateDisplayWrapper>
-                    )}
-                    <MessageBox
-                      key={logId}
-                      logId={logId}
-                      message={message}
-                      userId={userId}
-                      type={type}
-                      time={time}
-                      isFirstChat={checkIsFirstChatFromUser(index, chatArrayFromChatLogData)}
-                      isLastChat={checkIsLastChatFromUser(index, chatArrayFromChatLogData)}
-                      unreadCount={unreadCount(logId)}
-                    />
-                  </div>
-                );
-              })}
+                  return (
+                    <div key={index} ref={virtualizer.measureElement} data-index={index}>
+                      {!checkIsFirstChatToday(index, chatArrayFromChatLogData) && (
+                        <DateDisplayWrapper>
+                          <HorizontalLine />
+                          <DateDisplay>{getStringByDate(new Date(time))}</DateDisplay>
+                          <HorizontalLine />
+                        </DateDisplayWrapper>
+                      )}
+                      <MessageBox
+                        key={logId}
+                        logId={logId}
+                        message={message}
+                        userId={userId}
+                        type={type}
+                        time={time}
+                        isFirstChat={checkIsFirstChatFromUser(index, chatArrayFromChatLogData)}
+                        isLastChat={checkIsLastChatFromUser(index, chatArrayFromChatLogData)}
+                        unreadCount={unreadCount(logId)}
+                      />
+                    </div>
+                  );
+                })}
+            </div>
           </div>
-        </div>
-        <div ref={lastScrollRef}></div>
-      </ChatDisplayContainer>
+          <div ref={lastScrollRef}></div>
+        </ChatDisplayContainer>
+        {isScrollToTop && lastUnreadChat && !lastUnreadChat.isRead && (
+          <LatestUnreadChat
+            onClick={() => {
+              setLastUnreadChat({ ...lastUnreadChat, isRead: true });
+              lastScrollRef?.current?.scrollIntoView({ block: 'start', behavior: 'auto' });
+            }}
+          >
+            <PopUpMessageBox message={lastUnreadChat.message} userId={lastUnreadChat.userId} />
+          </LatestUnreadChat>
+        )}
+      </ChatLayout>
       <InputChatPanel
         value={inputValue}
         onChange={handleValue}
@@ -238,6 +282,13 @@ const ButtonWrapper = styled.div([
   `,
 ]);
 
+const ChatLayout = styled.div([
+  tw`w-[100%] h-[100%]`,
+  css`
+    position: relative;
+  `,
+]);
+
 const ChatDisplayContainer = styled.div([
   tw`w-[100%] h-[100%] bg-white rounded-[1rem] font-pretendard text-l pt-4 pb-4 pl-4 pr-2`,
   css`
@@ -249,11 +300,10 @@ const ChatDisplayContainer = styled.div([
     }
     ::-webkit-scrollbar-thumb {
       background-color: #d2dad0;
-      border-radius: 10px;
     }
+
     ::-webkit-scrollbar-track {
       background-color: #222222;
-      border-radius: 10px;
     }
   `,
 ]);
@@ -295,5 +345,18 @@ const HorizontalLine = styled.div([
 ]);
 
 const DateDisplay = styled.div([]);
+
+const LatestUnreadChat = styled.div([
+  tw`w-[calc(100% - 1rem)] h-[4rem] bg-white font-pretendard text-m border-t border-solid border-border-default`,
+  css`
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    position: absolute;
+    left: 0;
+    bottom: 0rem;
+    border-bottom-left-radius: 1rem;
+  `,
+]);
 
 export default ChatPanel;
