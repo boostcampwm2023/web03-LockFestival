@@ -22,6 +22,7 @@
       "@config/*": ["./src/config/*"],
       "@utils/*": ["./src/utils/*"],
       "@enum/*": ["./src/enum/*"],
+      "@constants/*": ["./src/constants/*"],
       "@modules/*": ["./src/modules/*"],
       "@auth/*": ["./src/modules/authModules/auth/*"],
       "@user/*": ["./src/modules/userModules/user/*"],
