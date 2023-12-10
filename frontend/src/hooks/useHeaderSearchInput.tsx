@@ -28,7 +28,7 @@ const useHeaderSearchInput = () => {
   }, [debounceQuery]);
 
   useEffect(() => {
-    if (location.pathname !== '/search') {
+    if (location.pathname !== '/search' && location.pathname !== '/auth') {
       setIsClickSearchButton(false);
       resetQuery();
       localStorage.setItem('lastVisited', location.pathname);
@@ -36,7 +36,7 @@ const useHeaderSearchInput = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (isClickSearchButton && location.pathname !== 'search') {
+    if (isClickSearchButton && location.pathname !== '/search') {
       navigate('/search');
     }
   }, [isClickSearchButton]);
