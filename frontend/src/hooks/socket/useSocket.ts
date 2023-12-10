@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ChangeRoomData, ServerChatLog, ServerChatLogList } from 'types/chat';
 import useSocketConnection from './useSocketConnection';
 import useChatLog from './useChatLog';
@@ -20,27 +20,39 @@ const useSocket = (roomId: string) => {
 
   const navigate = useNavigate();
 
-  const sendChat = (message: string) => {
-    socket?.emit('chat', { message });
-  };
+  const sendChat = useCallback(
+    (message: string) => {
+      socket?.emit('chat', { message });
+    },
+    [socket]
+  );
 
-  const getPastChat = (cursorId: string) => {
-    socket?.emit('chatLog', {
-      cursorLogId: cursorId,
-      count: 50,
-      directrion: -1,
-    });
-  };
+  const getPastChat = useCallback(
+    (cursorId: string) => {
+      socket?.emit('chatLog', {
+        cursorLogId: cursorId,
+        count: 50,
+        directrion: -1,
+      });
+    },
+    [socket]
+  );
 
-  const kickUser = (userId: string) => {
-    socket?.emit('kick', {
-      userId,
-    });
-  };
+  const kickUser = useCallback(
+    (userId: string) => {
+      socket?.emit('kick', {
+        userId,
+      });
+    },
+    [socket]
+  );
 
-  const changeRoom = (afterRoomInfo: Record<string, ChangeRoomData>) => {
-    socket?.emit('roomInfo', afterRoomInfo);
-  };
+  const changeRoom = useCallback(
+    (afterRoomInfo: Record<string, ChangeRoomData>) => {
+      socket?.emit('roomInfo', afterRoomInfo);
+    },
+    [socket]
+  );
 
   useEffect(() => {
     if (socket) {
