@@ -3,7 +3,7 @@ import Button from '@components/Button/Button';
 import { FaUser } from 'react-icons/fa6';
 import { FaSistrix } from 'react-icons/fa6';
 import { keyframes } from '@emotion/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useProfileQuery from '@hooks/useProfileQuery';
 import useModal from '@hooks/useModal';
 import Modal from '@components/Modal/Modal';
@@ -20,6 +20,8 @@ const HeaderRest = () => {
   const { data } = useProfileQuery();
 
   const [profileData, setProfileData] = useRecoilState<Profile>(userAtom);
+
+  const [isHoverProfile, setIsHoverProfile] = useState<boolean>(false);
 
   const {
     realInputQuery,
@@ -81,14 +83,30 @@ const HeaderRest = () => {
           </Button>
         )}
       </SearchContainer>
-      <ProfileContainer>
+      <ProfileContainer
+        onMouseOver={() => setIsHoverProfile(true)}
+        onMouseOut={() => setIsHoverProfile(false)}
+      >
         {profileData.nickname ? (
-          <Button size="l" onClick={handleLogout} isIcon={false}>
-            <>
-              <FaUser size={20} />
-              {profileData.nickname}님
-            </>
-          </Button>
+          <>
+            <Button size="l" isIcon={false}>
+              <>
+                <ProfileImgWrapper>
+                  {profileData.profileImageUrl ? (
+                    <ProfileImg src={profileData.profileImageUrl} />
+                  ) : (
+                    <FaUser size={10} />
+                  )}
+                </ProfileImgWrapper>
+                {profileData.nickname}님
+              </>
+            </Button>
+            {isHoverProfile && (
+              <DropDown>
+                <DropDownList onClick={handleLogout}>로그아웃</DropDownList>
+              </DropDown>
+            )}
+          </>
         ) : (
           <Button size="l" font="maplestory" isIcon={false} onClick={handleLogin}>
             <>로그인</>
@@ -100,8 +118,6 @@ const HeaderRest = () => {
 };
 
 const HeaderRestContainer = styled.div([
-  tw`desktop:(w-[40rem])`,
-  tw`mobile:(w-[20rem])`,
   css`
     display: flex;
     align-items: flex-end;
@@ -120,6 +136,9 @@ const widthAnimation = keyframes`
 `;
 
 const SearchContainer = styled.div([
+  tw`desktop:(w-[16rem] h-[3.6rem] rounded-[4rem])`,
+  tw`tablet:(w-[12rem] h-[3.6rem] rounded-[4rem])`,
+  tw`mobile:(w-[8rem] h-[3.6rem] rounded-[3rem])`,
   css`
     display: flex;
     align-items: center;
@@ -128,22 +147,23 @@ const SearchContainer = styled.div([
 ]);
 
 const SearchInputForm = styled.div([
-  tw`bg-gray-light`,
-  tw`desktop:(max-w-[16.4rem] w-[16.4rem] h-[3.6rem] rounded-[4rem])`,
-  tw`mobile:(w-[12.4rem] h-[3.2rem] rounded-[3rem])`,
+  tw`bg-gray-light w-[10rem]`,
+  tw`desktop:(rounded-[4rem])`,
+  tw`tablet:(rounded-[4rem])`,
+  tw`mobile:(rounded-[3rem])`,
   css`
-    animation: 0.6s ${widthAnimation} forwards;
+    animation: 0.5s ${widthAnimation} forwards;
     display: flex;
     align-items: center;
   `,
 ]);
 
 const SearchInput = styled.input([
-  tw`(font-pretendard h-full pl-2 pr-3 bg-gray-light text-white rounded-[4rem])`,
-  tw`desktop:(max-w-[12.8rem] text-m)`,
-  tw`mobile:(max-w-[9.2rem] text-s)`,
+  tw`font-pretendard h-full pl-2 bg-gray-light text-white rounded-[4rem]`,
+  tw`desktop:(text-m w-[10rem])`,
+  tw`tablet:(text-m w-[8rem])`,
+  tw`mobile:(text-s w-[6rem])`,
   css`
-    animation: 1s ${widthAnimation} forwards;
     border: none;
     outline: none;
   `,
@@ -154,6 +174,46 @@ const ProfileContainer = styled.div([
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    position: relative;
+  `,
+]);
+
+const DropDown = styled.ul([
+  tw`w-full font-pretendard text-l`,
+  css`
+    position: absolute;
+    top: 3.6rem;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 5;
+  `,
+]);
+
+const DropDownList = styled.li([
+  tw`rounded-[1rem] border border-white border-solid pl-4 h-[4rem] bg-gray-light`,
+
+  css`
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  `,
+]);
+
+const ProfileImgWrapper = styled.div([
+  tw` w-[2rem] h-[2rem] mr-1`,
+  css`
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `,
+]);
+
+const ProfileImg = styled.img([
+  tw`w-[2rem] h-[2rem] mr-1`,
+  css`
+    border-radius: 50%;
   `,
 ]);
 
