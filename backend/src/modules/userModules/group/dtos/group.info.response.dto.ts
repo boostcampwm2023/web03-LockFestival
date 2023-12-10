@@ -12,6 +12,13 @@ export class GroupInfoResponseDto extends GroupInfoDto {
   @ApiProperty({ description: '지역', type: String, example: '서울 홍대' })
   regionName: string;
 
+  @ApiProperty({
+    description: '웹사이트',
+    type: String,
+    example: 'http://www.secretgardenescape.com/reservation.html?k_shopno=2',
+  })
+  website: string;
+
   constructor({
     brandName,
     branchName,
@@ -25,6 +32,7 @@ export class GroupInfoResponseDto extends GroupInfoDto {
     currentMembers,
     recruitmentCompleted,
     appointmentCompleted,
+    website,
   }) {
     super({
       recruitmentContent,
@@ -37,6 +45,7 @@ export class GroupInfoResponseDto extends GroupInfoDto {
     this.brandName = brandName;
     this.branchName = branchName;
     this.regionName = regionName;
+    this.website = website;
     Object.assign(this, new ThemeResponseDto({ name: themeName, id: themeId, posterImageUrl }));
   }
 }
