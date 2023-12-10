@@ -25,7 +25,9 @@ const Auth = () => {
       const res = await fetchUserProfile();
       setProfile(res);
 
-      navigate(localStorage.getItem('lastVisited') || '/');
+      navigate(localStorage.getItem('lastVisited') || '/', {
+        replace: true,
+      });
     } catch (error) {
       toast.error('서버 에러 발생!!');
     }
