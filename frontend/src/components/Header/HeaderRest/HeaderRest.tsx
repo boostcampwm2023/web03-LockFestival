@@ -91,7 +91,13 @@ const HeaderRest = () => {
           <>
             <Button size="l" isIcon={false}>
               <>
-                <FaUser size={20} />
+                <ProfileImgWrapper>
+                  {profileData.profileImageUrl ? (
+                    <ProfileImg src={profileData.profileImageUrl} />
+                  ) : (
+                    <FaUser size={10} />
+                  )}
+                </ProfileImgWrapper>
                 {profileData.nickname}님
               </>
             </Button>
@@ -191,6 +197,23 @@ const DropDownList = styled.li([
     display: flex;
     align-items: center;
     cursor: pointer;
+  `,
+]);
+
+const ProfileImgWrapper = styled.div([
+  tw` w-[2rem] h-[2rem] mr-1`,
+  css`
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `,
+]);
+
+const ProfileImg = styled.img([
+  tw`w-[2rem] h-[2rem] mr-1`,
+  css`
+    border-radius: 50%;
   `,
 ]);
 
