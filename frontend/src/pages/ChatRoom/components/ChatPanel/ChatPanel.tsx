@@ -1,13 +1,12 @@
 import tw, { styled, css } from 'twin.macro';
 import Button from '@components/Button/Button';
 import { FaRightFromBracket } from 'react-icons/fa6';
-import useInput from '@hooks/useInput';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { chatLogAtom, chatUnreadAtom, userListInfoAtom } from 'store/chatRoom';
 import { ChatLog } from 'types/chat';
 import MessageBox from './MessageBox/MessageBox';
-import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import { useEffect, useMemo, useRef, useState, useCallback, memo } from 'react';
 import useIntersectionObserverSocket from '@hooks/intersectionObserver/useIntersectionObserverSocket';
 import { getStringByDate } from '@utils/dateUtil';
 import {
@@ -19,6 +18,7 @@ import useIsScrollTopObserver from '@hooks/intersectionObserver/useIsScrollTopOb
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { throttle } from '@utils/throttle';
 import PopUpMessageBox from './PopUpMessageBox/PopUpMessageBox';
+import InputBox from './InputBox/InputBox';
 interface ChatPanelProps {
   roomId: string;
   sendChat: (message: string) => void;
@@ -30,7 +30,7 @@ interface UnreadState extends ChatLog {
   logId: string;
 }
 
-const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
+const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: ChatPanelProps) {
   const navigate = useNavigate();
   const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
   const userListInfo = useRecoilValue(userListInfoAtom);
@@ -51,28 +51,6 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     eventHandler: setIsScrollToTop,
     targetRef: lastScrollRef,
   });
-
-  const [inputValue, handleValue, resetValue] = useInput('');
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
-      e.preventDefault();
-      handleSubmit();
-    }
-  };
-
-  const preventDefault = (e: React.FocusEvent<HTMLTextAreaElement>) => {
-    e.preventDefault();
-  };
-
-  const handleSubmit = () => {
-    if (inputValue === '') {
-      return;
-    }
-    setIsScrollToTop(false);
-    sendChat(inputValue);
-    resetValue();
-  };
 
   const chatArrayFromChatLogData = useMemo(() => {
     if (chatLogData) {
@@ -244,22 +222,10 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
           </LatestUnreadChat>
         )}
       </ChatLayout>
-      <InputChatPanel
-        value={inputValue}
-        onChange={handleValue}
-        rows={4}
-        onKeyDown={handleKeyDown}
-        onFocus={preventDefault}
-        onBlur={preventDefault}
-      />
-      <SendButtonWrapper>
-        <Button type="button" isIcon={false} onClick={handleSubmit}>
-          <>보내기</>
-        </Button>
-      </SendButtonWrapper>
+      <InputBox setIsScrollToTop={setIsScrollToTop} sendChat={sendChat} />
     </Layout>
   );
-};
+});
 
 const Layout = styled.div([
   css`
@@ -305,25 +271,6 @@ const ChatDisplayContainer = styled.div([
     ::-webkit-scrollbar-track {
       background-color: #222222;
     }
-  `,
-]);
-
-const InputChatPanel = styled.textarea([
-  tw`font-pretendard text-white text-m w-[100%] h-[10rem] bg-gray rounded-[2rem] p-4 pr-[6.4rem]`,
-  css`
-    resize: none;
-
-    &:focus {
-      outline: none;
-    }
-  `,
-]);
-
-const SendButtonWrapper = styled.div([
-  css`
-    position: absolute;
-    bottom: 3rem;
-    right: 3rem;
   `,
 ]);
 
