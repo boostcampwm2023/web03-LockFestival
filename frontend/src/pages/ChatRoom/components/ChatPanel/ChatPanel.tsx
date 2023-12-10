@@ -17,6 +17,7 @@ import {
 } from '@utils/chatMessageUtil';
 import useIsScrollTopObserver from '@hooks/intersectionObserver/useIsScrollTopObserver';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { throttle } from '@utils/throttle';
 
 interface ChatPanelProps {
   roomId: string;
@@ -25,8 +26,8 @@ interface ChatPanelProps {
 }
 
 const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
-  const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
   const navigate = useNavigate();
+  const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
   const targetRef = useRef<HTMLDivElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
   const lastScrollRef = useRef<HTMLDivElement>(null);
@@ -77,7 +78,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     }
   }, [chatLogData]);
 
-  const handleScroll = () => {
+  const handleScroll = throttle(() => {
     if (!parentRef || !parentRef.current) {
       return;
     }
@@ -85,7 +86,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     if (parentRef.current.scrollTop < 10) {
       setPrevScrollHeight(parentRef.current?.scrollHeight);
     }
-  };
+  }, 500);
 
   const chatArrayFromChatLogData = useMemo(() => {
     if (chatLogData) {
