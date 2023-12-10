@@ -12,6 +12,7 @@ import { ThemeBranchThemesDetailsResponseDto } from '@theme/dtos/theme.branch.de
 import { ThemeSearchRequestDto } from '@theme/dtos/theme.serach.request.dto';
 import { ThemeSearchResponseDto } from '@theme/dtos/theme.search.response.dto';
 import { CrawlerFactory } from '@modules/themeModules/crawlerUtils/crawler.factory';
+import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
 
 @Injectable()
 export class ThemeService {
@@ -93,7 +94,7 @@ export class ThemeService {
     );
   }
 
-  public async getTimeTable(themeId: number, date: Date) {
+  public async getTimeTable(themeId: number, date: Date): Promise<TimeTableDto[]> {
     const { themeName, branchName, brandName } =
       await this.themeRepository.getThemeNameBranchNameBrandNameByThemeId(themeId);
 
