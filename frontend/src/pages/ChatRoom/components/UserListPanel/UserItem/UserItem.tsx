@@ -49,4 +49,5 @@ const ProfileImg = styled.img([
     border-radius: 50%;
     background-color: white;
   `,
+  tw`p-1`,
 ]);

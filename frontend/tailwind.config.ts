@@ -110,6 +110,7 @@ export default {
         'red-dark': '#BE3144',
         'white': '#F2F2F2',
         'orange': '#e3651d',
+        'border-default': '#5F6E76',
       },
     },
   },

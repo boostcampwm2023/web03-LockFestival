@@ -49,7 +49,7 @@ const DateContent = styled.div([
 ]);
 
 const MessageContent = styled.div([
-  tw`border border-gray border-solid rounded-[1.2rem] px-2 py-1`,
+  tw`border border-border-default border-solid rounded-[1.2rem] px-2 py-1`,
   css`
     max-width: 25rem;
     width: fit-content;
