@@ -98,8 +98,6 @@ export class ThemeService {
     const { themeName, branchName, brandName } =
       await this.themeRepository.getThemeNameBranchNameBrandNameByThemeId(themeId);
 
-    this.logger.log(`crawler start brand: ${brandName} branch: ${branchName} theme: ${themeName}`);
-
     //format : yyyy-mm-dd
     const dateString =
       date.getFullYear() +
@@ -108,8 +106,17 @@ export class ThemeService {
       `-` +
       (date.getDate() < 10 ? `0` + date.getDate() : date.getDate());
 
-    return await this.crawlerFactory
-      .getCrawler(brandName)
-      .getTimeTableByTheme({ shop: branchName, theme: themeName, date: dateString });
+    this.logger.log(
+      `crawler start date: ${dateString} brand: ${brandName} branch: ${branchName} theme: ${themeName}`
+    );
+
+    try {
+      return await this.crawlerFactory
+        .getCrawler(brandName)
+        .getTimeTableByTheme({ shop: branchName, theme: themeName, date: dateString });
+    } catch (err) {
+      this.logger.error(err);
+      return [];
+    }
   }
 }
