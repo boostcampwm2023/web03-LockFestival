@@ -4,10 +4,10 @@ import { FaRightFromBracket } from 'react-icons/fa6';
 import useInput from '@hooks/useInput';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { chatLogAtom } from 'store/chatRoom';
+import { chatLogAtom, chatUnreadAtom } from 'store/chatRoom';
 import { ChatLog } from 'types/chat';
 import MessageBox from './MessageBox/MessageBox';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import useIntersectionObserverSocket from '@hooks/intersectionObserver/useIntersectionObserverSocket';
 import { getStringByDate } from '@utils/dateUtil';
 import {
@@ -102,6 +102,38 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
 
   const items = virtualizer.getVirtualItems();
 
+  const chatUnread = useRecoilValue(chatUnreadAtom);
+
+  const chatUnreadSortArray = useMemo(() => {
+    return new Array(...chatUnread).sort(([key1], [key2]) => {
+      return key1.localeCompare(key2);
+    });
+  }, [chatUnread]);
+
+  const unreadCount = useCallback(
+    (logId: string) => {
+      if (!chatUnread) {
+        return 0;
+      }
+
+      for (let i = 0; i < chatUnreadSortArray.length; i++) {
+        if (logId <= chatUnreadSortArray[i][1]) {
+          if (i === 0) {
+            return 0;
+          }
+          return Number(chatUnreadSortArray[i - 1][0]);
+        }
+      }
+
+      if (chatUnreadSortArray.length === 0) {
+        return 0;
+      }
+
+      return Number(chatUnreadSortArray[chatUnreadSortArray.length - 1][0]);
+    },
+    [chatUnread]
+  );
+
   return (
     <Layout>
       <ButtonWrapper>
@@ -158,6 +190,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
                       time={time}
                       isFirstChat={checkIsFirstChatFromUser(index, chatArrayFromChatLogData)}
                       isLastChat={checkIsLastChatFromUser(index, chatArrayFromChatLogData)}
+                      unreadCount={unreadCount(logId)}
                     />
                   </div>
                 );
@@ -183,7 +216,6 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   );
 };
 
-export default ChatPanel;
 const Layout = styled.div([
   css`
     position: relative;
@@ -262,3 +294,5 @@ const HorizontalLine = styled.div([
 ]);
 
 const DateDisplay = styled.div([]);
+
+export default ChatPanel;
