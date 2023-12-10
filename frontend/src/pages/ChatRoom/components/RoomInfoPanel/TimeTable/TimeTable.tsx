@@ -38,11 +38,21 @@ const TimeTable = ({ themeId }: { themeId: number }) => {
             {data && data.length > 0 ? (
               data?.map((timeData) =>
                 timeData.possible ? (
-                  <Label isBorder={false} width="6rem" backgroundColor="green-light">
+                  <Label
+                    key={timeData.time}
+                    isBorder={false}
+                    width="6rem"
+                    backgroundColor="green-light"
+                  >
                     <LabelText>{timeData.time}</LabelText>
                   </Label>
                 ) : (
-                  <Label isBorder={false} width="6rem" backgroundColor="green-dark">
+                  <Label
+                    key={timeData.time}
+                    isBorder={false}
+                    width="6rem"
+                    backgroundColor="green-dark"
+                  >
                     <LabelText>{timeData.time}</LabelText>
                   </Label>
                 )
