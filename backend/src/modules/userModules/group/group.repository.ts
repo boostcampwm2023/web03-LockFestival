@@ -162,7 +162,7 @@ export class GroupRepository extends Repository<Group> {
 
   async getGroupInfo(groupId: number): Promise<GroupInfoResponseDto> {
     try {
-      const qb = await this.dataSource
+      const rawData = await this.dataSource
         .createQueryBuilder(Group, 'group')
         .select([
           'brand.brandName as brandName',
@@ -184,7 +184,7 @@ export class GroupRepository extends Repository<Group> {
         .innerJoin(Branch, 'branch', 'theme.branch_id = branch.id')
         .innerJoin(Brand, 'brand', 'branch.brand_id = brand.id')
         .getRawOne();
-      return new GroupInfoResponseDto(qb);
+      return new GroupInfoResponseDto(rawData);
     } catch (err) {
       throw new HttpException('Error getting group information', HttpStatus.INTERNAL_SERVER_ERROR);
     }
