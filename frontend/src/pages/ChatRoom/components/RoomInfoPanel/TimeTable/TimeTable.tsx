@@ -6,12 +6,11 @@ import Calendar from 'react-calendar';
 import useTimeTableQuery from '@hooks/useTimeTableQuery';
 import { FaArrowsRotate } from 'react-icons/fa6';
 import { keyframes } from '@emotion/react';
+import { getStringByDate } from '@utils/dateUtil';
 
 const TimeTable = ({ themeId }: { themeId: number }) => {
   const today = new Date();
   const [date, setDate] = useState<Value>(today);
-  const oneWeekLater = new Date(today);
-  oneWeekLater.setDate(today.getDate() + 7);
   const { data, isLoading } = useTimeTableQuery(themeId, date);
 
   return (
@@ -25,10 +24,8 @@ const TimeTable = ({ themeId }: { themeId: number }) => {
           formatDay={(_, date) => date.toLocaleDateString('ko-KR', { day: '2-digit' }).slice(0, -1)}
           value={date}
           minDate={today}
-          maxDate={oneWeekLater}
           minDetail="month"
           maxDetail="month"
-          showNavigation={false}
         />
       </CalendarWrapper>
       <BottomWrapper>
@@ -38,16 +35,23 @@ const TimeTable = ({ themeId }: { themeId: number }) => {
           </Loading>
         ) : (
           <>
-            {data?.map((timeData) =>
-              timeData.possible ? (
-                <Label isBorder={false} width="6rem" backgroundColor="green-light">
-                  <LabelText>{timeData.time}</LabelText>
-                </Label>
-              ) : (
-                <Label isBorder={false} width="6rem" backgroundColor="green-dark">
-                  <LabelText>{timeData.time}</LabelText>
-                </Label>
+            {data && data.length > 0 ? (
+              data?.map((timeData) =>
+                timeData.possible ? (
+                  <Label isBorder={false} width="6rem" backgroundColor="green-light">
+                    <LabelText>{timeData.time}</LabelText>
+                  </Label>
+                ) : (
+                  <Label isBorder={false} width="6rem" backgroundColor="green-dark">
+                    <LabelText>{timeData.time}</LabelText>
+                  </Label>
+                )
               )
+            ) : (
+              <InfoText>
+                {getStringByDate(date as Date)}의<br />
+                시간표를 불러올 수 없습니다.
+              </InfoText>
             )}
           </>
         )}
@@ -75,7 +79,7 @@ const TopWrapper = styled.div([
   tw`text-white`,
 ]);
 
-const Text = styled.div([tw`font-pretendard text-m`]);
+const Text = styled.div([tw`font-pretendard text-l`]);
 
 const BottomWrapper = styled.div([tw`grid grid-cols-4 gap-4`]);
 const LabelText = styled.div(tw`mx-auto`);
@@ -98,5 +102,16 @@ const Loading = styled.div([
     justify-content: center;
     align-items: center;
     animation: ${rotate} 1s infinite linear;
+  `,
+]);
+
+const InfoText = styled.div([
+  tw`w-[30rem] h-[12.8rem] font-pretendard text-white text-m`,
+  css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 2.5rem;
   `,
 ]);
