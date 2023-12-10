@@ -33,7 +33,7 @@ const TextContainer = styled.div([
 ]);
 
 const MessageContent = styled.div([
-  tw`w-full border border-gray border-solid rounded-[1.2rem] px-2 py-2 bg-gray-light text-white-60`,
+  tw`w-full border border-border-default border-solid rounded-[1.2rem] px-2 py-2 bg-gray-light text-white-60`,
   css`
     text-align: center;
     word-break: break-all;

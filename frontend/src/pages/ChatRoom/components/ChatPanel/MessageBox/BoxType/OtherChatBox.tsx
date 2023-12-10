@@ -64,7 +64,7 @@ const ProfileContainer = styled.div([
 ]);
 
 const ProfileImg = styled.img([
-  tw`border border-gray border-solid`,
+  tw`border border-gray border-solid p-1`,
   css`
     width: 3rem;
     height: 3rem;
@@ -83,7 +83,7 @@ const TextContainer = styled.div([
 ]);
 
 const MessageContent = styled.div([
-  tw`border border-gray border-solid rounded-[1.2rem] px-2 py-1`,
+  tw`border border-border-default border-solid rounded-[1.2rem] px-2 py-1`,
   css`
     max-width: 25rem;
     width: fit-content;
