@@ -54,7 +54,7 @@ const HeaderLogo = styled.img([
 const NavContainer = styled.ul([
   tw`border border-white border-solid rounded-[4rem]`,
   tw`desktop:(w-[40rem] h-[3.6rem] mx-4)`,
-  tw`tablet:(w-[32rem] h-[3.2rem] mx-2)`,
+  tw`tablet:(w-[28rem] h-[3.2rem] mx-2)`,
   tw`mobile:(hidden)`,
   css`
     display: grid;
