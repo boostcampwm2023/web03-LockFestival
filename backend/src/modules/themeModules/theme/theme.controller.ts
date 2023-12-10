@@ -1,4 +1,12 @@
-import { Controller, DefaultValuePipe, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  Controller,
+  DefaultValuePipe,
+  Get,
+  Param,
+  ParseIntPipe,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ThemeService } from '@theme/theme.service';
 import { GenreThemesResponseDto } from '@theme/dtos/genre.themes.response.dto';
@@ -12,8 +20,12 @@ import { ThemeBranchThemesDetailsResponseDto } from '@theme/dtos/theme.branch.de
 import { ThemeSearchRequestDto } from '@theme/dtos/theme.serach.request.dto';
 import { ThemeSearchResponseDto } from '@theme/dtos/theme.search.response.dto';
 import { DateRequestDto } from '@theme/dtos/date.request.dto';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
+import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
+import { MIN_TO_MILLI } from '@constants/time.converter';
 
 const DEFAULT_THEME_COUNT = 10;
+const TIMETABLE_TTL = MIN_TO_MILLI * 5;
 
 @ApiTags('themes')
 @Controller('themes')
@@ -171,10 +183,12 @@ export class ThemeController {
     type: Date,
     example: new Date(),
   })
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(TIMETABLE_TTL)
   async getTimeTable(
     @Param('themeId', ParseIntPipe) themeId: number,
     @Query() { date }: DateRequestDto
-  ) {
+  ): Promise<TimeTableDto[]> {
     return await this.themeService.getTimeTable(themeId, date);
   }
 }
