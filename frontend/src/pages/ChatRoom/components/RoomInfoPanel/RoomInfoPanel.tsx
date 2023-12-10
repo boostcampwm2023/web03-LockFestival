@@ -108,6 +108,7 @@ const Layout = styled.div([
     height: 100vh;
     padding: 2rem;
     gap: 1.6rem;
+    overflow: hidden;
   `,
   tw`bg-gray-light rounded-[2rem] h-[calc(90vh - 6rem)]`,
 ]);
