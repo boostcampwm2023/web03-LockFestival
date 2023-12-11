@@ -12,7 +12,7 @@ const HeaderNav = () => {
   return (
     <Nav>
       <HeaderLogo
-        src="/assets/images/logo/Big-Dark.png"
+        src="/assets/images/logo/logo_leaf.png"
         alt="logo"
         onClick={() => handleSelectedItem('/')}
       />
@@ -43,11 +43,12 @@ const Nav = styled.nav([
 ]);
 
 const HeaderLogo = styled.img([
-  tw`desktop:(w-[18rem] h-[3.6rem])`,
-  tw`tablet:(w-[14rem] h-[3.2rem])`,
-  tw`mobile:(w-[10rem] h-[2.8rem])`,
+  tw`desktop:(w-[20rem])`,
+  tw`tablet:(w-[16rem])`,
+  tw`mobile:(w-[14rem])`,
   css`
     cursor: pointer;
+    aspect-ratio: 17/4;
   `,
 ]);
 
