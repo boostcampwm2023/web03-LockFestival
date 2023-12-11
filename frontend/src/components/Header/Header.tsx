@@ -26,7 +26,9 @@ const HeaderContainer = styled.header([
 ]);
 
 const HeaderInnerContainer = styled.div([
-  tw`w-[95%] mx-auto`,
+  tw`desktop:(w-full)`,
+  tw`tablet:(w-[95%] mx-auto)`,
+  tw`mobile:(w-[95%] mx-auto)`,
   css`
     display: flex;
     align-items: center;

@@ -15,12 +15,12 @@ const RandomThemeListContainer = () => {
       {data.map((ele) => {
         return (
           <Fragment key={ele.genreName}>
-            <LabelWrapper>
-              <Label isBorder={true} font="maplestory" size="l">
-                <>{ele.genreName}</>
-              </Label>
-            </LabelWrapper>
             <SimpleCardContainer>
+              <LabelWrapper>
+                <Label isBorder={true} font="maplestory" size="l">
+                  <>{ele.genreName}</>
+                </Label>
+              </LabelWrapper>
               <SimpleThemeCardList themes={ele.themes} />
             </SimpleCardContainer>
           </Fragment>
@@ -32,6 +32,7 @@ const RandomThemeListContainer = () => {
 
 const LabelWrapper = styled.div(css`
   align-self: flex-start;
+  margin-bottom: 0.8rem;
 `);
 
 const SimpleCardContainer = styled.div([tw`my-2 mt-[-0.5rem]`]);
