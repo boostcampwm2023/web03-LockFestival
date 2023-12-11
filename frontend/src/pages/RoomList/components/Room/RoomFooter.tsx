@@ -1,6 +1,7 @@
 import Button from '@components/Button/Button';
 import useLeaveRoomMutation from '@hooks/mutation/useLeaveRoomMutation';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import tw, { styled, css } from 'twin.macro';
 import { GroupProps } from 'types/group';
 
@@ -9,11 +10,17 @@ const RoomFooter = ({ groupId }: Pick<GroupProps, 'groupId'>) => {
 
   const { mutate } = useLeaveRoomMutation(groupId);
 
-  const handleLeaveRoom = () => {
-    if (!window.confirm('정말로 방을 나가시겠습니까?\n나간 이후 복구할 수 없습니다.')) {
-      return;
+  const handleLeaveRoom = async () => {
+    const result = await Swal.fire({
+      icon: 'info',
+      title: '정말로 방을 나가시겠습니까?',
+      text: '나간 이후 복구할 수 없습니다.',
+      showCloseButton: true,
+      showCancelButton: true,
+    });
+    if (result.isConfirmed) {
+      mutate(groupId);
     }
-    mutate(groupId);
   };
 
   return (

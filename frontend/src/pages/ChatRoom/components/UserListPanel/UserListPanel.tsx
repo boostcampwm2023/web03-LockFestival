@@ -7,6 +7,7 @@ import { userListInfoAtom } from '@store/chatRoom';
 import { UserInfoObject } from 'types/chat';
 import useLeaveRoomMutation from '@hooks/mutation/useLeaveRoomMutation';
 import { memo } from 'react';
+import Swal from 'sweetalert2';
 
 interface Props {
   roomId: string;
@@ -16,15 +17,19 @@ interface Props {
 
 const UserListPanel = memo(function UserListPanel({ roomId, settingMode, kickUser }: Props) {
   const userListInfo = useRecoilValue(userListInfoAtom) as UserInfoObject;
-  const navigate = useNavigate();
   const { mutate } = useLeaveRoomMutation(Number(roomId));
 
-  const handlerLeaveRoom = () => {
-    if (!window.confirm('정말로 방을 나가시겠습니까?\n나간 이후 복구할 수 없습니다.')) {
-      return;
+  const handlerLeaveRoom = async () => {
+    const result = await Swal.fire({
+      icon: 'info',
+      title: '정말로 방을 나가시겠습니까?',
+      text: '나간 이후 복구할 수 없습니다.',
+      showCloseButton: true,
+      showCancelButton: true,
+    });
+    if (result.isConfirmed) {
+      mutate(Number(roomId));
     }
-    mutate(Number(roomId));
-    navigate('/room-list');
   };
 
   const handleUserKick = (e: React.MouseEvent) => {
