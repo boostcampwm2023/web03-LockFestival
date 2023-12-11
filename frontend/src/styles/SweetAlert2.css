@@ -1,0 +1,15 @@
+.swal2-popup {
+  font-family: MaplestoryOTFLight;
+}
+
+div.swal2-html-container {
+  font-size: 1.6rem;
+}
+
+.swal2-actions > button {
+  font-family: MaplestoryOTFLight;
+}
+
+.swal2-icon {
+  margin: 10px auto;
+}
