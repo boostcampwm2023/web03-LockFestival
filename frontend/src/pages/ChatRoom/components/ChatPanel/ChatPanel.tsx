@@ -1,6 +1,6 @@
 import tw, { styled, css } from 'twin.macro';
 import Button from '@components/Button/Button';
-import { FaRightFromBracket } from 'react-icons/fa6';
+import { FaCropSimple, FaRightFromBracket } from 'react-icons/fa6';
 import useInput from '@hooks/useInput';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -84,25 +84,29 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   }, [chatLogData]);
 
   useEffect(() => {
+    const processLastChat = (isRead: boolean) => {
+      const lastChat = chatArrayFromChatLogData?.at(LAST_INDEX);
+
+      if (!lastChat) {
+        return;
+      }
+
+      const [logId, chatData] = lastChat;
+
+      if (chatData.type !== 'message' || userListInfo?.get(chatData.userId)?.isMe) {
+        return;
+      }
+
+      if (!lastUnreadChat || lastUnreadChat.logId !== logId) {
+        setLastUnreadChat({ ...chatData, isRead, logId });
+      }
+    };
+
     if (!isScrollToTop) {
       lastScrollRef?.current?.scrollIntoView({ block: 'start', behavior: 'auto' });
-      return;
-    }
-
-    const lastChat = chatArrayFromChatLogData?.at(LAST_INDEX);
-
-    if (!lastChat) {
-      return;
-    }
-
-    const [logId, chatData] = lastChat;
-
-    if (chatData.type !== 'message' || userListInfo?.get(chatData.userId)?.isMe) {
-      return;
-    }
-
-    if (!lastUnreadChat || lastUnreadChat.logId !== logId) {
-      setLastUnreadChat({ ...chatData, isRead: false, logId });
+      processLastChat(true);
+    } else {
+      processLastChat(false);
     }
   }, [chatLogData]);
 
@@ -113,7 +117,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
 
     const pastChatSize = chatLogData.size - prevChatLogDataSize;
 
-    if (pastChatSize < PAGING_SIZE && prevChatLogDataSize === 0) {
+    if (pastChatSize === 1 || (pastChatSize < PAGING_SIZE && prevChatLogDataSize === 0)) {
       return;
     }
 
@@ -122,10 +126,11 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
       return;
     }
 
-    if (pastChatSize >= PAGING_SIZE) {
+    if (pastChatSize === PAGING_SIZE) {
       virtualizer.scrollToIndex(PAGING_SIZE, { align: 'start' });
+      return;
     }
-  }, [chatLogData]);
+  }, [chatLogData, prevChatLogDataSize]);
 
   useEffect(() => {
     if (!isScrollToTop && lastUnreadChat) {
@@ -141,7 +146,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     if (parentRef.current.scrollTop < MIN_SCROLL_TOP) {
       setPrevChatLogDataSize(chatLogData.size);
     }
-  }, 1000);
+  }, 500);
 
   const virtualizer = useVirtualizer({
     count: chatArrayFromChatLogData?.length || 0,
