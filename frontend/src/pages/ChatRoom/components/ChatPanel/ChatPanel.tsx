@@ -1,6 +1,6 @@
 import tw, { styled, css } from 'twin.macro';
 import Button from '@components/Button/Button';
-import { FaCropSimple, FaRightFromBracket } from 'react-icons/fa6';
+import { FaRightFromBracket } from 'react-icons/fa6';
 import useInput from '@hooks/useInput';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
