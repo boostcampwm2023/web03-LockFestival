@@ -14,7 +14,7 @@ const RootSkeletonComponent = () => {
   ));
 
   return (
-    <>
+    <Container>
       <SkeletonLabel></SkeletonLabel>
       <CardListContainer>{skeletonCards}</CardListContainer>
       <SkeletonLabel></SkeletonLabel>
@@ -23,9 +23,22 @@ const RootSkeletonComponent = () => {
       <CardListContainer>{skeletonCards}</CardListContainer>
       <SkeletonLabel></SkeletonLabel>
       <CardListContainer>{skeletonCards}</CardListContainer>
-    </>
+    </Container>
   );
 };
+
+const Container = styled.div([
+  tw`w-full mx-auto`,
+  tw`desktop:(max-w-[102.4rem])`,
+  tw`tablet:(max-w-[70rem])`,
+  tw`mobile:(max-w-[90%])`,
+  css`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  `,
+]);
 
 const CardListContainer = styled.div([
   tw`bg-gray-light rounded-default gap-[3.4rem]`,
@@ -51,16 +64,14 @@ const loadingAnimation = keyframes`
 
 const SkeletonLabel = styled.div([
   tw`rounded-default`,
-  tw`desktop:(h-[3.2rem])`,
-  tw`tablet:(h-[2.8rem])`,
-  tw`mobile:(h-[2.8rem])`,
   css`
     width: 8rem;
+    height: 2.8rem;
     background: #f2f2f2;
     position: relative;
     overflow: hidden;
     align-self: flex-start;
-
+    margin-left: 1rem;
     &::before {
       content: '';
       position: absolute;

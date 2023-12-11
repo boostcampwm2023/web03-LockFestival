@@ -14,34 +14,33 @@ const GeoLocationThemeListContainer = () => {
   }
   return (
     <>
-      <Text>
-        <Label isBorder={true} font="maplestory" size="l">
-          <>근처 테마</>
-        </Label>
-        <ExplainText>
-          <div
-            onClick={() => setClickBang(true)}
-            onMouseOver={() => setClickBang(true)}
-            onMouseOut={() => setClickBang(false)}
-          >
-            <FaCircleExclamation size={23} />
-            {clickBang && (
-              <HoverText>
-                10km 이내의 테마를 추천하며, 위치 권한을 거부하면 홍대 입구를 기준으로 추천합니다.
-              </HoverText>
-            )}
-          </div>
-        </ExplainText>
-      </Text>
-
       <SimpleCardContainer>
+        <Text>
+          <Label isBorder={true} font="maplestory" size="l">
+            <>근처 테마</>
+          </Label>
+          <ExplainText>
+            <div
+              onClick={() => setClickBang(true)}
+              onMouseOver={() => setClickBang(true)}
+              onMouseOut={() => setClickBang(false)}
+            >
+              <FaCircleExclamation size={23} />
+              {clickBang && (
+                <HoverText>
+                  10km 이내의 테마를 추천하며, 위치 권한을 거부하면 홍대 입구를 기준으로 추천합니다.
+                </HoverText>
+              )}
+            </div>
+          </ExplainText>
+        </Text>
         <SimpleThemeCardList themes={data.data} />
       </SimpleCardContainer>
     </>
   );
 };
 
-const SimpleCardContainer = styled.div([tw`my-2`]);
+const SimpleCardContainer = styled.div([tw`mt-2`]);
 
 const Text = styled.div([
   tw`text-white text-m`,
@@ -50,6 +49,7 @@ const Text = styled.div([
     align-items: center;
     justify-self: center;
     align-self: flex-start;
+    margin-bottom: 0.8rem;
   `,
 ]);
 
