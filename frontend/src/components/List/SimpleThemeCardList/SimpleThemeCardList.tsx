@@ -30,7 +30,7 @@ const SimpleThemeCardList = ({ themes }: SimpleThemeCardListProps) => {
   );
 };
 
-const CardContainer = styled.div([tw`desktop:(mx-4)`, tw`tablet:(mx-4)`, tw`mobile:(mx-2)`]);
+const CardContainer = styled.div([css``]);
 
 const NoThemeContainer = styled.div([
   tw`w-full overflow-hidden bg-gray-light text-[4rem] text-white rounded-default`,
