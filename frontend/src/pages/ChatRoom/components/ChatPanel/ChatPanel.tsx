@@ -38,8 +38,11 @@ const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: Cha
   const parentRef = useRef<HTMLDivElement>(null);
   const lastScrollRef = useRef<HTMLDivElement>(null);
   const [isScrollToTop, setIsScrollToTop] = useState<boolean>(false);
-  const [prevScrollHeight, setPrevScrollHeight] = useState<number | null>(null);
   const [lastUnreadChat, setLastUnreadChat] = useState<UnreadState>();
+  const [prevChatLogDataSize, setPrevChatLogDataSize] = useState<number>(0);
+  const PAGING_SIZE = 50;
+  const MIN_SCROLL_TOP = 50;
+  const LAST_INDEX = -1;
 
   useIntersectionObserverSocket({
     eventHandler: getPastChat,
@@ -59,10 +62,8 @@ const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: Cha
   }, [chatLogData]);
 
   useEffect(() => {
-    if (!isScrollToTop) {
-      lastScrollRef?.current?.scrollIntoView({ block: 'start', behavior: 'auto' });
-    } else {
-      const lastChat = chatArrayFromChatLogData?.at(-1);
+    const processLastChat = (isRead: boolean) => {
+      const lastChat = chatArrayFromChatLogData?.at(LAST_INDEX);
 
       if (!lastChat) {
         return;
@@ -74,21 +75,40 @@ const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: Cha
         return;
       }
 
-      if (!lastUnreadChat) {
-        setLastUnreadChat({ ...chatData, isRead: false, logId });
-        return;
+      if (!lastUnreadChat || lastUnreadChat.logId !== logId) {
+        setLastUnreadChat({ ...chatData, isRead, logId });
       }
+    };
 
-      if (lastUnreadChat.logId !== logId) {
-        setLastUnreadChat({ ...chatData, isRead: false, logId });
-      }
-    }
-
-    if (parentRef.current && parentRef.current.scrollTop < 10 && prevScrollHeight) {
-      parentRef.current.scrollTop = parentRef.current.scrollHeight - prevScrollHeight;
-      return setPrevScrollHeight(null);
+    if (!isScrollToTop) {
+      lastScrollRef?.current?.scrollIntoView({ block: 'start', behavior: 'auto' });
+      processLastChat(true);
+    } else {
+      processLastChat(false);
     }
   }, [chatLogData]);
+
+  useEffect(() => {
+    if (!isScrollToTop) {
+      return;
+    }
+
+    const pastChatSize = chatLogData.size - prevChatLogDataSize;
+
+    if (pastChatSize === 1 || (pastChatSize < PAGING_SIZE && prevChatLogDataSize === 0)) {
+      return;
+    }
+
+    if (pastChatSize < PAGING_SIZE && prevChatLogDataSize !== 0) {
+      virtualizer.scrollToIndex(pastChatSize, { align: 'end' });
+      return;
+    }
+
+    if (pastChatSize === PAGING_SIZE) {
+      virtualizer.scrollToIndex(PAGING_SIZE, { align: 'start' });
+      return;
+    }
+  }, [chatLogData, prevChatLogDataSize]);
 
   useEffect(() => {
     if (!isScrollToTop && lastUnreadChat) {
@@ -101,8 +121,8 @@ const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: Cha
       return;
     }
 
-    if (parentRef.current.scrollTop < 10) {
-      setPrevScrollHeight(parentRef.current?.scrollHeight);
+    if (parentRef.current.scrollTop < MIN_SCROLL_TOP) {
+      setPrevChatLogDataSize(chatLogData.size);
     }
   }, 500);
 
