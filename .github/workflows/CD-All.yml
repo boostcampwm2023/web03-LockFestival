@@ -125,4 +125,4 @@ jobs:
             docker-compose down
             docker-compose up -d
             rm -rf ~/.env
-            docker image prune -a
+            docker image prune -f
