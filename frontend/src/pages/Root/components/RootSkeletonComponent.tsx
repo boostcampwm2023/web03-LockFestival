@@ -2,52 +2,39 @@ import tw, { styled, css } from 'twin.macro';
 import { keyframes } from '@emotion/react';
 
 const RootSkeletonComponent = () => {
+  const tabletBreakPoint = 1024;
+  const mobileBreakPoint = 640;
+
+  const calculateContainerCount = () => {
+    return window.innerWidth > tabletBreakPoint ? 5 : window.innerWidth > mobileBreakPoint ? 4 : 3;
+  };
+
+  const skeletonCards = Array.from({ length: calculateContainerCount() }, (_, index) => (
+    <SkeletonCard />
+  ));
+
   return (
     <>
       <SkeletonLabel></SkeletonLabel>
-      <CardListContainer>
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-      </CardListContainer>
+      <CardListContainer>{skeletonCards}</CardListContainer>
       <SkeletonLabel></SkeletonLabel>
-      <CardListContainer>
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-      </CardListContainer>
+      <CardListContainer>{skeletonCards}</CardListContainer>
       <SkeletonLabel></SkeletonLabel>
-      <CardListContainer>
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-      </CardListContainer>
+      <CardListContainer>{skeletonCards}</CardListContainer>
       <SkeletonLabel></SkeletonLabel>
-      <CardListContainer>
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-        <SkeletonCard />
-      </CardListContainer>
+      <CardListContainer>{skeletonCards}</CardListContainer>
     </>
   );
 };
 
 const CardListContainer = styled.div([
-  tw`bg-gray-light rounded-default `,
-  tw`desktop:(px-4 h-[32.4rem] gap-[3.4rem])`,
-  tw`tablet:(px-4 h-[32.4rem])`,
-  tw`mobile:(px-2  h-[21.6rem])`,
+  tw`bg-gray-light rounded-default gap-[3.4rem]`,
+  tw`desktop:(h-[32.4rem] px-3 py-4)`,
+  tw`tablet:(max-w-[70rem] h-[27.8rem] px-3 py-4)`,
+  tw`mobile:(max-w-[43rem] h-[24.8rem] px-2 py-4)`,
   css`
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
   `,
 ]);
@@ -64,9 +51,11 @@ const loadingAnimation = keyframes`
 
 const SkeletonLabel = styled.div([
   tw`rounded-default`,
+  tw`desktop:(h-[3.2rem])`,
+  tw`tablet:(h-[2.8rem])`,
+  tw`mobile:(h-[2.8rem])`,
   css`
-    width: 10rem;
-    height: 3.2rem;
+    width: 8rem;
     background: #f2f2f2;
     position: relative;
     overflow: hidden;
@@ -88,12 +77,13 @@ const SkeletonLabel = styled.div([
 
 const SkeletonCard = styled.div`
   ${tw`mb-2 rounded-[1.5rem] bg-gray`}
-  ${tw`desktop:(w-[16.8rem] h-[26.4rem])`}
-  ${tw`tablet:(w-[14.2rem] h-[20.4rem])`}
-  ${tw`mobile:(w-[10rem] h-[16rem])`}
+  ${tw`desktop:(w-[17.1rem] p-3)`}
+  ${tw`tablet:(w-[14rem]) p-3`}
+  ${tw`mobile:(w-[12.6rem]) p-2`}
   background: #222222;
   position: relative;
   overflow: hidden;
+  aspect-ratio: 9/15;
 
   &::before {
     content: '';
