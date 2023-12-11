@@ -33,14 +33,12 @@ const Carousel = ({ children }: CarouselProps) => {
 };
 
 const CarouselContainer = styled.div([
-  tw`w-full bg-gray-light rounded-default`,
+  tw`w-full bg-gray-light rounded-default py-3`,
   tw`desktop:(max-w-[102.4rem] h-[32.4rem])`,
-  tw`tablet:(max-w-[78rem] h-[32.4rem])`,
-  tw`mobile:(max-w-[43rem] h-[21.6rem])`,
+  tw`tablet:(max-w-[70rem] h-[27.8rem])`,
+  tw`mobile:(max-w-[43rem] h-[25rem])`,
   css`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    overflow: hidden;
   `,
 ]);
 
