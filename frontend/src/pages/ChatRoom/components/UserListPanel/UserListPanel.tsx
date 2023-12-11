@@ -1,7 +1,6 @@
 import tw, { styled, css } from 'twin.macro';
 import UserItem from './UserItem/UserItem';
 import Button from '@components/Button/Button';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { userListInfoAtom } from '@store/chatRoom';
 import { UserInfoObject } from 'types/chat';
