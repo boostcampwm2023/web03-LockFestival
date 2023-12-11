@@ -28,15 +28,16 @@ const TimeTable = ({ themeId }: { themeId: number }) => {
           maxDetail="month"
         />
       </CalendarWrapper>
-      <BottomWrapper>
-        {isLoading ? (
-          <Loading>
-            <FaArrowsRotate size="30" />
-          </Loading>
-        ) : (
-          <>
-            {data && data.length > 0 ? (
-              data?.map((timeData) =>
+
+      {isLoading ? (
+        <Loading>
+          <FaArrowsRotate size="30" />
+        </Loading>
+      ) : (
+        <>
+          {data && data.length > 0 ? (
+            <TimeTableWrapper>
+              {data?.map((timeData) =>
                 timeData.possible ? (
                   <Label
                     key={timeData.time}
@@ -56,16 +57,16 @@ const TimeTable = ({ themeId }: { themeId: number }) => {
                     <LabelText>{timeData.time}</LabelText>
                   </Label>
                 )
-              )
-            ) : (
-              <InfoText>
-                {getStringByDate(date as Date)}의<br />
-                시간표를 불러올 수 없습니다.
-              </InfoText>
-            )}
-          </>
-        )}
-      </BottomWrapper>
+              )}
+            </TimeTableWrapper>
+          ) : (
+            <InfoText>
+              {getStringByDate(date as Date)}의<br />
+              시간표를 불러올 수 없습니다.
+            </InfoText>
+          )}
+        </>
+      )}
     </Container>
   );
 };
@@ -91,7 +92,7 @@ const TopWrapper = styled.div([
 
 const Text = styled.div([tw`font-pretendard text-l`]);
 
-const BottomWrapper = styled.div([tw`grid grid-cols-4 gap-4`]);
+const TimeTableWrapper = styled.div([tw`grid grid-cols-4 gap-4`]);
 const LabelText = styled.div(tw`mx-auto`);
 
 const CalendarWrapper = styled.div([tw`font-pretendard text-s w-full`]);
@@ -106,7 +107,7 @@ const rotate = keyframes`
 `;
 
 const Loading = styled.div([
-  tw`w-[30rem] h-[12.8rem] text-white`,
+  tw`w-full h-[12.8rem] text-white`,
   css`
     display: flex;
     justify-content: center;
@@ -116,7 +117,7 @@ const Loading = styled.div([
 ]);
 
 const InfoText = styled.div([
-  tw`w-[30rem] h-[12.8rem] font-pretendard text-white text-m`,
+  tw`w-full h-[12.8rem] font-pretendard text-white text-m`,
   css`
     display: flex;
     justify-content: center;
