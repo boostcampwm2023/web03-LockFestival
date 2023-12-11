@@ -41,7 +41,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   const [lastUnreadChat, setLastUnreadChat] = useState<UnreadState>();
   const [prevChatLogDataSize, setPrevChatLogDataSize] = useState<number>(0);
   const PAGING_SIZE = 50;
-  const MIN_SCROLL_TOP = 10;
+  const MIN_SCROLL_TOP = 50;
   const LAST_INDEX = -1;
 
   useIntersectionObserverSocket({
@@ -89,14 +89,6 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
       return;
     }
 
-    const pastChatSize = chatLogData.size - prevChatLogDataSize;
-
-    if (pastChatSize < PAGING_SIZE) {
-      virtualizer.scrollToIndex(pastChatSize, { align: 'start' });
-    } else {
-      virtualizer.scrollToIndex(PAGING_SIZE, { align: 'start' });
-    }
-
     const lastChat = chatArrayFromChatLogData?.at(LAST_INDEX);
 
     if (!lastChat) {
@@ -115,6 +107,27 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   }, [chatLogData]);
 
   useEffect(() => {
+    if (!isScrollToTop) {
+      return;
+    }
+
+    const pastChatSize = chatLogData.size - prevChatLogDataSize;
+
+    if (pastChatSize < PAGING_SIZE && prevChatLogDataSize === 0) {
+      return;
+    }
+
+    if (pastChatSize < PAGING_SIZE && prevChatLogDataSize !== 0) {
+      virtualizer.scrollToIndex(pastChatSize, { align: 'end' });
+      return;
+    }
+
+    if (pastChatSize === PAGING_SIZE) {
+      virtualizer.scrollToIndex(PAGING_SIZE, { align: 'start' });
+    }
+  }, [chatLogData]);
+
+  useEffect(() => {
     if (!isScrollToTop && lastUnreadChat) {
       setLastUnreadChat({ ...lastUnreadChat, isRead: true });
     }
@@ -128,7 +141,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
     if (parentRef.current.scrollTop < MIN_SCROLL_TOP) {
       setPrevChatLogDataSize(chatLogData.size);
     }
-  }, 500);
+  }, 1000);
 
   const virtualizer = useVirtualizer({
     count: chatArrayFromChatLogData?.length || 0,
