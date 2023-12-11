@@ -38,8 +38,11 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const lastScrollRef = useRef<HTMLDivElement>(null);
   const [isScrollToTop, setIsScrollToTop] = useState<boolean>(false);
-  const [prevScrollHeight, setPrevScrollHeight] = useState<number | null>(null);
   const [lastUnreadChat, setLastUnreadChat] = useState<UnreadState>();
+  const [prevChatLogDataSize, setPrevChatLogDataSize] = useState<number>(0);
+  const PAGING_SIZE = 50;
+  const MIN_SCROLL_TOP = 10;
+  const LAST_INDEX = -1;
 
   useIntersectionObserverSocket({
     eventHandler: getPastChat,
@@ -83,32 +86,31 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
   useEffect(() => {
     if (!isScrollToTop) {
       lastScrollRef?.current?.scrollIntoView({ block: 'start', behavior: 'auto' });
-    } else {
-      const lastChat = chatArrayFromChatLogData?.at(-1);
-
-      if (!lastChat) {
-        return;
-      }
-
-      const [logId, chatData] = lastChat;
-
-      if (chatData.type !== 'message' || userListInfo?.get(chatData.userId)?.isMe) {
-        return;
-      }
-
-      if (!lastUnreadChat) {
-        setLastUnreadChat({ ...chatData, isRead: false, logId });
-        return;
-      }
-
-      if (lastUnreadChat.logId !== logId) {
-        setLastUnreadChat({ ...chatData, isRead: false, logId });
-      }
+      return;
     }
 
-    if (parentRef.current && parentRef.current.scrollTop < 10 && prevScrollHeight) {
-      parentRef.current.scrollTop = parentRef.current.scrollHeight - prevScrollHeight;
-      return setPrevScrollHeight(null);
+    const pastChatSize = chatLogData.size - prevChatLogDataSize;
+
+    if (pastChatSize < PAGING_SIZE) {
+      virtualizer.scrollToIndex(pastChatSize, { align: 'start' });
+    } else {
+      virtualizer.scrollToIndex(PAGING_SIZE, { align: 'start' });
+    }
+
+    const lastChat = chatArrayFromChatLogData?.at(LAST_INDEX);
+
+    if (!lastChat) {
+      return;
+    }
+
+    const [logId, chatData] = lastChat;
+
+    if (chatData.type !== 'message' || userListInfo?.get(chatData.userId)?.isMe) {
+      return;
+    }
+
+    if (!lastUnreadChat || lastUnreadChat.logId !== logId) {
+      setLastUnreadChat({ ...chatData, isRead: false, logId });
     }
   }, [chatLogData]);
 
@@ -123,8 +125,8 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
       return;
     }
 
-    if (parentRef.current.scrollTop < 10) {
-      setPrevScrollHeight(parentRef.current?.scrollHeight);
+    if (parentRef.current.scrollTop < MIN_SCROLL_TOP) {
+      setPrevChatLogDataSize(chatLogData.size);
     }
   }, 500);
 
