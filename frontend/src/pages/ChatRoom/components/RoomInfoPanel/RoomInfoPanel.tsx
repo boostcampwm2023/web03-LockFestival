@@ -11,13 +11,14 @@ import { useRecoilValue } from 'recoil';
 import { roomInfoAtom } from '@store/chatRoom';
 import { getStringByDate } from '@utils/dateUtil';
 import TimeTable from './TimeTable/TimeTable';
+import { memo } from 'react';
 
 interface Props {
   settingMode: boolean;
   changeRoom: (afterRoomInfo: Record<string, ChangeRoomData>) => void;
 }
 
-const RoomInfoPanel = ({ settingMode, changeRoom }: Props) => {
+const RoomInfoPanel = memo(function RoomInfoPanel({ settingMode, changeRoom }: Props) {
   const { openModal, closeModal } = useModal();
   const roomInfo = useRecoilValue(roomInfoAtom);
   const {
@@ -95,9 +96,7 @@ const RoomInfoPanel = ({ settingMode, changeRoom }: Props) => {
       <TimeTable themeId={themeId} />
     </Layout>
   );
-};
-
-export default RoomInfoPanel;
+});
 
 const Layout = styled.div([
   css`
@@ -183,3 +182,5 @@ const RoomInfoContent = styled.div([
     width: 16.4rem;
   `,
 ]);
+
+export default RoomInfoPanel;

@@ -6,6 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { userListInfoAtom } from '@store/chatRoom';
 import { UserInfoObject } from 'types/chat';
 import useLeaveRoomMutation from '@hooks/mutation/useLeaveRoomMutation';
+import { memo } from 'react';
 
 interface Props {
   roomId: string;
@@ -13,7 +14,7 @@ interface Props {
   kickUser: (userId: string) => void;
 }
 
-const UserListPanel = ({ roomId, settingMode, kickUser }: Props) => {
+const UserListPanel = memo(function UserListPanel({ roomId, settingMode, kickUser }: Props) {
   const userListInfo = useRecoilValue(userListInfoAtom) as UserInfoObject;
   const navigate = useNavigate();
   const { mutate } = useLeaveRoomMutation(Number(roomId));
@@ -74,7 +75,7 @@ const UserListPanel = ({ roomId, settingMode, kickUser }: Props) => {
       </Button>
     </Layout>
   );
-};
+});
 
 export default UserListPanel;
 
