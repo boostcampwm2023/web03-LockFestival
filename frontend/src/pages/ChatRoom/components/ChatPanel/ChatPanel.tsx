@@ -122,7 +122,7 @@ const ChatPanel = ({ roomId, sendChat, getPastChat }: ChatPanelProps) => {
       return;
     }
 
-    if (pastChatSize === PAGING_SIZE) {
+    if (pastChatSize >= PAGING_SIZE) {
       virtualizer.scrollToIndex(PAGING_SIZE, { align: 'start' });
     }
   }, [chatLogData]);
