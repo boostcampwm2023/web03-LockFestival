@@ -2,9 +2,11 @@ import MUTATION_MANAGEMENT from '@constants/mutationManagement';
 import QUERY_MANAGEMENT from '@constants/queryManagement';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const useLeaveRoomMutation = (groupId: number) => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { data, mutate, status } = useMutation({
@@ -13,6 +15,7 @@ const useLeaveRoomMutation = (groupId: number) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_MANAGEMENT['roomList'].key] });
       toast.success('방을 나왔습니다!');
+      navigate('/room-list');
     },
     onError: (error) => {
       if (isAxiosError(error)) {
