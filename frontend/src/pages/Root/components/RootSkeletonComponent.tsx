@@ -10,7 +10,7 @@ const RootSkeletonComponent = () => {
   };
 
   const skeletonCards = Array.from({ length: calculateContainerCount() }, (_, index) => (
-    <SkeletonCard />
+    <SkeletonCard key={index} />
   ));
 
   return (
