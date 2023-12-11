@@ -30,24 +30,27 @@ const SimpleThemeCard = ({ themeId, themeName, posterImageUrl }: SimpleThemeCard
 
 const CardContainer = styled.div([
   tw`font-pretendard text-white bg-gray`,
-  tw`desktop:(text-s h-[28.4rem] w-[18.2rem] rounded-[2rem])`,
-  tw`tablet:(text-s h-[20.6rem] w-[14.2rem] rounded-[2rem])`,
-  tw`mobile:(text-xs h-[20.3rem] w-[12.8rem] rounded-[1.4rem])`,
+  tw`desktop:(text-s h-[28.4rem] w-[18.2rem] rounded-[2rem] mx-3 p-3)`,
+  tw`tablet:(text-s h-[24rem] w-[15.2rem] rounded-[2rem] mx-3 p-3)`,
+  tw`mobile:(text-xs h-[21.3rem] w-[12.8rem] rounded-[1.4rem] mx-2 p-2)`,
   css`
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
     cursor: pointer;
+    gap: 1rem;
   `,
 ]);
 
 const CardImg = styled.img([
   tw`mb-2 rounded-[1.5rem]`,
-  tw`desktop:(w-[15.6rem] h-[23.6rem])`,
-  tw`tablet:(w-[12.6rem] h-[18.6rem])`,
-  tw`mobile:(w-[10rem] h-[16rem])`,
+  css`
+    width: 100%;
+    aspect-ratio: 9/13;
+  `,
 ]);
+
 const CardText = styled.span([
   tw`w-[90%]`,
   css`
