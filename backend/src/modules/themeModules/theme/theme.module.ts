@@ -21,7 +21,7 @@ import { XDungeonCrawlerMetadata } from '@crawlerUtils/crawler/xdungeon.crawler'
 import { CacheModule } from '@nestjs/cache-manager';
 import { SEC_TO_MILLI } from '@constants/time.converter';
 
-const DEFAULT_TTL = 10 * SEC_TO_MILLI;
+const DEFAULT_TTL = 3 * SEC_TO_MILLI;
 
 @Module({
   imports: [

@@ -36,6 +36,8 @@ import {
 
 const DEFAULT_THEME_COUNT = 10;
 const TIMETABLE_TTL = MIN_TO_MILLI * 5;
+const DETAILS_TTL = MIN_TO_MILLI;
+const LOCATION_TTL = MIN_TO_MILLI;
 
 @ApiTags('themes')
 @UseInterceptors(CacheInterceptor)
@@ -48,6 +50,7 @@ export class ThemeController {
 
   @Get(':themeId/details')
   @GetThemeDetailsSwagger()
+  @CacheTTL(DETAILS_TTL)
   async getThemeDetails(
     @Param('themeId', ParseIntPipe) themeId: number
   ): Promise<ThemeBranchThemesDetailsResponseDto> {
@@ -65,6 +68,7 @@ export class ThemeController {
 
   @Get('/location')
   @GetLocationThemesSwagger()
+  @CacheTTL(LOCATION_TTL)
   async getLocationThemes(
     @Query() themeLocationDto: ThemeLocationDto
   ): Promise<ThemeLocationResponseDto> {
