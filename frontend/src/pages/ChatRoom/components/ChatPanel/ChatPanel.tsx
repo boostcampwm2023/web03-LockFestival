@@ -145,21 +145,14 @@ const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: Cha
 
   const unreadCount = useCallback(
     (logId: string) => {
-      if (!chatUnread) {
+      if (chatUnreadSortArray.length === 0) {
         return 0;
       }
 
       for (let i = 0; i < chatUnreadSortArray.length; i++) {
         if (logId <= chatUnreadSortArray[i][1]) {
-          if (i === 0) {
-            return 0;
-          }
-          return Number(chatUnreadSortArray[i - 1][0]);
+          return i === 0 ? 0 : Number(chatUnreadSortArray[i - 1][0]);
         }
-      }
-
-      if (chatUnreadSortArray.length === 0) {
-        return 0;
       }
 
       return Number(chatUnreadSortArray[chatUnreadSortArray.length - 1][0]);
