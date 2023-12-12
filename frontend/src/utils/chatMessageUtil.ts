@@ -18,7 +18,7 @@ const checkIsFirstChatToday = (
 // 프로필 표시 여부
 const checkIsFirstChatFromUser = (
   targetIndex: number,
-  chatLogData: [string, ChatLog][]
+  chatLogData: Array<[string, ChatLog]>
 ): boolean => {
   if (targetIndex === 0) {
     return true;
@@ -27,20 +27,10 @@ const checkIsFirstChatFromUser = (
   const prevData = chatLogData[targetIndex - 1][1];
   const targetData = chatLogData[targetIndex][1];
 
-  const prevUser = prevData.userId;
   const prevTime = getTimeByDate(new Date(prevData.time));
-  const targetUser = targetData.userId;
   const targetTime = getTimeByDate(new Date(targetData.time));
 
-  if (prevTime !== targetTime) {
-    return true;
-  }
-
-  if (prevUser !== targetUser) {
-    return true;
-  }
-
-  return false;
+  return prevTime !== targetTime || prevData.userId !== targetData.userId;
 };
 
 // 시각 표시 여부
