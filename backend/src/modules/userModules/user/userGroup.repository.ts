@@ -75,4 +75,14 @@ export class UserGroupRepository extends Repository<UserGroup> {
       }),
     };
   }
+
+  async existsByGroupIdAndNickname(groupId: number, nickname: string): Promise<boolean> {
+    return await this.dataSource
+      .createQueryBuilder(UserGroup, 'userGroup')
+      .innerJoin('userGroup.group', 'group')
+      .innerJoin('userGroup.user', 'user')
+      .where('group.id = :groupId', { groupId })
+      .andWhere('user.nickname = :nickname', { nickname })
+      .getExists();
+  }
 }

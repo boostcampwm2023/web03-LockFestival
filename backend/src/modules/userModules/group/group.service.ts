@@ -101,4 +101,8 @@ export class GroupService {
   async editGroupInfo(groupEditDto: GroupEditDto): Promise<GroupInfoResponseDto> {
     return await this.groupRepository.editGroupInfo(groupEditDto);
   }
+
+  async isUserInGroupByGroupIdAndNickname(groupId: number, nickname: string) {
+    return await this.userGroupRepository.existsByGroupIdAndNickname(groupId, nickname);
+  }
 }

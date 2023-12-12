@@ -2,7 +2,10 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
+  ParseIntPipe,
   Patch,
   Query,
   Req,
@@ -26,13 +29,18 @@ import {
 import { UserInfoResponseDto } from '@user/dtos/userInfo.response.dto';
 import { GroupsPaginationCursorDto } from '@group/dtos/group.pagination.cursor.dto';
 import { UsersRoomsResponseDto } from '@user/dtos/users.rooms.response.dto';
+import { GroupService } from '@group/group.service';
+import { RoomEventService } from '@user/room.event.service';
+import { CacheTTL } from '@nestjs/cache-manager';
 
 @ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private groupService: GroupService,
+    private roomEventService: RoomEventService
   ) {}
 
   @Get('/profile')
@@ -118,5 +126,18 @@ export class UserController {
     @Query() paginationCursorDto: GroupsPaginationCursorDto
   ): Promise<UsersRoomsResponseDto> {
     return await this.userService.getGroupsByNickname(user.nickname, paginationCursorDto);
+  }
+
+  @CacheTTL(1)
+  @UseGuards(TokenAuthGuard)
+  @Get('/rooms/:roomId/subscribe')
+  async subscribeGroupsByNickname(@Req() { user }, @Param('roomId', ParseIntPipe) roomId: number) {
+    console.log('cached hi');
+    if (!(await this.groupService.isUserInGroupByGroupIdAndNickname(roomId, user.nickname))) {
+      throw new HttpException('해당 방에 참가자가 아닙니다.', HttpStatus.BAD_REQUEST);
+    }
+
+    const updatedData = await this.roomEventService.waitUpdate(roomId, user.nickname);
+    return updatedData;
   }
 }

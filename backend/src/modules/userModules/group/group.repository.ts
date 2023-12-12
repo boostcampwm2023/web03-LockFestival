@@ -345,4 +345,22 @@ export class GroupRepository extends Repository<Group> {
       await queryRunner.release();
     }
   }
+
+  async findRoomInfoByGroupId(groupId: number) {
+    return await this.dataSource
+      .createQueryBuilder()
+      .select([
+        'theme.id as themeId',
+        'theme.name as themeName',
+        'theme.poster_image_url as posterImageUrl',
+        'branch.branch_name as branchName',
+        'group.id as groupId',
+        'group.recruitment_content as recruitmentContent',
+      ])
+      .from(Group, 'group')
+      .where('group.id = :groupId', { groupId })
+      .innerJoin('group.theme', 'theme')
+      .innerJoin('theme.branch', 'branch')
+      .getRawOne();
+  }
 }

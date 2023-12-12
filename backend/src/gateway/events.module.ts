@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { EventsGateway } from '@src/gateway/events.gateway';
 import { ChatModule } from '@chat/chat.module';
 import { GroupModule } from '@group/group.module';
+import { UserModule } from '@user/user.module';
 
 @Module({
   imports: [
@@ -13,6 +14,9 @@ import { GroupModule } from '@group/group.module';
       return GroupModule;
     }),
     JwtModule,
+    forwardRef(() => {
+      return UserModule;
+    }),
   ],
   providers: [EventsGateway],
   exports: [EventsGateway],

@@ -1,4 +1,4 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '@auth/auth.module';
 import { User } from '@user/entities/user.entity';
@@ -8,6 +8,8 @@ import { UserController } from '@user/user.controller';
 import { UserGroupRepository } from '@user/userGroup.repository';
 import { ThemeModule } from '@theme/theme.module';
 import { ChatModule } from '@chat/chat.module';
+import { RoomEventService } from '@user/room.event.service';
+import { GroupModule } from '@group/group.module';
 
 @Module({
   imports: [
@@ -17,9 +19,10 @@ import { ChatModule } from '@chat/chat.module';
     }),
     ThemeModule,
     ChatModule,
+    GroupModule,
   ],
   controllers: [UserController],
-  providers: [UserService, UserRepository, UserGroupRepository],
-  exports: [UserService, UserRepository, UserGroupRepository],
+  providers: [UserService, UserRepository, UserGroupRepository, RoomEventService],
+  exports: [UserService, UserRepository, UserGroupRepository, RoomEventService],
 })
 export class UserModule {}

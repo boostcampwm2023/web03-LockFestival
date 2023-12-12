@@ -21,6 +21,7 @@ import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
 import { ChatLeaveRoomDto } from '@chat/dtos/chat.leave.dto';
 import { ChatUserInfoDto } from '@chat/dtos/chat.user.info.dto';
 import { GroupEditDto } from '@group/dtos/group.edit.dto';
+import { RoomEventService } from '@user/room.event.service';
 
 @Injectable()
 @WebSocketGateway({
@@ -41,7 +42,8 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     private readonly chatService: ChatService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly groupService: GroupService
+    private readonly groupService: GroupService,
+    private readonly roomEventService: RoomEventService
   ) {
     this.socketsInRooms = {};
     this.socketToRoomId = {};
@@ -173,6 +175,10 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     const messageObject: ChatMessageDto = await this.chatService.createMessageByChat(request);
     client.to(roomId).emit('chat', messageObject);
+
+    // 비동기 작업이지만 사용자의 응답과 상관없는 내용이므로 대기하지 않음
+    this.roomEventService.notifyUpdate(Number(roomId));
+
     return 'ok';
   }
 
@@ -191,6 +197,9 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
       leaderNickname: nickname,
     });
     client.to(roomId).emit('roomInfo', editedGroupInfo);
+
+    // 비동기 작업이지만 사용자의 응답과 상관없는 내용이므로 대기하지 않음
+    this.roomEventService.notifyUpdate(Number(roomId));
   }
 
   async sendChangeUserBroadcastMessage(roomId: string, chatMessageDto: ChatMessageDto) {

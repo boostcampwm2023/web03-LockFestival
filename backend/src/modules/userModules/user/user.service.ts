@@ -18,10 +18,12 @@ import { ChatMessage } from '@chat/entities/chat.message.schema';
 import { ChatUser } from '@chat/entities/chat.user.schema';
 import { GroupsPaginationCursorDto } from '@group/dtos/group.pagination.cursor.dto';
 import { UsersRoomsResponseDto } from '@user/dtos/users.rooms.response.dto';
+import { GroupRepository } from '@group/group.repository';
 
 @Injectable()
 export class UserService {
   private readonly logger = new Logger(UserService.name);
+
   constructor(
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
@@ -31,7 +33,10 @@ export class UserService {
     private readonly genreRepository: GenreRepository,
     @InjectRepository(UserGroupRepository)
     private readonly userGroupRepository: UserGroupRepository,
-    private readonly chatRepository: ChatRepository
+
+    private readonly chatRepository: ChatRepository,
+    @InjectRepository(GroupRepository)
+    private readonly groupRepository: GroupRepository
   ) {}
 
   async checkUsableNickname(nickname: string) {
@@ -181,5 +186,50 @@ export class UserService {
       restCount > 0 ? usersRoomsDetailsDtos[usersRoomsDetailsDtos.length - 1].groupId : undefined;
 
     return new UsersRoomsResponseDto(restCount, nextCursor, usersRoomsDetailsDtos);
+  }
+
+  async getGroupInfo(groupId: number, nickname: string): Promise<UsersRoomsDetailsDto> {
+    const userRoom = await this.groupRepository.findRoomInfoByGroupId(groupId);
+
+    const lastChat: ChatMessage = await this.chatRepository.findLastChatByRoomId(String(groupId));
+
+    if (!lastChat) {
+      return new UsersRoomsDetailsDto({
+        ...userRoom,
+        lastChatMessage: '',
+        lastChatTime: '',
+        hasNewChat: false,
+        newChatCount: 0,
+      });
+    }
+
+    const userInRoom: ChatUser = await this.chatRepository.validateRoomAndGetChatUser(
+      String(groupId),
+      nickname
+    );
+
+    if (!userInRoom.last_chat_log_id) {
+      return new UsersRoomsDetailsDto({
+        ...userRoom,
+        lastChatMessage: lastChat.chat_message,
+        lastChatTime: lastChat.chat_date,
+        hasNewChat: false,
+        newChatCount: 0,
+      });
+    }
+
+    const unreadCount: number = await this.chatRepository.countChatInRoomBetweenLogIds(
+      String(groupId),
+      userInRoom.last_chat_log_id,
+      lastChat._id
+    );
+
+    return new UsersRoomsDetailsDto({
+      ...userRoom,
+      lastChatMessage: lastChat.chat_message,
+      lastChatTime: lastChat.chat_date,
+      hasNewChat: userInRoom.last_chat_log_id.toString() !== lastChat._id.toString(),
+      newChatCount: unreadCount,
+    });
   }
 }
