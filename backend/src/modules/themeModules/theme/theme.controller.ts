@@ -24,8 +24,8 @@ import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
 import { MIN_TO_MILLI } from '@constants/time.converter';
 import {
-  GetGenreThemesSwagger,
   GetGenresSwagger,
+  GetGenreThemesSwagger,
   GetLocationThemesSwagger,
   GetRandomGenresThemesSwagger,
   GetSimpleThemesSwagger,
