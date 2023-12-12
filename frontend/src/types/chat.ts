@@ -41,6 +41,7 @@ export interface RoomInfo {
   currentMembers: number;
   recruitmentCompleted: boolean;
   appointmentCompleted: boolean;
+  website: string;
 }
 
 export type ChangeRoomData = {
