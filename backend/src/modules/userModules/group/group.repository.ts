@@ -320,6 +320,7 @@ export class GroupRepository extends Repository<Group> {
         .select([
           'brand.brandName as brandName',
           'branch.branchName as branchName',
+          'branch.website as website',
           "CONCAT(branch.big_region, ' ', branch.small_region) AS regionName",
           'theme.name as themeName',
           'theme.id as themeId',
