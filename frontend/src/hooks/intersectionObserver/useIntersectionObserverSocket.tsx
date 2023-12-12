@@ -14,8 +14,8 @@ const useIntersectionObserverSocket = ({
   roomId,
 }: IntersectionObserverProps) => {
   const observerRef = useRef<IntersectionObserver>();
-  const chatLog = useRecoilValue(chatLogAtom);
-  const firstChatId = chatLog[roomId]?.entries()?.next()?.value?.[0] || '';
+  const chatLog = useRecoilValue(chatLogAtom(roomId));
+  const firstChatId = chatLog?.entries()?.next()?.value?.[0] || '';
 
   const cursorRef = useRef<string>('');
 

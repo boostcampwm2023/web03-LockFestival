@@ -4,10 +4,10 @@ import { chatLogAtom } from '@store/chatRoom';
 import { chatLogDataTransformer } from '@utils/chatDataUtils';
 
 const useChatLog = (roomId: string) => {
-  const [chatLog, setChatLog] = useRecoilState(chatLogAtom);
+  const [chatLog, setChatLog] = useRecoilState(chatLogAtom(roomId));
 
   const addPresentChat = (receiveChat: ServerChatLog | null) => {
-    const currentRoomChatting = new Map<string, ChatLog>(chatLog[roomId]);
+    const currentRoomChatting = new Map<string, ChatLog>(chatLog);
 
     if (receiveChat) {
       const { chatId, message, userId, type, time } = receiveChat;
@@ -18,34 +18,28 @@ const useChatLog = (roomId: string) => {
         type,
         time,
       });
-      setChatLog((prev) => ({ ...prev, [roomId]: currentRoomChatting }));
+      setChatLog(currentRoomChatting);
     }
   };
 
   const addPastChats = (receiveChat: ServerChatLogList) => {
     const receiveChatMap = chatLogDataTransformer(receiveChat.messages);
 
-    const newMap: Map<string, ChatLog> = chatLog[roomId]
-      ? new Map([...receiveChatMap, ...chatLog[roomId]])
+    const newMap: Map<string, ChatLog> = chatLog
+      ? new Map([...receiveChatMap, ...chatLog])
       : new Map([...receiveChatMap]);
 
-    setChatLog((prev) => ({
-      ...prev,
-      [roomId]: new Map([...newMap]),
-    }));
+    setChatLog(newMap);
   };
 
   const addFutureChats = (receiveChat: ServerChatLogList) => {
     const receiveChatMap = chatLogDataTransformer(receiveChat.messages);
 
-    const newMap: Map<string, ChatLog> = chatLog[roomId]
-      ? new Map([...chatLog[roomId], ...receiveChatMap])
+    const newMap: Map<string, ChatLog> = chatLog
+      ? new Map([...chatLog, ...receiveChatMap])
       : new Map([...receiveChatMap]);
 
-    setChatLog((prev) => ({
-      ...prev,
-      [roomId]: new Map([...newMap]),
-    }));
+    setChatLog(newMap);
   };
 
   return { addPresentChat, addPastChats, addFutureChats };
