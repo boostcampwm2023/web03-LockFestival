@@ -3,8 +3,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import fetchLogin from '@apis/fetchLogin';
 import { useSetRecoilState } from 'recoil';
 import userAtom from 'store/userAtom';
-import fetchUserProfile from '@apis/fetchUserProfile';
 import { toast } from 'react-toastify';
+import fetchFirstUserProfile from '@apis/fetchFirstUserProfile';
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -19,10 +19,8 @@ const Auth = () => {
 
       localStorage.setItem('accessToken', token);
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
       // 프로필 api
-      const res = await fetchUserProfile();
+      const res = await fetchFirstUserProfile(token);
       setProfile(res);
 
       navigate(localStorage.getItem('lastVisited') || '/', {
