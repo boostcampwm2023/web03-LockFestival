@@ -3,8 +3,6 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from '@src/app.controller';
 import { AppService } from '@src/app.service';
 import { LoggerMiddleware } from '@src/utils/logger.middleware';
@@ -19,7 +17,6 @@ import { BrandModule } from '@brand/brand.module';
 import { ChatModule } from '@chat/chat.module';
 import { GroupModule } from '@group/group.module';
 import { EventsModule } from '@src/gateway/events.module';
-import { SEC_TO_MILLI } from '@constants/time.converter';
 
 @Module({
   imports: [
@@ -53,19 +50,9 @@ import { SEC_TO_MILLI } from '@constants/time.converter';
       },
       inject: [ConfigService],
     }),
-    CacheModule.register({
-      ttl: 5 * SEC_TO_MILLI,
-      isGlobal: true,
-    }),
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
-  ],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

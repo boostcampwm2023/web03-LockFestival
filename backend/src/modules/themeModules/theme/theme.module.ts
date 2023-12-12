@@ -18,9 +18,10 @@ import { NextEditionCrawlerMetadata } from '@crawlerUtils/crawler/nextedition.cr
 import { SecretGardenEscapeCrawlerMetadata } from '@crawlerUtils/crawler/secretgardenescape.crawler';
 import { SeoulEscapeRoomCrawlerMetadata } from '@crawlerUtils/crawler/seoulescaperoom.crawler';
 import { XDungeonCrawlerMetadata } from '@crawlerUtils/crawler/xdungeon.crawler';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Theme]), BrandModule],
+  imports: [TypeOrmModule.forFeature([Theme]), BrandModule, CacheModule.register()],
   controllers: [ThemeController],
   providers: [
     ThemeService,
