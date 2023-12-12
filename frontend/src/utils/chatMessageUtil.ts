@@ -36,7 +36,7 @@ const checkIsFirstChatFromUser = (
 // 시각 표시 여부
 const checkIsLastChatFromUser = (
   targetIndex: number,
-  chatLogData: [string, ChatLog][]
+  chatLogData: Array<[string, ChatLog]>
 ): boolean => {
   if (targetIndex === chatLogData.length - 1) {
     return true;
@@ -48,18 +48,7 @@ const checkIsLastChatFromUser = (
   const targetTime = getTimeByDate(new Date(targetData.time));
   const nextTime = getTimeByDate(new Date(nextData.time));
 
-  const targetUser = targetData.userId;
-  const nextUser = nextData.userId;
-
-  if (targetTime !== nextTime) {
-    return true;
-  }
-
-  if (targetUser !== nextUser) {
-    return true;
-  }
-
-  return false;
+  return targetTime !== nextTime || targetData.userId !== nextData.userId;
 };
 
 export { checkIsFirstChatToday, checkIsFirstChatFromUser, checkIsLastChatFromUser };
