@@ -103,7 +103,7 @@ export class ChatRepository {
       .lean();
 
     if (!queryResult) {
-      throw new Error('존재하지 않는 방입니다.');
+      throw new HttpException('존재하지 않는 방입니다.', HttpStatus.BAD_REQUEST);
     }
 
     return queryResult.user_list.map((user) => {
@@ -136,7 +136,7 @@ export class ChatRepository {
       });
 
     if (!isUserInRoom) {
-      throw new Error('유저가 방에 없습니다.');
+      throw new HttpException('유저가 방에 없습니다.', HttpStatus.BAD_REQUEST);
     }
 
     return userList;
@@ -167,7 +167,7 @@ export class ChatRepository {
   async findLastChatLogIdByRoomId(roomId: string): Promise<string> {
     const roomInfo = await this.roomModel.findOne({ group_id: roomId });
     if (!roomInfo) {
-      throw new Error('방 정보를 찾을 수 없습니다.');
+      throw new HttpException('방 정보를 찾을 수 없습니다.', HttpStatus.BAD_REQUEST);
     }
     if (!roomInfo.last_chat) {
       return undefined;
@@ -319,7 +319,7 @@ export class ChatRepository {
     const room = await this.roomModel.findOne({ group_id: roomId });
 
     if (!room) {
-      throw new Error('방 정보를 찾을 수 없습니다.');
+      throw new HttpException('방 정보를 찾을 수 없습니다.', HttpStatus.BAD_REQUEST);
     }
 
     const userIds = room.user_list.map((user) => {
