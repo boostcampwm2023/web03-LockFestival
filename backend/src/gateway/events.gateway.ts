@@ -77,6 +77,8 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     if (!this.hasAnotherSession(roomId, meUser.userId)) {
       this.server.to(roomId).emit('unread', unreadCountMap);
+    } else {
+      client.emit('unread', unreadCountMap);
     }
 
     this.socketsInRooms[roomId][client.id] = meUser.userId;
