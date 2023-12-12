@@ -38,6 +38,7 @@ const DEFAULT_THEME_COUNT = 10;
 const TIMETABLE_TTL = MIN_TO_MILLI * 5;
 
 @ApiTags('themes')
+@UseInterceptors(CacheInterceptor)
 @Controller('themes')
 export class ThemeController {
   constructor(
@@ -101,7 +102,6 @@ export class ThemeController {
 
   @Get('/:themeId/timetable')
   @GetTimeTableSwagger()
-  @UseInterceptors(CacheInterceptor)
   @CacheTTL(TIMETABLE_TTL)
   async getTimeTable(
     @Param('themeId', ParseIntPipe) themeId: number,
