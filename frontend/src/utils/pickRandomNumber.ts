@@ -7,7 +7,7 @@ const START_INDEX = 0;
  */
 const pickRandomNumber = (n: number, k: number): Array<number> => {
   if (k > n) {
-    throw new Error('asd');
+    throw new Error('k는 n보다 클 수 없습니다.');
   }
 
   const numbersArray = Array.from({ length: n }, (_, index) => index + 1).sort(

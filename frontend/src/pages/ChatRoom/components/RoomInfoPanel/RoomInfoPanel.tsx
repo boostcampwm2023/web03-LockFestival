@@ -34,6 +34,7 @@ const RoomInfoPanel = memo(function RoomInfoPanel({ settingMode, changeRoom }: P
     recruitmentCompleted,
     appointmentCompleted,
     themeId,
+    website,
   } = roomInfo as RoomInfo;
 
   const handleSettingButton = () => {
@@ -93,7 +94,7 @@ const RoomInfoPanel = memo(function RoomInfoPanel({ settingMode, changeRoom }: P
           </RoomInfoContent>
         </RoomInfoWrapper>
       </RoomInfoTopContainer>
-      <TimeTable themeId={themeId} />
+      <TimeTable themeId={themeId} website={website} />
     </Layout>
   );
 });

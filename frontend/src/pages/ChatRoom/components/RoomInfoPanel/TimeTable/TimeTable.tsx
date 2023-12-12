@@ -8,7 +8,12 @@ import { FaArrowsRotate } from 'react-icons/fa6';
 import { keyframes } from '@emotion/react';
 import { getStringByDate } from '@utils/dateUtil';
 
-const TimeTable = ({ themeId }: { themeId: number }) => {
+interface Props {
+  themeId: number;
+  website: string;
+}
+
+const TimeTable = ({ themeId, website }: Props) => {
   const today = new Date();
   const [date, setDate] = useState<Value>(today);
   const { data, isLoading } = useTimeTableQuery(themeId, date);
@@ -65,6 +70,9 @@ const TimeTable = ({ themeId }: { themeId: number }) => {
               시간표를 불러올 수 없습니다.
             </InfoText>
           )}
+          <WebsiteLink href={website} target="_blank">
+            예약 사이트 바로가기
+          </WebsiteLink>
         </>
       )}
     </Container>
@@ -124,5 +132,13 @@ const InfoText = styled.div([
     align-items: center;
     text-align: center;
     line-height: 2.5rem;
+  `,
+]);
+
+const WebsiteLink = styled.a([
+  tw`font-pretendard text-white text-l border border-white border-solid py-3 px-4 rounded-[1rem]`,
+  css`
+    text-decoration: none;
+    cursor: pointer;
   `,
 ]);

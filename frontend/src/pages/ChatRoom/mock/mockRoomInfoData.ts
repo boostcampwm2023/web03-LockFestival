@@ -13,4 +13,5 @@ export const mockRoomInfo: RoomInfo = {
   currentMembers: 5,
   recruitmentCompleted: false,
   appointmentCompleted: true,
+  website: 'https://www.naver.com',
 };
