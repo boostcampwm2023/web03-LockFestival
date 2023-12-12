@@ -33,11 +33,9 @@ import {
   GetThemesSwagger,
   GetTimeTableSwagger,
 } from '@utils/swagger/theme.swagger.decorator';
+import { DETAILS_TTL, LOCATION_TTL } from '@constants/ttl';
 
 const DEFAULT_THEME_COUNT = 10;
-const TIMETABLE_TTL = MIN_TO_MILLI * 5;
-const DETAILS_TTL = MIN_TO_MILLI;
-const LOCATION_TTL = MIN_TO_MILLI;
 
 @ApiTags('themes')
 @UseInterceptors(CacheInterceptor)
@@ -106,7 +104,6 @@ export class ThemeController {
 
   @Get('/:themeId/timetable')
   @GetTimeTableSwagger()
-  @CacheTTL(TIMETABLE_TTL)
   async getTimeTable(
     @Param('themeId', ParseIntPipe) themeId: number,
     @Query() { date }: DateRequestDto
