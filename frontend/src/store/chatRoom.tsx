@@ -1,9 +1,9 @@
-import { atom } from 'recoil';
+import { atom, atomFamily } from 'recoil';
 import { ChatLog, RoomInfo, UserInfoObject } from 'types/chat';
 
-export const chatLogAtom = atom<Record<string, Map<string, ChatLog>>>({
+export const chatLogAtom = atomFamily<Map<string, ChatLog>, string>({
   key: 'chatLogAtom',
-  default: {},
+  default: new Map(),
 });
 
 export const roomInfoAtom = atom<RoomInfo | undefined>({
