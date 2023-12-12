@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { AbstractCrawler } from '@crawlerUtils/abstractCrawler';
 import { CRAWLERS } from '@crawlerUtils/crawler.tokens';
 import { CrawlerMetadata } from '@crawlerUtils/crawler.metadata.interface';
@@ -15,7 +15,7 @@ export class CrawlerFactory {
     const crawlerClass: AbstractCrawler = this.crawlerMap.get(themeId);
 
     if (!crawlerClass) {
-      throw new Error(`Crawler for theme ${themeId} not found`);
+      throw new HttpException(`Crawler for theme ${themeId} not found`, HttpStatus.NOT_FOUND);
     }
 
     return crawlerClass;
