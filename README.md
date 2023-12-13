@@ -1,8 +1,8 @@
 <div align="center">
+  
+![logo_leaf](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/3e5cfb05-5e5a-4618-957b-8fa831cdb790)
 
-# LockFestival
 
-![22](https://github.com/boostcampwm2023/web03-LockFestival/assets/100738049/b4bcfece-8046-4d0d-aa58-82c23024f1a0)
 
 # 프로젝트 소개
 방탈출 테마 추천 및 방탈출 인원 모집 서비스
@@ -98,6 +98,7 @@
 |     저장소     |                                                                                                                                                                                                                                                  <img src="https://img.shields.io/badge/mysql-%2300f.svg?style=flat&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=flat&logo=mongodb&logoColor=white"> <img src="https://img.shields.io/badge/redis-%23DD0031.svg?style=flat&logo=redis&logoColor=white">                                                                                                                                                                                                                                                   |
 | 지속적 통합 & 배포 |                                                                                                                                                                    <img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=flat&logo=githubactions&logoColor=white">    <img src="https://img.shields.io/badge/Husky-01617a?style=flat"> <img src="https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/NGinx-009639?style=flat&logo=nginx&logoColor=white"> <img src="https://img.shields.io/badge/NCP-3F5767?style=flat&logo=NAVER&logoColor=#03C75A">                                                                                                                                                                    |
 ## 아키텍처
+![undefined (6)](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/0eb8ab00-21c2-48b3-a33b-117e45ab52ce)
 
 ![undefined (5)](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/956e7b24-a655-477e-8a59-9cfd8906a3f5)
 
