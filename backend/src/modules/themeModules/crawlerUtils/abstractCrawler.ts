@@ -2,8 +2,14 @@ import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
 
 export abstract class AbstractCrawler {
   BASE_URL: string;
-  zizumMap;
-  themeMap;
+  zizumMap: { [zizumName: string]: number };
+  themeMap: { [zizumId: number]: { [themeName: string]: number } };
+  cacheManager;
+
+  constructor(cacheManager) {
+    this.cacheManager = cacheManager;
+  }
+
   abstract getTimeTableByTheme({
     shop,
     theme,
