@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 interface StepOneContentProps {
   nameInput: string;
   setNameInput: ChangeEventHandler;
+  debounceInput: string;
   nextStep: MouseEventHandler;
 }
 
@@ -22,11 +23,11 @@ const fetchCheckNickName = async (nickname: string) => {
   return response.data;
 };
 
-function StepOneContent({ nameInput, setNameInput, nextStep }: StepOneContentProps) {
-  const [isValidName, isDuplicated, checkValidation, warning] = useNameValidation(nameInput);
+function StepOneContent({ nameInput, debounceInput, setNameInput, nextStep }: StepOneContentProps) {
+  const [isValidName, isDuplicated, checkValidation, warning] = useNameValidation(debounceInput);
   const { data, isSuccess, isError, refetch } = useQuery<boolean>({
-    queryKey: ['checkNickName', nameInput],
-    queryFn: () => fetchCheckNickName(nameInput),
+    queryKey: ['checkNickName', debounceInput],
+    queryFn: () => fetchCheckNickName(debounceInput),
     staleTime: 0,
     enabled: false,
   });

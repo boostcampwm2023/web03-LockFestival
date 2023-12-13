@@ -200,7 +200,7 @@ const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: Cha
 
                   return (
                     <div key={index} ref={virtualizer.measureElement} data-index={index}>
-                      {!checkIsFirstChatToday(index, chatArrayFromChatLogData) && (
+                      {checkIsFirstChatToday(index, chatArrayFromChatLogData) && (
                         <DateDisplayWrapper>
                           <HorizontalLine />
                           <DateDisplay>{getStringByDate(new Date(time))}</DateDisplay>
