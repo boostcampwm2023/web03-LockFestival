@@ -32,7 +32,8 @@ interface UnreadState extends ChatLog {
 
 const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: ChatPanelProps) {
   const navigate = useNavigate();
-  const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom)[roomId];
+  const chatLogData: Map<string, ChatLog> = useRecoilValue(chatLogAtom(roomId));
+
   const userListInfo = useRecoilValue(userListInfoAtom);
   const targetRef = useRef<HTMLDivElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
