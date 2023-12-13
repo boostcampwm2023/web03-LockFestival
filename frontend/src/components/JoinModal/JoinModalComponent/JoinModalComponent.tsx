@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { ModalProps } from 'types/modal';
 
-import useInput from '@hooks/useInput';
 import StepOneContent from './StepOneContent/StepOneContent';
 import StepTwoContent from './StepTwoContent/StepTwoContent';
 import useJoinMutation from '@hooks/mutation/useJoinMutation';
 import { JoinData } from 'types/profile';
+import useDebounceInput from '@hooks/useDebounceInput';
 interface JoinModalProps {
   onClose: ModalProps['onClose'];
 }
@@ -14,7 +14,7 @@ function JoinModalComponent({ onClose }: JoinModalProps) {
   const STEP1 = 0;
   const STEP2 = 1;
   const [step, setStep] = useState<number>(STEP1);
-  const [nameInput, setNameInput] = useInput('');
+  const { realInputQuery, debounceQuery, setRealInputQuery } = useDebounceInput(300);
   const [selectGenre, setSelectGenre] = useState<Set<string>>(new Set());
   const [userData, setUserData] = useState<JoinData>();
   const { mutate } = useJoinMutation(userData);
@@ -40,7 +40,7 @@ function JoinModalComponent({ onClose }: JoinModalProps) {
 
   const joinHandler = () => {
     const totalUserData = {
-      nickname: nameInput,
+      nickname: debounceQuery,
       profileImageUrl: null,
       favoriteGenres: Array.from(selectGenre),
       favoriteThemes: [],
@@ -55,7 +55,12 @@ function JoinModalComponent({ onClose }: JoinModalProps) {
   return (
     <>
       {step === STEP1 && (
-        <StepOneContent nameInput={nameInput} setNameInput={setNameInput} nextStep={nextStep} />
+        <StepOneContent
+          nameInput={realInputQuery}
+          debounceInput={debounceQuery}
+          setNameInput={setRealInputQuery}
+          nextStep={nextStep}
+        />
       )}
       {step === STEP2 && (
         <StepTwoContent
