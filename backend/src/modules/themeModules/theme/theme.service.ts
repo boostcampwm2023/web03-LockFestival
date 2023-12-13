@@ -1,5 +1,7 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { TIMETABLE_TTL } from '@constants/ttl';
 import { ThemeRepository } from '@theme/theme.repository';
 import { GenreRepository } from '@theme/genre.repository';
 import { GenreDto } from '@theme/dtos/genre.dto';
@@ -22,7 +24,8 @@ export class ThemeService {
     private readonly themeRepository: ThemeRepository,
     @InjectRepository(GenreRepository)
     private readonly genreRepository: GenreRepository,
-    private readonly crawlerFactory: CrawlerFactory
+    private readonly crawlerFactory: CrawlerFactory,
+    @Inject(CACHE_MANAGER) private cacheManager
   ) {}
 
   public async getThemeDetailsById(themeId: number): Promise<ThemeBranchThemesDetailsResponseDto> {
@@ -110,13 +113,27 @@ export class ThemeService {
       `crawler start date: ${dateString} brand: ${brandName} branch: ${branchName} theme: ${themeName}`
     );
 
-    try {
-      return await this.crawlerFactory
-        .getCrawler(brandName)
-        .getTimeTableByTheme({ shop: branchName, theme: themeName, date: dateString });
-    } catch (err) {
-      this.logger.error(err);
-      return [];
+    const cacheKey = JSON.stringify({ shop: branchName, theme: themeName, date: dateString });
+    const cachedData = await this.cacheManager.get(cacheKey);
+
+    if (cachedData) {
+      this.logger.log(`hit cache: ${JSON.stringify(cacheKey)}`);
+      return cachedData;
+    }
+
+    {
+      try {
+        const timetable: TimeTableDto[] = await this.crawlerFactory
+          .getCrawler(brandName)
+          .getTimeTableByTheme({ shop: branchName, theme: themeName, date: dateString });
+
+        await this.cacheManager.set(cacheKey, timetable, TIMETABLE_TTL);
+
+        return timetable;
+      } catch (err) {
+        this.logger.error(err);
+        return [];
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 import { AbstractCrawler } from '@crawlerUtils/abstractCrawler';
 import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
+import { TIMETABLE_TTL } from '@constants/ttl';
 
 export class NextEditionCrawler extends AbstractCrawler {
   BASE_URL = 'https://www.nextedition.co.kr';
@@ -28,6 +29,13 @@ export class NextEditionCrawler extends AbstractCrawler {
   }): Promise<TimeTableDto[]> {
     const shopId = this.zizumMap[shop];
     const timeTableMap = await this.getInfoByData({ shop: shopId, date });
+
+    await Promise.all(
+      Object.entries(timeTableMap).map(([themeName, timetable]) => {
+        const key = JSON.stringify({ shop, theme: themeName, date });
+        this.cacheManager.set(key, timetable, TIMETABLE_TTL);
+      })
+    );
 
     return timeTableMap[theme];
   }

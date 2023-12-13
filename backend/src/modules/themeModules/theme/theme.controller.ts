@@ -33,11 +33,12 @@ import {
   GetThemesSwagger,
   GetTimeTableSwagger,
 } from '@utils/swagger/theme.swagger.decorator';
+import { DETAILS_TTL, LOCATION_TTL } from '@constants/ttl';
 
 const DEFAULT_THEME_COUNT = 10;
-const TIMETABLE_TTL = MIN_TO_MILLI * 5;
 
 @ApiTags('themes')
+@UseInterceptors(CacheInterceptor)
 @Controller('themes')
 export class ThemeController {
   constructor(
@@ -47,6 +48,7 @@ export class ThemeController {
 
   @Get(':themeId/details')
   @GetThemeDetailsSwagger()
+  @CacheTTL(DETAILS_TTL)
   async getThemeDetails(
     @Param('themeId', ParseIntPipe) themeId: number
   ): Promise<ThemeBranchThemesDetailsResponseDto> {
@@ -64,6 +66,7 @@ export class ThemeController {
 
   @Get('/location')
   @GetLocationThemesSwagger()
+  @CacheTTL(LOCATION_TTL)
   async getLocationThemes(
     @Query() themeLocationDto: ThemeLocationDto
   ): Promise<ThemeLocationResponseDto> {
@@ -101,8 +104,6 @@ export class ThemeController {
 
   @Get('/:themeId/timetable')
   @GetTimeTableSwagger()
-  @UseInterceptors(CacheInterceptor)
-  @CacheTTL(TIMETABLE_TTL)
   async getTimeTable(
     @Param('themeId', ParseIntPipe) themeId: number,
     @Query() { date }: DateRequestDto

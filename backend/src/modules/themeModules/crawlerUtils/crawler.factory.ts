@@ -2,12 +2,16 @@ import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { AbstractCrawler } from '@crawlerUtils/abstractCrawler';
 import { CRAWLERS } from '@crawlerUtils/crawler.tokens';
 import { CrawlerMetadata } from '@crawlerUtils/crawler.metadata.interface';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 @Injectable()
 export class CrawlerFactory {
   private readonly crawlerMap: Map<string, AbstractCrawler> = new Map();
 
-  constructor(@Inject(CRAWLERS) private readonly crawlerMetadataList: CrawlerMetadata[]) {
+  constructor(
+    @Inject(CRAWLERS) private readonly crawlerMetadataList: CrawlerMetadata[],
+    @Inject(CACHE_MANAGER) private cacheManager
+  ) {
     this.registerCrawlers();
   }
 
@@ -23,7 +27,7 @@ export class CrawlerFactory {
 
   private registerCrawlers() {
     this.crawlerMetadataList.forEach(({ brandName, crawlerClass }: CrawlerMetadata) => {
-      this.crawlerMap.set(brandName, new crawlerClass());
+      this.crawlerMap.set(brandName, new crawlerClass(this.cacheManager));
     });
   }
 }

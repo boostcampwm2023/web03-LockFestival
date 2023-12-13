@@ -19,9 +19,18 @@ import { SecretGardenEscapeCrawlerMetadata } from '@crawlerUtils/crawler/secretg
 import { SeoulEscapeRoomCrawlerMetadata } from '@crawlerUtils/crawler/seoulescaperoom.crawler';
 import { XDungeonCrawlerMetadata } from '@crawlerUtils/crawler/xdungeon.crawler';
 import { CacheModule } from '@nestjs/cache-manager';
+import { SEC_TO_MILLI } from '@constants/time.converter';
+
+const DEFAULT_TTL = 3 * SEC_TO_MILLI;
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Theme]), BrandModule, CacheModule.register()],
+  imports: [
+    TypeOrmModule.forFeature([Theme]),
+    BrandModule,
+    CacheModule.register({
+      ttl: DEFAULT_TTL,
+    }),
+  ],
   controllers: [ThemeController],
   providers: [
     ThemeService,
