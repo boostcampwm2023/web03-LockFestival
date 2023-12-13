@@ -98,7 +98,11 @@
 |     저장소     |                                                                                                                                                                                                                                                  <img src="https://img.shields.io/badge/mysql-%2300f.svg?style=flat&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=flat&logo=mongodb&logoColor=white"> <img src="https://img.shields.io/badge/redis-%23DD0031.svg?style=flat&logo=redis&logoColor=white">                                                                                                                                                                                                                                                   |
 | 지속적 통합 & 배포 |                                                                                                                                                                    <img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=flat&logo=githubactions&logoColor=white">    <img src="https://img.shields.io/badge/Husky-01617a?style=flat"> <img src="https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/NGinx-009639?style=flat&logo=nginx&logoColor=white"> <img src="https://img.shields.io/badge/NCP-3F5767?style=flat&logo=NAVER&logoColor=#03C75A">                                                                                                                                                                    |
 ## 아키텍처
-![undefined (7)](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/888a3579-55a4-4595-abda-4ec5442fc656)
+![image](https://github.com/boostcampwm2023/web03-LockFestival/assets/44056518/0384527a-78e9-406a-8f9b-14b90c9f074f)
+
+
+
+
 
 
 
