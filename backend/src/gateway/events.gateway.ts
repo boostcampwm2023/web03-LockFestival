@@ -114,9 +114,11 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   async leave(roomId: string, nickname: string, isLeader: boolean) {
     if (isLeader) {
       await this.chatService.deleteRoomByLeader(roomId);
-      const socketId = Object.keys(this.socketsInRooms[roomId])[0];
+      const socketIdList = Object.keys(this.socketsInRooms[roomId]);
       delete this.socketsInRooms[roomId];
-      delete this.socketToRoomId[socketId];
+      socketIdList.forEach((socketId) => {
+        delete this.socketToRoomId[socketId];
+      });
       return;
     }
     const chatUserId = await this.chatService.getChatUserIdByNicknameAndRoomId(roomId, nickname);
