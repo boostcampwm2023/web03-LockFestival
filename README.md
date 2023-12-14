@@ -23,9 +23,24 @@
 |       [J002 강창한 - BE](https://github.com/Capoomaru)       |       [J030 김정민 - BE](https://github.com/JEM1224)       |       [J054 박정석 - FE](https://github.com/navyjeongs)       |       [J099 이선예 - FE](https://github.com/seonye-98)       |
 
 [팀노션](https://www.notion.so/742b29d8fa0346a9af2b59ff3dd29a6d?pvs=4) | [기획](https://www.figma.com/file/ZWolAs5RYX3KeJb7bCPWkr/%ED%94%BC%EA%B7%B8%EC%9E%BC?type=whiteboard&node-id=0-1&t=UOcCumoDTV6Uxvoh-0) | [디자인](https://www.figma.com/file/K5ZjTmY9hrw6DhSYzx0MeN/Lock-Festival-%EB%94%94%EC%9E%90%EC%9D%B8?type=design&mode=design&t=7QfdQNMNxyq80fl6-0)
-| [회의록](https://www.notion.so/cf88ff62150e47c49e4d9f860c5e08e4?pvs=4)
+| [회의록](https://www.notion.so/cf88ff62150e47c49e4d9f860c5e08e4?pvs=4) | [우리의 개발 과정 - 노션](https://www.notion.so/812299eecc484bf693188e50edcce745?pvs=4) |
+[트러블슈팅 - 노션](https://www.notion.so/1a12c4aa25ab474880845e95e8934a6b?v=f97ec9c6368c416d9542979ab2e71c92&pvs=4)
 
 </div>
+
+# 우리의 개발 일지
+| 분야                           | 링크                                                                                                           | 분야                           | 링크                                                                                                           |
+|------------------------------|----------------------------------------------------------------------------------------------------------------|------------------------------|----------------------------------------------------------------------------------------------------------------|
+| FE | [🚀 성능 최적화(디바운스와 쓰로틀링) - wiki](https://github.com/boostcampwm2023/web03-LockFestival/wiki/%F0%9F%9A%80-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94(%EB%94%94%EB%B0%94%EC%9A%B4%EC%8A%A4%EC%99%80-%EC%93%B0%EB%A1%9C%ED%8B%80%EB%A7%81)) | BE | [[BE] 채팅방 이벤트 정리 - wiki](https://github.com/boostcampwm2023/web03-LockFestival/wiki/%5BBE%5D-%EC%B1%84%ED%8C%85%EB%B0%A9-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%A0%95%EB%A6%AC) |
+| FE      | [채팅-1 채팅을 어떻게 저장할까?](https://www.notion.so/1-50e54ab32df8452eb622ecf3de7ea195?pvs=4)                          | BE      | [[BE] 안읽은 사람수 계산하기 - wiki ](https://github.com/boostcampwm2023/web03-LockFestival/wiki/%5BBE%5D-%EC%95%88%EC%9D%BD%EC%9D%80-%EC%82%AC%EB%9E%8C%EC%88%98-%EA%B3%84%EC%82%B0%ED%95%98%EA%B8%B0)                          |
+| FE | [채팅-2 읽지 않은 사람 수를 어떻게 계산할까?](https://www.notion.so/2-2798a3ff00774dffa80d1a36a15a73d8?pvs=4)          | BE | [[BE] 크롤러 캐싱 - wiki ](https://github.com/boostcampwm2023/web03-LockFestival/wiki/%5BBE%5D-%ED%81%AC%EB%A1%A4%EB%9F%AC-%EC%BA%90%EC%8B%B1)          |
+| FE      | [채팅-3 프로필을 보여주는 경우](https://www.notion.so/3-daa03fb181e2460ba10c7b592edf25fe?pvs=4)                          | BE      | [[BE] 네이버 소셜 로그인](https://www.notion.so/dcc91d3bb38449399fe67cb303655897?pvs=4)                          |
+| FE      | [채팅-4 프로필을 보여주는 경우](https://www.notion.so/4-84cfb90771854d3398d482a823e24b8a?pvs=4)                          | BE      | [[BE] 테마 관련 API 캐싱적용](https://www.notion.so/API-88674b78e9344bb58d79f4e180f65c7c?pvs=4)                          |
+| FE      | [채팅-5 프로필을 보여주는 경우](https://www.notion.so/5-e360a964d502452abfd484eb313b0894?pvs=4)                          | BE      | [[BE] S3을 사용해보았어요](https://www.notion.so/S3-d6cab23320344bf98a83ea88e84ae41a?pvs=4)                          |
+| FE | [무한스크롤과 IntersectionObserver hook 만들기](https://www.notion.so/IntersectionObserver-hook-36a30abca97a4579948685ddff712a70?pvs=4) | BE | [[BE] 성능테스트 환경 구축](https://www.notion.so/d8df60b5f565467da790ec376f93921e?pvs=4) |
+| FE    | [recoil의 atomFamily 사용하기](https://www.notion.so/recoil-atomFamily-01534c03af8a42988447447b83438f8a?pvs=4)          | BE    | [[BE] 채팅 아키텍처 구성하기](https://www.notion.so/72df1f75dcdc47d28c600cfb7d20866e?pvs=4)          |
+| FE         | [반응형 스켈레톤 UI 만들기](https://www.notion.so/UI-48be7dc42c3c483dbcf98aced305c652?pvs=4)                            | BE         | [[BE] swagger가 작성한 코드보다 길어질 때](https://github.com/boostcampwm2023/web03-LockFestival/wiki/%5BBE%5D-swagger%EA%B0%80-%EC%9E%91%EC%84%B1%ED%95%9C-%EC%BD%94%EB%93%9C%EB%B3%B4%EB%8B%A4-%EA%B8%B8%EC%96%B4%EC%A7%88-%EB%95%8C)                            |
+| FE         |  [svg파일을 React에서 컴포넌트처럼 사용하기](https://www.notion.so/svg-React-bb2f02d0dd954dd28dd0beac401b4a64?pvs=4)     | BE         | [[BE] @OptionalGuard 데코레이터](https://github.com/boostcampwm2023/web03-LockFestival/wiki/%5BBE%5D-@OptionalGuard-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0)     |
 
 
 # 주요 기능
