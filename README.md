@@ -39,8 +39,8 @@
 | FE      | [채팅-5 프로필을 보여주는 경우](https://www.notion.so/5-e360a964d502452abfd484eb313b0894?pvs=4)                          | BE      | [[BE] S3을 사용해보았어요](https://www.notion.so/S3-d6cab23320344bf98a83ea88e84ae41a?pvs=4)                          |
 | FE | [무한스크롤과 IntersectionObserver hook 만들기](https://www.notion.so/IntersectionObserver-hook-36a30abca97a4579948685ddff712a70?pvs=4) | BE | [[BE] 성능테스트 환경 구축](https://www.notion.so/d8df60b5f565467da790ec376f93921e?pvs=4) |
 | FE    | [recoil의 atomFamily 사용하기](https://www.notion.so/recoil-atomFamily-01534c03af8a42988447447b83438f8a?pvs=4)          | BE    | [[BE] 채팅 아키텍처 구성하기](https://www.notion.so/72df1f75dcdc47d28c600cfb7d20866e?pvs=4)          |
-| FE         | [반응형 스켈레톤 UI 만들기](https://www.notion.so/UI-48be7dc42c3c483dbcf98aced305c652?pvs=4)                            | BE         | [[BE] swagger가 작성한 코드보다 길어질 때](https://github.com/boostcampwm2023/web03-LockFestival/wiki/%5BBE%5D-swagger%EA%B0%80-%EC%9E%91%EC%84%B1%ED%95%9C-%EC%BD%94%EB%93%9C%EB%B3%B4%EB%8B%A4-%EA%B8%B8%EC%96%B4%EC%A7%88-%EB%95%8C)                            |
-| FE         |  [svg파일을 React에서 컴포넌트처럼 사용하기](https://www.notion.so/svg-React-bb2f02d0dd954dd28dd0beac401b4a64?pvs=4)     | BE         | [[BE] @OptionalGuard 데코레이터](https://github.com/boostcampwm2023/web03-LockFestival/wiki/%5BBE%5D-@OptionalGuard-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0)     |
+| FE         | [반응형 스켈레톤 UI 만들기](https://www.notion.so/UI-48be7dc42c3c483dbcf98aced305c652?pvs=4)                            | BE         | [[BE] swagger가 작성한 코드보다 길어질 때 - wiki](https://github.com/boostcampwm2023/web03-LockFestival/wiki/%5BBE%5D-swagger%EA%B0%80-%EC%9E%91%EC%84%B1%ED%95%9C-%EC%BD%94%EB%93%9C%EB%B3%B4%EB%8B%A4-%EA%B8%B8%EC%96%B4%EC%A7%88-%EB%95%8C)                            |
+| FE         |  [svg파일을 React에서 컴포넌트처럼 사용하기](https://www.notion.so/svg-React-bb2f02d0dd954dd28dd0beac401b4a64?pvs=4)     | BE         | [[BE] @OptionalGuard 데코레이터 - wiki](https://github.com/boostcampwm2023/web03-LockFestival/wiki/%5BBE%5D-@OptionalGuard-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0)     |
 
 
 # 주요 기능
