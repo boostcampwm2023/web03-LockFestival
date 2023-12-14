@@ -108,7 +108,21 @@ const Layout = styled.div([
     height: 100vh;
     padding: 2rem;
     gap: 1.6rem;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    ::-webkit-scrollbar {
+      width: 0.5rem;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #f2f2f2;
+      border-radius: 0.5rem;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: #222222;
+      border-radius: 0.5rem;
+      box-shadow: inset 0px 0px 5px white;
+    }
   `,
   tw`bg-gray-light rounded-[2rem] h-[calc(90vh - 6rem)]`,
 ]);

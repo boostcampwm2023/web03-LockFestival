@@ -74,9 +74,11 @@ const UserListPanel = memo(function UserListPanel({ roomId, settingMode, kickUse
           return null;
         })}
       </UserListWrapper>
-      <Button isIcon={false} onClick={handlerLeaveRoom}>
-        <>채팅방 나가기</>
-      </Button>
+      <ExitButtonWrapper>
+        <Button isIcon={false} onClick={handlerLeaveRoom}>
+          <>채팅방 나가기</>
+        </Button>
+      </ExitButtonWrapper>
     </Layout>
   );
 });
@@ -91,6 +93,21 @@ const Layout = styled.div([
     padding: 2rem;
     justify-content: space-between;
     align-items: center;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    ::-webkit-scrollbar {
+      width: 0.5rem;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #f2f2f2;
+      border-radius: 0.5rem;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: #222222;
+      border-radius: 0.5rem;
+      box-shadow: inset 0px 0px 5px white;
+    }
   `,
   tw`bg-gray-light rounded-[2rem] h-[calc(90vh - 6rem)]`,
 ]);
@@ -124,6 +141,15 @@ const ButtonWrapper = styled.div(({ settingMode }: { settingMode: boolean }) => 
       width: 50%;
       margin-bottom: 1.2rem;
     `,
+]);
+
+const ExitButtonWrapper = styled.div([
+  tw`h-[3.2rem]`,
+  css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `,
 ]);
 
 const Text = styled.div([tw`mx-auto`]);
