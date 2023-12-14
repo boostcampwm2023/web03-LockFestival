@@ -114,6 +114,9 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
   async leave(roomId: string, nickname: string, isLeader: boolean) {
     if (isLeader) {
       await this.chatService.deleteRoomByLeader(roomId);
+      const socketId = Object.keys(this.socketsInRooms[roomId])[0];
+      delete this.socketsInRooms[roomId];
+      delete this.socketToRoomId[socketId];
       return;
     }
     const chatUserId = await this.chatService.getChatUserIdByNicknameAndRoomId(roomId, nickname);
@@ -243,9 +246,14 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     delete this.socketsInRooms[roomId][client.id];
     delete this.socketToRoomId[client.id];
 
-    if (!this.hasAnotherSession(roomId, userId)) {
-      await this.chatService.updateLastChatLogId(roomId, userId);
-      this.server.to(roomId).emit('unread', await this.chatService.getUnreadCount(roomId));
+    try {
+      if (!this.hasAnotherSession(roomId, userId)) {
+        await this.chatService.updateLastChatLogId(roomId, userId);
+        this.server.to(roomId).emit('unread', await this.chatService.getUnreadCount(roomId));
+      }
+    } catch (error) {
+      this.logger.error(error);
+      return;
     }
   }
   afterInit(server: Server) {
