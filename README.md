@@ -22,8 +22,8 @@
 |:---------------------------------------------------------:|:-------------------------------------------------------:|:----------------------------------------------------------:|:---------------------------------------------------------:|
 |       [J002 강창한 - BE](https://github.com/Capoomaru)       |       [J030 김정민 - BE](https://github.com/JEM1224)       |       [J054 박정석 - FE](https://github.com/navyjeongs)       |       [J099 이선예 - FE](https://github.com/seonye-98)       |
 
-[팀노션](https://www.notion.so/Ground-Rule-d26a6a727e554d9aad8a016192998dc6?pvs=4) | [기획](https://www.figma.com/file/ZWolAs5RYX3KeJb7bCPWkr/%ED%94%BC%EA%B7%B8%EC%9E%BC?type=whiteboard&node-id=0-1&t=UOcCumoDTV6Uxvoh-0) | [디자인](https://www.figma.com/file/ZWolAs5RYX3KeJb7bCPWkr/%ED%94%BC%EA%B7%B8%EC%9E%BC?type=whiteboard&node-id=0-1&t=UOcCumoDTV6Uxvoh-0)
-| [회의록]()
+[팀노션](https://www.notion.so/742b29d8fa0346a9af2b59ff3dd29a6d?pvs=4) | [기획](https://www.figma.com/file/ZWolAs5RYX3KeJb7bCPWkr/%ED%94%BC%EA%B7%B8%EC%9E%BC?type=whiteboard&node-id=0-1&t=UOcCumoDTV6Uxvoh-0) | [디자인](https://www.figma.com/file/K5ZjTmY9hrw6DhSYzx0MeN/Lock-Festival-%EB%94%94%EC%9E%90%EC%9D%B8?type=design&mode=design&t=7QfdQNMNxyq80fl6-0)
+| [회의록](https://www.notion.so/cf88ff62150e47c49e4d9f860c5e08e4?pvs=4)
 
 </div>
 
