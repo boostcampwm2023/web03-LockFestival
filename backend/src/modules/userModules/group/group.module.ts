@@ -8,6 +8,7 @@ import { UserModule } from '@user/user.module';
 import { ThemeModule } from '@theme/theme.module';
 import { ChatModule } from '@chat/chat.module';
 import { EventsModule } from '@src/gateway/events.module';
+import { NaverAIUtils } from '@utils/naver.ai';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { EventsModule } from '@src/gateway/events.module';
     EventsModule,
   ],
   controllers: [GroupController],
-  providers: [GroupService, GroupRepository],
+  providers: [GroupService, GroupRepository, NaverAIUtils],
   exports: [GroupRepository, GroupService],
 })
 export class GroupModule {}

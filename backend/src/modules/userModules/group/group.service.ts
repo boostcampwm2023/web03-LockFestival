@@ -14,6 +14,7 @@ import { User } from '@user/entities/user.entity';
 import { ChatRepository } from '@chat/chat.repository';
 import { GroupInfoResponseDto } from '@group/dtos/group.info.response.dto';
 import { ChatMessageDto } from '@chat/dtos/chat.message.dto';
+import { NaverAIUtils } from '@utils/naver.ai';
 
 @Injectable()
 export class GroupService {
@@ -26,11 +27,17 @@ export class GroupService {
     private readonly userGroupRepository: UserGroupRepository,
     @InjectRepository(UserRepository)
     private readonly userRepository: UserRepository,
-    private readonly chatRepository: ChatRepository
+    private readonly chatRepository: ChatRepository,
+    private readonly naverAIUtils: NaverAIUtils
   ) {}
 
   async createGroup(groupRequest: GroupRequestDto, nickname: string) {
     const theme: Theme = await this.themeRepository.findOneBy({ id: groupRequest.themeId });
+
+    groupRequest.recruitmentContent = await this.naverAIUtils.convertSlangToNormal(
+      groupRequest.recruitmentContent
+    );
+
     const { groupId, user } = await this.groupRepository.createGroup(groupRequest, nickname, theme);
     await this.chatRepository.createRoomByLeader(groupId, user);
   }
