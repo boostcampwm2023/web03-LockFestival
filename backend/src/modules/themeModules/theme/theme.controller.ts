@@ -22,7 +22,6 @@ import { ThemeSearchResponseDto } from '@theme/dtos/theme.search.response.dto';
 import { DateRequestDto } from '@theme/dtos/date.request.dto';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
-import { MIN_TO_MILLI } from '@constants/time.converter';
 import {
   GetGenresSwagger,
   GetGenreThemesSwagger,
