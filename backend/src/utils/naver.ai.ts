@@ -6,9 +6,6 @@ import { Injectable } from '@nestjs/common';
 export class NaverAIUtils {
   constructor(private readonly configService: ConfigService) {}
   convertSlangToNormal = async (originContent: string) => {
-    console.log('start');
-    console.log(this.configService.get<string>('X-NCP-APIGW-API-KEY'));
-    console.log(this.configService.get<string>('X-NCP-CLOVASTUDIO-REQUEST-ID'));
     try {
       const response = await axios.post(
         'https://clovastudio.apigw.ntruss.com/testapp/v1/completions/LK-D2',
@@ -41,18 +38,17 @@ export class NaverAIUtils {
         {
           headers: {
             'X-NCP-CLOVASTUDIO-API-KEY': this.configService.get<string>(
-              'X-NCP-CLOVASTUDIO-API-KEY'
+              'X_NCP_CLOVASTUDIO_API_KEY'
             ),
-            'X-NCP-APIGW-API-KEY': this.configService.get<string>('X-NCP-APIGW-API-KEY'),
+            'X-NCP-APIGW-API-KEY': this.configService.get<string>('X_NCP_APIGW_API_KEY'),
             'X-NCP-CLOVASTUDIO-REQUEST-ID': this.configService.get<string>(
-              'X-NCP-CLOVASTUDIO-REQUEST-ID'
+              'X_NCP_CLOVASTUDIO_REQUEST_ID'
             ),
             'Content-Type': 'application/json',
           },
         }
       );
 
-      console.log(response.data);
       return response.data.result.outputTokens.join('');
     } catch (error) {
       console.error(error);
