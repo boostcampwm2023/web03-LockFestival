@@ -36,6 +36,9 @@ jobs:
           echo "NODE_ENV=${{ secrets.NODE_ENV }}" >> .env
           echo "PORT=${{ secrets.BACK_PORT }}" >> .env
           echo "FRONTEND_BASE_URL=${{ secrets.FRONTEND_BASE_URL }}" >> .env
+          echo "X_NCP_APIGW_API_KEY=${{ secrets.X_NCP_APIGW_API_KEY }}" >> .env
+          echo "X_NCP_CLOVASTUDIO_API_KEY=${{ secrets.X_NCP_CLOVASTUDIO_API_KEY }}" >> .env
+          echo "X_NCP_CLOVASTUDIO_REQUEST_ID=${{ secrets.X_NCP_CLOVASTUDIO_REQUEST_ID }}" >> .env
 
       - name: Login to DockerHub for Frontend
         uses: docker/login-action@v1
@@ -117,6 +120,10 @@ jobs:
             export NODE_ENV=${{ env.NODE_ENV }}
             export PORT=${{ secrets.BACK_PORT }}
             export FRONTEND_BASE_URL=${{ secrets.FRONTEND_BASE_URL }}
+            
+            export X_NCP_APIGW_API_KEY=${{ secrets.X_NCP_APIGW_API_KEY }}
+            export X_NCP_CLOVASTUDIO_API_KEY=${{ secrets.X_NCP_CLOVASTUDIO_API_KEY }}
+            export X_NCP_CLOVASTUDIO_REQUEST_ID=${{ secrets.X_NCP_CLOVASTUDIO_REQUEST_ID }}
 
             export DOCKER_REPO=${{ secrets.DOCKER_REPO }}
 
