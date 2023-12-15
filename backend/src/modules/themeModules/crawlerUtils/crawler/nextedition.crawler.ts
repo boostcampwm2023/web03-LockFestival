@@ -2,6 +2,9 @@ import { AbstractCrawler } from '@crawlerUtils/abstractCrawler';
 import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
 import { TIMETABLE_TTL } from '@constants/ttl';
 
+/**
+ * @deprecated 넥스트 에디션 측 크롤러 미허가(https://www.notion.so/22d3b9ca2ae34fb1a452695d62f234e8?pvs=4)
+ */
 export class NextEditionCrawler extends AbstractCrawler {
   BASE_URL = 'https://www.nextedition.co.kr';
   zizumMap = {
