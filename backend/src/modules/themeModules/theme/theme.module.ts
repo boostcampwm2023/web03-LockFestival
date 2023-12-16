@@ -46,7 +46,6 @@ const DEFAULT_TTL = 3 * SEC_TO_MILLI;
         GoldenKeyCrawlerMetadata,
         KeyEscapeCrawlerMetadata,
         MasterKeyCrawlerMetadata,
-        NextEditionCrawlerMetadata,
         SecretGardenEscapeCrawlerMetadata,
         SeoulEscapeRoomCrawlerMetadata,
         XDungeonCrawlerMetadata,
