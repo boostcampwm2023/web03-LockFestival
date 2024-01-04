@@ -52,8 +52,7 @@ function ThemeDetailsModal({ themeId, onClose }: ThemeDetailsModalProps) {
               <ButtonWrapper>
                 <Button
                   isIcon={false}
-                  size="m"
-                  width="10rem"
+                  size="s"
                   onClick={() => {
                     window.open(data.website);
                   }}
@@ -62,8 +61,7 @@ function ThemeDetailsModal({ themeId, onClose }: ThemeDetailsModalProps) {
                 </Button>
                 <Button
                   isIcon={false}
-                  size="m"
-                  width="10rem"
+                  size="s"
                   onClick={() => {
                     onClose();
                     navigate(
@@ -118,7 +116,7 @@ const DetailModalContainer = styled.div([
     display: flex;
     flex-direction: column;
   `,
-  tw`p-6 bg-gray-light rounded-default w-[75rem] tablet:(w-[60rem] p-4) mobile:(w-[34rem] p-2)`,
+  tw`p-6 bg-gray-light rounded-default w-[75rem] tablet:(w-[60rem] p-4) mobile:(w-[32.4rem] p-2)`,
 ]);
 
 const HeadWrapper = styled.div([
@@ -128,7 +126,7 @@ const HeadWrapper = styled.div([
     align-items: center;
     height: 3.2rem;
   `,
-  tw`font-maplestory text-xl-bold mb-4 ml-2`,
+  tw`h-[3.2rem] font-maplestory text-xl-bold mb-4 ml-2 mobile:(h-[1.8rem] text-m-bold my-2)`,
 ]);
 
 const MainWrapper = styled.div([
@@ -137,15 +135,14 @@ const MainWrapper = styled.div([
     justify-content: space-between;
     margin-bottom: 1.6rem;
   `,
+  tw`mobile:(relative)`,
 ]);
 
 const MainThemePosterBox = styled.div([
-  tw`bg-gray-dark rounded-[2rem] mobile:(hidden)`,
-  css`
-    width: 18.5rem;
-    height: 27.2rem;
-    padding: 1.6rem;
+  tw`
+    w-[18.5rem] h-[27.2rem] p-4 bg-gray-dark rounded-[2.8rem] font-pretendard
   `,
+  tw`mobile:(w-[11.2rem] h-[18.2rem] p-2 rounded-[1.2rem])`,
 ]);
 
 const ThemePoster = styled.img([
@@ -153,7 +150,7 @@ const ThemePoster = styled.img([
     width: 100%;
     height: 100%;
   `,
-  tw`rounded-[2rem]`,
+  tw`rounded-[2rem] mobile:(rounded-[0.6rem])`,
 ]);
 
 const InfoWrapper = styled.div([
@@ -163,7 +160,7 @@ const InfoWrapper = styled.div([
     flex: 1;
     gap: 0.8rem;
   `,
-  tw`ml-4`,
+  tw`ml-4 mobile:(ml-2)`,
 ]);
 
 const ButtonWrapper = styled.div([
@@ -174,6 +171,7 @@ const ButtonWrapper = styled.div([
     gap: 0.8rem;
   `,
   tw`ml-4`,
+  tw`mobile:(absolute bottom-0 left-2)`,
 ]);
 
 const BottomWrapper = styled.div([
@@ -181,14 +179,13 @@ const BottomWrapper = styled.div([
     display: flex;
     flex-direction: column;
   `,
-  tw`mobile:(hidden)`,
 ]);
 
 const OtherThemeList = styled.div([
+  tw`gap-3 mobile:(gap-1)`,
   css`
     display: flex;
     justify-content: flex-start;
-    gap: 1.2rem;
   `,
 ]);
 
