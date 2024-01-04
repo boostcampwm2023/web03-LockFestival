@@ -36,7 +36,7 @@ const CarouselContainer = styled.div([
   tw`w-[90vw] bg-gray-light rounded-default py-3`,
   tw`desktop:(max-w-[102.4rem] h-[32.4rem])`,
   tw`tablet:(max-w-[70rem] h-[27.8rem])`,
-  tw`mobile:(max-w-[36rem] h-[20.6rem])`,
+  tw`mobile:(max-w-[36rem] h-[20.6rem] rounded-[2rem])`,
   css`
     overflow: hidden;
   `,

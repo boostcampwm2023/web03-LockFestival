@@ -43,7 +43,7 @@ const CardListContainer = styled.div([
   tw`w-full bg-gray-light rounded-default mb-4 py-3`,
   tw`desktop:(h-[32.4rem])`,
   tw`tablet:(h-[27.8rem])`,
-  tw`mobile:(h-[20.6rem])`,
+  tw`mobile:(h-[20.6rem] rounded-[2rem])`,
   css`
     display: flex;
     align-items: flex-start;
