@@ -20,5 +20,12 @@ export const carouselConfig = {
         slidesToScroll: 3,
       },
     },
+    {
+      breakpoint: 359,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+      },
+    },
   ],
 };
