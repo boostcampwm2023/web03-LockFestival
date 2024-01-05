@@ -7,6 +7,7 @@ import fetchUserProfile from '@apis/fetchUserProfile';
 import fetchThemesByPage from './../apis/fetchThemesByPage';
 import fetchThemeTimeTable from '@apis/fetchThemeTimeTable';
 import { Value } from 'react-calendar/dist/cjs/shared/types';
+import fetchCheckNickName from '@apis/fetchCheckNickName';
 
 const QUERY_MANAGEMENT = {
   geolocation: {
@@ -40,6 +41,10 @@ const QUERY_MANAGEMENT = {
   themeTimeTable: {
     key: 'themeTimeTable',
     fn: (themeId: number, date: Value) => fetchThemeTimeTable(themeId, date),
+  },
+  isValidNickName: {
+    key: 'isValidNickName',
+    fn: (input: string) => fetchCheckNickName(input),
   },
 };
 
