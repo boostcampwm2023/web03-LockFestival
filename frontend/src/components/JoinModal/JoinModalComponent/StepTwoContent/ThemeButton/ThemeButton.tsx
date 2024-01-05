@@ -23,27 +23,24 @@ const ThemeButtonWrapper = styled.div<Pick<ThemeButtonProps, 'isSelected'>>(({ i
   const backgroundColor = isSelected ? tw`bg-gray-dark` : tw`bg-white`;
   return [
     backgroundColor,
-    tw`rounded-[2rem]`,
+    tw`w-[100%] p-2 rounded-[1.5rem] gap-2`,
+    tw`mobile:(p-1.5 rounded-[0.8rem])`,
     css`
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 1rem;
-      width: 11.8rem;
-      height: 16rem;
       cursor: pointer;
     `,
   ];
 });
 
 const ThemeImg = styled.img([
-  tw`rounded-[2rem]`,
+  tw`rounded-[1rem] mobile:(rounded-[0.4rem])`,
   css`
-    width: 9rem;
-    height: 10rem;
-    margin-top: 1rem;
+    width: 100%;
+    aspect-ratio: 9/13;
   `,
 ]);
 
@@ -52,19 +49,12 @@ const SelectedState = styled.div<Pick<ThemeButtonProps, 'isSelected'>>(({ isSele
 
   return [
     backgroundColor,
-    tw`rounded-[50%]`,
-    css`
-      position: absolute;
-      width: 1.2rem;
-
-      height: 1.2rem;
-      top: 1rem;
-      right: 1rem;
-    `,
+    tw`absolute rounded-[50%] w-[0.8rem] h-[0.8rem] top-3.5 right-3.5`,
+    tw`mobile:(w-[0.6rem] h-[0.6rem] top-2.5 right-2.5)`,
   ];
 });
 
 const ThemeGenre = styled.div<Pick<ThemeButtonProps, 'isSelected'>>(({ isSelected }) => {
   const fontColor = isSelected ? tw`text-white` : tw`text-gray-dark`;
-  return [fontColor, tw`font-pretendard text-s-bold`];
+  return [fontColor, tw`font-pretendard text-s-bold mobile:(text-xs-bold)`];
 });
