@@ -83,9 +83,9 @@ const Layout = styled.div([
 ]);
 
 const LeftSection = styled.div([
-  tw`w-[26rem] h-[100%] bg-gray-dark rounded-default p-3 mobile:(w-[20rem] p-2.5)`,
+  tw`w-[26rem] bg-gray-dark rounded-default p-3 mobile:(w-[16rem] p-2 rounded-[2rem])`,
 ]);
-const ThemeImg = styled.img([tw`w-[100%] h-[100%] rounded-default`]);
+const ThemeImg = styled.img([tw`w-full aspect-[9/13] rounded-default mobile:(rounded-[1.8rem])`]);
 const RightSection = styled.div([
   css`
     display: flex;
