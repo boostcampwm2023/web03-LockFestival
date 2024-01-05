@@ -29,17 +29,16 @@ const SimpleThemeCard = ({ themeId, themeName, posterImageUrl }: SimpleThemeCard
 };
 
 const CardContainer = styled.div([
-  tw`font-pretendard text-white bg-gray`,
-  tw`desktop:(text-s h-[28.4rem] w-[18.2rem] rounded-[2rem] mx-3 p-3)`,
-  tw`tablet:(text-s h-[24rem] w-[15.2rem] rounded-[2rem] mx-3 p-3)`,
-  tw`mobile:(text-xs h-[21.3rem] w-[12.8rem] rounded-[1.4rem] mx-2 p-2)`,
+  tw`font-pretendard text-white bg-gray rounded-[2rem] mx-3 p-3 gap-[1rem]`,
+  tw`desktop:(text-s h-[28.4rem] w-[18.2rem])`,
+  tw`tablet:(text-s h-[24rem] w-[15.2rem])`,
+  tw`mobile:(text-xs h-[18.2rem] w-[11.2rem] rounded-[1.4rem] mx-1 p-2 gap-[0.5rem])`,
   css`
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
     cursor: pointer;
-    gap: 1rem;
   `,
 ]);
 

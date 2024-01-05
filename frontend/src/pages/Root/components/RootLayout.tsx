@@ -20,10 +20,10 @@ const RootLayout = () => {
 };
 
 const Container = styled.div([
-  tw`w-full mx-auto mt-[4rem]`,
-  tw`desktop:(max-w-[102.4rem] pb-[10rem])`,
+  tw`w-full mx-auto mt-[4rem] pb-[4rem]`,
+  tw`desktop:(max-w-[102.4rem])`,
   tw`tablet:(max-w-[78rem])`,
-  tw`mobile:(max-w-[80%])`,
+  tw`mobile:(max-w-[36rem])`,
   css`
     display: flex;
     flex-direction: column;

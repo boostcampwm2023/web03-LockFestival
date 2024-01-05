@@ -27,8 +27,8 @@ const ThemeCard = ({ themeId, posterImageUrl, name, onClose }: ThemeCardProps) =
         }, 100);
       }}
     >
-      <img src={posterImageUrl} alt="추천_테마_포스터_이미지" />
-      <div>{name}</div>
+      <ThemeCardImg src={posterImageUrl} alt="추천_테마_포스터_이미지" />
+      <ThemeCardName>{name}</ThemeCardName>
     </ThemeCardBox>
   );
 };
@@ -36,25 +36,33 @@ const ThemeCard = ({ themeId, posterImageUrl, name, onClose }: ThemeCardProps) =
 export default ThemeCard;
 
 const ThemeCardBox = styled.div([
+  tw`
+    h-auto p-3 bg-gray-dark rounded-[2rem] font-pretendard text-s gap-3
+  `,
+  tw`desktop:(w-[13rem])`,
+  tw`tablet:(w-[10.4rem])`,
+  tw`mobile:(w-[5.8rem] p-2 rounded-[1.2rem] gap-2 text-xs)`,
   css`
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
-    justify-content: space-between;
     align-items: center;
-    width: 11rem;
-    height: 16rem;
-    padding: 1.2rem;
     text-align: center;
     cursor: pointer;
-
-    img {
-      width: 7.8rem;
-      height: 13.6rem;
-      border-radius: 1.5rem;
-    }
   `,
-  tw`
-    bg-gray-dark rounded-[2rem] font-pretendard text-s
+]);
+
+const ThemeCardImg = styled.img([
+  tw`rounded-[1.5rem] mobile:(rounded-[0.6rem])`,
+  css`
+    width: 100%;
+    aspect-ratio: 9/13;
+  `,
+]);
+
+const ThemeCardName = styled.div([
+  css`
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
   `,
 ]);

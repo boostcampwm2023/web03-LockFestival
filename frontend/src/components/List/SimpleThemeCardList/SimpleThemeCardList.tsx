@@ -35,8 +35,8 @@ const CardContainer = styled.div([css``]);
 const NoThemeContainer = styled.div([
   tw`w-full overflow-hidden bg-gray-light text-[4rem] text-white rounded-default`,
   tw`desktop:(max-w-[102.4rem] h-[32.4rem])`,
-  tw`tablet:(max-w-[80rem] h-[28.4rem])`,
-  tw`mobile:(max-w-[43rem] h-[21.6rem])`,
+  tw`tablet:(max-w-[80rem] h-[27.8rem])`,
+  tw`mobile:(max-w-[32.4rem] h-[20.6rem])`,
   css`
     display: flex;
     align-items: center;

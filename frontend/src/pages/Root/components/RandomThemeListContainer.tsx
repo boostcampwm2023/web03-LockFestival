@@ -35,6 +35,6 @@ const LabelWrapper = styled.div(css`
   margin-bottom: 0.8rem;
 `);
 
-const SimpleCardContainer = styled.div([tw`my-2 mt-[-0.5rem]`]);
+const SimpleCardContainer = styled.div([tw`my-2`]);
 
 export default RandomThemeListContainer;

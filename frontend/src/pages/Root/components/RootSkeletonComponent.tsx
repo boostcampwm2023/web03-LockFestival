@@ -28,23 +28,22 @@ const RootSkeletonComponent = () => {
 };
 
 const Container = styled.div([
-  tw`w-full mx-auto`,
+  tw`w-[90vw]`,
   tw`desktop:(max-w-[102.4rem])`,
   tw`tablet:(max-w-[70rem])`,
-  tw`mobile:(max-w-[90%])`,
+  tw`mobile:(max-w-[36rem])`,
   css`
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
+    gap: 0.8rem;
   `,
 ]);
 
 const CardListContainer = styled.div([
-  tw`bg-gray-light rounded-default gap-[3.4rem]`,
-  tw`desktop:(h-[32.4rem] px-3 py-4)`,
-  tw`tablet:(max-w-[70rem] h-[27.8rem] px-3 py-4)`,
-  tw`mobile:(max-w-[43rem] h-[24.8rem] px-2 py-4)`,
+  tw`w-full bg-gray-light rounded-default mb-4 py-3`,
+  tw`desktop:(h-[32.4rem])`,
+  tw`tablet:(h-[27.8rem])`,
+  tw`mobile:(h-[20.6rem] rounded-[2rem])`,
   css`
     display: flex;
     align-items: flex-start;
@@ -63,34 +62,34 @@ const loadingAnimation = keyframes`
 `;
 
 const SkeletonLabel = styled.div([
-  tw`rounded-default`,
+  tw`h-[3.6rem] rounded-default mt-2`,
+  tw`mobile:(h-[3.2rem])`,
+  tw`border-[0.3rem] border-solid border-gray-light`,
   css`
-    width: 8rem;
-    height: 2.8rem;
+    width: 6rem;
     background: #f2f2f2;
     position: relative;
     overflow: hidden;
     align-self: flex-start;
-    margin-left: 1rem;
     &::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
-      width: 55px;
+      width: 50px;
       height: 100%;
-      background: linear-gradient(to right, #f2f2f2, #ddd, #f2f2f2);
-      animation: ${loadingAnimation} 1s infinite linear;
-      filter: blur(1px);
+      background: linear-gradient(to right, #999999, #8f8f8fa0, #999999);
+      animation: ${loadingAnimation} 2s infinite linear;
+      filter: blur(10px);
     }
   `,
 ]);
 
 const SkeletonCard = styled.div`
-  ${tw`mb-2 rounded-[1.5rem] bg-gray`}
-  ${tw`desktop:(w-[17.1rem] p-3)`}
-  ${tw`tablet:(w-[14rem]) p-3`}
-  ${tw`mobile:(w-[12.6rem]) p-2`}
+  ${tw`mx-auto mb-[1.5rem] rounded-[1.5rem] bg-gray`}
+  ${tw`desktop:(w-[17rem])`}
+  ${tw`tablet:(w-[15.2rem])`}
+  ${tw`mobile:(w-[10.8rem])`}
   background: #222222;
   position: relative;
   overflow: hidden;

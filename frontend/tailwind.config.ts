@@ -3,7 +3,7 @@ import type { Config } from 'tailwindcss';
 function generateSpacingValues() {
   const spacingValues: Record<number, string> = {};
   const RATIO = 0.4;
-  let key = 0.5;
+  let key = 0;
 
   while (key <= 10) {
     let value = Number((key * RATIO).toPrecision(2));
