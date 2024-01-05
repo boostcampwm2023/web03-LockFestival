@@ -7,9 +7,11 @@ interface Props {
 }
 
 const CardInfoLabel = ({ labelName, labelContent }: Props) => {
+  const labelWidth = labelName === '지점' || labelName === '테마명' ? '5.8rem' : '9rem';
+
   return (
     <LabelWrapper>
-      <Label isBorder={false} size="m" width="9rem">
+      <Label isBorder={false} size="m" width={labelWidth}>
         <Text>{labelName}</Text>
       </Label>
       <LabelContent>{labelContent}</LabelContent>
@@ -30,7 +32,7 @@ const LabelWrapper = styled.div([
 const Text = styled.div([tw`m-auto`]);
 
 const LabelContent = styled.div([
-  tw`font-pretendard text-m text-white mobile:(text-s)`,
+  tw`font-pretendard text-m text-white mobile:(text-s text-center)`,
   css`
     display: flex;
     flex: 1;
