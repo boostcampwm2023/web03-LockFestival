@@ -4,16 +4,20 @@ import { Outlet } from 'react-router-dom';
 import Modals from './Modals/Modals';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import FooterNavigationBar from './FooterNavigationBar/FooterNavigationBar';
 const Layout = () => {
   return (
-    <Container>
-      <Header />
-      <Main>
-        <Modals />
-        <Outlet />
-        <CustomToastContainer theme="dark" position="bottom-center" autoClose={3000} />
-      </Main>
-    </Container>
+    <>
+      <Container>
+        <Header />
+        <Main>
+          <Modals />
+          <Outlet />
+          <CustomToastContainer theme="dark" position="bottom-center" autoClose={3000} />
+        </Main>
+      </Container>
+      <FooterNavigationBar />
+    </>
   );
 };
 
