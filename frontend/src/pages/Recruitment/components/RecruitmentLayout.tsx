@@ -102,6 +102,7 @@ const TextContainer = styled.div([
 const ButtonPosition = styled.div([
   tw`mx-auto w-4/5 py-[2rem] px-4`,
   tw`desktop:(w-[102.4rem])`,
+  tw`mobile:(w-full)`,
   css`
     display: flex;
     align-items: center;
@@ -110,9 +111,10 @@ const ButtonPosition = styled.div([
 ]);
 
 const AddButton = styled(Button)([
+  tw`bottom-[1rem]`,
+  tw`mobile:(bottom-[5.6rem])`,
   css`
     position: fixed;
-    bottom: 1rem;
     z-index: 3;
   `,
 ]);
