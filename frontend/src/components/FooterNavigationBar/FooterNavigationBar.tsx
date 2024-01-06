@@ -73,7 +73,6 @@ const Content = styled.div([
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
   `,
 ]);
 
@@ -85,7 +84,7 @@ const IconWrapper = styled.div<{ isSelected: boolean }>(({ isSelected }) => [
     display: flex;
     align-items: center;
     justify-content: center;
-
+    cursor: pointer;
     background-color: ${isSelected ? '#1A1A1A' : '#F2F2F2'};
   `,
 ]);
