@@ -17,28 +17,31 @@ const FooterNavigationBar = () => {
     <FooterBar>
       <Container>
         <Content>
-          <IconWrapper isSelected={location.pathname === '/recruitment'}>
+          <IconWrapper
+            isSelected={location.pathname === '/recruitment'}
+            onClick={() => handleSelectedItem('/recruitment')}
+          >
             <FaChildren
               size={28}
-              onClick={() => handleSelectedItem('/recruitment')}
               color={location.pathname === '/recruitment' ? '#F2F2F2' : '#1A1A1A'}
             />
           </IconWrapper>
         </Content>
         <Content>
-          <IconWrapper isSelected={location.pathname === '/'}>
-            <FaHouse
-              size={28}
-              onClick={() => handleSelectedItem('/')}
-              color={location.pathname === '/' ? '#F2F2F2' : '#1A1A1A'}
-            />
+          <IconWrapper
+            isSelected={location.pathname === '/'}
+            onClick={() => handleSelectedItem('/')}
+          >
+            <FaHouse size={28} color={location.pathname === '/' ? '#F2F2F2' : '#1A1A1A'} />
           </IconWrapper>
         </Content>
         <Content>
-          <IconWrapper isSelected={location.pathname === '/room-list'}>
+          <IconWrapper
+            isSelected={location.pathname === '/room-list'}
+            onClick={() => handleSelectedItem('/room-list')}
+          >
             <FaComment
               size={28}
-              onClick={() => handleSelectedItem('/room-list')}
               color={location.pathname === '/room-list' ? '#F2F2F2' : '#1A1A1A'}
             />
           </IconWrapper>
