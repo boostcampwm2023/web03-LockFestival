@@ -64,9 +64,9 @@ export default Search;
 
 const Layout = styled.div([
   tw`w-full mx-auto mt-[4rem] pb-[4rem]`,
-  tw`desktop:(max-w-[102.4rem])`,
-  tw`tablet:(max-w-[78rem])`,
-  tw`mobile:(max-w-[80%])`,
+  tw`desktop:(max-w-[97rem])`,
+  tw`tablet:(max-w-[47.5rem])`,
+  tw`mobile:(w-[90vw] max-w-[40rem])`,
   css`
     position: relative;
     display: flex;
@@ -82,24 +82,22 @@ const TopWrapper = styled.div([
     justify-content: space-between;
     align-items: center;
   `,
-  tw`w-full mb-2 px-2 desktop:(max-w-[97rem]) tablet:(max-w-[47.5rem]) mobile:(max-w-[34rem])`,
+  tw`w-full mb-4`,
 ]);
 
 const InfoText = styled.div([
-  tw`font-maplestory text-xl text-white`,
+  tw`font-maplestory text-xl text-white mobile:(text-l)`,
   css`
     flex: 1;
   `,
 ]);
 
 const CardList = styled.div([
-  tw`w-full desktop:(max-w-[97rem]) tablet:(flex-col) mobile:(flex-col min-w-[34rem])`,
+  tw`w-full mb-4 gap-4 tablet:(flex-col) mobile:(flex-col)`,
   css`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 1.5rem;
-    width: 100%;
   `,
 ]);
 

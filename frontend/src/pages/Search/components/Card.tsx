@@ -61,10 +61,9 @@ const Card = ({ theme }: { theme: ThemeDetailsData }) => {
 export default Card;
 
 const Layout = styled.div<{ isHead: boolean }>(({ isHead }) => [
-  tw`text-white bg-gray-light rounded-default p-4 h-[26rem] desktop:(w-[47.5rem]) tablet:(mx-auto w-[47.5rem]) mobile:(mx-auto w-[90%] h-[20.4rem])`,
+  tw`w-[47.5rem] h-[26rem] text-white bg-gray-light rounded-default p-4 gap-4 tablet:(mx-auto) mobile:(w-full h-[20.4rem] mx-auto)`,
   css`
     display: flex;
-    gap: 1.6rem;
     position: relative;
     transition: transform 0.3s;
     transform: ${isHead ? 'perspective(50%) rotateY(0deg)' : 'perspective(50%) rotateY(180deg)'};
