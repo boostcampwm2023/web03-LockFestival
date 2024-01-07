@@ -6,9 +6,7 @@ const iconButtonBaseStyle: CSSInterpolation = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
   border: 1px solid white;
-  vertical-align: middle;
   cursor: pointer;
 `;
 
@@ -31,19 +29,19 @@ const iconStyleMap: Record<string, TwStyle[]> = {
   m: [
     tw`mobile:(w-[2.8rem] h-[2.8rem]) tablet:(w-[3.2rem] h-[3.2rem]) desktop:(w-[3.2rem] h-[3.2rem])`,
     {
-      svg: tw`mobile:(w-[1.5rem] h-[1.5rem]) tablet:(w-[1.8rem] h-[1.8rem]) desktop:(w-[1.8rem] h-[1.8rem])`,
+      svg: tw`mobile:(w-[1.6rem] h-[1.6rem]) tablet:(w-[1.8rem] h-[1.8rem]) desktop:(w-[1.8rem] h-[1.8rem])`,
     },
   ],
   s: [
     tw`mobile:(w-[2.4rem] h-[2.4rem]) tablet:(w-[2.8rem] h-[2.8rem]) desktop:(w-[2.8rem] h-[2.8rem])`,
     {
-      svg: tw`mobile:(w-[1.2rem] h-[1.2rem]) tablet:(w-[1.5rem] h-[1.5rem]) desktop:(w-[1.5rem] h-[1.5rem])`,
+      svg: tw`mobile:(w-[1.2rem] h-[1.2rem]) tablet:(w-[1.6rem] h-[1.6rem]) desktop:(w-[1.6rem] h-[1.6rem])`,
     },
   ],
   default: [
     tw`mobile:(w-[2.8rem] h-[2.8rem]) tablet:(w-[3.2rem] h-[3.2rem]) desktop:(w-[3.2rem] h-[3.2rem])`,
     {
-      svg: tw`mobile:(w-[1.5rem] h-[1.5rem]) tablet:(w-[1.8rem] h-[1.8rem]) desktop:(w-[1.8rem] h-[1.8rem])`,
+      svg: tw`mobile:(w-[1.6rem] h-[1.6rem]) tablet:(w-[1.8rem] h-[1.8rem]) desktop:(w-[1.8rem] h-[1.8rem])`,
     },
   ],
 };
