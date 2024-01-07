@@ -6,6 +6,7 @@ import StepTwoContent from './StepTwoContent/StepTwoContent';
 import useJoinMutation from '@hooks/mutation/useJoinMutation';
 import { JoinData } from 'types/profile';
 import useDebounceInput from '@hooks/useDebounceInput';
+import tw, { styled } from 'twin.macro';
 interface JoinModalProps {
   onClose: ModalProps['onClose'];
 }
@@ -53,7 +54,7 @@ function JoinModalComponent({ onClose }: JoinModalProps) {
   };
 
   return (
-    <>
+    <JoinModalContainer>
       {step === STEP1 && (
         <StepOneContent
           nameInput={realInputQuery}
@@ -69,8 +70,17 @@ function JoinModalComponent({ onClose }: JoinModalProps) {
           joinHandler={joinHandler}
         />
       )}
-    </>
+    </JoinModalContainer>
   );
 }
+
+const JoinModalContainer = styled.div([
+  tw`
+    w-auto p-5
+    desktop:(min-w-[54rem])
+    tablet:(min-w-[54rem])
+    mobile:(w-[85vw] max-w-[46rem])
+  `,
+]);
 
 export default JoinModalComponent;
