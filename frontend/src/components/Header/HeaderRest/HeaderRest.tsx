@@ -98,7 +98,7 @@ const HeaderRest = () => {
                     <FaUser size={10} />
                   )}
                 </ProfileImgWrapper>
-                {profileData.nickname}님
+                <ProfileNameWrapper> {profileData.nickname}님</ProfileNameWrapper>
               </>
             </Button>
             {isHoverProfile && (
@@ -122,8 +122,9 @@ const HeaderRestContainer = styled.div([
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
-    gap: 2rem;
+    width: 100%;
   `,
+  tw`gap-5 tablet:(gap-2) mobile:(gap-2)`,
 ]);
 
 const widthAnimation = keyframes`
@@ -137,8 +138,8 @@ const widthAnimation = keyframes`
 
 const SearchContainer = styled.div([
   tw`desktop:(w-[16rem] h-[3.6rem] rounded-[4rem])`,
-  tw`tablet:(w-[12rem] h-[3.6rem] rounded-[4rem])`,
-  tw`mobile:(w-[8rem] h-[3.6rem] rounded-[3rem])`,
+  tw`tablet:(flex-1 max-w-[16rem] h-[3.6rem] rounded-[4rem])`,
+  tw`mobile:(flex-1 max-w-[16rem] h-[3.2rem] rounded-[3rem])`,
   css`
     display: flex;
     align-items: center;
@@ -147,7 +148,7 @@ const SearchContainer = styled.div([
 ]);
 
 const SearchInputForm = styled.div([
-  tw`bg-gray-light w-[10rem]`,
+  tw`bg-gray-light w-full`,
   tw`desktop:(rounded-[4rem])`,
   tw`tablet:(rounded-[4rem])`,
   tw`mobile:(rounded-[3rem])`,
@@ -159,10 +160,10 @@ const SearchInputForm = styled.div([
 ]);
 
 const SearchInput = styled.input([
-  tw`font-pretendard h-full pl-2 bg-gray-light text-white rounded-[4rem]`,
-  tw`desktop:(text-m w-[10rem])`,
-  tw`tablet:(text-m w-[8rem])`,
-  tw`mobile:(text-s w-[6rem])`,
+  tw`font-pretendard h-full px-2 bg-gray-light text-white rounded-[4rem]`,
+  tw`desktop:(w-[calc(100%-3.6rem)] text-m)`,
+  tw`tablet:(w-[calc(100%-3.2rem)] text-m)`,
+  tw`mobile:(w-[calc(100%-3.2rem)] text-s)`,
   css`
     border: none;
     outline: none;
@@ -211,10 +212,12 @@ const ProfileImgWrapper = styled.div([
 ]);
 
 const ProfileImg = styled.img([
-  tw`w-[2rem] h-[2rem] mr-1`,
+  tw`w-full h-full mr-1`,
   css`
     border-radius: 50%;
   `,
 ]);
+
+const ProfileNameWrapper = styled.div([tw`text-m`]);
 
 export default HeaderRest;
