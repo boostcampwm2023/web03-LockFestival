@@ -11,6 +11,24 @@
   height: 2rem;
   margin: 0;
 }
+
+.react-calendar__navigation {
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  button {
+    width: 3rem;
+    min-width: none;
+    padding: 0.2rem 0;
+  }
+}
+
+.react-calendar__navigation__label__labelText {
+  font-family: Pretendard-Regular;
+  font-size: 1.2rem;
+}
+
 .react-calendar__month-view__weekdays__weekday {
   display: flex;
   justify-content: center;
