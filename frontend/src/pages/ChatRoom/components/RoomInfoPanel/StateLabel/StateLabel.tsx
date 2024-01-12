@@ -7,7 +7,7 @@ interface StateLabelProps {
 
 const StateLabel = ({ text, state }: StateLabelProps) => {
   return (
-    <Label isBorder={true} backgroundColor={state ? 'green-dark' : 'green-light'} width="10rem">
+    <Label isBorder={true} backgroundColor={state ? 'green-dark' : 'green-light'} size="s">
       <LabelText>
         {text}
         {state ? '완료' : '중'}
