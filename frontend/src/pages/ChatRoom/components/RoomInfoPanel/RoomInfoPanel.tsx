@@ -7,11 +7,13 @@ import { FaGear } from 'react-icons/fa6';
 import useModal from '@hooks/useModal';
 import Modal from '@components/Modal/Modal';
 import RoomSettingModal from './RoomSettingModal/RoomSettingModal';
-import { useRecoilValue } from 'recoil';
+import { DefaultValue, useRecoilValue } from 'recoil';
 import { roomInfoAtom } from '@store/chatRoom';
 import { getStringByDate } from '@utils/dateUtil';
 import TimeTable from './TimeTable/TimeTable';
-import { memo } from 'react';
+import { memo, useRef } from 'react';
+import useTouchSlidePanel from '@hooks/useTouchSlidePanel';
+import { keyframes } from '@emotion/react';
 
 interface Props {
   settingMode: boolean;
@@ -36,6 +38,11 @@ const RoomInfoPanel = memo(function RoomInfoPanel({ settingMode, changeRoom }: P
     themeId,
     website,
   } = roomInfo as RoomInfo;
+  const ref = useRef<HTMLDivElement>(null);
+  const { menuState, handleTouchStart, handleTouchMove, handleTouchEnd } = useTouchSlidePanel(
+    ref,
+    'roomInfoMenuSelected'
+  );
 
   const handleSettingButton = () => {
     openModal(Modal, {
@@ -46,7 +53,13 @@ const RoomInfoPanel = memo(function RoomInfoPanel({ settingMode, changeRoom }: P
   };
 
   return (
-    <Layout>
+    <Layout
+      ref={ref}
+      menuState={menuState}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <RoomInfoTopContainer>
         {settingMode && (
           <SettingButton>
@@ -65,19 +78,19 @@ const RoomInfoPanel = memo(function RoomInfoPanel({ settingMode, changeRoom }: P
           </ThemeInfoWrapper>
         </HeadContainer>
         <RoomInfoWrapper>
-          <Label isBorder={true} width="10rem">
+          <Label isBorder={true} size="s" width="6.4rem">
             <LabelText>모집내용</LabelText>
           </Label>
           <RoomInfoContent>{recruitmentContent}</RoomInfoContent>
         </RoomInfoWrapper>
         <RoomInfoWrapper>
-          <Label isBorder={true} width="10rem">
+          <Label isBorder={true} size="s" width="6.4rem">
             <LabelText>날짜</LabelText>
           </Label>
           <RoomInfoContent>{getStringByDate(new Date(appointmentDate))}</RoomInfoContent>
         </RoomInfoWrapper>
         <RoomInfoWrapper>
-          <Label isBorder={true} width="10rem">
+          <Label isBorder={true} size="s" width="6.4rem">
             <LabelText>인원</LabelText>
           </Label>
           <RoomInfoContent>
@@ -85,7 +98,7 @@ const RoomInfoPanel = memo(function RoomInfoPanel({ settingMode, changeRoom }: P
           </RoomInfoContent>
         </RoomInfoWrapper>
         <RoomInfoWrapper>
-          <Label isBorder={true} width="10rem">
+          <Label isBorder={true} size="s" width="6.4rem">
             <LabelText>상태</LabelText>
           </Label>
           <RoomInfoContent>
@@ -99,14 +112,21 @@ const RoomInfoPanel = memo(function RoomInfoPanel({ settingMode, changeRoom }: P
   );
 });
 
-const Layout = styled.div([
+const slideInAnimation = keyframes`
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+`;
+
+const Layout = styled.div(({ menuState }: { menuState: boolean | DefaultValue }) => [
   css`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: 34rem;
-    height: 100vh;
-    padding: 2rem;
     gap: 1.6rem;
     overflow-x: hidden;
     overflow-y: auto;
@@ -124,14 +144,19 @@ const Layout = styled.div([
       box-shadow: inset 0px 0px 5px white;
     }
   `,
-  tw`bg-gray-light rounded-[2rem] h-[calc(90vh - 6rem)]`,
+  tw`bg-gray-light rounded-[2rem] h-[calc(90vh - 6rem)] p-4`,
+  tw`tablet:(absolute w-[26rem] left-[0] rounded-l-[0] border border-solid border-white-60 z-[-1] p-3)`,
+  tw`mobile:(absolute w-[26rem] left-[0] rounded-l-[0] border border-solid border-white-60 z-[-1] p-3)`,
+  menuState &&
+    css`
+      animation: ${slideInAnimation} 0.3s ease-in forwards;
+    `,
 ]);
 
 const RoomInfoTopContainer = styled.div([
   css`
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
   `,
 ]);
 
@@ -144,17 +169,17 @@ const SettingButton = styled.div([
 ]);
 
 const HeadContainer = styled.div([
-  tw`w-[full] h-[14.2rem] bg-gray rounded-[2rem]`,
+  tw`w-[full] h-full bg-gray rounded-[2rem] gap-3 p-3 my-4`,
+  tw`tablet:(gap-2 p-2 my-2)`,
+  tw`mobile:(gap-2 p-2 my-2)`,
   css`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem;
-    gap: 1.2rem;
   `,
 ]);
 
-const ThemePoster = styled.img([tw`w-[10rem] h-[10.7rem] rounded-[2rem]`]);
+const ThemePoster = styled.img([tw`w-[8.4rem] aspect-[1/1.2] rounded-[1.8rem]`]);
 
 const ThemeInfoWrapper = styled.div([
   css`
@@ -168,7 +193,7 @@ const ThemeInfoWrapper = styled.div([
 ]);
 
 const ThemeInfo = styled.div([
-  tw`font-pretendard text-m text-white`,
+  tw`font-pretendard text-s text-white mobile:(text-xs)`,
   css`
     text-align: center;
   `,
@@ -190,11 +215,10 @@ const LabelText = styled.div([
 ]);
 
 const RoomInfoContent = styled.div([
-  tw`font-pretendard text-white text-m`,
+  tw`font-pretendard text-white text-s mobile:(text-xs)`,
   css`
     display: flex;
     align-items: center;
-    width: 16.4rem;
   `,
 ]);
 
