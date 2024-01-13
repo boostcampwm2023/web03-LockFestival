@@ -145,8 +145,8 @@ const Layout = styled.div(({ menuState }: { menuState: boolean | DefaultValue })
     }
   `,
   tw`bg-gray-light rounded-[2rem] h-[calc(90vh - 6rem)] p-4`,
-  tw`tablet:(absolute w-[26rem] left-[0] rounded-l-[0] border border-solid border-white-60 z-[-1] p-3)`,
-  tw`mobile:(absolute w-[26rem] left-[0] rounded-l-[0] border border-solid border-white-60 z-[-1] p-3)`,
+  tw`tablet:(absolute w-[26rem] left-[0] rounded-l-[0] border border-solid border-l-0 border-white-60 z-[-1] p-3)`,
+  tw`mobile:(absolute w-[26rem] left-[0] rounded-l-[0] border border-solid border-l-0 border-white-60 z-[-1] p-3)`,
   menuState &&
     css`
       animation: ${slideInAnimation} 0.3s ease-in forwards;

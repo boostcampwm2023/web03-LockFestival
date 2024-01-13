@@ -129,10 +129,10 @@ const Layout = styled.div(({ menuState }: { menuState: boolean | DefaultValue })
   `,
   tw`bg-gray-light rounded-[2rem] h-[calc(90vh - 6rem)]`,
   tw`
-    tablet:(absolute left-[0] rounded-l-[0] border border-solid border-white-60)
+    tablet:(absolute left-[0] rounded-l-[0] border border-solid border-l-0 border-white-60)
   `,
   tw`
-    mobile:(absolute left-[0] rounded-l-[0] border border-solid border-white-60)
+    mobile:(absolute left-[0] rounded-l-[0] border border-solid border-l-0 border-white-60)
   `,
   menuState &&
     css`
