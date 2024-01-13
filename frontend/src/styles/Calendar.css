@@ -18,8 +18,7 @@
   height: 100%;
 
   button {
-    width: 3rem;
-    min-width: none;
+    min-width: 3rem;
     padding: 0.2rem 0;
   }
 }
