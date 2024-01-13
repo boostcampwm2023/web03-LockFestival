@@ -1,8 +1,8 @@
 import tw, { styled, css } from 'twin.macro';
 import UserItem from './UserItem/UserItem';
 import Button from '@components/Button/Button';
-import { DefaultValue, useRecoilValue } from 'recoil';
-import { userListInfoAtom } from '@store/chatRoom';
+import { DefaultValue, useRecoilValue, useSetRecoilState } from 'recoil';
+import { mobileMenuSelector, userListInfoAtom } from '@store/chatRoom';
 import { UserInfoObject } from 'types/chat';
 import useLeaveRoomMutation from '@hooks/mutation/useLeaveRoomMutation';
 import { memo, useRef } from 'react';
@@ -24,6 +24,7 @@ const UserListPanel = memo(function UserListPanel({ roomId, settingMode, kickUse
     ref,
     'userListMenuSelected'
   );
+  const setMobileMenuClicked = useSetRecoilState(mobileMenuSelector('mobileMenuClicked'));
 
   const handlerLeaveRoom = async () => {
     const result = await Swal.fire({
@@ -35,6 +36,7 @@ const UserListPanel = memo(function UserListPanel({ roomId, settingMode, kickUse
     });
     if (result.isConfirmed) {
       mutate(Number(roomId));
+      setMobileMenuClicked(false);
     }
   };
 

@@ -197,6 +197,7 @@ const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: Cha
           isIcon={true}
           onClick={() => {
             navigate('/room-list');
+            setMobileMenuClicked(false);
           }}
         >
           <FaRightFromBracket />
