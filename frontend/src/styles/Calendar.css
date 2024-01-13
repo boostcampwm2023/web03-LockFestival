@@ -23,6 +23,14 @@
   }
 }
 
+.react-calendar__navigation__prev2-button {
+  border-top-left-radius: 0.6rem;
+}
+
+.react-calendar__navigation__next2-button {
+  border-top-right-radius: 0.6rem;
+}
+
 .react-calendar__navigation__label__labelText {
   font-family: Pretendard-Regular;
   font-size: 1.2rem;
