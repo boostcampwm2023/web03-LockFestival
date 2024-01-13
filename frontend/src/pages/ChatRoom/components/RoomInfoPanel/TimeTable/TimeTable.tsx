@@ -93,7 +93,7 @@ const TopWrapper = styled.div([
   tw`text-white`,
 ]);
 
-const Text = styled.div([tw`font-pretendard text-m`]);
+const Text = styled.div([tw`font-pretendard text-m mobile:(text-s)`]);
 
 const TimeTableWrapper = styled.div([
   tw`grid grid-cols-4 gap-3`,
