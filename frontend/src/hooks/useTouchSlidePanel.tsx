@@ -49,6 +49,10 @@ const useTouchSlidePanel = (
   };
 
   useEffect(() => {
+    return setMenuState(false);
+  }, []);
+
+  useEffect(() => {
     if (isClosing) {
       setTimeout(() => {
         setMenuState(false);
@@ -57,7 +61,7 @@ const useTouchSlidePanel = (
           ref.current.style.left = '0px';
         }
         setIsClosing(false);
-      }, 500);
+      }, 300);
     }
   }, [isClosing]);
 
