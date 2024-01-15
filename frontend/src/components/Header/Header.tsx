@@ -26,13 +26,12 @@ const HeaderContainer = styled.header([
 ]);
 
 const HeaderInnerContainer = styled.div([
-  tw`desktop:(w-full)`,
-  tw`tablet:(w-[95%] mx-auto)`,
-  tw`mobile:(w-[95%] mx-auto)`,
+  tw`w-[95vw] mx-auto`,
   css`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
   `,
 ]);
 

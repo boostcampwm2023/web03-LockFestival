@@ -31,8 +31,10 @@ const ChatRoomContainer = ({
 };
 
 const Container = styled.div([
-  tw`w-full mx-auto mt-[4rem] h-[calc(100vh -10rem)]`,
+  tw`relative w-full mx-auto mt-[4rem] h-[calc(100vh-10rem)]`,
   tw`desktop:(max-w-[102.4rem] pb-[10rem])`,
+  tw`tablet:(overflow-x-hidden)`,
+  tw`mobile:(overflow-x-hidden)`,
   css`
     display: flex;
     gap: 3.2rem;

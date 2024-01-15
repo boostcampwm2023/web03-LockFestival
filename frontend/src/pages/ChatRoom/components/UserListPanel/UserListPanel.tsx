@@ -1,12 +1,14 @@
 import tw, { styled, css } from 'twin.macro';
 import UserItem from './UserItem/UserItem';
 import Button from '@components/Button/Button';
-import { useRecoilValue } from 'recoil';
-import { userListInfoAtom } from '@store/chatRoom';
+import { DefaultValue, useRecoilValue, useSetRecoilState } from 'recoil';
+import { mobileMenuSelector, userListInfoAtom } from '@store/chatRoom';
 import { UserInfoObject } from 'types/chat';
 import useLeaveRoomMutation from '@hooks/mutation/useLeaveRoomMutation';
-import { memo } from 'react';
+import { memo, useRef } from 'react';
 import Swal from 'sweetalert2';
+import { keyframes } from '@emotion/react';
+import useTouchSlidePanel from '@hooks/useTouchSlidePanel';
 
 interface Props {
   roomId: string;
@@ -17,6 +19,12 @@ interface Props {
 const UserListPanel = memo(function UserListPanel({ roomId, settingMode, kickUser }: Props) {
   const userListInfo = useRecoilValue(userListInfoAtom) as UserInfoObject;
   const { mutate } = useLeaveRoomMutation(Number(roomId));
+  const ref = useRef<HTMLDivElement>(null);
+  const { menuState, handleTouchStart, handleTouchMove, handleTouchEnd } = useTouchSlidePanel(
+    ref,
+    'userListMenuSelected'
+  );
+  const setMobileMenuClicked = useSetRecoilState(mobileMenuSelector('mobileMenuClicked'));
 
   const handlerLeaveRoom = async () => {
     const result = await Swal.fire({
@@ -28,6 +36,7 @@ const UserListPanel = memo(function UserListPanel({ roomId, settingMode, kickUse
     });
     if (result.isConfirmed) {
       mutate(Number(roomId));
+      setMobileMenuClicked(false);
     }
   };
 
@@ -41,7 +50,13 @@ const UserListPanel = memo(function UserListPanel({ roomId, settingMode, kickUse
   };
 
   return (
-    <Layout>
+    <Layout
+      ref={ref}
+      menuState={menuState}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <UserListWrapper>
         {Array.from(userListInfo).map(([userId, userData]) => {
           const { nickname, profileImg, isLeader, isLeave, isMe, lastChatLogId } = userData;
@@ -57,17 +72,11 @@ const UserListPanel = memo(function UserListPanel({ roomId, settingMode, kickUse
                 />
                 {!isMe && (
                   <ButtonWrapper settingMode={settingMode}>
-                    <Button
-                      isIcon={false}
-                      width="100%"
-                      data-user-id={userId}
-                      onClick={handleUserKick}
-                    >
+                    <Button isIcon={false} data-user-id={userId} size="s" onClick={handleUserKick}>
                       <Text>추방</Text>
                     </Button>
                   </ButtonWrapper>
                 )}
-                <Division />
               </UserItemWrapper>
             );
           }
@@ -85,11 +94,20 @@ const UserListPanel = memo(function UserListPanel({ roomId, settingMode, kickUse
 
 export default UserListPanel;
 
-const Layout = styled.div([
+const slideInAnimation = keyframes`
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+`;
+
+const Layout = styled.div(({ menuState }: { menuState: boolean | DefaultValue }) => [
   css`
     display: flex;
     flex-direction: column;
-    width: 20.8rem;
+    width: 26rem;
     padding: 2rem;
     justify-content: space-between;
     align-items: center;
@@ -110,21 +128,24 @@ const Layout = styled.div([
     }
   `,
   tw`bg-gray-light rounded-[2rem] h-[calc(90vh - 6rem)]`,
+  tw`
+    tablet:(absolute left-[0] rounded-l-[0] border border-solid border-l-0 border-white-60)
+  `,
+  tw`
+    mobile:(absolute left-[0] rounded-l-[0] border border-solid border-l-0 border-white-60)
+  `,
+  menuState &&
+    css`
+      animation: ${slideInAnimation} 0.3s ease-in forwards;
+    `,
 ]);
 
-const UserListWrapper = styled.div([
-  css`
-    display: flex;
-    flex-direction: column;
-  `,
-]);
+const UserListWrapper = styled.div([tw`w-full`]);
 
 const UserItemWrapper = styled.div([
   css`
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 1.6rem;
   `,
 ]);
 
@@ -133,14 +154,7 @@ const ButtonWrapper = styled.div(({ settingMode }: { settingMode: boolean }) => 
     css`
       display: none;
     `,
-  settingMode &&
-    css`
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      width: 50%;
-      margin-bottom: 1.2rem;
-    `,
+  settingMode && css``,
 ]);
 
 const ExitButtonWrapper = styled.div([
@@ -153,5 +167,3 @@ const ExitButtonWrapper = styled.div([
 ]);
 
 const Text = styled.div([tw`mx-auto`]);
-
-const Division = styled.div([tw`w-[100%] h-[0.1rem] bg-white-60 mb-4`]);

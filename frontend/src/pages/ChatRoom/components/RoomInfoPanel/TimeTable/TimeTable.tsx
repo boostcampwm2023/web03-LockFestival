@@ -7,6 +7,7 @@ import useTimeTableQuery from '@hooks/useTimeTableQuery';
 import { FaArrowsRotate } from 'react-icons/fa6';
 import { keyframes } from '@emotion/react';
 import { getStringByDate } from '@utils/dateUtil';
+import Button from '@components/Button/Button';
 
 interface Props {
   themeId: number;
@@ -39,26 +40,16 @@ const TimeTable = ({ themeId, website }: Props) => {
           <FaArrowsRotate size="30" />
         </Loading>
       ) : (
-        <>
+        <BottomWrapper>
           {data && data.length > 0 ? (
             <TimeTableWrapper>
               {data?.map((timeData) =>
                 timeData.possible ? (
-                  <Label
-                    key={timeData.time}
-                    isBorder={false}
-                    width="6rem"
-                    backgroundColor="green-light"
-                  >
+                  <Label key={timeData.time} isBorder={false} backgroundColor="green-light">
                     <LabelText>{timeData.time}</LabelText>
                   </Label>
                 ) : (
-                  <Label
-                    key={timeData.time}
-                    isBorder={false}
-                    width="6rem"
-                    backgroundColor="green-dark"
-                  >
+                  <Label key={timeData.time} isBorder={false} backgroundColor="green-dark">
                     <LabelText>{timeData.time}</LabelText>
                   </Label>
                 )
@@ -70,10 +61,12 @@ const TimeTable = ({ themeId, website }: Props) => {
               시간표를 불러올 수 없습니다.
             </InfoText>
           )}
-          <WebsiteLink href={website} target="_blank">
-            예약 사이트 바로가기
-          </WebsiteLink>
-        </>
+          <ReservationButtonWrapper>
+            <Button isIcon={false} onClick={() => window.open(website, '_blank')}>
+              <>예약 사이트 바로가기</>
+            </Button>
+          </ReservationButtonWrapper>
+        </BottomWrapper>
       )}
     </Container>
   );
@@ -87,8 +80,10 @@ const Container = styled.div([
     flex-direction: column;
     align-items: center;
     gap: 1.2rem;
+    height: 100%;
   `,
 ]);
+
 const TopWrapper = styled.div([
   css`
     display: flex;
@@ -98,9 +93,13 @@ const TopWrapper = styled.div([
   tw`text-white`,
 ]);
 
-const Text = styled.div([tw`font-pretendard text-l`]);
+const Text = styled.div([tw`font-pretendard text-m mobile:(text-s)`]);
 
-const TimeTableWrapper = styled.div([tw`grid grid-cols-4 gap-4`]);
+const TimeTableWrapper = styled.div([
+  tw`grid grid-cols-4 gap-3`,
+  tw`tablet:(gap-2) mobile:(gap-2)`,
+]);
+
 const LabelText = styled.div(tw`mx-auto`);
 
 const CalendarWrapper = styled.div([tw`font-pretendard text-s w-full`]);
@@ -114,6 +113,16 @@ const rotate = keyframes`
     }
 `;
 
+const BottomWrapper = styled.div([
+  css`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  `,
+]);
+
 const Loading = styled.div([
   tw`w-full h-[12.8rem] text-white`,
   css`
@@ -125,7 +134,7 @@ const Loading = styled.div([
 ]);
 
 const InfoText = styled.div([
-  tw`w-full h-[12.8rem] font-pretendard text-white text-m`,
+  tw`w-full font-pretendard text-white text-s`,
   css`
     display: flex;
     justify-content: center;
@@ -135,10 +144,8 @@ const InfoText = styled.div([
   `,
 ]);
 
-const WebsiteLink = styled.a([
-  tw`font-pretendard text-white text-l border border-white border-solid py-3 px-4 rounded-[1rem]`,
+const ReservationButtonWrapper = styled.div([
   css`
-    text-decoration: none;
-    cursor: pointer;
+    justify-self: flex-end;
   `,
 ]);

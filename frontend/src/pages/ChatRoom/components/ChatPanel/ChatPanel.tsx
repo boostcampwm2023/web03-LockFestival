@@ -1,9 +1,9 @@
 import tw, { styled, css } from 'twin.macro';
 import Button from '@components/Button/Button';
-import { FaRightFromBracket } from 'react-icons/fa6';
+import { FaRightFromBracket, FaBars, FaXmark } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { chatLogAtom, chatUnreadAtom, userListInfoAtom } from 'store/chatRoom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { chatLogAtom, chatUnreadAtom, mobileMenuSelector, userListInfoAtom } from 'store/chatRoom';
 import { ChatLog } from 'types/chat';
 import MessageBox from './MessageBox/MessageBox';
 import { useEffect, useMemo, useRef, useState, useCallback, memo } from 'react';
@@ -19,6 +19,8 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { throttle } from '@utils/throttle';
 import PopUpMessageBox from './PopUpMessageBox/PopUpMessageBox';
 import InputBox from './InputBox/InputBox';
+import { keyframes } from '@emotion/react';
+
 interface ChatPanelProps {
   roomId: string;
   sendChat: (message: string) => void;
@@ -41,6 +43,13 @@ const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: Cha
   const [isScrollToTop, setIsScrollToTop] = useState<boolean>(false);
   const [lastUnreadChat, setLastUnreadChat] = useState<UnreadState>();
   const [prevChatLogDataSize, setPrevChatLogDataSize] = useState<number>(0);
+
+  const [mobileMenuClicked, setMobileMenuClicked] = useRecoilState(
+    mobileMenuSelector('mobileMenuClicked')
+  );
+  const setUserListMenuState = useSetRecoilState(mobileMenuSelector('userListMenuSelected'));
+  const setRoomInfoMenuState = useSetRecoilState(mobileMenuSelector('roomInfoMenuSelected'));
+
   const PAGING_SIZE = 50;
   const MIN_SCROLL_TOP = 50;
   const LAST_INDEX = -1;
@@ -163,16 +172,37 @@ const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: Cha
 
   return (
     <Layout>
-      <ButtonWrapper>
+      <ButtonContainer>
+        <MobileLeftButtonWrapper>
+          {mobileMenuClicked ? (
+            <MenuBar>
+              <Button isIcon={false} onClick={() => setUserListMenuState(true)}>
+                <>대화상대</>
+              </Button>
+              <Button isIcon={false} onClick={() => setRoomInfoMenuState(true)}>
+                <>방 정보</>
+              </Button>
+              <Button isIcon={true} onClick={() => setMobileMenuClicked(false)}>
+                <FaXmark />
+              </Button>
+            </MenuBar>
+          ) : (
+            <Button isIcon={true} onClick={() => setMobileMenuClicked(true)}>
+              <FaBars />
+            </Button>
+          )}
+        </MobileLeftButtonWrapper>
+
         <Button
           isIcon={true}
           onClick={() => {
             navigate('/room-list');
+            setMobileMenuClicked(false);
           }}
         >
           <FaRightFromBracket />
         </Button>
-      </ButtonWrapper>
+      </ButtonContainer>
       <ChatLayout>
         <ChatDisplayContainer ref={parentRef} onScroll={() => handleScroll()}>
           <div ref={targetRef} />
@@ -250,16 +280,45 @@ const Layout = styled.div([
     width: 49rem;
     height: 100vh;
     padding: 2rem;
+    z-index: 1;
   `,
   tw`bg-gray-light rounded-[2rem] h-[calc(90vh - 6rem)]`,
+  tw`tablet:(w-full rounded-[0])`,
+  tw`mobile:(w-full rounded-[0])`,
 ]);
 
-const ButtonWrapper = styled.div([
+const ButtonContainer = styled.div([
   css`
     display: flex;
     justify-content: flex-end;
     width: 100%;
   `,
+  tw`tablet:(justify-between)`,
+  tw`mobile:(justify-between)`,
+]);
+
+const MobileLeftButtonWrapper = styled.div([
+  tw`desktop:(hidden) tablet:(overflow-hidden) mobile:(overflow-hidden)`,
+]);
+
+const slideInFromLeft = keyframes`
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+`;
+
+const MenuBar = styled.div([
+  css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    animation: ${slideInFromLeft} 0.2s linear;
+  `,
+  tw`w-full h-full bg-white-60 rounded-default`,
 ]);
 
 const ChatLayout = styled.div([
