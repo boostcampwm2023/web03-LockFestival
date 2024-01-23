@@ -128,42 +128,29 @@ const HeadCardContent = ({
 
 const Content = styled.div([
   tw`text-m mt-2 gap-x-2`,
-  tw`tablet:(gap-x-4 justify-evenly)`,
-  tw`mobile:(flex-col)`,
+  tw`tablet:(gap-x-[8rem])`,
   css`
     display: flex;
   `,
 ]);
 
 const ThemeCard = styled.div([
-  tw`w-[17.6rem] h-[28rem] bg-gray rounded-[2rem]`,
-  tw`mobile:(w-[14rem] h-[22.4rem] mx-auto)`,
+  tw`p-1 w-1/5 aspect-[1/1.6] bg-gray rounded-[2rem]`,
   css`
     display: flex;
-    align-items: center;
+    align-self: flex-start;
     justify-content: center;
   `,
 ]);
 
-const ThemeImg = styled.img([
-  tw`rounded-[0.5rem] w-[15.2rem] h-[24.32rem]`,
-  tw`mobile:(w-[12rem] h-[19.2rem])`,
-]);
+const ThemeImg = styled.img([tw`p-2 w-full aspect-[1/1.6]`]);
 
-const ThemeContent = styled.div([
-  css`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  `,
-]);
+const ThemeContent = styled.div([tw`w-4/5`]);
 
 const ThemeInfo = styled.div([]);
 
 const List = styled.div([
-  tw`mb-2 gap-x-8`,
-  tw`tablet:(gap-x-10)`,
-  tw`mobile:(gap-x-3)`,
+  tw`my-1`,
   css`
     display: flex;
     align-items: center;
@@ -237,6 +224,7 @@ const Text = styled.div([
 const TitleText = styled.div([
   tw`border-[0.1rem] border-white border-solid rounded-[1.5rem] px-2 py-1 h-[8rem] w-[25.6rem]`,
   tw`tablet:(max-w-[35.2rem] w-full)`,
+  tw`mobile:(w-full)`,
   css`
     display: flex;
     align-items: center;
