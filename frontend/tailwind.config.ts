@@ -112,6 +112,9 @@ export default {
         'orange': '#e3651d',
         'border-default': '#5F6E76',
       },
+      aspectRatio: {
+        '1/6': '1 / 1.618',
+      },
     },
   },
   plugins: [],
