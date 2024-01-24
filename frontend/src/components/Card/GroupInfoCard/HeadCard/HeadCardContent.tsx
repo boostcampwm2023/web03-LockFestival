@@ -128,7 +128,6 @@ const HeadCardContent = ({
 
 const Content = styled.div([
   tw`text-m mt-2 gap-x-2`,
-  tw`tablet:(gap-x-[8rem])`,
   css`
     display: flex;
   `,
