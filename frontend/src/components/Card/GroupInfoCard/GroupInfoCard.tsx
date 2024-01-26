@@ -25,9 +25,8 @@ const GroupInfoCard = (props: GroupInfoCardProps) => {
 };
 
 const Container = styled.div<{ isHead: boolean }>(({ isHead }) => [
-  tw`w-4/5 mx-auto px-4 py-2 text-white bg-gray-light font-pretendard`,
+  tw`w-4/5 mx-auto px-4 py-2 text-white bg-gray-light font-pretendard rounded-[2rem]`,
   tw`desktop:(w-[48rem]) h-[34.4rem]`,
-  tw`mobile:(h-[55rem])`,
   css`
     position: relative;
     transition: transform 0.3s;
