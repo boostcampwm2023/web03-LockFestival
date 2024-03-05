@@ -3,6 +3,7 @@ name: CD using github action & docker
 on:
   push:
     branches: ["main", "dev", "HotFix/**"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -120,7 +121,7 @@ jobs:
             export NODE_ENV=${{ env.NODE_ENV }}
             export PORT=${{ secrets.BACK_PORT }}
             export FRONTEND_BASE_URL=${{ secrets.FRONTEND_BASE_URL }}
-            
+
             export X_NCP_APIGW_API_KEY=${{ secrets.X_NCP_APIGW_API_KEY }}
             export X_NCP_CLOVASTUDIO_API_KEY=${{ secrets.X_NCP_CLOVASTUDIO_API_KEY }}
             export X_NCP_CLOVASTUDIO_REQUEST_ID=${{ secrets.X_NCP_CLOVASTUDIO_REQUEST_ID }}
