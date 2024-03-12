@@ -28,8 +28,9 @@
 
 </div>
 
-# 프로젝트 발표 영상
-[![Video Label](http://img.youtube.com/vi/XbvV3q4J6ew/0.jpg)](https://youtu.be/XbvV3q4J6ew)
+# 프로젝트 발표 영상 [![Youtube Badge](https://img.shields.io/badge/Youtube_바로가기-ff0000?style=flat-square&logo=youtube&link=https://www.youtube.com/v/XbvV3q4J6ew)](https://www.youtube.com/v/XbvV3q4J6ew)
+[![Video Label](http://img.youtube.com/vi/XbvV3q4J6ew/0.jpg)](https://youtu.be/XbvV3q4J6ew)  
+
 
 # 우리의 개발 일지
 | 분야                           | 링크                                                                                                           | 분야                           | 링크                                                                                                           |
@@ -49,33 +50,40 @@
 # 주요 기능
 
 ## 📢 메인 페이지
+
 ### ✨ 랜덤 장르 별로 테마를 추천 받을 수 있어요.
 ### ✨ 근처 테마를 추천해요.
 ### ✨ 테마포스터를 클릭해서 상세정보 모달을 볼 수 있어요.
 ![메인페이지1-min](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/7beb9784-a0dd-494f-817f-479171b7fc1a)
+
 ## 📢 검색 페이지
+
 ### ✨ 테마를 검색할 수 있어요.
 ![검색_테마검색](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/fc099908-e655-4d42-af6e-3b8d882b9d56)
+
 ### ✨ 특정 테마의 모집바로가기 기능을 제공해요.
 ![검색_모집바로가기](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/2e7abc45-4695-40ac-86e3-ed8c33890f6c)
+
 ### ✨ 특정 테마로 바로 그룹방을 생성할 수 있어요.
 ![검색페이지_방생성 (1)](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/99987dbf-f907-43eb-96f4-4a60d4281b77)
 
 ## 📢 헤더
+
 ### ✨ 네이버 소셜 로그인을 할 수 있어요.
 ### ✨ 최초 로그인시 회원가입을 진행해요.
 ![녹화_2023_12_12_14_56_40_416](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/e47ee9c1-fc2a-4b31-bf69-cffd90156282)
-### ✨ 네비게이션 바로 다른 페이지로 이동할 수 있어요.
-### ✨ 검색페이지로 이동 
-![헤더_네비게이션_이동 (1) (1)](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/e5393ed2-9438-48b0-b89c-a17fd2e32ea7)
-## 📢 모집리스트 페이지
-### ✨ 그룹방을 탐색하고, 입장할 수 있어요.및 입력을 할 수 있어요.
 
+### ✨ 네비게이션 바로 다른 페이지로 이동할 수 있어요.
+### ✨ 검색어 입력 및 검색 페이지로 이동 할 수 있어요.
+![헤더_네비게이션_이동 (1) (1)](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/e5393ed2-9438-48b0-b89c-a17fd2e32ea7)
+
+## 📢 모집리스트 페이지
+
+### ✨ 그룹방을 탐색하고, 입장할 수 있어요.
 ### ✨ 그룹방을 생성할 수 있어요.
 ![모집리스트_방생성](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/a3a80101-7463-4e06-b3fb-5e0d1cd8ad5a)
 
 ## 📢 나의 채팅방 페이지
-
 
 ### ✨ 사용자가 속하고 있는 방의 리스트를 볼 수 있어요.
 ### ✨ 해당 방에 대한 간략한 정보를 확인할 수 있어요.
@@ -85,12 +93,11 @@
 
 ### ✨ 채팅방에 입장, 퇴장할 수 있어요.
 ![나의채팅방_퇴장하기](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/1843885e-958c-49af-8c6e-8c17f2f34508)
+
 ## 📢 채팅 페이지
 
 ### ✨ 소통할 수 있는 채팅 기능을 제공해요.
-
 ### ✨ 자연스러운 채팅 UX를 위해 신경썼어요.
-
 ### ✨ 방장은 참여하고 있는 유저를 추방할 수 있어요.
 ![채팅방_추방](https://github.com/boostcampwm2023/web03-LockFestival/assets/101504594/5a7681b6-b2c4-48bc-a7fb-4b0607865b0c)
 
