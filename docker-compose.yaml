@@ -23,6 +23,8 @@ services:
       - X_NCP_CLOVASTUDIO_REQUEST_ID=${X_NCP_CLOVASTUDIO_REQUEST_ID}
     expose:
       - 3000
+    extra_hosts:
+      - host.docker.internal:host-gateway
   redis:
     image: "redis:6.0.9-alpine"
     expose:
