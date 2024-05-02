@@ -98,7 +98,25 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@src/(.*)$": "<rootDir>/$1",
+      "^@config/(.*)$": "<rootDir>/config/$1",
+      "^@utils/(.*)$": "<rootDir>/utils/$1",
+      "^@enum/(.*)$": "<rootDir>/enum/$1",
+      "^@constants/(.*)$": "<rootDir>/constants/$1",
+      "^@modules/(.*)$": "<rootDir>/modules/$1",
+      "^@auth/(.*)$": "<rootDir>/modules/authModules/auth/$1",
+      "^@user/(.*)$": "<rootDir>/modules/userModules/user/$1",
+      "^@group/(.*)$": "<rootDir>/modules/userModules/group/$1",
+      "^@chat/(.*)$": "<rootDir>/modules/userModules/chat/$1",
+      "^@brand/(.*)$": "<rootDir>/modules/themeModules/brand/$1",
+      "^@branch/(.*)$": "<rootDir>/modules/themeModules/branch/$1",
+      "^@crawlerUtils/(.*)$": "<rootDir>/modules/themeModules/crawlerUtils/$1",
+      "^@theme/(.*)$": "<rootDir>/modules/themeModules/theme/$1",
+      "^@diary/(.*)$": "<rootDir>/modules/diaryModules/diary/$1",
+      "^@comment/(.*)$": "<rootDir>/modules/diaryModules/comment/$1"
+    }
   },
   "lint-staged": {
     "*.{js,ts}": [
