@@ -15,7 +15,8 @@ import { ThemeSearchRequestDto } from '@theme/dtos/theme.serach.request.dto';
 import { ThemeSearchResponseDto } from '@theme/dtos/theme.search.response.dto';
 import { CrawlerFactory } from '@modules/themeModules/crawlerUtils/crawler.factory';
 import { TimeTableDto } from '@crawlerUtils/dtos/timetable.response.dto';
-import { PaginationDto } from '@src/dtos/pagination.dto';
+import { convertDateToFullYearString } from '@utils/date.utils';
+import { calcRestCount } from '@utils/pagination.utils';
 
 @Injectable()
 export class ThemeService {
@@ -63,7 +64,7 @@ export class ThemeService {
   ): Promise<ThemeLocationResponseDto> {
     const { count, themes } = await this.themeRepository.getThemesByBoundary(themeLocationDto);
 
-    const restCount: number = this.calcRestCount(count, themeLocationDto, themes.length);
+    const restCount: number = calcRestCount(count, themeLocationDto, themes.length);
 
     return new ThemeLocationResponseDto(
       restCount,
@@ -83,7 +84,7 @@ export class ThemeService {
   ): Promise<ThemeSearchResponseDto> {
     const [count, themes] = await this.themeRepository.getThemesBySearch(themeSearchRequestDto);
 
-    const restCount: number = this.calcRestCount(count, themeSearchRequestDto, themes.length);
+    const restCount: number = calcRestCount(count, themeSearchRequestDto, themes.length);
 
     return new ThemeSearchResponseDto(
       restCount,
@@ -97,7 +98,7 @@ export class ThemeService {
       await this.themeRepository.getThemeNameBranchNameBrandNameByThemeId(themeId);
 
     //format : yyyy-mm-dd
-    const dateString: string = this.convertDateToFullYearString(date);
+    const dateString: string = convertDateToFullYearString(date);
 
     this.logger.log(
       `crawler start date: ${dateString} brand: ${brandName} branch: ${branchName} theme: ${themeName}`
@@ -125,28 +126,5 @@ export class ThemeService {
         return [];
       }
     }
-  }
-
-  private calcRestCount(
-    totalCount: number,
-    paginationInfo: PaginationDto,
-    themeCount: number
-  ): number {
-    const restCount: number = Math.max(
-      totalCount - (paginationInfo.page * paginationInfo.count + themeCount),
-      0
-    );
-    return restCount;
-  }
-
-  //format : yyyy-mm-dd
-  private convertDateToFullYearString(date: Date): string {
-    return (
-      date.getFullYear() +
-      `-` +
-      (date.getMonth() + 1 < 10 ? `0` + (date.getMonth() + 1) : date.getMonth() + 1) +
-      `-` +
-      (date.getDate() < 10 ? `0` + date.getDate() : date.getDate())
-    );
   }
 }
