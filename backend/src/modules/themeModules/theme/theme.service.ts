@@ -97,12 +97,7 @@ export class ThemeService {
       await this.themeRepository.getThemeNameBranchNameBrandNameByThemeId(themeId);
 
     //format : yyyy-mm-dd
-    const dateString =
-      date.getFullYear() +
-      `-` +
-      (date.getMonth() + 1 < 10 ? `0` + (date.getMonth() + 1) : date.getMonth() + 1) +
-      `-` +
-      (date.getDate() < 10 ? `0` + date.getDate() : date.getDate());
+    const dateString: string = this.convertDateToFullYearString(date);
 
     this.logger.log(
       `crawler start date: ${dateString} brand: ${brandName} branch: ${branchName} theme: ${themeName}`
@@ -142,5 +137,16 @@ export class ThemeService {
       0
     );
     return restCount;
+  }
+
+  //format : yyyy-mm-dd
+  private convertDateToFullYearString(date: Date): string {
+    return (
+      date.getFullYear() +
+      `-` +
+      (date.getMonth() + 1 < 10 ? `0` + (date.getMonth() + 1) : date.getMonth() + 1) +
+      `-` +
+      (date.getDate() < 10 ? `0` + date.getDate() : date.getDate())
+    );
   }
 }
