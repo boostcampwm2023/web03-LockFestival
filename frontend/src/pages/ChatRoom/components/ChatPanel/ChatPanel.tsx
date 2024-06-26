@@ -105,16 +105,12 @@ const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: Cha
 
     const pastChatSize = chatLogData.size - prevChatLogDataSize;
 
-    if (pastChatSize === 1 || (pastChatSize < PAGING_SIZE && prevChatLogDataSize === 0)) {
-      return;
-    }
-
     if (pastChatSize < PAGING_SIZE && prevChatLogDataSize !== 0) {
-      virtualizer.scrollToIndex(pastChatSize, { align: 'end' });
+      virtualizer.scrollToIndex(pastChatSize, { align: 'start' });
       return;
     }
 
-    if (pastChatSize === PAGING_SIZE) {
+    if (pastChatSize >= PAGING_SIZE) {
       virtualizer.scrollToIndex(PAGING_SIZE, { align: 'start' });
       return;
     }
