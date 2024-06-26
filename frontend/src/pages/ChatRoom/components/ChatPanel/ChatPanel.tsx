@@ -99,7 +99,7 @@ const ChatPanel = memo(function ChatPanel({ roomId, sendChat, getPastChat }: Cha
   }, [chatLogData]);
 
   useEffect(() => {
-    if (!isScrollToTop) {
+    if (!isScrollToTop || chatLogData.size === prevChatLogDataSize) {
       return;
     }
 
