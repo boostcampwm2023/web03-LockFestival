@@ -116,7 +116,7 @@
       "^@theme/(.*)$": "<rootDir>/modules/themeModules/theme/$1",
       "^@diary/(.*)$": "<rootDir>/modules/diaryModules/diary/$1",
       "^@comment/(.*)$": "<rootDir>/modules/diaryModules/comment/$1",
-      "^@mock/(.*)$": "<rootDir>/__mocks__/$1"
+      "^@mocks/(.*)$": "<rootDir>/__mocks__/$1"
     }
   },
   "lint-staged": {

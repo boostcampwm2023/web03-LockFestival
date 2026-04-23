@@ -10,6 +10,10 @@ import { ThemeResponseDto } from '@theme/dtos/theme.response.dto';
 import { NotFoundException } from '@nestjs/common';
 import { ThemeLocationDto } from '@theme/dtos/theme.location.dto';
 import { ThemeSearchRequestDto } from '@theme/dtos/theme.serach.request.dto';
+import {
+  sameBranchThemesDto,
+  themeBranchThemesDetailsResponseDto,
+} from '@mocks/theme/common.mocks';
 
 describe('ThemeService', () => {
   let themeService: ThemeService;
@@ -114,30 +118,7 @@ describe('ThemeService', () => {
     test('테마 id를 입력받아 테마 정보를 반환한다.', async () => {
       //give
       const themeId: number = 1;
-      const themeBranchThemesDetailsResponseDto: ThemeBranchThemesDetailsResponseDto = {
-        themeName: 'SOUL CHASER - 실종',
-        realGenre: '야외',
-        themeId: 1,
-        posterImageUrl: 'https://i.postimg.cc/nLwL9k0H/theme-SOUL-CHASER.jpg',
-        difficulty: 4,
-        minMember: 2,
-        maxMember: 2,
-        playTime: 90,
-        phone: '02-463-9967',
-        address: '서울특별시 광진구 자양동 17-5 B1',
-        website: 'https://www.nextedition.co.kr/shops/NextEdition%20Gundae',
-        brandBranchName: '건대점 넥스트에디션',
-        bigRegion: '서울',
-        smallRegion: '건대',
-        otherThemes: undefined,
-      };
-      const sameBranchThemesDto: ThemeResponseDto[] = [
-        {
-          posterImageUrl: 'https://i.postimg.cc/nLwL9k0H/theme-SOUL-CHASER.jpg',
-          themeName: 'SOUL CHASER - 실종',
-          themeId: 1,
-        },
-      ];
+
       jest
         .spyOn(themeRepository, 'getThemeDetailsById')
         .mockResolvedValue(themeBranchThemesDetailsResponseDto);
@@ -437,16 +418,16 @@ describe('ThemeService', () => {
   });
 
   /*
-  describe('calcRestCount(totalCount: number, paginationInfo: PaginationDto, themeCount: number): number ', () => {
-    test('페이지네이션 중 앞으로 남은 아이템 개수를 반환한다.', () => {
-      //give
-      //when
-      Reflect.get(themeService, 'calcRestCount')(100, { page: 1, count: 1 }, 1);
-      ThemeService.prototype['calcRestCount'](100, { page: 1, count: 1 }, 1);
-      expect(ThemeService.prototype['calcRestCount'](100, { page: 1, count: 1 }, 1)).toBe(98);
-
-      //then
+    describe('calcRestCount(totalCount: number, paginationInfo: PaginationDto, themeCount: number): number ', () => {
+      test('페이지네이션 중 앞으로 남은 아이템 개수를 반환한다.', () => {
+        //give
+        //when
+        Reflect.get(themeService, 'calcRestCount')(100, { page: 1, count: 1 }, 1);
+        ThemeService.prototype['calcRestCount'](100, { page: 1, count: 1 }, 1);
+        expect(ThemeService.prototype['calcRestCount'](100, { page: 1, count: 1 }, 1)).toBe(98);
+  
+        //then
+      });
     });
-  });
-   */
+     */
 });

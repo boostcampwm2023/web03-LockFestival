@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ThemeBranchThemesDetailsResponseDto } from '@theme/dtos/theme.branch.detail.response.dto';
 import { ThemeRepository } from '@theme/theme.repository';
 import { DataSource } from 'typeorm';
 import { Theme } from '@theme/entities/theme.entity';
 import { Branch } from '@branch/entities/branch.entity';
 import { Brand } from '@brand/entities/brand.entity';
+import { themeBranchThemesDetailsResponseDto } from '@mocks/theme/common.mocks';
 
 describe('ThemeRepository', () => {
   let themeRepository: ThemeRepository;
@@ -42,23 +42,6 @@ describe('ThemeRepository', () => {
     test('테마 id를 입력받아 테마 정보를 반환한다.', async () => {
       //give
       const themeId: number = 1;
-      const themeBranchThemesDetailsResponseDto: ThemeBranchThemesDetailsResponseDto = {
-        themeName: 'SOUL CHASER - 실종',
-        realGenre: '야외',
-        themeId: 1,
-        posterImageUrl: 'https://i.postimg.cc/nLwL9k0H/theme-SOUL-CHASER.jpg',
-        difficulty: 4,
-        minMember: 2,
-        maxMember: 2,
-        playTime: 90,
-        phone: '02-463-9967',
-        address: '서울특별시 광진구 자양동 17-5 B1',
-        website: 'https://www.nextedition.co.kr/shops/NextEdition%20Gundae',
-        brandBranchName: '건대점 넥스트에디션',
-        bigRegion: '서울',
-        smallRegion: '건대',
-        otherThemes: undefined,
-      };
       mockQueryBuilder.getRawOne.mockImplementationOnce(() => {
         return themeBranchThemesDetailsResponseDto;
       });

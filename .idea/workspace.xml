@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e0fc4897-aa3a-4cac-b2ae-6155a5fa0db5" name="Changes" comment=":recycle: mock 데이터 분리">
+      <change afterPath="$PROJECT_DIR$/backend/src/__mocks__/theme/common.mocks.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/modules/themeModules/theme/theme.repository.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/modules/themeModules/theme/theme.repository.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/modules/themeModules/theme/theme.service.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/modules/themeModules/theme/theme.service.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tsconfig.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Capoomaru&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;http://github.com/boostcampwm2023/web03-LockFestival&quot;,
+    &quot;accountId&quot;: &quot;eeb22b24-3cc3-410e-a8e1-fbd3b85c0ddd&quot;
+  }
+}</component>
+  <component name="OptimizeOnSaveOptions">
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2hKmuyosP4PVwtGDEEoMprUHsaD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Jest.ThemeService.'getThemesBySearch(\\n' +\n      '    themeSearchRequestDto: ThemeSearchRequestDto\\n' +\n      '  ): Promise&lt;ThemeSearchResponseDto&gt;'.executor&quot;: &quot;Run&quot;,
+    &quot;Jest.ThemeService.calcRestCount(totalCount: number, paginationInfo: PaginationDto, themeCount: number): number .페이지네이션 중 앞으로 남은 아이템 개수를 반환한다..executor&quot;: &quot;Run&quot;,
+    &quot;Jest.ThemeService.executor&quot;: &quot;Run&quot;,
+    &quot;Jest.ThemeService.getGenreThemes(genreId: number, count: number): Promise&lt;Array&lt;ThemeResponseDto&gt;&gt;.장르에 해당하는 테마를 number 개 반환한다..executor&quot;: &quot;Run&quot;,
+    &quot;Jest.ThemeService.getLocationThemes(themeLocationDto: ThemeLocationDto): Promise&lt;ThemeLocationResponseDto&gt;.위경도, 범위를 입력받아 해당 범위 내의 테마를 반환한다..executor&quot;: &quot;Run&quot;,
+    &quot;Jest.ThemeService.getSimpleThemesBySearch(query: string): Promise&lt;ThemeSimpleSearchResponseDto[]&gt;.executor&quot;: &quot;Run&quot;,
+    &quot;Jest.ThemeService.getThemeDetailsById(themeId: number).테마 id를 입력받아 테마 정보를 반환한다..executor&quot;: &quot;Run&quot;,
+    &quot;Jest.ThemeService.getThemesBySearch(themeSearchRequestDto: ThemeSearchRequestDto): Promise&lt;ThemeSearchResponseDto&gt;.검색어에 해당하는 테마들의 정보들을 페이지네이션 정보를 포함하여 정렬한 순서대로 반환한다..executor&quot;: &quot;Run&quot;,
+    &quot;Jest.ThemeService.getTimeTable(themeId: number, date: Date): Promise&lt;TimeTableDto[]&gt;.executor&quot;: &quot;Run&quot;,
+    &quot;Jest.ThemeService.getTimeTable(themeId: number, date: Date): Promise&lt;TimeTableDto[]&gt;.테마id와 날짜를 입력받아 시간표를 반환한다..executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Test/BE/#475&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/kangchanghan/develop/2024-LockFestival/backend/src/modules/themeModules/theme&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs.jest.jest_package&quot;: &quot;/Users/kangchanghan/develop/2024-LockFestival/backend/node_modules/jest&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/kangchanghan/develop/2024-LockFestival/backend/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/kangchanghan/develop/2024-LockFestival/backend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src/modules/themeModules/theme" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Jest.ThemeService.getTimeTable(themeId: number, date: Date): Promise&lt;TimeTableDto[]&gt;.테마id와 날짜를 입력받아 시간표를 반환한다.">
+    <configuration name="ThemeService" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/backend/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/backend" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/backend/src/modules/themeModules/theme/theme.service.spec.ts" />
+      <test-names>
+        <test-name value="ThemeService" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="ThemeService.'getThemesBySearch(\n' +&#10;      '    themeSearchRequestDto: ThemeSearchRequestDto\n' +&#10;      '  ): Promise&lt;ThemeSearchResponseDto&gt;'" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/backend/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/backend" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/backend/src/modules/themeModules/theme/theme.service.spec.ts" />
+      <test-names>
+        <test-name value="ThemeService" />
+        <test-name value="'getThemesBySearch(\n' +&#10;      '    themeSearchRequestDto: ThemeSearchRequestDto\n' +&#10;      '  ): Promise&lt;ThemeSearchResponseDto&gt;'" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="ThemeService.getThemesBySearch(themeSearchRequestDto: ThemeSearchRequestDto): Promise&lt;ThemeSearchResponseDto&gt;.검색어에 해당하는 테마들의 정보들을 페이지네이션 정보를 포함하여 정렬한 순서대로 반환한다." type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/backend/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/backend" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/backend/src/modules/themeModules/theme/theme.service.spec.ts" />
+      <test-names>
+        <test-name value="ThemeService" />
+        <test-name value="getThemesBySearch(themeSearchRequestDto: ThemeSearchRequestDto): Promise&lt;ThemeSearchResponseDto&gt;" />
+        <test-name value="검색어에 해당하는 테마들의 정보들을 페이지네이션 정보를 포함하여 정렬한 순서대로 반환한다." />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="ThemeService.getTimeTable(themeId: number, date: Date): Promise&lt;TimeTableDto[]&gt;" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/backend/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/backend" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/backend/src/modules/themeModules/theme/theme.service.spec.ts" />
+      <test-names>
+        <test-name value="ThemeService" />
+        <test-name value="getTimeTable(themeId: number, date: Date): Promise&lt;TimeTableDto[]&gt;" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="ThemeService.getTimeTable(themeId: number, date: Date): Promise&lt;TimeTableDto[]&gt;.테마id와 날짜를 입력받아 시간표를 반환한다." type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/backend/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$/backend" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/backend/src/modules/themeModules/theme/theme.service.spec.ts" />
+      <test-names>
+        <test-name value="ThemeService" />
+        <test-name value="getTimeTable(themeId: number, date: Date): Promise&lt;TimeTableDto[]&gt;" />
+        <test-name value="테마id와 날짜를 입력받아 시간표를 반환한다." />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Jest.ThemeService.getTimeTable(themeId: number, date: Date): Promise&lt;TimeTableDto[]&gt;.테마id와 날짜를 입력받아 시간표를 반환한다." />
+        <item itemvalue="Jest.ThemeService.getTimeTable(themeId: number, date: Date): Promise&lt;TimeTableDto[]&gt;" />
+        <item itemvalue="Jest.ThemeService.getThemesBySearch(themeSearchRequestDto: ThemeSearchRequestDto): Promise&lt;ThemeSearchResponseDto&gt;.검색어에 해당하는 테마들의 정보들을 페이지네이션 정보를 포함하여 정렬한 순서대로 반환한다." />
+        <item itemvalue="Jest.ThemeService.'getThemesBySearch(\n' +&#10;      '    themeSearchRequestDto: ThemeSearchRequestDto\n' +&#10;      '  ): Promise&lt;ThemeSearchResponseDto&gt;'" />
+        <item itemvalue="Jest.ThemeService" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e0fc4897-aa3a-4cac-b2ae-6155a5fa0db5" name="Changes" comment="" />
+      <created>1717351369253</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1717351369253</updated>
+      <workItem from="1717351370299" duration="163000" />
+      <workItem from="1717351536266" duration="40000" />
+      <workItem from="1717351580920" duration="200000" />
+      <workItem from="1717351789324" duration="160000" />
+      <workItem from="1717351952226" duration="29000" />
+      <workItem from="1717351984992" duration="124000" />
+      <workItem from="1717353062093" duration="37000" />
+      <workItem from="1717384438698" duration="6707000" />
+      <workItem from="1717395879868" duration="8765000" />
+      <workItem from="1717409237346" duration="2900000" />
+      <workItem from="1717932480404" duration="20653000" />
+      <workItem from="1739632842161" duration="88000" />
+    </task>
+    <task id="LOCAL-00001" summary=":white_check_mark: ThemeService 테스트코드 추가">
+      <option name="closed" value="true" />
+      <created>1717938654164</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1717938654164</updated>
+    </task>
+    <task id="LOCAL-00002" summary=":white_check_mark: ThemeRepository 테스트코드 추가&#10;&#10;- QueryBuilder 모킹&#10;- getThemeDetailsById 테스트">
+      <option name="closed" value="true" />
+      <created>1718183000510</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1718183000510</updated>
+    </task>
+    <task id="LOCAL-00003" summary=":white_check_mark: ThemeRepository 테스트코드 추가&#10;&#10;- QueryBuilder 모킹&#10;- getThemeDetailsById 테스트">
+      <option name="closed" value="true" />
+      <created>1718183150934</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1718183150934</updated>
+    </task>
+    <task id="LOCAL-00004" summary=":wrench: 테스트 환경의 __mock__ 디렉터리 설정 추가">
+      <option name="closed" value="true" />
+      <created>1718183922959</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1718183922959</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value=":white_check_mark: ThemeService 테스트코드 추가" />
+    <MESSAGE value=":white_check_mark: ThemeRepository 테스트코드 추가&#10;&#10;- QueryBuilder 모킹&#10;- getThemeDetailsById 테스트" />
+    <MESSAGE value=":wrench: 테스트 환경의 __mock__ 디렉터리 설정 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value=":wrench: 테스트 환경의 __mock__ 디렉터리 설정 추가" />
+  </component>
+</project>
